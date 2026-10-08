@@ -36,7 +36,11 @@ spreads or multi-leg options, strategy optimisation.
   overshoot them; the user accepts overshoot in the learning stage. Both numbers are settings.
 - Cooldown 2 minutes after each trade (user choice). The reference video says the bots wait after each trade but
   gives no duration.
-- Trading window 9:45-15:30 ET. One open position per bot.
+- Windows (ET, per bot): VWAP-cross bot and EMA50-cross bot may enter from 9:30 (EMAs warm-started from the
+  previous session's bars); range-break bot is armed and shown watching from 9:40 and may fire from 9:45, once
+  the 9:30-9:45 range is complete. Last entry 15:30; open positions are closed by 15:55. One open position per bot.
+- Chop filter: skip a trigger when |EMA9 - EMA21| < 0.15 x ATR (starting guess; the video gives no threshold).
+  Applies to the VWAP-cross bot only, as in the video; EMA50 and range-break bots run unfiltered. Reason code CHOP_SQUEEZE.
 - Stale rule: no new bar for 2 minutes (idle bots); no fresh option quote for 30 seconds while in a trade; flatten the paper position after 5 minutes stale.
 - Replay half-spread per side: SPY $0.01, QQQ $0.015, IWM $0.02.
 - Order type: limit just above the ask for buys; marketable limit below the bid for sells.
