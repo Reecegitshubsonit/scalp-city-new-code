@@ -34,8 +34,8 @@ spreads or multi-leg options, strategy optimisation.
 - Size: 10 contracts per trade (user choice). Daily goal +$600 and daily loss limit -$100 per bot (user choice).
   Limits are lockout thresholds checked after each closed trade, not per-trade stops, so a single trade can
   overshoot them; the user accepts overshoot in the learning stage. Both numbers are settings.
-- Cooldown 5 minutes after each trade. The reference video says the bots wait after each trade but gives no
-  duration, so 5 minutes is our assumption.
+- Cooldown 2 minutes after each trade (user choice). The reference video says the bots wait after each trade but
+  gives no duration.
 - Trading window 9:45-15:30 ET. One open position per bot.
 - Stale rule: no new bar for 2 minutes (idle bots); no fresh option quote for 30 seconds while in a trade; flatten the paper position after 5 minutes stale.
 - Replay half-spread per side: SPY $0.01, QQQ $0.015, IWM $0.02.
