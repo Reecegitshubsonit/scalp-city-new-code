@@ -2,13 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 
 export function useReducedMotion(): boolean {
   const q = '(prefers-reduced-motion: reduce)'
-  const [r, setR] = useState(() => (typeof matchMedia === 'function' ? matchMedia(q).matches : false))
+  // ?reduced=1 forces reduced motion (for testing without changing the OS setting)
+  const forced = new URLSearchParams(location.search).get('reduced') === '1'
+  const [r, setR] = useState(() => forced || (typeof matchMedia === 'function' ? matchMedia(q).matches : false))
   useEffect(() => {
     const m = matchMedia(q)
-    const on = () => setR(m.matches)
+    const on = () => setR(forced || m.matches)
     m.addEventListener('change', on)
     return () => m.removeEventListener('change', on)
-  }, [])
+  }, [forced])
   return r
 }
 

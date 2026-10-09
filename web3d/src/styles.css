@@ -50,14 +50,14 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .st-stale { border-left-color: var(--stale); }
 .st-idle .chip { color: var(--muted); } .st-forming .chip { color: var(--neutral); } .st-fired .chip, .st-managing .chip, .st-exiting .chip { color: var(--call); }
 .st-cooldown .chip { color: var(--cooldown); } .st-locked .chip { color: var(--locked); } .st-paused .chip { color: var(--paused); } .st-stale .chip { color: var(--stale); }
-.drawer { position: absolute; inset: 0 0 auto 0; z-index: 5; background: #120e55; border: 1px solid #fff3; border-radius: 8px; padding: 12px; max-height: 90vh; overflow: auto; box-shadow: -8px 0 24px #0008; animation: slide .2s ease-out; }
+.drawer { position: absolute; inset: 0 0 auto 0; z-index: 100; background: #120e55; border: 1px solid #fff3; border-radius: 8px; padding: 12px; max-height: 90vh; overflow: auto; box-shadow: -8px 0 24px #0008; animation: slide .2s ease-out; }
 .drawer header { display: flex; justify-content: space-between; align-items: center; }
 .drawer dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 0; }
 .drawer dd { margin: 0; text-align: right; }
 .chart svg { width: 100%; height: auto; background: #0b0830; border-radius: 6px; } .chart figcaption { font-size: 11px; }
 @keyframes slide { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .tableonly { grid-template-columns: 3fr 1fr; }
-@media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .cards { grid-template-columns: repeat(2, 1fr); } .drawer { position: static; } }
+@media (max-width: 1100px) { .main { grid-template-columns: 1fr; } .cards { grid-template-columns: repeat(2, 1fr); } .drawer { position: fixed; inset: auto 8px 8px 8px; max-height: 70vh; } }
 @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 .tname { font-size: 10px; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; white-space: nowrap; }
