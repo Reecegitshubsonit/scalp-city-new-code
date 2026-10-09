@@ -55,6 +55,18 @@ State to visual:
 Reduced motion: no flash, pulse, flicker or auto-orbit. Same states as static colour plus steady
 beam; the fired ring is a static ring held for 2 s.
 
+### Side (green/red) resolution
+
+Beam and glow colour come from `resolveSide`, first match wins:
+1. explicit `side` on the event or snapshot row;
+2. CALL/PUT parsed from reason_text of a `SIGNAL` event (engine writes "CALL signal at 123.45"),
+   remembered until the position closes or the bot goes idle/cooldown/locked/paused/stale;
+3. forming only, VWAP and EMA50 bots: price below level = CALL (next cross is up), above = PUT;
+4. otherwise neutral.
+Rule 3 is an inference (engine `distance_atr` is unsigned), and RANGE has no level in `inputs`, so
+RANGE forming is neutral until the engine sends `side`. The drawer says "side: inferred" when 2 or 3
+was used.
+
 ## 4. Panels (HTML, carry every exact number)
 
 1. Bot cards: state chip, reason_code + plain-words reason_text, charge %, price, day P&L, trades,
