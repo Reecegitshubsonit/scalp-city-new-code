@@ -36,11 +36,13 @@ def main():
     ap.add_argument("--modeled", action="store_true", help="no broker orders: fills are modeled from live bid/ask")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--logdir", default="logs")
+    ap.add_argument("--daily-loss", type=float, default=Settings.daily_loss, help="per-bot loss that locks the bot for the day (dollars)")
+    ap.add_argument("--daily-goal", type=float, default=Settings.daily_goal, help="per-bot profit that locks the bot for the day (dollars)")
     args = ap.parse_args()
     load_env()
     client = WebullClient.from_env(os.environ)
     account = assert_paper_only(os.environ, SANDBOX_HOST, client.accounts())
-    settings, log = Settings(), EventLog(args.logdir, "live")
+    settings, log = Settings(daily_loss=args.daily_loss, daily_goal=args.daily_goal), EventLog(args.logdir, "live")
     broker = ModeledBroker() if args.modeled else WebullPaperBroker(client, account["account_id"], fallback=ModeledBroker())
     engine = Engine(settings, log, broker, LiveQuoteSource(client))
     feed = LiveFeed(client, TICKERS, lambda: datetime.now(ET))
@@ -48,6 +50,7 @@ def main():
     prior, todays = feed.startup(today)
     engine.start_session(today, prior)
     engine.catch_up(todays)   # a mid-session start still gets the real VWAP and opening range
+    engine.recover(log.read(today))   # and its day P&L, cooldowns and open positions from the event log
     app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots])
     threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
     print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)

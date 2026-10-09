@@ -187,6 +187,35 @@ class Bot:
         self._last_emitted = (self.state, self.reason_code)
         return [self._snapshot_event("state_change", {}, None)]
 
+    # ---- restart recovery ----
+    def restore(self, ev: dict) -> None:
+        """Replay one logged event from today's file to rebuild day totals, cooldown and the open position."""
+        kind, code, when = ev["kind"], ev.get("reason_code", ""), datetime.fromisoformat(ev["time"])
+        if kind == "order_sent" and code == "BUY_OPEN":
+            sgn = 1 if ev["contract"][len(self.ticker) + 6] == "C" else -1
+            price, atr = ev["inputs"]["price"], ev["inputs"].get("atr") or 0.0
+            self.position = Position("CALL" if sgn == 1 else "PUT", ev["qty"], price,
+                                     stop_und=price - sgn * self.s.stop_atr * atr, target_und=price + sgn * self.s.target_atr * atr)
+        elif kind == "fill" and code == "ENTRY_FILL" and self.position is not None:
+            self.position.contract, self.position.entry_price, self.position.opened_at = ev["contract"], ev["fill_price"], when
+        elif kind == "state_change" and code == "ORDER_FAILED" and self.position is not None and self.position.entry_price is None:
+            self.position = None
+        elif kind == "trade_closed":
+            self.position, self.pending = None, None
+            self.pnl_day, self.trades = ev["pnl_day"], ev["trades"]
+            self.cooldown_until = when + timedelta(seconds=self.s.cooldown_s)
+
+    def finish_restore(self) -> None:
+        self.pending = None
+        if self.position is not None and self.position.entry_price is None:
+            self.position = None   # entry order logged but never filled
+        self.locked = "DAILY_GOAL" if self.pnl_day >= self.s.daily_goal else "DAILY_LOSS" if self.pnl_day <= -self.s.daily_loss else None
+        if self.position is not None:
+            self._set(State.MANAGING, "HOLDING", f"{self.position.right} recovered, stop {self.position.stop_und:.2f}, target {self.position.target_und:.2f}")
+        elif self.locked:
+            self._set(State.LOCKED, self.locked, f"locked for the day, day P&L {self.pnl_day:+.0f}")
+        self._last_emitted = None
+
     # ---- controls ----
     def set_paused(self, paused: bool) -> list:
         self.paused = paused

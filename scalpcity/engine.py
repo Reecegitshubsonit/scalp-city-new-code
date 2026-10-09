@@ -51,6 +51,16 @@ class Engine:
                     if bot.ticker == bar.ticker:
                         bot.trigger.update(bar, ind)
 
+    def recover(self, events: list) -> None:
+        """Restart: rebuild each bot's day P&L, trades, cooldown and open position from today's event log. Writes nothing."""
+        with self.lock:
+            for ev in events:
+                bot = self.by_id.get(ev.get("bot"))
+                if bot is not None:
+                    bot.restore(ev)
+            for bot in self.bots:
+                bot.finish_restore()
+
     def _write(self, time, bot, events: list) -> None:
         for ev in events:
             ev = dict(ev)
