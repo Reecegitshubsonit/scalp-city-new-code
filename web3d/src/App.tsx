@@ -99,7 +99,7 @@ export default function App() {
           {!tableOnly && (
             <div className="canvaswrap">
               <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
-                <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} />
+                <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE} />
               </Suspense>
               {room}
             </div>

@@ -12,7 +12,7 @@ import { windowTexture } from './textures'
 
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
-  reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>
+  reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>; title: string
 }
 
 const POS: Record<string, [number, number, number]> = Object.fromEntries(
@@ -79,7 +79,7 @@ function CameraRig({ selected, reducedMotion }: { selected: string | null; reduc
   return null
 }
 
-export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade }: Props) {
+export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   const spokes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const a = (i / 12) * Math.PI * 2
@@ -142,6 +142,9 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
           )
         })}
 
+        <Html position={[0, 11, -17]} center distanceFactor={22} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+          <div className="sign title">{title}</div>
+        </Html>
         <Dome total={total} onClick={onDome} reducedMotion={reducedMotion} />
         <Skyline />
         <CameraRig selected={selected} reducedMotion={reducedMotion} />
