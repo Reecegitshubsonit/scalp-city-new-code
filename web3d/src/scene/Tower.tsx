@@ -1,10 +1,8 @@
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
 import * as THREE from 'three'
-import type { Badge, Tone } from '../model/badge'
 import type { BotRow } from '../model/types'
-import { COLORS, visualFor } from '../model/visual'
+import { visualFor } from '../model/visual'
 import { hashStr, windowTexture } from './textures'
 
 export const BEAM_MAX = 16
@@ -12,21 +10,15 @@ const LEVELS: Array<{ w: number; h: number }> = [{ w: 1.7, h: 1.4 }, { w: 1.3, h
 const BODY_H = LEVELS.reduce((a, l) => a + l.h, 0)
 export const TOWER_TOP = BODY_H + 0.7
 
-const TONE_COLOR: Record<Tone, string> = {
-  CALL: COLORS.CALL, PUT: COLORS.PUT, WIN: COLORS.CALL, LOSS: COLORS.PUT, NEUTRAL: COLORS.NEUTRAL,
-  LOCKED: COLORS.locked, PAUSED: COLORS.paused, STALE: COLORS.stale,
-}
-
 interface Props {
   row: BotRow
   position: [number, number, number]
   reducedMotion: boolean
   selected: boolean
-  badge: Badge | null
   onSelect: (bot: string) => void
 }
 
-function TowerImpl({ row, position, reducedMotion, selected, badge, onSelect }: Props) {
+function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) {
   const v = visualFor(row, reducedMotion)
   const tex = useMemo(() => windowTexture(hashStr(row.bot), v.hatched), [row.bot, v.hatched])
   const mats = useRef<THREE.MeshStandardMaterial[]>([])
@@ -40,7 +32,6 @@ function TowerImpl({ row, position, reducedMotion, selected, badge, onSelect }: 
   const prev = useRef(row.state)
   const color = useMemo(() => new THREE.Color(v.color), [v.color])
   const beamColor = useMemo(() => new THREE.Color(v.color).multiplyScalar(1.8), [v.color])
-  const trigger = row.bot.split('-')[1] ?? row.bot
 
   useEffect(() => {
     if (row.state === 'fired' && prev.current !== 'fired') ringT.current = 0
@@ -149,17 +140,9 @@ function TowerImpl({ row, position, reducedMotion, selected, badge, onSelect }: 
         <ringGeometry args={[1.25, 1.4, 40]} />
         <meshBasicMaterial color={selected ? '#ffffff' : color} transparent opacity={selected ? 0.95 : 0.25 + v.glow * 0.4} toneMapped={false} />
       </mesh>
-      <Html position={[0, TOWER_TOP + 1.3, 0]} center distanceFactor={15} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
-        <div className="sign">{trigger}</div>
-      </Html>
-      {badge && (
-        <Html position={[0, TOWER_TOP + 2.1, 0]} center distanceFactor={15} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
-          <div className={`tlabel ${badge.tone}`} style={{ borderColor: TONE_COLOR[badge.tone], color: TONE_COLOR[badge.tone] }}>{badge.text}</div>
-        </Html>
-      )}
     </group>
   )
 }
 export const Tower = memo(TowerImpl, (a, b) =>
   a.row === b.row && a.selected === b.selected && a.reducedMotion === b.reducedMotion &&
-  a.badge?.text === b.badge?.text && a.badge?.tone === b.badge?.tone && a.position === b.position && a.onSelect === b.onSelect)
+  a.position === b.position && a.onSelect === b.onSelect)

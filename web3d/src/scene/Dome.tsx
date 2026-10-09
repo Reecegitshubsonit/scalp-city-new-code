@@ -1,8 +1,6 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
 import * as THREE from 'three'
-import { formatPnl } from '../model/format'
 import { COLORS } from '../model/visual'
 
 export function Dome({ total, onClick, reducedMotion }: { total: number; onClick: () => void; reducedMotion: boolean }) {
@@ -38,9 +36,6 @@ export function Dome({ total, onClick, reducedMotion }: { total: number; onClick
           )
         })}
       </group>
-      <Html position={[0, 2.9, 0]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
-        <div className="tlabel big" style={{ borderColor: color, color }}>{formatPnl(total)}</div>
-      </Html>
     </group>
   )
 }

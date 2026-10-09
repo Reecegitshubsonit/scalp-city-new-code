@@ -41,6 +41,9 @@ The page talks to `GET /snapshot`, `WS /ws` and `POST /control/pause` on the sam
 three paths to `VITE_ENGINE_URL` (default `http://127.0.0.1:8000`). For a build served from somewhere else, set
 `VITE_API_BASE=http://127.0.0.1:8000` at build time (the engine needs to allow CORS in that case).
 
+Performance: the default look uses additive glow shells and runs at 60 fps on an integrated GPU. Add `?fx=high` to the URL
+for the full-screen bloom pass (prettier, but roughly halves the frame rate on integrated graphics).
+
 Title: `VITE_TITLE=...` at build time, or `?title=Anything` in the URL. Default is "Scalp City".
 
 ## What you see

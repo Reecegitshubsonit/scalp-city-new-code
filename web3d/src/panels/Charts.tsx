@@ -20,10 +20,13 @@ export function TickerChart({ ticker, points, marks, big }: ChartProps) {
   )
   if (points.length < 2) return <figure className="chart">{header}<p className="muted pad">Fills as prices arrive.</p></figure>
 
-  const vals = points.flatMap(p => [p.price, p.vwap, p.ema50]).filter((v): v is number => typeof v === 'number')
-  const lo = Math.min(...vals), hi = Math.max(...vals), span = hi - lo || 1
+  // scale to the price range (plus padding) so a stray indicator value cannot flatten the price line; overlays are clamped
+  const prices = points.map(p => p.price)
+  const pLo = Math.min(...prices), pHi = Math.max(...prices)
+  const pad = (pHi - pLo) * 0.5 || 0.01
+  const lo = pLo - pad, hi = pHi + pad, span = hi - lo
   const x = (i: number) => P + (i / (points.length - 1)) * (W - 2 * P)
-  const y = (v: number) => H - P - ((v - lo) / span) * (H - 2 * P)
+  const y = (v: number) => H - P - (Math.min(hi, Math.max(lo, v)) - lo) / span * (H - 2 * P)
   const line = (key: 'price' | 'vwap' | 'ema50') => {
     const pts = points.map((p, i) => (typeof p[key] === 'number' ? `${x(i).toFixed(1)},${y(p[key] as number).toFixed(1)}` : null)).filter(Boolean)
     return pts.length > 1 ? pts.join(' ') : null
@@ -33,7 +36,7 @@ export function TickerChart({ ticker, points, marks, big }: ChartProps) {
   return (
     <figure className="chart">
       {header}
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${ticker} price chart, ${points.length} points, ${lo.toFixed(2)} to ${hi.toFixed(2)}`}>
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${ticker} price chart, ${points.length} points, ${pLo.toFixed(2)} to ${pHi.toFixed(2)}`}>
         {vwap && <polyline fill="none" stroke="#ff9d3b" strokeWidth="1.2" points={vwap} />}
         {ema && <polyline fill="none" stroke="#ffe14d" strokeWidth="1.2" strokeDasharray="3 3" points={ema} />}
         <polyline fill="none" stroke="#9fb3ff" strokeWidth="1.6" points={line('price') ?? ''} />
