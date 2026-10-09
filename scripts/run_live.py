@@ -31,11 +31,17 @@ def load_env(path=".env"):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--modeled", action="store_true", help="no broker orders: fills are modeled from live bid/ask")
+    ap.add_argument("--port", type=int, default=8000)
+    ap.add_argument("--logdir", default="logs")
+    args = ap.parse_args()
     load_env()
     client = WebullClient.from_env(os.environ)
     account = assert_paper_only(os.environ, SANDBOX_HOST, client.accounts())
-    settings, log = Settings(), EventLog("logs", "live")
-    broker = WebullPaperBroker(client, account["account_id"], fallback=ModeledBroker())
+    settings, log = Settings(), EventLog(args.logdir, "live")
+    broker = ModeledBroker() if args.modeled else WebullPaperBroker(client, account["account_id"], fallback=ModeledBroker())
     engine = Engine(settings, log, broker, LiveQuoteSource(client))
     feed = LiveFeed(client, TICKERS, lambda: datetime.now(ET))
     today = datetime.now(ET).date()
@@ -43,19 +49,23 @@ def main():
     engine.start_session(today, prior)
     engine.catch_up(todays)   # a mid-session start still gets the real VWAP and opening range
     app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots])
-    threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=8000, log_level="warning"), daemon=True).start()
-    print("Scalp City live (paper). Dashboard: http://127.0.0.1:8000   Ctrl+C to stop.", flush=True)
+    threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
+    print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
     quote_wall: dict[str, datetime] = {}
     while True:
-        now = datetime.now(ET)
-        if market_open(now):
-            for bar in feed.poll():
-                engine.on_bar(bar)
-            for bot in engine.bots:
-                if bot.position is not None and bot.position.contract:
-                    if client.option_quote(bot.position.contract):
-                        quote_wall[bot.bot_id] = now
-        engine.check_stale(now, feed.last_bar_wall, quote_wall)
+        try:
+            now = datetime.now(ET)
+            if market_open(now):
+                for bar in feed.poll():
+                    engine.on_bar(bar)
+                for bot in engine.bots:
+                    if bot.position is not None and bot.position.contract:
+                        if client.option_quote(bot.position.contract):
+                            quote_wall[bot.bot_id] = now
+            engine.check_stale(now, feed.last_bar_wall, quote_wall)
+        except Exception:   # one bad poll must not kill the run; the traceback is printed and the loop continues
+            import traceback
+            traceback.print_exc()
         time.sleep(5)
 
 
