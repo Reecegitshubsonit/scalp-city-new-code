@@ -45,7 +45,8 @@ export default function App() {
     for (const t of state.trades) m[t.bot] = t
     return m
   }, [state.trades])
-  const date = useMemo(() => rows.map(r => r.time).filter(Boolean).sort().pop()?.slice(0, 10) ?? null, [rows])
+  const newest = useMemo(() => rows.map(r => r.time).filter((t): t is string => !!t).sort().pop() ?? null, [rows])
+  const date = newest?.slice(0, 10) ?? null
 
   // clear pending once the row reflects the requested value
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function App() {
     <div className="app">
       <header className="top">
         <h1>{TITLE}</h1>
-        <span className={`conn c-${status}`} role="status">{status === 'live' ? 'Connected' : status === 'connecting' ? 'Connecting...' : 'Disconnected, retrying...'}</span>
+        <span className={`conn c-${status}`} role="status">{status === 'live' ? 'Connected' : status === 'polling' ? 'Polling every 2 s (no websocket)' : status === 'connecting' ? 'Connecting...' : 'Disconnected, retrying...'}</span>
         {state.mode && <span className={`mode m-${state.mode}`}>{state.mode === 'mock' ? 'MOCK DATA, NOT REAL' : state.mode === 'replay' ? 'REPLAY' : state.mode === 'live' ? 'LIVE PAPER' : state.mode.toUpperCase()}</span>}
         <span className="total">Day P&amp;L <b className={total > 0 ? 'pos' : total < 0 ? 'neg' : ''}>{formatPnl(total)}</b></span>
         <button onClick={openSummary}>Day summary</button>
@@ -111,7 +112,7 @@ export default function App() {
           <Cards rows={rows} selected={selected} pending={pending} onSelect={onSelect} onPause={onPause} />
         </div>
         <div className="right">
-          <Clock lastEventAt={state.lastEventAt} status={status} />
+          <Clock lastEventAt={state.lastEventAt} dataTime={newest} status={status} />
           <Leaderboard rows={board} onSelect={onSelect} />
           <Feed events={state.feed} />
           {tableOnly && room}

@@ -72,11 +72,22 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
       if (!row.side && IN_TRADE.has(row.state) && old?.side) { row.side = old.side; row.sideSource = old.sideSource }
       bots[id] = row
     }
+    // snapshots also feed the chart, so the view works when only polling /snapshot (no websocket)
+    let ticks = state.ticks
+    for (const r of Object.values(bots)) {
+      if (typeof r.inputs.price !== 'number' || !r.time) continue
+      const pts = ticks[r.ticker] ?? []
+      if (pts.length && pts[pts.length - 1].time === r.time) continue
+      const levels: Partial<TickPoint> = {}
+      if (typeof r.inputs.vwap === 'number') levels.vwap = r.inputs.vwap
+      if (typeof r.inputs.ema50 === 'number') levels.ema50 = r.inputs.ema50
+      ticks = { ...ticks, [r.ticker]: [...pts, { time: r.time, price: r.inputs.price, ...levels }].slice(-TICKS_MAX) }
+    }
     const lastSeq = typeof msg.last_seq === 'number' ? msg.last_seq : 0
     // seq going backwards means the engine restarted: old feed and chart history no longer belong to this run
     const restarted = lastSeq < state.lastSeq
     return {
-      ...state, bots, lastSeq, lastEventAt: nowMs,
+      ...state, bots, lastSeq, lastEventAt: nowMs, ticks,
       ...(restarted ? { feed: [], ticks: {}, marks: {}, trades: [] } : {}),
     }
   }

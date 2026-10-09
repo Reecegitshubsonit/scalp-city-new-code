@@ -168,6 +168,20 @@ describe('round 2 data', () => {
   })
 })
 
+describe('snapshot price points (polling mode)', () => {
+  it('adds one chart point per ticker per time from snapshot inputs', () => {
+    const b = (bot: string, time: string, price: number) => snapBot(bot, { time, inputs: { price, vwap: price + 0.1, ema50: price + 0.2 } })
+    let s = run(snap(1, [b('QQQ-VWAP', 't1', 100), b('QQQ-EMA50', 't1', 100), b('SPY-RANGE', 't1', 200)]))
+    expect(s.ticks['QQQ']).toEqual([{ time: 't1', price: 100, vwap: 100.1, ema50: 100.2 }])
+    expect(s.ticks['SPY']).toHaveLength(1)
+    s = reduce(s, snap(2, [b('QQQ-VWAP', 't1', 100), b('QQQ-EMA50', 't2', 101)]), 9)
+    expect(s.ticks['QQQ'].map(p => p.time)).toEqual(['t1', 't2'])
+  })
+  it('ignores bots without a price or time', () => {
+    expect(run(snap(1)).ticks).toEqual({})
+  })
+})
+
 describe('data mode', () => {
   it('tracks the mode of the latest event', () => {
     expect(initialState.mode).toBeNull()

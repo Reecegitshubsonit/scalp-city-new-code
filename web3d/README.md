@@ -50,6 +50,14 @@ regardless of the page.
 
 Title: `VITE_TITLE=...` at build time, or `?title=Anything` in the URL. Default is "Scalp City".
 
+### If the engine has no websocket
+
+The engine serves `/ws` through uvicorn, which needs the `websockets` (or `wsproto`) package in the engine's Python
+environment. Without it `/ws` answers 404. The view then falls back to polling `GET /snapshot` every 2 s (header shows
+"Polling every 2 s (no websocket)"): towers, cards, leaderboard, heatmap, dome and charts work; the thoughts feed,
+trade tape, badges that depend on closed trades, and mode badge need the event stream. Install `websockets` in the engine's venv
+and restart the engine to get everything.
+
 ## What you see
 
 - 3 districts, 3 towers each, with a trigger sign above each tower and a floating badge: "CALL 62% CHARGED",

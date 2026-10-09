@@ -18,7 +18,7 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .top .total { margin-left: auto; white-space: nowrap; }
 .top button { white-space: nowrap; }
 .conn { font-size: 12px; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--line); }
-.c-live { color: var(--call); } .c-down { color: var(--put); } .c-connecting { color: var(--locked); }
+.c-live { color: var(--call); } .c-polling { color: var(--locked); } .c-down { color: var(--put); } .c-connecting { color: var(--locked); }
 .toast { background: #5a1030; border: 1px solid var(--put); margin: 8px 12px; padding: 6px 10px; border-radius: 6px; }
 .main { display: grid; grid-template-columns: 4fr 1fr; gap: 12px; padding: 12px; align-items: start; }
 .left { min-width: 0; }
