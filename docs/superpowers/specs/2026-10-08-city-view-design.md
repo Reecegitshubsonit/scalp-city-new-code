@@ -7,7 +7,7 @@ against a mock server that speaks the same API.
 
 ## 1. Scope and hard rules
 
-- In scope: `web3d/` front end, `scripts/mock_stream.mjs`, unit tests, README, one contract note.
+- In scope: `web3d/` front end, `web3d/scripts/mock_stream.mjs`, unit tests, README, one contract note.
 - Out of scope: engine, broker code, API server. No code places orders. No keys, no `.env`.
 - Procedural geometry only. No downloaded models or textures. No assets taken from the reference
   recording. Original look.
@@ -107,7 +107,7 @@ web3d/
   src/scene/   City.tsx Tower.tsx Beam.tsx Dome.tsx Ring.tsx
   src/panels/  Cards.tsx Feed.tsx Leaderboard.tsx Clock.tsx Drawer.tsx Chart.tsx
   src/App.tsx  main.tsx styles.css
-scripts/mock_stream.mjs
+web3d/scripts/mock_stream.mjs
 docs/contract-requests/2026-10-08-side-field.md
 ```
 
