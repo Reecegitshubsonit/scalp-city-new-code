@@ -44,6 +44,10 @@ three paths to `VITE_ENGINE_URL` (default `http://127.0.0.1:8000`). For a build 
 Performance: the default look uses additive glow shells and runs at 60 fps on an integrated GPU. Add `?fx=high` to the URL
 for the full-screen bloom pass (prettier, but roughly halves the frame rate on integrated graphics).
 
+Measured 60 fps (60.0 to 60.4) in the browser pane at 1024 and 1366 wide, streaming, with and without a tower selected. When
+measuring in the pane, take a screenshot first: a sleeping pane throttles `requestAnimationFrame` to 12, 24 or 36 fps
+regardless of the page.
+
 Title: `VITE_TITLE=...` at build time, or `?title=Anything` in the URL. Default is "Scalp City".
 
 ## What you see
