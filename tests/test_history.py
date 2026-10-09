@@ -55,3 +55,22 @@ def test_history_bars_levels_marks():
 
 def test_history_without_events_or_bars():
     assert build_history("QQQ", [], []) == {"ticker": "QQQ", "bars": [], "levels": [], "marks": []}
+
+
+def test_list_days_and_read_day(tmp_path):
+    import json
+    from scalpcity.history import list_days, read_day
+    (tmp_path / "2026-10-07-replay.jsonl").write_text(
+        json.dumps({"time": "2026-10-07T09:31:00-04:00", "kind": "tick"}) + "\n" + json.dumps({"time": "2026-10-07T16:01:00-04:00", "kind": "tick"}) + "\n")
+    (tmp_path / "2026-10-09-live.jsonl").write_text(json.dumps({"time": "2026-10-09T09:40:00-04:00", "kind": "tick"}) + "\n")
+    (tmp_path / "order_history_raw.json").write_text("{}")
+    (tmp_path / "junk-live.jsonl").write_text("{}\n")
+    days = list_days(str(tmp_path))
+    assert days == [
+        {"day": "2026-10-09", "mode": "live", "events": 1, "first": "2026-10-09T09:40:00-04:00", "last": "2026-10-09T09:40:00-04:00"},
+        {"day": "2026-10-07", "mode": "replay", "events": 2, "first": "2026-10-07T09:31:00-04:00", "last": "2026-10-07T16:01:00-04:00"},
+    ]
+    assert len(read_day(str(tmp_path), "2026-10-07", "replay")) == 2
+    assert read_day(str(tmp_path), "2026-10-08", "replay") == []
+    assert read_day(str(tmp_path), "../../etc/passwd", "replay") is None
+    assert read_day(str(tmp_path), "2026-10-07", "bogus") is None

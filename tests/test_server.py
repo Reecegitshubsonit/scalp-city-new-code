@@ -64,3 +64,17 @@ def test_history_endpoint_returns_bars_and_404s(tmp_path):
     bare = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"))
     with TestClient(bare) as client:
         assert client.get("/history", params={"ticker": "QQQ"}).status_code == 404
+
+
+def test_days_and_day_endpoints(tmp_path):
+    log = EventLog(str(tmp_path), "replay")
+    log.append(t(9, 31), "QQQ-VWAP", "QQQ", "tick", state="idle")
+    app = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"))
+    with TestClient(app) as client:
+        days = client.get("/days").json()["days"]
+        assert days[0]["day"] == "2026-10-08" and days[0]["mode"] == "replay" and days[0]["events"] == 1
+        got = client.get("/day", params={"day": "2026-10-08", "mode": "replay"}).json()
+        assert got["events"][0]["bot"] == "QQQ-VWAP"
+        assert client.get("/day", params={"day": "2026-10-01"}).status_code == 404
+        assert client.get("/day", params={"day": "../x"}).status_code == 400
+        assert client.get("/day", params={"day": "2026-10-08", "mode": "x"}).status_code == 400

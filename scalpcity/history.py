@@ -1,3 +1,5 @@
+import json
+import os
 import re
 import threading
 
@@ -52,3 +54,41 @@ def build_history(ticker: str, bars: list[Bar], events: list[dict]) -> dict:
         "levels": sorted(levels.values(), key=lambda lv: lv["time"]),
         "marks": marks,
     }
+
+
+_DAY_FILE = re.compile(r"^(\d{4}-\d{2}-\d{2})-(live|replay)\.jsonl$")
+MODES = ("live", "replay")
+
+
+def list_days(directory: str) -> list[dict]:
+    """Event logs on disk, newest first, for the dashboard's replay picker."""
+    out = []
+    if not os.path.isdir(directory):
+        return out
+    for name in os.listdir(directory):
+        m = _DAY_FILE.match(name)
+        if not m:
+            continue
+        first = last = None
+        n = 0
+        with open(os.path.join(directory, name)) as handle:
+            for line in handle:
+                if not line.strip():
+                    continue
+                t = json.loads(line).get("time")
+                first = first or t
+                last = t
+                n += 1
+        out.append({"day": m.group(1), "mode": m.group(2), "events": n, "first": first, "last": last})
+    return sorted(out, key=lambda d: (d["day"], d["mode"]), reverse=True)
+
+
+def read_day(directory: str, day: str, mode: str) -> list[dict] | None:
+    """All events of one logged day; None for a malformed day or mode (never touches paths outside the log directory)."""
+    if mode not in MODES or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+        return None
+    path = os.path.join(directory, f"{day}-{mode}.jsonl")
+    if not os.path.exists(path):
+        return []
+    with open(path) as handle:
+        return [json.loads(line) for line in handle if line.strip()]

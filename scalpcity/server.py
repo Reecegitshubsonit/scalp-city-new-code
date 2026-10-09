@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from .events import EventLog, build_snapshot
-from .history import build_history
+from .history import build_history, list_days, read_day
 from .types import ET
 
 
@@ -58,6 +58,19 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
         if history_fn is None or ticker not in {b.split("-")[0] for b in bot_ids}:
             raise HTTPException(404, "unknown ticker or no history")
         return build_history(ticker, history_fn(ticker), log.read(day_fn()))
+
+    @app.get("/days")
+    def days():
+        return {"days": list_days(log.dir)}
+
+    @app.get("/day")
+    def day(day: str, mode: str = "replay"):
+        events = read_day(log.dir, day, mode)
+        if events is None:
+            raise HTTPException(400, "bad day or mode")
+        if not events:
+            raise HTTPException(404, "no log for that day")
+        return {"day": day, "mode": mode, "events": events}
 
     @app.post("/control/pause")
     def pause(body: PauseBody):
