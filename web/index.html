@@ -1,0 +1,60 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Scalp City</title>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 16px; background: #0d1020; color: #e6e9f5; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { padding: 6px 10px; border-bottom: 1px solid #262b45; text-align: left; font-size: 14px; }
+  .state-idle { color: #8892b0; } .state-forming { color: #ffd166; } .state-fired { color: #06d6a0; }
+  .state-managing { color: #4cc9f0; } .state-exiting { color: #f78c6b; } .state-cooldown { color: #7b8cff; }
+  .state-locked { color: #f4a261; } .state-paused { color: #adb5bd; } .state-stale { color: #ef476f; font-weight: bold; }
+  .pos { color: #06d6a0; } .neg { color: #ef476f; }
+  #feed { margin-top: 16px; height: 260px; overflow: auto; font: 12px ui-monospace, monospace; background: #0a0d1a; padding: 8px; }
+  #status { margin-bottom: 8px; color: #8892b0; }
+  button { cursor: pointer; }
+</style>
+<h2>Scalp City</h2>
+<div id="status">connecting...</div>
+<table>
+  <thead><tr><th>Bot</th><th>State</th><th>Why</th><th>Charge</th><th>Price</th><th>Day P&amp;L</th><th>Trades</th><th>Last update</th><th></th></tr></thead>
+  <tbody id="rows"></tbody>
+</table>
+<div id="feed"></div>
+<script>
+const rows = {}, feed = document.getElementById("feed"), tbody = document.getElementById("rows");
+const fmtTime = t => t ? t.slice(11, 19) : "-";
+function render(bot) {
+  let tr = rows[bot.bot];
+  if (!tr) { tr = rows[bot.bot] = document.createElement("tr"); tbody.appendChild(tr); }
+  const pnl = bot.pnl_day || 0;
+  tr.innerHTML = `<td>${bot.bot}</td><td class="state-${bot.state}">${bot.state}</td><td>${bot.reason_code} ${bot.reason_text || ""}</td>
+    <td>${bot.charge_pct == null ? "-" : bot.charge_pct + "%"}</td><td>${(bot.inputs && bot.inputs.price) ?? "-"}</td>
+    <td class="${pnl >= 0 ? "pos" : "neg"}">${pnl.toFixed(2)}</td><td>${bot.trades || 0}</td><td>${fmtTime(bot.time)}</td>
+    <td><button data-bot="${bot.bot}">${bot.paused ? "Resume" : "Pause"}</button></td>`;
+  tr.querySelector("button").onclick = () => fetch("/control/pause", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bot: bot.bot, paused: !bot.paused }) });
+  tr._bot = bot;
+}
+function apply(ev) {
+  const row = rows[ev.bot] && rows[ev.bot]._bot; if (!row) return;
+  if (ev.kind === "tick" || ev.kind === "state_change") Object.assign(row, { state: ev.state, reason_code: ev.reason_code, reason_text: ev.reason_text, charge_pct: ev.charge_pct, inputs: ev.inputs, time: ev.time });
+  if (ev.kind === "trade_closed") Object.assign(row, { pnl_day: ev.pnl_day, trades: ev.trades });
+  if (ev.kind === "control") row.paused = ev.paused;
+  render(row);
+  if (ev.kind !== "tick") {
+    const line = document.createElement("div");
+    line.textContent = `${fmtTime(ev.time)} ${ev.bot} ${ev.kind} ${ev.state} ${ev.reason_code} ${ev.reason_text}`;
+    feed.prepend(line);
+  }
+}
+function connect() {
+  const ws = new WebSocket(`ws://${location.host}/ws`);
+  ws.onopen = () => document.getElementById("status").textContent = "live";
+  ws.onclose = () => { document.getElementById("status").textContent = "disconnected, retrying..."; setTimeout(connect, 2000); };
+  ws.onmessage = m => {
+    const msg = JSON.parse(m.data);
+    if (msg.type === "snapshot") Object.values(msg.bots).forEach(render); else apply(msg.event);
+  };
+}
+connect();
+</script>

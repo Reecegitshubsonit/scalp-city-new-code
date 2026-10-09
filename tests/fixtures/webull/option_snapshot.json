@@ -1,0 +1,31 @@
+[
+ {
+  "symbol": "QQQ261009C00748000",
+  "price": "2.95",
+  "open": "7.57",
+  "high": "9.78",
+  "low": "1.87",
+  "volume": "35068",
+  "change": "-7.97",
+  "close": "2.95",
+  "gamma": "0.057",
+  "delta": "0.5514",
+  "rho": "0.0337",
+  "theta": "-2.347",
+  "vega": "0.1536",
+  "bid": "2.92",
+  "ask": "2.95",
+  "instrument_id": "1063343378",
+  "pre_close": "10.92",
+  "change_ratio": "-0.729853",
+  "last_trade_time": 1791490496000,
+  "strike_price": "748.00",
+  "imp_vol": "0.1783",
+  "open_interest": "6501",
+  "quote_time": 1791490499000,
+  "ask_size": "16",
+  "bid_size": "3",
+  "deal_amount": "97902.22",
+  "delay_minutes": 0
+ }
+]
