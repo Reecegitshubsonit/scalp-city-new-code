@@ -4,8 +4,6 @@ A 3D night-city dashboard for the 9 paper-trading bots (QQQ, SPY, IWM x VWAP, EM
 that carry every exact number, so nothing is only visible in 3D. Paper project: this front end never places
 orders and never touches keys.
 
-![layout at 1366 wide](docs/layout-1366.jpg)
-
 ## Run it
 
 ```bash
@@ -47,15 +45,23 @@ Title: `VITE_TITLE=...` at build time, or `?title=Anything` in the URL. Default 
 
 ## What you see
 
-- 3 districts, 3 towers each. Beam height = charge %. Green = CALL, red = PUT, violet = side unknown.
-  Ring flash on fire, steady glow in a trade (with day P&L label), pulsing on exit, blue cooldown,
-  amber locked, hatched grey paused, flickering red stale. Centre dome = total day P&L.
-- Orbit with the mouse, click a tower or a card to open the detail drawer (inputs and a price chart). Esc closes.
-- Panels: 9 bot cards (with Pause/Resume), thoughts feed (non-tick events), leaderboard, market clock and
-  data freshness. "Table only" hides the canvas. Every state is also written as text with an icon.
-- `prefers-reduced-motion` (or `?reduced=1`): no auto-orbit, flash, pulse or flicker; same states as static colour.
+- 3 districts, 3 towers each, with a trigger sign above each tower and a floating badge: "CALL 62% CHARGED",
+  "FIRE PUT", "CALL +$44.00", "PROFIT LOCKED +$118.00", "STOPPED OUT -$48.00", "DAILY GOAL", "PAUSED", "STALE DATA".
+  Beam height = charge %. Green = CALL, red = PUT, violet = side unknown. A wide flash disc on fire, steady glow in a
+  trade, pulsing on exit, blue cooldown, amber locked, hatched grey paused, flickering red stale. Orbit rings spin
+  faster on active towers, link lines tie towers to the centre dome. The dome shows total day P&L; click it (or the
+  "Day summary" button) for the summary: total, goal bar ($5,000), a bar per ticker, top worker, recent trades.
+- Click a tower, card or heatmap tile: the camera flies to that tower and the scanner room opens: headline
+  ("VWAP cross, PUT, 0.52 ATR away"), charge bar, that bot's thoughts in plain sentences, inputs, ticker chart,
+  Pause/Resume. Esc closes. On narrow screens the room is a bottom sheet.
+- Panels: trade tape, three ticker charts (price, VWAP, EMA50, entry/exit markers, % change since page load),
+  worker heatmap, 9 bot cards, leaderboard, market clock and data freshness, thoughts feed. "Table only" hides the
+  canvas. Every state is also written as text with an icon.
+- A header banner shows the data mode from the events: "MOCK DATA, NOT REAL", "REPLAY" or "LIVE PAPER".
+- `prefers-reduced-motion` (or `?reduced=1`): no auto-orbit, spinning, flash, pulse, flicker or camera glide; same
+  states as static colour.
 
-![drawer](docs/drawer.jpg) ![table only](docs/table-only.jpg)
+![room and layout](docs/layout-1366.jpg) ![summary](docs/summary.jpg) ![table only](docs/table-only.jpg)
 
 ## How the beam colour is decided (CALL vs PUT)
 
@@ -79,4 +85,6 @@ The drawer marks sides from 2 and 3 as inferred.
 4. There is no price history endpoint, so the ticker chart only holds ticks seen since the page loaded.
 5. Event `time` is shown as given (ISO, ET); no time zone conversion.
 6. Seq going backwards in a snapshot is treated as an engine restart: feed and chart history are cleared.
-7. The spec's heatmap is not built (not in the brief).
+7. Trade win/loss counts and the tape only cover trades seen since the page loaded (no trade history endpoint).
+8. The summary goal is a fixed $5,000 (`DAY_GOAL` in `src/model/summary.ts`).
+9. The mock's `mode` is `mock`; the engine's modes are `live` and `replay`.
