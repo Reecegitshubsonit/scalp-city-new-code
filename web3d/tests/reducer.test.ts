@@ -26,11 +26,17 @@ describe('snapshot', () => {
   it('re-applying a snapshot (reconnect) replaces rows and resets lastSeq, keeps feed', () => {
     let s = run(snap(0), ev(5, { kind: 'state_change', state: 'fired' }))
     expect(s.feed).toHaveLength(1)
-    s = reduce(s, snap(2, [snapBot('QQQ-VWAP', { state: 'managing' })]), 5000)
-    expect(s.lastSeq).toBe(2); expect(s.bots['QQQ-VWAP'].state).toBe('managing'); expect(s.feed).toHaveLength(1)
+    s = reduce(s, snap(7, [snapBot('QQQ-VWAP', { state: 'managing' })]), 5000)
+    expect(s.lastSeq).toBe(7); expect(s.bots['QQQ-VWAP'].state).toBe('managing'); expect(s.feed).toHaveLength(1)
     expect(Object.keys(s.bots)).toEqual(['QQQ-VWAP'])
-    s = reduce(s, ev(3, { state: 'cooldown' }), 5001)
+    s = reduce(s, ev(8, { state: 'cooldown' }), 5001)
     expect(s.bots['QQQ-VWAP'].state).toBe('cooldown')
+  })
+  it('clears the feed when the snapshot shows seq went backwards (engine restarted)', () => {
+    let s = run(snap(0), ev(5, { kind: 'state_change', state: 'fired' }), ev(6, { kind: 'fill' }))
+    expect(s.feed).toHaveLength(2)
+    s = reduce(s, snap(1), 9000)
+    expect(s.feed).toHaveLength(0); expect(s.lastSeq).toBe(1)
   })
   it('snapshot side is explicit', () => {
     const s = run(snap(0, [snapBot('QQQ-VWAP', { state: 'managing', side: 'PUT' })]))

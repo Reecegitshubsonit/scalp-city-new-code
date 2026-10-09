@@ -57,7 +57,13 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
   if (msg.type === 'snapshot') {
     const bots: Record<string, BotRow> = {}
     for (const [id, b] of Object.entries(msg.bots ?? {})) bots[id] = rowFromSnapshot({ ...b, bot: b.bot ?? id })
-    return { ...state, bots, lastSeq: typeof msg.last_seq === 'number' ? msg.last_seq : 0, lastEventAt: nowMs }
+    const lastSeq = typeof msg.last_seq === 'number' ? msg.last_seq : 0
+    // seq going backwards means the engine restarted: old feed and chart history no longer belong to this run
+    const restarted = lastSeq < state.lastSeq
+    return {
+      ...state, bots, lastSeq, lastEventAt: nowMs,
+      ...(restarted ? { feed: [], ticks: {}, marks: {} } : {}),
+    }
   }
   const ev = msg.event
   if (!ev || typeof ev.seq !== 'number' || ev.seq <= state.lastSeq) return state

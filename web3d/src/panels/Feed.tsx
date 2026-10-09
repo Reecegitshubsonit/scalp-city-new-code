@@ -4,6 +4,14 @@ import { formatPnl, formatTime } from '../model/format'
 import { plainReason } from '../model/reasons'
 import { stateLabel } from '../model/visual'
 
+const ids = new WeakMap<object, number>()
+let nextId = 0
+const idOf = (e: BotEvent) => {
+  let v = ids.get(e)
+  if (v === undefined) { v = ++nextId; ids.set(e, v) }
+  return v
+}
+
 function FeedImpl({ events }: { events: BotEvent[] }) {
   return (
     <section className="panel" aria-label="Thoughts">
@@ -11,7 +19,7 @@ function FeedImpl({ events }: { events: BotEvent[] }) {
       <ol className="feed">
         {events.length === 0 && <li className="muted">Nothing yet.</li>}
         {events.map(e => (
-          <li key={e.seq}>
+          <li key={idOf(e)}>
             <time>{formatTime(e.time)}</time> <b>{e.bot}</b> <span className="kind">{e.kind}</span>{' '}
             {e.state && <span>{stateLabel(e.state)}: </span>}
             {plainReason(e.reason_code)}
