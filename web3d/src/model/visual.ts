@@ -29,7 +29,7 @@ export function visualFor(row: BotRow, reduced: boolean): TowerVisual {
   const base: TowerVisual = { color: COLORS.idle, glow: 0.15, beam: 0, effect: 'none', hatched: false, label: null }
   switch (row.state) {
     case 'forming': return { ...base, color: sc, glow: 0.5, beam: beamFraction(row.charge_pct) }
-    case 'fired': return { ...base, color: sc, glow: 1, effect: reduced ? 'ring-static' : 'ring' }
+    case 'fired': return { ...base, color: sc, glow: 1, beam: 1, effect: reduced ? 'ring-static' : 'ring' }
     case 'managing': return { ...base, color: sc, glow: 0.8, label: formatPnl(row.pnl_day) }
     case 'exiting': return { ...base, color: sc, glow: 0.8, effect: reduced ? 'none' : 'pulse' }
     case 'cooldown': return { ...base, color: COLORS.cooldown, glow: 0.45 }
