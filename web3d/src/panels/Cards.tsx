@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import type { BotRow } from '../model/types'
 import { formatNum, formatPct, formatPnl, formatTime } from '../model/format'
 import { plainReason } from '../model/reasons'
@@ -11,7 +12,7 @@ interface Props {
   onPause: (bot: string, paused: boolean) => void
 }
 
-export function Cards({ rows, selected, pending, onSelect, onPause }: Props) {
+function CardsImpl({ rows, selected, pending, onSelect, onPause }: Props) {
   return (
     <section className="cards" aria-label="Bots">
       {rows.map(r => {
@@ -46,3 +47,5 @@ export function Cards({ rows, selected, pending, onSelect, onPause }: Props) {
     </section>
   )
 }
+
+export const Cards = memo(CardsImpl)

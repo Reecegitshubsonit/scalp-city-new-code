@@ -1,7 +1,8 @@
+import { memo } from 'react'
 import type { BotRow } from '../model/types'
 import { formatPnl } from '../model/format'
 
-export function Leaderboard({ rows, onSelect }: { rows: BotRow[]; onSelect: (bot: string) => void }) {
+function LeaderboardImpl({ rows, onSelect }: { rows: BotRow[]; onSelect: (bot: string) => void }) {
   return (
     <section className="panel" aria-label="Leaderboard">
       <h2>Leaderboard</h2>
@@ -18,3 +19,5 @@ export function Leaderboard({ rows, onSelect }: { rows: BotRow[]; onSelect: (bot
     </section>
   )
 }
+
+export const Leaderboard = memo(LeaderboardImpl)

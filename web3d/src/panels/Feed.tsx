@@ -1,9 +1,10 @@
+import { memo } from 'react'
 import type { BotEvent } from '../model/types'
 import { formatPnl, formatTime } from '../model/format'
 import { plainReason } from '../model/reasons'
 import { stateLabel } from '../model/visual'
 
-export function Feed({ events }: { events: BotEvent[] }) {
+function FeedImpl({ events }: { events: BotEvent[] }) {
   return (
     <section className="panel" aria-label="Thoughts">
       <h2>Thoughts</h2>
@@ -22,3 +23,5 @@ export function Feed({ events }: { events: BotEvent[] }) {
     </section>
   )
 }
+
+export const Feed = memo(FeedImpl)

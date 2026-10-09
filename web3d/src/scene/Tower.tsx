@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { memo, useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import * as THREE from 'three'
@@ -19,7 +19,7 @@ interface Props {
   onSelect: (bot: string) => void
 }
 
-export function Tower({ row, position, reducedMotion, selected, onSelect }: Props) {
+function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) {
   const v = visualFor(row, reducedMotion)
   const tex = useMemo(() => windowTexture(hashStr(row.bot), v.hatched), [row.bot, v.hatched])
   const mats = useRef<THREE.MeshStandardMaterial[]>([])
@@ -114,3 +114,5 @@ export function Tower({ row, position, reducedMotion, selected, onSelect }: Prop
     </group>
   )
 }
+
+export const Tower = memo(TowerImpl)

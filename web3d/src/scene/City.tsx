@@ -35,6 +35,10 @@ function Skyline() {
   )
 }
 
+const POS: Record<string, [number, number, number]> = Object.fromEntries(
+  TICKERS.flatMap((t, ti) => TRIGGERS.map((k, ki) => [`${t}-${k}`, towerPosition(ti, ki)] as const)),
+)
+
 export default function City({ rows, selected, onSelect, reducedMotion, total }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   return (
@@ -74,7 +78,7 @@ export default function City({ rows, selected, onSelect, reducedMotion, total }:
                 const id = `${t}-${k}`
                 const row = byBot[id]
                 return row ? (
-                  <Tower key={id} row={row} position={towerPosition(ti, ki)} reducedMotion={reducedMotion} selected={selected === id} onSelect={onSelect} />
+                  <Tower key={id} row={row} position={POS[id]} reducedMotion={reducedMotion} selected={selected === id} onSelect={onSelect} />
                 ) : null
               })}
             </group>
