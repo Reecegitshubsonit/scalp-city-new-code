@@ -6,6 +6,7 @@ requires-python = ">=3.11,<3.12"
 dependencies = [
   "fastapi>=0.110",
   "uvicorn>=0.29",
+  "websockets>=12",   # uvicorn needs it to serve /ws
   "requests>=2.31",
   "webull-openapi-python-sdk>=3.0.2",
 ]
