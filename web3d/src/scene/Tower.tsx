@@ -149,11 +149,11 @@ function TowerImpl({ row, position, reducedMotion, selected, badge, onSelect }: 
         <ringGeometry args={[1.25, 1.4, 40]} />
         <meshBasicMaterial color={selected ? '#ffffff' : color} transparent opacity={selected ? 0.95 : 0.25 + v.glow * 0.4} toneMapped={false} />
       </mesh>
-      <Html position={[0, TOWER_TOP + 1.3, 0]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+      <Html position={[0, TOWER_TOP + 1.3, 0]} center distanceFactor={15} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
         <div className="sign">{trigger}</div>
       </Html>
       {badge && (
-        <Html position={[0, TOWER_TOP + 2.1, 0]} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+        <Html position={[0, TOWER_TOP + 2.1, 0]} center distanceFactor={15} zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
           <div className={`tlabel ${badge.tone}`} style={{ borderColor: TONE_COLOR[badge.tone], color: TONE_COLOR[badge.tone] }}>{badge.text}</div>
         </Html>
       )}

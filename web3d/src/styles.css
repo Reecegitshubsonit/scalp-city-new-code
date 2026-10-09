@@ -9,13 +9,14 @@ button:hover:not(:disabled) { background: #2a2290; }
 button:disabled { opacity: 0.6; cursor: default; }
 :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 h1, h2, h3 { margin: 0; }
-h1 { font-size: 20px; letter-spacing: 0.04em; }
+h1 { font-size: 20px; letter-spacing: 0.04em; white-space: nowrap; }
 h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
 h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .muted { color: var(--muted); } .pad { padding: 16px; }
 .pos { color: var(--call); } .neg { color: var(--put); }
-.top { display: flex; gap: 16px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); }
-.top .total { margin-left: auto; }
+.top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.top .total { margin-left: auto; white-space: nowrap; }
+.top button { white-space: nowrap; }
 .conn { font-size: 12px; padding: 2px 8px; border-radius: 10px; border: 1px solid var(--line); }
 .c-live { color: var(--call); } .c-down { color: var(--put); } .c-connecting { color: var(--locked); }
 .toast { background: #5a1030; border: 1px solid var(--put); margin: 8px 12px; padding: 6px 10px; border-radius: 6px; }
@@ -107,7 +108,7 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .tlabel.WIN { border-color: var(--call); color: var(--call); } .tlabel.LOSS { border-color: var(--put); color: var(--put); }
 @media (max-width: 1100px) {
   .insight { grid-template-columns: 1fr; } .charts { grid-template-columns: 1fr; }
-  .canvaswrap .room, .right .room { position: fixed; inset: auto 8px 8px 8px; width: auto; max-height: 70vh; }
+  .canvaswrap .room, .right .room { position: fixed; inset: auto 8px 8px 8px; width: auto; max-height: 60vh; background: #120e55; box-shadow: 0 -8px 24px #000a; }
 }
 
 .mode { font-size: 11px; font-weight: 800; letter-spacing: .08em; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--locked); color: var(--locked); }
