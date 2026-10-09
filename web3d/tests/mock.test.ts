@@ -1,0 +1,45 @@
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { spawn, type ChildProcess } from 'node:child_process'
+import WebSocket from 'ws'
+
+const PORT = 18765
+let proc: ChildProcess
+const base = `http://127.0.0.1:${PORT}`
+const wait = (ms: number) => new Promise(r => setTimeout(r, ms))
+const post = (body: unknown) =>
+  fetch(base + '/control/pause', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+
+beforeAll(async () => {
+  proc = spawn('node', ['scripts/mock_stream.mjs', '--port', String(PORT), '--speed', '20'], { stdio: 'ignore' })
+  for (let i = 0; i < 50; i++) { try { await fetch(base + '/snapshot'); return } catch { await wait(100) } }
+})
+afterAll(() => { proc.kill() })
+
+describe('mock server', () => {
+  it('serves a snapshot with 9 bots', async () => {
+    const s = await (await fetch(base + '/snapshot')).json()
+    expect(Object.keys(s.bots)).toHaveLength(9)
+    expect(typeof s.last_seq).toBe('number')
+  })
+  it('streams snapshot then events with increasing seq', async () => {
+    const msgs: any[] = []
+    await new Promise<void>(res => {
+      const ws = new WebSocket(`ws://127.0.0.1:${PORT}/ws`)
+      ws.on('message', d => { msgs.push(JSON.parse(String(d))); if (msgs.length >= 20) { ws.close(); res() } })
+    })
+    expect(msgs[0].type).toBe('snapshot')
+    const seqs = msgs.slice(1).map(m => m.event.seq)
+    expect(seqs.every((v: number, i: number) => i === 0 || v > seqs[i - 1])).toBe(true)
+  })
+  it('pause: 404 for unknown bot, ok + control event for known bot', async () => {
+    expect((await post({ bot: 'NOPE', paused: true })).status).toBe(404)
+    const seen: any[] = []
+    const ws = new WebSocket(`ws://127.0.0.1:${PORT}/ws`)
+    ws.on('message', d => seen.push(JSON.parse(String(d))))
+    await wait(200)
+    expect((await post({ bot: 'QQQ-VWAP', paused: true })).status).toBe(200)
+    await wait(300)
+    expect(seen.some(m => m.type === 'event' && m.event.kind === 'control' && m.event.bot === 'QQQ-VWAP' && m.event.paused === true)).toBe(true)
+    ws.close()
+  })
+})
