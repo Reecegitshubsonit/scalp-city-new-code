@@ -47,3 +47,20 @@ def test_pause_endpoint_calls_back_and_rejects_unknown_bot(tmp_path):
         assert client.post("/control/pause", json={"bot": "QQQ-VWAP", "paused": True}).json()["ok"] is True
         assert calls == [("QQQ-VWAP", True)]
         assert client.post("/control/pause", json={"bot": "NOPE", "paused": True}).status_code == 404
+
+
+def test_history_endpoint_returns_bars_and_404s(tmp_path):
+    from scalpcity.history import BarStore
+    from scalpcity.types import Bar
+    log = EventLog(str(tmp_path), "live")
+    store = BarStore()
+    store.add(Bar("QQQ", t(9, 30), 100, 101, 99, 100.5, 10))
+    log.append(t(9, 30), "QQQ-VWAP", "QQQ", "tick", state="idle", inputs={"price": 100.5, "vwap": 100.0, "ema9": 1, "ema21": 2, "ema50": 3})
+    app = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"), history_fn=store.get)
+    with TestClient(app) as client:
+        h = client.get("/history", params={"ticker": "QQQ"}).json()
+        assert h["bars"][0]["close"] == 100.5 and h["levels"][0]["vwap"] == 100.0
+        assert client.get("/history", params={"ticker": "ZZZ"}).status_code == 404
+    bare = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"))
+    with TestClient(bare) as client:
+        assert client.get("/history", params={"ticker": "QQQ"}).status_code == 404

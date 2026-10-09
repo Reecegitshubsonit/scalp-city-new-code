@@ -15,6 +15,7 @@ from scalpcity.config import TICKERS, Settings
 from scalpcity.engine import Engine
 from scalpcity.events import EventLog
 from scalpcity.guard import SANDBOX_HOST, assert_paper_only
+from scalpcity.history import BarStore
 from scalpcity.live import LiveFeed, LiveQuoteSource, market_open
 from scalpcity.server import create_app
 from scalpcity.types import ET
@@ -48,10 +49,12 @@ def main():
     feed = LiveFeed(client, TICKERS, lambda: datetime.now(ET))
     today = datetime.now(ET).date()
     prior, todays = feed.startup(today)
+    store = BarStore()
+    store.extend(todays)   # candles for the dashboard's /history
     engine.start_session(today, prior)
     engine.catch_up(todays)   # a mid-session start still gets the real VWAP and opening range
     engine.recover(log.read(today))   # and its day P&L, cooldowns and open positions from the event log
-    app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots])
+    app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots], history_fn=store.get)
     threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
     print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
     quote_wall: dict[str, datetime] = {}
@@ -60,6 +63,7 @@ def main():
             now = datetime.now(ET)
             if market_open(now):
                 for bar in feed.poll():
+                    store.add(bar)
                     engine.on_bar(bar)
                 for bot in engine.bots:
                     if bot.position is not None and bot.position.contract:

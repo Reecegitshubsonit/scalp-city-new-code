@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from .events import EventLog, build_snapshot
+from .history import build_history
 from .types import ET
 
 
@@ -32,7 +33,7 @@ class PauseBody(BaseModel):
 
 
 def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool, datetime], None],
-               bot_ids: list[str], web_dir: str | None = None) -> FastAPI:
+               bot_ids: list[str], web_dir: str | None = None, history_fn: Callable[[str], list] | None = None) -> FastAPI:
     hub = Hub()
 
     @asynccontextmanager
@@ -51,6 +52,12 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
                                           "reason_text": "no events yet", "charge_pct": None, "inputs": {}, "time": None,
                                           "pnl_day": 0.0, "trades": 0, "paused": False})
         return snap
+
+    @app.get("/history")
+    def history(ticker: str):
+        if history_fn is None or ticker not in {b.split("-")[0] for b in bot_ids}:
+            raise HTTPException(404, "unknown ticker or no history")
+        return build_history(ticker, history_fn(ticker), log.read(day_fn()))
 
     @app.post("/control/pause")
     def pause(body: PauseBody):
