@@ -17,6 +17,9 @@ for (const t of Object.values(TK)) Object.assign(t, { vwap: t.p, ema9: t.p, ema2
 const TRIGGERS = ['VWAP', 'EMA50', 'RANGE']
 const OUTCOMES = ['win', 'loss', 'win', 'win', 'loss', 'time']
 let seq = 0, bar = 0, down = false
+// candles, indicator levels and trade markers per ticker, served by GET /history
+const HIST = Object.fromEntries(Object.keys(TK).map(t => [t, { bars: [], levels: [], marks: [] }]))
+const pushCapped = (arr, x) => { arr.push(x); if (arr.length > 390) arr.shift() }
 
 const bots = {}
 let idx = 0
@@ -94,6 +97,7 @@ function startTrade(b) {
   emit(b, 'order_sent', { contract: `${b.ticker}261009${b.side === 'CALL' ? 'C' : 'P'}00${Math.round(tk.p)}000`, qty: 10 })
   b.reason_code = 'ENTRY_FILL'; b.reason_text = 'entry filled'
   emit(b, 'fill', { fill_price: +(tk.p + 0.02).toFixed(2), fill_source: rand() > 0.5 ? 'broker' : 'modeled', qty: 10 })
+  HIST[b.ticker].marks.push({ time: iso(bar), bot: b.bot, type: 'entry', side: b.side, pnl: null })
   b.phase = 'managing'; b.t = 0
 }
 
@@ -110,6 +114,7 @@ function finishTrade(b) {
   b.realised = +(b.realised + b.pos.pnl).toFixed(2); b.trades++
   const pnl = b.pos.pnl; b.pos = null
   emit(b, 'trade_closed', { pnl })
+  HIST[b.ticker].marks.push({ time: iso(bar), bot: b.bot, type: 'exit', side: b.side, pnl })
   b.side = null
   if (b.bot === 'QQQ-EMA50' && b.trades >= 2) {
     b.lockedFor = 25; b.phase = 'locked'; b.t = 0
@@ -178,15 +183,25 @@ function goDown() {
   setTimeout(() => { down = false; console.log('mock: back up') }, 4000)
 }
 
-function advance() {
-  bar++
-  for (const t of Object.values(TK)) {
+function stepMarket() {
+  for (const [name, t] of Object.entries(TK)) {
+    const open = t.p
     t.p = +(t.p + gauss() * t.vol * 0.4).toFixed(3)
     t.vwap += (t.p - t.vwap) * 0.02; t.ema9 += (t.p - t.ema9) * 0.2; t.ema21 += (t.p - t.ema21) * 0.09; t.ema50 += (t.p - t.ema50) * 0.04
+    const hi = +(Math.max(open, t.p) + rand() * t.vol * 0.25).toFixed(3), lo = +(Math.min(open, t.p) - rand() * t.vol * 0.25).toFixed(3)
+    const time = iso(bar)
+    pushCapped(HIST[name].bars, { time, open, high: hi, low: lo, close: t.p, volume: Math.round(1e5 + rand() * 2e5) })
+    pushCapped(HIST[name].levels, { time, vwap: +t.vwap.toFixed(3), ema9: +t.ema9.toFixed(3), ema21: +t.ema21.toFixed(3), ema50: +t.ema50.toFixed(3) })
   }
+}
+function advance() {
+  bar++
+  stepMarket()
   scripted()
   for (const b of Object.values(bots)) stepBot(b)
 }
+// two hours of earlier candles so charts are not empty at start (no bot events for these bars)
+for (bar = 1; bar < 120; bar++) stepMarket()
 setInterval(advance, BAR_MS)
 
 const readBody = req => new Promise(res => { let d = ''; req.on('data', c => (d += c)); req.on('end', () => res(d)) })
@@ -194,6 +209,11 @@ const server = http.createServer(async (req, res) => {
   const h = { 'content-type': 'application/json', 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type' }
   if (down) { res.writeHead(503, h); return res.end('{"error":"down"}') }
   if (req.method === 'OPTIONS') { res.writeHead(204, h); return res.end() }
+  if (req.method === 'GET' && req.url.startsWith('/history')) {
+    const tk = new URL(req.url, 'http://x').searchParams.get('ticker')
+    if (!HIST[tk]) { res.writeHead(404, h); return res.end('{"detail":"unknown ticker"}') }
+    res.writeHead(200, h); return res.end(JSON.stringify({ ticker: tk, ...HIST[tk] }))
+  }
   if (req.method === 'GET' && req.url === '/snapshot') { res.writeHead(200, h); return res.end(JSON.stringify(snapshot())) }
   if (req.method === 'POST' && req.url === '/control/pause') {
     let body

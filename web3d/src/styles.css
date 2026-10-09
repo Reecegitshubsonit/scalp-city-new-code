@@ -23,7 +23,8 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .main { display: grid; grid-template-columns: 4fr 1fr; gap: 12px; padding: 12px; align-items: start; }
 .left { min-width: 0; }
 .right { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.canvaswrap { height: min(52vh, 520px); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 12px; background: #0b0830; }
+.canvaswrap { margin-bottom: 12px; position: relative; }
+.stage { position: relative; height: min(52vh, 520px); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: #0b0830; }
 .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
 .panel p { margin: 4px 0; }
 .fresh { font-weight: 700; } .f-live { color: var(--call); } .f-slow { color: var(--locked); } .f-stale { color: var(--stale); } .f-closed, .f-none { color: var(--muted); }
@@ -84,7 +85,7 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .feed li.win b:last-child, .feed li.win { } .feed li.win { border-left: 3px solid var(--call); padding-left: 6px; } .feed li.loss { border-left: 3px solid var(--put); padding-left: 6px; }
 .feed.small { max-height: 22vh; }
 .room { z-index: 100; background: rgba(14, 10, 70, 0.93); border: 1px solid #fff3; border-radius: 8px; padding: 10px 12px; overflow: auto; animation: slide .2s ease-out; }
-.canvaswrap .room { position: absolute; left: 8px; top: 8px; bottom: 8px; width: min(400px, 44%); }
+.canvaswrap .room { position: absolute; left: 8px; top: 8px; height: min(52vh, 520px); max-height: min(52vh, 520px); width: min(400px, 44%); }
 .right .room { position: absolute; inset: 0 0 auto 0; max-height: 90vh; }
 .room header { display: flex; justify-content: space-between; align-items: center; }
 .room dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 6px 0; } .room dd { margin: 0; text-align: right; }
@@ -107,7 +108,7 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .sign { font-size: 11px; font-weight: 800; letter-spacing: .12em; padding: 1px 8px; border: 1px solid #8f84ff; border-radius: 3px; background: #0b0830dd; color: #d9d4ff; text-shadow: 0 0 6px #6a5cff; white-space: nowrap; }
 @media (max-width: 1100px) {
   .insight { grid-template-columns: 1fr; } .charts { grid-template-columns: 1fr; }
-  .canvaswrap .room, .right .room { position: fixed; inset: auto 8px 8px 8px; width: auto; max-height: 60vh; background: #120e55; box-shadow: 0 -8px 24px #000a; }
+  .canvaswrap .room, .right .room { position: static; width: auto; height: auto; max-height: none; margin-top: 8px; background: #120e55; }
 }
 
 .mode { font-size: 11px; font-weight: 800; letter-spacing: .08em; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--locked); color: var(--locked); }
@@ -116,3 +117,8 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 
 .labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
 .lab { position: absolute; left: 0; top: 0; white-space: nowrap; will-change: transform; visibility: hidden; }
+
+.floatchart { width: 330px; background: rgba(14, 10, 70, 0.92); border: 1px solid #8f84ff; border-radius: 8px; padding: 4px 6px; box-shadow: 0 0 18px #5b4dff88; }
+.floatchart .chart { background: transparent; border: 0; padding: 0; }
+.insidebar { position: absolute; left: 8px; top: 8px; z-index: 150; display: flex; gap: 8px; align-items: center; background: rgba(14, 10, 70, 0.9); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.stepin { margin: 6px 0; width: 100%; font-weight: 700; }

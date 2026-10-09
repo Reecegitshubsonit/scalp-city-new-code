@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
@@ -12,10 +12,12 @@ import type { BotRow, TradeRec } from '../model/types'
 import { Dome } from './Dome'
 import { TOWER_TOP, Tower } from './Tower'
 import { windowTexture } from './textures'
+import { ROOM_ORIGIN, Room3D, type RoomData } from './Room3D'
 
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
   reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>; title: string
+  inside: boolean; roomData: RoomData; floatChart: ReactNode
 }
 
 const POS: Record<string, [number, number, number]> = Object.fromEntries(
@@ -25,6 +27,8 @@ const TONE_COLOR: Record<Tone, string> = {
   CALL: COLORS.CALL, PUT: COLORS.PUT, WIN: COLORS.CALL, LOSS: COLORS.PUT, NEUTRAL: COLORS.NEUTRAL,
   LOCKED: COLORS.locked, PAUSED: COLORS.paused, STALE: COLORS.stale,
 }
+const ROOM_CAM = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.6, ROOM_ORIGIN.z + 3)
+const ROOM_LOOK = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.3, ROOM_ORIGIN.z - 6)
 const HOME_POS = new THREE.Vector3(0, 9, 15)
 const HOME_TARGET = new THREE.Vector3(0, 1.5, 0)
 
@@ -53,7 +57,7 @@ function Skyline() {
 }
 
 /** Flies the camera to the selected tower (shifted so the tower sits right of the scanner panel) and back. */
-function CameraRig({ selected, reducedMotion }: { selected: string | null; reducedMotion: boolean }) {
+function CameraRig({ selected, inside, reducedMotion }: { selected: string | null; inside: boolean; reducedMotion: boolean }) {
   const { camera, controls } = useThree() as unknown as { camera: THREE.Camera; controls: { target: THREE.Vector3; update: () => void } | null }
   const anim = useRef({ active: false, t: 0, fp: new THREE.Vector3(), ft: new THREE.Vector3(), tp: new THREE.Vector3(), tt: new THREE.Vector3() })
   const mounted = useRef(false)
@@ -62,17 +66,18 @@ function CameraRig({ selected, reducedMotion }: { selected: string | null; reduc
     if (!mounted.current) { mounted.current = true; return }
     const a = anim.current
     a.fp.copy(camera.position); a.ft.copy(controls.target)
-    if (selected && POS[selected]) {
+    if (selected && inside) { a.tp.copy(ROOM_CAM); a.tt.copy(ROOM_LOOK) }
+    else if (selected && POS[selected]) {
       const P = new THREE.Vector3(...POS[selected])
       const out = P.clone().setY(0).normalize()
-      a.tp.copy(P).addScaledVector(out, 6.5).add(new THREE.Vector3(0, 3.5, 0))
-      const look = P.clone().add(new THREE.Vector3(0, 2, 0))
+      a.tp.copy(P).addScaledVector(out, 9).add(new THREE.Vector3(0, 3.6, 0))
+      const look = P.clone().add(new THREE.Vector3(0, 3.8, 0))
       const fwd = look.clone().sub(a.tp).normalize()
       const right = fwd.clone().cross(new THREE.Vector3(0, 1, 0)).normalize()
-      a.tt.copy(look).addScaledVector(right, -2.4)
+      a.tt.copy(look).addScaledVector(right, -2.4)   // tower sits right of centre, clear of the scanner panel
     } else { a.tp.copy(HOME_POS); a.tt.copy(HOME_TARGET) }
     a.t = 0; a.active = true
-  }, [selected, controls, camera])
+  }, [selected, inside, controls, camera])
   useFrame((_, dt) => {
     const a = anim.current
     if (!a.active || !controls) return
@@ -89,7 +94,7 @@ function CameraRig({ selected, reducedMotion }: { selected: string | null; reduc
 // Bloom costs about half the frame rate on integrated GPUs; beams have additive glow shells already, so it is opt-in.
 const BLOOM = new URLSearchParams(location.search).get('fx') === 'high'
 
-export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title }: Props) {
+export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, floatChart }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   const spokes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const a = (i / 12) * Math.PI * 2
@@ -107,6 +112,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
   }, [])
   const spokeGeo = useMemo(() => new THREE.BufferGeometry().setFromPoints(spokes.flat()), [spokes])
   const linkGeo = useMemo(() => new THREE.BufferGeometry().setFromPoints(links.flat()), [links])
+  const [hover, setHover] = useState(false)   // pointer over the 3D view: stop auto-rotation so towers can be clicked
   const labelRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const anchors = useMemo<Anchor[]>(() => {
     const out: Anchor[] = []
@@ -125,10 +131,14 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
         if (b) out.push({ id: `b-${id}`, pos: [x, TOWER_TOP + 2.1, z], className: 'tlabel', color: TONE_COLOR[b.tone], node: b.text })
       }
     })
+    if (selected && POS[selected] && floatChart && !inside) {
+      const [px, , pz] = POS[selected]
+      out.push({ id: 'float', pos: [px, TOWER_TOP + 1.5, pz], className: 'floatchart', top: true, node: floatChart })
+    }
     return out
-  }, [byBot, lastTrade, total, title])
+  }, [byBot, lastTrade, total, title, selected, floatChart, inside])
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }} role="img" aria-label="3D city of bots. Every value shown here is also in the panels.">
+    <div style={{ width: '100%', height: '100%', position: 'relative' }} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)} role="img" aria-label="3D city of bots. Every value shown here is also in the panels.">
       <Canvas dpr={[1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>
         <color attach="background" args={['#0b0830']} />
         <fog attach="fog" args={['#0b0830', 30, 70]} />
@@ -173,9 +183,10 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
         <LabelProjector anchors={anchors} refs={labelRefs} />
         <Dome total={total} onClick={onDome} reducedMotion={reducedMotion} />
         <Skyline />
-        <CameraRig selected={selected} reducedMotion={reducedMotion} />
+        <CameraRig selected={selected} inside={inside} reducedMotion={reducedMotion} />
+        {selected && <Room3D data={roomData} />}
         <OrbitControls makeDefault enablePan={false} minDistance={6} maxDistance={40} maxPolarAngle={Math.PI * 0.47}
-          autoRotate={!reducedMotion && !selected} autoRotateSpeed={0.4} target={HOME_TARGET} />
+          autoRotate={!reducedMotion && !selected && !hover} autoRotateSpeed={0.4} target={HOME_TARGET} />
         {BLOOM && (
           <EffectComposer multisampling={0}>
             <Bloom mipmapBlur levels={5} luminanceThreshold={0.25} intensity={1.1} />

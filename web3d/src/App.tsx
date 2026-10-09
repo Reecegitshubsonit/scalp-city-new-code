@@ -1,12 +1,15 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion, useStored } from './hooks'
-import { ALL_BOTS } from './model/layout'
+import { ALL_BOTS, TICKERS } from './model/layout'
+import { mergeSeries } from './model/history'
+import { useHistory } from './net/useHistory'
 import { leaderboard, totalPnl } from './model/reducer'
 import { formatPnl } from './model/format'
 import type { BotRow, TradeRec } from './model/types'
 import { postPause } from './net/api'
 import { useStream } from './net/useStream'
 import { Cards } from './panels/Cards'
+import { CandleChart } from './panels/CandleChart'
 import { Charts } from './panels/Charts'
 import { Clock } from './panels/Clock'
 import { Feed } from './panels/Feed'
@@ -31,6 +34,7 @@ export default function App() {
   const [tableOnly, setTableOnly] = useStored<boolean>('tableOnly', false)
   const [selected, setSelected] = useState<string | null>(null)
   const [showSummary, setShowSummary] = useState(false)
+  const [inside, setInside] = useState(false)
   const [pending, setPending] = useState<Record<string, boolean>>({})
   const [toast, setToast] = useState<string | null>(null)
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
@@ -40,6 +44,16 @@ export default function App() {
   const rows = useMemo(() => ALL_BOTS.map(b => state.bots[b] ?? placeholder(b)), [state.bots])
   const board = useMemo(() => leaderboard(state), [state])
   const total = totalPnl(state)
+  const history = useHistory(TICKERS, status)
+  const series = useMemo(
+    () => Object.fromEntries(TICKERS.map(t => [t, mergeSeries(t, history[t] ?? null, state.ticks[t] ?? [], state.marks[t] ?? [])])),
+    [history, state.ticks, state.marks],
+  )
+  const tickerTrades = useMemo(() => {
+    const m: Record<string, number> = {}
+    for (const r of rows) m[r.ticker] = (m[r.ticker] ?? 0) + r.trades
+    return m
+  }, [rows])
   const lastTrade = useMemo(() => {
     const m: Record<string, TradeRec> = {}
     for (const t of state.trades) m[t.bot] = t
@@ -73,15 +87,29 @@ export default function App() {
   }, [])
 
   const onSelect = useCallback((bot: string) => setSelected(s => (s === bot ? null : bot)), [])
-  const onClose = useCallback(() => setSelected(null), [])
+  const onClose = useCallback(() => { setSelected(null); setInside(false) }, [])
+  const onInside = useCallback(() => setInside(true), [])
   const openSummary = useCallback(() => setShowSummary(true), [])
   const closeSummary = useCallback(() => setShowSummary(false), [])
+  // Esc: step back outside first, then close the selection (the summary handles its own Esc)
+  useEffect(() => {
+    const key = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || showSummary) return
+      if (inside) setInside(false)
+      else if (selected) setSelected(null)
+    }
+    window.addEventListener('keydown', key)
+    return () => window.removeEventListener('keydown', key)
+  }, [inside, selected, showSummary])
+  useEffect(() => { if (!selected) setInside(false) }, [selected])
   const sel = selected ? state.bots[selected] ?? placeholder(selected) : null
 
-  const room = sel && (
-    <Room row={sel} events={state.feed} ticks={state.ticks[sel.ticker] ?? []} marks={state.marks[sel.ticker] ?? []}
-      pending={sel.bot in pending} onClose={onClose} onPause={onPause} />
+  const room = sel && !inside && (
+    <Room row={sel} events={state.feed} series={series[sel.ticker]} tickerTrades={tickerTrades[sel.ticker] ?? 0}
+      pending={sel.bot in pending} onClose={onClose} onPause={onPause} onInside={tableOnly ? undefined : onInside} />
   )
+  const floatChart = sel ? <CandleChart series={series[sel.ticker]} trades={tickerTrades[sel.ticker] ?? 0} height={120} labels={false} compact /> : null
+  const roomData = { series, tickerTrades, rows, feed: state.feed, selectedRow: sel, total }
 
   return (
     <div className="app">
@@ -99,14 +127,24 @@ export default function App() {
         <div className="left">
           {!tableOnly && (
             <div className="canvaswrap">
-              <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
-                <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE} />
-              </Suspense>
+              <div className="stage">
+                <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
+                  <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE}
+                    inside={inside} roomData={roomData} floatChart={floatChart} />
+                </Suspense>
+                {sel && inside && (
+                  <div className="insidebar">
+                    <button onClick={() => setInside(false)}>← Back outside (Esc)</button>
+                    <b>{sel.bot}</b>
+                    <button onClick={onClose}>Close</button>
+                  </div>
+                )}
+              </div>
               {room}
             </div>
           )}
           <div className="insight">
-            <Charts ticks={state.ticks} marks={state.marks} />
+            <Charts series={series} trades={tickerTrades} />
             <Heatmap rows={rows} onSelect={onSelect} />
           </div>
           <Cards rows={rows} selected={selected} pending={pending} onSelect={onSelect} onPause={onPause} />

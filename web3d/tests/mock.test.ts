@@ -21,6 +21,16 @@ describe('mock server', () => {
     expect(Object.keys(s.bots)).toHaveLength(9)
     expect(typeof s.last_seq).toBe('number')
   })
+  it('serves history candles, levels and 404 for an unknown ticker', async () => {
+    await wait(600)
+    const h = await (await fetch(base + '/history?ticker=QQQ')).json()
+    expect(h.ticker).toBe('QQQ')
+    expect(h.bars.length).toBeGreaterThan(1)
+    expect(h.bars[0]).toMatchObject({ open: expect.any(Number), high: expect.any(Number), low: expect.any(Number), close: expect.any(Number) })
+    expect(h.bars[0].high).toBeGreaterThanOrEqual(h.bars[0].low)
+    expect(h.levels.length).toBe(h.bars.length)
+    expect((await fetch(base + '/history?ticker=ZZZ')).status).toBe(404)
+  })
   it('streams snapshot then events with increasing seq', async () => {
     const msgs: any[] = []
     await new Promise<void>(res => {

@@ -58,6 +58,13 @@ environment. Without it `/ws` answers 404. The view then falls back to polling `
 trade tape, badges that depend on closed trades, and mode badge need the event stream. Install `websockets` in the engine's venv
 and restart the engine to get everything.
 
+### `/history` (engine)
+
+`GET /history?ticker=QQQ` returns today's one-minute candles, VWAP/EMA levels and trade markers:
+`{ticker, bars:[{time,open,high,low,close,volume}], levels:[{time,vwap,ema9,ema21,ema50}], marks:[{time,bot,type,side,pnl}]}`.
+Implemented in the engine (`scalpcity/history.py`, wired in `scripts/run_live.py`) and in the mock. Without it the chart
+is built only from prices seen since the page loaded.
+
 ## What you see
 
 - 3 districts, 3 towers each, with a trigger sign above each tower and a floating badge: "CALL 62% CHARGED",
@@ -66,9 +73,14 @@ and restart the engine to get everything.
   trade, pulsing on exit, blue cooldown, amber locked, hatched grey paused, flickering red stale. Orbit rings spin
   faster on active towers, link lines tie towers to the centre dome. The dome shows total day P&L; click it (or the
   "Day summary" button) for the summary: total, goal bar ($5,000), a bar per ticker, top worker, recent trades.
-- Click a tower, card or heatmap tile: the camera flies to that tower and the scanner room opens: headline
-  ("VWAP cross, PUT, 0.52 ATR away"), charge bar, that bot's thoughts in plain sentences, inputs, ticker chart,
-  Pause/Resume. Esc closes. On narrow screens the room is a bottom sheet.
+- Click a tower (in the 3D view), a card or a heatmap tile: the camera flies to that tower, the ticker's full-day
+  candle chart floats above it (header "QQQ . Fri 10/9 . 15:59 . 751.27 -0.16% . 20 trades", VWAP and EMA50 lines, CALL/PUT
+  entry markers and "+$380.00" exit labels) and a panel opens with the same chart larger, the scanner (headline,
+  charge bar, that bot's thoughts in sentences), inputs and Pause/Resume. "Step inside the tower" flies the camera into a
+  3D room with three wall charts (SPY, QQQ, IWM, 1-MIN), the scanner, heatmap, leaderboard and a market-open plaque.
+  Esc steps back out, then closes. The chart loads the whole day from `GET /history?ticker=QQQ` (engine) and then
+  updates on every bar. On narrow screens the panel sits below the 3D view; on wide screens it overlays the left side.
+  Auto-rotation pauses while the pointer is over the 3D view so towers can be clicked.
 - Panels: trade tape, three ticker charts (price, VWAP, EMA50, entry/exit markers, % change since page load),
   worker heatmap, 9 bot cards, leaderboard, market clock and data freshness, thoughts feed. "Table only" hides the
   canvas. Every state is also written as text with an icon.
@@ -97,7 +109,7 @@ The drawer marks sides from 2 and 3 as inferred.
 3. `pnl_day` and `trades` are applied from any event that carries them (the engine's own table view only reads
    them from `trade_closed`). The floating P&L label on a tower in a trade shows `pnl_day`; the mock includes the
    open P&L in `pnl_day` while a trade is on.
-4. There is no price history endpoint, so the ticker chart only holds ticks seen since the page loaded.
+4. `/history` is an addition to the engine API (see above); the engine only keeps today's bars, and marker sides come from the SIGNAL text.
 5. Event `time` is shown as given (ISO, ET); no time zone conversion.
 6. Seq going backwards in a snapshot is treated as an engine restart: feed and chart history are cleared.
 7. Trade win/loss counts and the tape only cover trades seen since the page loaded (no trade history endpoint).

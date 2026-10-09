@@ -2,7 +2,7 @@ import { useRef, type ReactNode } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-export interface Anchor { id: string; pos: [number, number, number]; node: ReactNode; className?: string; color?: string }
+export interface Anchor { id: string; pos: [number, number, number]; node: ReactNode; className?: string; color?: string; top?: boolean }
 
 /** DOM overlay: one div per label, positioned from 3D anchors by a single projector (see LabelProjector). */
 export function LabelLayer({ anchors, refs }: { anchors: Anchor[]; refs: React.MutableRefObject<Record<string, HTMLDivElement | null>> }) {
@@ -31,7 +31,7 @@ export function LabelProjector({ anchors, refs }: { anchors: Anchor[]; refs: Rea
       const k = Math.min(1.3, Math.max(0.55, 15 / dist))
       el.style.visibility = 'visible'
       el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%) scale(${k.toFixed(2)})`
-      el.style.zIndex = String(Math.max(1, Math.round(1000 - dist * 10)))
+      el.style.zIndex = a.top ? '5000' : String(Math.max(1, Math.round(1000 - dist * 10)))
     }
   })
   return null

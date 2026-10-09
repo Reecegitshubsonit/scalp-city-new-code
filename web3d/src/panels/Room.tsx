@@ -1,33 +1,32 @@
 import { useEffect, useRef } from 'react'
-import type { BotEvent, BotRow, Mark, TickPoint } from '../model/types'
+import type { BotEvent, BotRow } from '../model/types'
+import type { Series } from '../model/history'
 import { formatNum, formatPct, formatPnl, formatTime } from '../model/format'
 import { headline } from '../model/headline'
 import { plainReason } from '../model/reasons'
 import { thoughtText } from '../model/thoughts'
 import { stateIcon, stateLabel } from '../model/visual'
-import { TickerChart } from './Charts'
+import { CandleChart } from './CandleChart'
 import { idOf } from './Feed'
 
 interface Props {
   row: BotRow
   events: BotEvent[]
-  ticks: TickPoint[]
-  marks: Mark[]
+  series: Series
+  tickerTrades: number
   pending: boolean
   onClose: () => void
   onPause: (bot: string, paused: boolean) => void
+  onInside?: () => void
 }
 
 const SIDE_NOTE = { explicit: 'from engine', signal: 'inferred from signal text', inferred: 'inferred from price vs level', none: '' } as const
 
-export function Room({ row, events, ticks, marks, pending, onClose, onPause }: Props) {
+export function Room({ row, events, series, tickerTrades, pending, onClose, onPause, onInside }: Props) {
   const closeRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     closeRef.current?.focus()
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    window.addEventListener('keydown', key)
-    return () => window.removeEventListener('keydown', key)
-  }, [row.bot, onClose])
+  }, [row.bot])
   const i = row.inputs
   const mine = events.filter(e => e.bot === row.bot).slice(0, 12)
   const pct = Math.min(100, Math.max(0, row.charge_pct ?? 0))
@@ -37,6 +36,8 @@ export function Room({ row, events, ticks, marks, pending, onClose, onPause }: P
         <h2>{row.bot}</h2>
         <button ref={closeRef} onClick={onClose} aria-label="Close scanner">✕</button>
       </header>
+      <CandleChart series={series} trades={tickerTrades} height={240} />
+      {onInside && <button className="stepin" onClick={onInside}>Step inside the tower (3D room)</button>}
       <div className="scanner">
         <div className="sctitle">SIGNAL SCANNER</div>
         <div className="schead">{headline(row)}</div>
@@ -70,7 +71,6 @@ export function Room({ row, events, ticks, marks, pending, onClose, onPause }: P
         <dt>ATR</dt><dd>{formatNum(i.atr, 3)}</dd>
         <dt>Distance (ATR)</dt><dd>{formatNum(i.distance_atr, 3)}</dd>
       </dl>
-      <TickerChart ticker={row.ticker} points={ticks} marks={marks} big />
       <button className="pause wide" disabled={pending} onClick={() => onPause(row.bot, !row.paused)}>
         {pending ? '...' : row.paused ? 'Resume' : 'Pause'} {row.bot}
       </button>
