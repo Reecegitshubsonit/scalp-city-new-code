@@ -129,6 +129,53 @@ describe('chart data', () => {
   })
 })
 
+describe('round 2 data', () => {
+  it('feed events carry the previous state', () => {
+    const s = run(snap(0), ev(1, { kind: 'state_change', state: 'forming' }), ev(2, { kind: 'state_change', state: 'idle' }))
+    expect(s.feed.map(e => e.prev_state)).toEqual(['forming', 'idle'])
+  })
+  it('records closed trades with exit code and side', () => {
+    const s = run(snap(0),
+      ev(1, { kind: 'state_change', state: 'fired', reason_code: 'SIGNAL', reason_text: 'CALL signal at 1' }),
+      ev(2, { state: 'exiting', reason_code: 'EXIT_TARGET' }),
+      ev(3, { kind: 'trade_closed', state: 'cooldown', reason_code: 'EXIT_FILL', pnl: 55, pnl_day: 55, trades: 1 }))
+    expect(s.trades).toEqual([{ time: '2026-10-08T09:45:00-04:00', bot: 'QQQ-VWAP', ticker: 'QQQ', pnl: 55, exit_code: 'EXIT_TARGET', side: 'CALL' }])
+    expect(s.bots['QQQ-VWAP'].exit_code).toBe('EXIT_TARGET')
+  })
+  it('a new fire clears the previous exit code', () => {
+    const s = run(snap(0), ev(1, { state: 'exiting', reason_code: 'EXIT_STOP' }), ev(2, { state: 'fired', reason_code: 'SIGNAL', reason_text: 'PUT signal' }))
+    expect(s.bots['QQQ-VWAP'].exit_code).toBeNull()
+  })
+  it('chart overlays come from a bot that is not forming', () => {
+    const a = { price: 100, vwap: 105, ema50: 106 }, b = { price: 100, vwap: 100.1, ema50: 100.2 }
+    let s = run(snap(0, [snapBot('QQQ-VWAP'), snapBot('QQQ-RANGE')]),
+      ev(1, { state: 'forming', inputs: a }))
+    expect(s.ticks['QQQ'][0].vwap).toBeUndefined()
+    s = reduce(s, ev(2, { bot: 'QQQ-RANGE', state: 'idle', inputs: b }), 5)
+    expect(s.ticks['QQQ']).toHaveLength(1)
+    expect(s.ticks['QQQ'][0]).toMatchObject({ price: 100, vwap: 100.1, ema50: 100.2 })
+  })
+  it('marks carry side, exit marks are not duplicated, trades clear on engine restart', () => {
+    let s = run(snap(0),
+      ev(1, { kind: 'state_change', state: 'fired', reason_code: 'SIGNAL', reason_text: 'PUT signal' }),
+      ev(2, { kind: 'fill', state: 'fired', reason_code: 'ENTRY_FILL', fill_price: 100 }),
+      ev(3, { kind: 'fill', state: 'exiting', reason_code: 'EXIT_FILL', fill_price: 99 }),
+      ev(4, { kind: 'trade_closed', state: 'cooldown', pnl: 9, pnl_day: 9, trades: 1 }))
+    expect(s.marks['QQQ'].map(m => [m.type, m.side])).toEqual([['entry', 'PUT'], ['exit', 'PUT']])
+    expect(s.marks['QQQ'][1].pnl).toBe(9)
+    s = reduce(s, snap(0), 99)
+    expect(s.trades).toEqual([])
+  })
+})
+
+describe('data mode', () => {
+  it('tracks the mode of the latest event', () => {
+    expect(initialState.mode).toBeNull()
+    expect(run(snap(0), ev(1, { mode: 'mock' })).mode).toBe('mock')
+    expect(run(snap(0), ev(1, { mode: 'live' })).mode).toBe('live')
+  })
+})
+
 describe('aggregates', () => {
   it('total pnl and leaderboard order', () => {
     const s = run(snap(0, [snapBot('QQQ-VWAP', { pnl_day: 50 }), snapBot('SPY-RANGE', { pnl_day: -20 }), snapBot('IWM-VWAP', { pnl_day: 80 })]))

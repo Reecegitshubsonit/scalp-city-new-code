@@ -4,7 +4,7 @@ import type { BotRow } from '../src/model/types'
 
 const row = (o: Partial<BotRow> = {}): BotRow => ({
   bot: 'QQQ-VWAP', ticker: 'QQQ', state: 'idle', reason_code: 'WATCHING', reason_text: '', charge_pct: null,
-  inputs: {}, time: null, pnl_day: 0, trades: 0, paused: false, side: null, sideSource: 'none', ...o,
+  inputs: {}, time: null, pnl_day: 0, trades: 0, paused: false, side: null, sideSource: 'none', exit_code: null, ...o,
 })
 
 describe('colours', () => {

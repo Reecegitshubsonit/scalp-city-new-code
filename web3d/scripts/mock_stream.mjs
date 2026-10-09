@@ -54,7 +54,7 @@ function inputsFor(b) {
 
 function emit(b, kind, extra = {}) {
   const ev = {
-    seq: ++seq, time: iso(bar), mode: 'replay', bot: b.bot, ticker: b.ticker, kind, state: b.state,
+    seq: ++seq, time: iso(bar), mode: 'mock', bot: b.bot, ticker: b.ticker, kind, state: b.state,
     reason_code: b.reason_code, reason_text: b.reason_text, inputs: (b.inputs = inputsFor(b)), charge_pct: b.charge,
     pnl_day: pnlDay(b), trades: b.trades, paused: b.paused, ...extra,
   }

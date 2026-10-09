@@ -1,11 +1,12 @@
-import type { AppState, BotEvent, BotRow, Mark, ServerMsg, Side, SideSource, SnapshotBot } from './types'
+import type { AppState, BotEvent, BotRow, Mark, ServerMsg, Side, SideSource, SnapshotBot, TickPoint } from './types'
 import { inferSide, parseSignalSide } from './side'
 
 export const FEED_MAX = 200
 export const TICKS_MAX = 390
 export const MARKS_MAX = 100
+export const TRADES_MAX = 100
 
-export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {}, marks: {}, lastEventAt: null }
+export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {}, marks: {}, trades: [], mode: null, lastEventAt: null }
 
 interface SideState { side: Side | null; sideSource: SideSource }
 const NONE: SideState = { side: null, sideSource: 'none' }
@@ -37,11 +38,11 @@ function rowFromSnapshot(b: SnapshotBot): BotRow {
     bot: b.bot, ticker: b.ticker ?? b.bot.split('-')[0], state: b.state ?? 'idle', reason_code: b.reason_code ?? '',
     reason_text: b.reason_text ?? '', charge_pct: b.charge_pct ?? null, inputs: b.inputs ?? {}, time: b.time ?? null,
     pnl_day: typeof b.pnl_day === 'number' ? b.pnl_day : 0, trades: typeof b.trades === 'number' ? b.trades : 0,
-    paused: !!b.paused, ...side,
+    paused: !!b.paused, ...side, exit_code: null,
   }
 }
 
-function addMark(marks: Record<string, Mark[]>, ev: BotEvent): Record<string, Mark[]> {
+function addMark(marks: Record<string, Mark[]>, ev: BotEvent, side: Side | null): Record<string, Mark[]> {
   let type: Mark['type'] | null = null
   if (ev.kind === 'fill' || ev.kind === 'order_sent') {
     if (ev.reason_code === 'ENTRY_FILL') type = 'entry'
@@ -49,8 +50,15 @@ function addMark(marks: Record<string, Mark[]>, ev: BotEvent): Record<string, Ma
   } else if (ev.kind === 'trade_closed') type = 'exit'
   const price = ev.fill_price ?? ev.inputs?.price
   if (!type || typeof price !== 'number') return marks
-  const list = [...(marks[ev.ticker] ?? []), { time: ev.time, price, type, bot: ev.bot }].slice(-MARKS_MAX)
-  return { ...marks, [ev.ticker]: list }
+  const list = marks[ev.ticker] ?? []
+  const last = list[list.length - 1]
+  if (type === 'exit' && last && last.type === 'exit' && last.bot === ev.bot && last.time === ev.time) {
+    // trade_closed right after its exit fill: same exit, just add the result
+    if (ev.kind !== 'trade_closed' || typeof ev.pnl !== 'number') return marks
+    return { ...marks, [ev.ticker]: [...list.slice(0, -1), { ...last, pnl: ev.pnl }] }
+  }
+  const mark: Mark = { time: ev.time, price, type, bot: ev.bot, side, ...(ev.kind === 'trade_closed' && typeof ev.pnl === 'number' ? { pnl: ev.pnl } : {}) }
+  return { ...marks, [ev.ticker]: [...list, mark].slice(-MARKS_MAX) }
 }
 
 export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState {
@@ -69,13 +77,13 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
     const restarted = lastSeq < state.lastSeq
     return {
       ...state, bots, lastSeq, lastEventAt: nowMs,
-      ...(restarted ? { feed: [], ticks: {}, marks: {} } : {}),
+      ...(restarted ? { feed: [], ticks: {}, marks: {}, trades: [] } : {}),
     }
   }
   const ev = msg.event
   if (!ev || typeof ev.seq !== 'number' || ev.seq <= state.lastSeq) return state
   const row = state.bots[ev.bot]
-  const base: AppState = { ...state, lastSeq: ev.seq, lastEventAt: nowMs }
+  const base: AppState = { ...state, lastSeq: ev.seq, lastEventAt: nowMs, mode: typeof ev.mode === 'string' ? ev.mode : state.mode }
   if (!row) return base
 
   const r: BotRow = { ...row }
@@ -87,19 +95,31 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
     r.time = ev.time ?? r.time
     if (ev.inputs && Object.keys(ev.inputs).length) r.inputs = ev.inputs
     Object.assign(r, applySide(row, ev))
+    if (ev.state === 'exiting' && ev.reason_code?.startsWith('EXIT_')) r.exit_code = ev.reason_code
+    else if (ev.state === 'fired') r.exit_code = null
   }
   if (typeof ev.pnl_day === 'number') r.pnl_day = ev.pnl_day
   if (typeof ev.trades === 'number') r.trades = ev.trades
   if (typeof ev.paused === 'boolean') r.paused = ev.paused
 
   const next: AppState = { ...base, bots: { ...state.bots, [ev.bot]: r } }
-  if (ev.kind !== 'tick') next.feed = [ev, ...state.feed].slice(0, FEED_MAX)
+  if (ev.kind !== 'tick') next.feed = [{ ...ev, prev_state: row.state }, ...state.feed].slice(0, FEED_MAX)
   if (ev.kind === 'tick' && typeof ev.inputs?.price === 'number') {
     const pts = state.ticks[ev.ticker] ?? []
-    if (!pts.length || pts[pts.length - 1].time !== ev.time)
-      next.ticks = { ...state.ticks, [ev.ticker]: [...pts, { time: ev.time, price: ev.inputs.price }].slice(-TICKS_MAX) }
+    const last = pts[pts.length - 1]
+    const levels: Partial<TickPoint> = {}
+    if (r.state !== 'forming') {
+      if (typeof ev.inputs.vwap === 'number') levels.vwap = ev.inputs.vwap
+      if (typeof ev.inputs.ema50 === 'number') levels.ema50 = ev.inputs.ema50
+    }
+    if (!last || last.time !== ev.time)
+      next.ticks = { ...state.ticks, [ev.ticker]: [...pts, { time: ev.time, price: ev.inputs.price, ...levels }].slice(-TICKS_MAX) }
+    else if (last.vwap === undefined && levels.vwap !== undefined)
+      next.ticks = { ...state.ticks, [ev.ticker]: [...pts.slice(0, -1), { ...last, ...levels }] }
   }
-  next.marks = addMark(state.marks, ev)
+  if (ev.kind === 'trade_closed' && typeof ev.pnl === 'number')
+    next.trades = [...state.trades, { time: ev.time, bot: ev.bot, ticker: ev.ticker, pnl: ev.pnl, exit_code: row.exit_code, side: row.side }].slice(-TRADES_MAX)
+  next.marks = addMark(state.marks, ev, row.side)
   return next
 }
 
