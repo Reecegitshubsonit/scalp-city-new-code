@@ -38,6 +38,14 @@ describe('snapshot', () => {
     s = reduce(s, snap(1), 9000)
     expect(s.feed).toHaveLength(0); expect(s.lastSeq).toBe(1)
   })
+  it('reconnect snapshot keeps a remembered side for a bot still in a trade, drops it otherwise', () => {
+    let s = run(snap(0), ev(1, { kind: 'state_change', state: 'fired', reason_code: 'SIGNAL', reason_text: 'PUT signal at 99.1' }))
+    s = reduce(s, snap(5, [snapBot('QQQ-VWAP', { state: 'managing' }), snapBot('SPY-RANGE', { state: 'managing' })]), 100)
+    expect(s.bots['QQQ-VWAP'].side).toBe('PUT'); expect(s.bots['QQQ-VWAP'].sideSource).toBe('signal')
+    expect(s.bots['SPY-RANGE'].side).toBeNull()
+    s = reduce(s, snap(6, [snapBot('QQQ-VWAP', { state: 'cooldown' })]), 101)
+    expect(s.bots['QQQ-VWAP'].side).toBeNull()
+  })
   it('snapshot side is explicit', () => {
     const s = run(snap(0, [snapBot('QQQ-VWAP', { state: 'managing', side: 'PUT' })]))
     expect(s.bots['QQQ-VWAP'].side).toBe('PUT'); expect(s.bots['QQQ-VWAP'].sideSource).toBe('explicit')

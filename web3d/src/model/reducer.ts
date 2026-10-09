@@ -56,7 +56,14 @@ function addMark(marks: Record<string, Mark[]>, ev: BotEvent): Record<string, Ma
 export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState {
   if (msg.type === 'snapshot') {
     const bots: Record<string, BotRow> = {}
-    for (const [id, b] of Object.entries(msg.bots ?? {})) bots[id] = rowFromSnapshot({ ...b, bot: b.bot ?? id })
+    const IN_TRADE = new Set(['fired', 'managing', 'exiting'])
+    for (const [id, b] of Object.entries(msg.bots ?? {})) {
+      const row = rowFromSnapshot({ ...b, bot: b.bot ?? id })
+      const old = state.bots[id]
+      // the snapshot has no side for a trade we already know the direction of: keep what we knew
+      if (!row.side && IN_TRADE.has(row.state) && old?.side) { row.side = old.side; row.sideSource = old.sideSource }
+      bots[id] = row
+    }
     const lastSeq = typeof msg.last_seq === 'number' ? msg.last_seq : 0
     // seq going backwards means the engine restarted: old feed and chart history no longer belong to this run
     const restarted = lastSeq < state.lastSeq
