@@ -19,6 +19,7 @@ const OUTCOMES = ['win', 'loss', 'win', 'win', 'loss', 'time']
 let seq = 0, bar = 0, down = false
 // candles, indicator levels and trade markers per ticker, served by GET /history
 const HIST = Object.fromEntries(Object.keys(TK).map(t => [t, { bars: [], levels: [], marks: [] }]))
+const EVENTS = []   // everything emitted so far, served by /day for replay testing
 const pushCapped = (arr, x) => { arr.push(x); if (arr.length > 390) arr.shift() }
 
 const bots = {}
@@ -63,6 +64,7 @@ function emit(b, kind, extra = {}) {
   }
   if (WITH_SIDE && (kind === 'tick' || kind === 'state_change')) ev.side = b.side
   b.time = ev.time
+  EVENTS.push(ev); if (EVENTS.length > 20000) EVENTS.shift()
   for (const c of wss.clients) send(c, { type: 'event', event: ev })
   return ev
 }
@@ -209,6 +211,14 @@ const server = http.createServer(async (req, res) => {
   const h = { 'content-type': 'application/json', 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type' }
   if (down) { res.writeHead(503, h); return res.end('{"error":"down"}') }
   if (req.method === 'OPTIONS') { res.writeHead(204, h); return res.end() }
+  if (req.method === 'GET' && req.url === '/days') {
+    res.writeHead(200, h)
+    return res.end(JSON.stringify({ days: [{ day: '2026-10-08', mode: 'mock', events: EVENTS.length, first: EVENTS[0]?.time ?? null, last: EVENTS[EVENTS.length - 1]?.time ?? null }] }))
+  }
+  if (req.method === 'GET' && req.url.startsWith('/day?')) {
+    res.writeHead(EVENTS.length ? 200 : 404, h)
+    return res.end(JSON.stringify({ day: '2026-10-08', mode: 'mock', events: EVENTS }))
+  }
   if (req.method === 'GET' && req.url.startsWith('/history')) {
     const tk = new URL(req.url, 'http://x').searchParams.get('ticker')
     if (!HIST[tk]) { res.writeHead(404, h); return res.end('{"detail":"unknown ticker"}') }

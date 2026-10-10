@@ -31,6 +31,13 @@ describe('mock server', () => {
     expect(h.levels.length).toBe(h.bars.length)
     expect((await fetch(base + '/history?ticker=ZZZ')).status).toBe(404)
   })
+  it('serves days and a day of events for replay', async () => {
+    await wait(300)
+    const d = await (await fetch(base + '/days')).json()
+    expect(d.days[0].events).toBeGreaterThan(0)
+    const day = await (await fetch(base + '/day?day=2026-10-08&mode=mock')).json()
+    expect(day.events.length).toBeGreaterThan(0); expect(typeof day.events[0].seq).toBe('number')
+  })
   it('streams snapshot then events with increasing seq', async () => {
     const msgs: any[] = []
     await new Promise<void>(res => {

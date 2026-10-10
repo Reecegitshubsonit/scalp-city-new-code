@@ -58,6 +58,13 @@ environment. Without it `/ws` answers 404. The view then falls back to polling `
 trade tape, badges that depend on closed trades, and mode badge need the event stream. Install `websockets` in the engine's venv
 and restart the engine to get everything.
 
+### `/days` and `/day` (engine, replay)
+
+`GET /days` lists logged days (`[{day, mode, events, first, last}]`, newest first); `GET /day?day=2026-10-07&mode=replay` returns
+all events of one day. Both are read-only and live in `scalpcity/history.py` and `scalpcity/server.py`. The view's **Replay**
+button plays a day through the same reducer as the live stream (speeds 1x to 300x, scrubber, play/pause); live data keeps
+running underneath and **Back to live** returns to it. Charts in replay are built from the replayed events (closing prices).
+
 ### `/history` (engine)
 
 `GET /history?ticker=QQQ` returns today's one-minute candles, VWAP/EMA levels and trade markers:
@@ -81,6 +88,13 @@ is built only from prices seen since the page loaded.
   Esc steps back out, then closes. The chart loads the whole day from `GET /history?ticker=QQQ` (engine) and then
   updates on every bar. On narrow screens the panel sits below the 3D view; on wide screens it overlays the left side.
   Auto-rotation pauses while the pointer is over the 3D view so towers can be clicked.
+- Each tower has a floating billboard: sparkline of its ticker, status ("PROFIT LOCKED +$118", "PUT 40% CHARGED") and
+  the bot's day P&L. The clicked tower gets big spinning white rings (a gyroscope) around it. The sky is a starfield with a
+  purple horizon.
+- Inside the room, **click any of the six screens** (or use the SPY / QQQ / IWM / Scanner / Heatmap / Market buttons, which are
+  keyboard operable): the camera flies to it and a full-size, crisp version opens. Charts zoom with the mouse wheel (time),
+  Shift+wheel (price), drag to pan, double-click to reset, with a crosshair and OHLC/VWAP/EMA readout. Keys: `+` `-` zoom,
+  arrows pan/zoom price, `0` resets. Esc closes the screen, then leaves the room, then closes the tower.
 - Panels: trade tape, three ticker charts (price, VWAP, EMA50, entry/exit markers, % change since page load),
   worker heatmap, 9 bot cards, leaderboard, market clock and data freshness, thoughts feed. "Table only" hides the
   canvas. Every state is also written as text with an icon.

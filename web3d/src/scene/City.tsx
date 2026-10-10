@@ -58,12 +58,14 @@ function GyroRings({ position, reducedMotion }: { position: [number, number, num
 function CameraRig({ selected, inside, screen, reducedMotion }: { selected: string | null; inside: boolean; screen: string | null; reducedMotion: boolean }) {
   const { camera, controls } = useThree() as unknown as { camera: THREE.Camera; controls: { target: THREE.Vector3; update: () => void } | null }
   const anim = useRef({ active: false, t: 0, fp: new THREE.Vector3(), ft: new THREE.Vector3(), tp: new THREE.Vector3(), tt: new THREE.Vector3() })
-  const mounted = useRef(false)
+  const lastKey = useRef('null|false|null')   // the pose key the camera was last sent to; start = home
   const aspectRef = useRef(2.4)
   aspectRef.current = useThree(st => st.size.width / Math.max(1, st.size.height))
   useEffect(() => {
     if (!controls) return
-    if (!mounted.current) { mounted.current = true; return }
+    const key = `${selected}|${inside}|${screen}`
+    if (key === lastKey.current) return
+    lastKey.current = key
     const a = anim.current
     a.fp.copy(camera.position); a.ft.copy(controls.target)
     const sp = selected && inside && screen ? screenPose(screen, aspectRef.current) : null

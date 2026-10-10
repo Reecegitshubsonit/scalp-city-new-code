@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { Series } from '../model/history'
@@ -26,9 +26,9 @@ export const SCREENS: Array<{ id: string; pos: [number, number, number]; size: [
   { id: 'SPY', pos: [-4.3, 3.2, -6], size: [4, 2.4], px: [2048, 1228] },
   { id: 'QQQ', pos: [0, 3.2, -6], size: [4.6, 2.76], px: [2304, 1380] },
   { id: 'IWM', pos: [4.3, 3.2, -6], size: [4, 2.4], px: [2048, 1228] },
-  { id: 'scanner', pos: [-4.3, 0.9, -6], size: [4, 1.9], px: [2048, 972] },
-  { id: 'plaque', pos: [0, 0.9, -6], size: [3.6, 1.2], px: [1920, 640] },
-  { id: 'board', pos: [4.3, 0.9, -6], size: [4, 1.9], px: [2048, 972] },
+  { id: 'scanner', pos: [-4.3, 0.9, -6], size: [4, 1.9], px: [1536, 729] },
+  { id: 'plaque', pos: [0, 0.9, -6], size: [3.6, 1.2], px: [1440, 480] },
+  { id: 'board', pos: [4.3, 0.9, -6], size: [4, 1.9], px: [1536, 729] },
 ]
 
 /** Camera pose that frames one wall screen. */
@@ -56,12 +56,14 @@ function Monitor({ id, position, size, px, paint, deps, everyMs, onPick }: {
     tex.minFilter = THREE.LinearMipmapLinearFilter
     return { canvas, tex }
   }, [px, gl])
+  // repaint at most every 600 ms: each repaint uploads a multi-megabyte texture, and events can arrive in bursts
+  const last = useRef(0)
   useEffect(() => {
-    const run = () => { paint(canvas.getContext('2d')!, px[0], px[1]); tex.needsUpdate = true }
-    run()
-    if (!everyMs) return
-    const id = setInterval(run, everyMs)
-    return () => clearInterval(id)
+    const run = () => { last.current = performance.now(); paint(canvas.getContext('2d')!, px[0], px[1]); tex.needsUpdate = true }
+    const wait = Math.max(0, 600 - (performance.now() - last.current))
+    const first = setTimeout(run, wait)
+    const id = everyMs ? setInterval(run, everyMs) : undefined
+    return () => { clearTimeout(first); if (id) clearInterval(id) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
   return (
