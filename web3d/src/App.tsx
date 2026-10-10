@@ -16,6 +16,7 @@ import { Feed } from './panels/Feed'
 import { Heatmap } from './panels/Heatmap'
 import { Leaderboard } from './panels/Leaderboard'
 import { Room } from './panels/Room'
+import { ScreenViewer } from './panels/ScreenViewer'
 import { Summary } from './panels/Summary'
 import { Tape } from './panels/Tape'
 
@@ -35,6 +36,7 @@ export default function App() {
   const [selected, setSelected] = useState<string | null>(null)
   const [showSummary, setShowSummary] = useState(false)
   const [inside, setInside] = useState(false)
+  const [screen, setScreen] = useState<string | null>(null)
   const [pending, setPending] = useState<Record<string, boolean>>({})
   const [toast, setToast] = useState<string | null>(null)
   const timers = useRef<Record<string, ReturnType<typeof setTimeout>>>({})
@@ -87,7 +89,10 @@ export default function App() {
   }, [])
 
   const onSelect = useCallback((bot: string) => setSelected(s => (s === bot ? null : bot)), [])
-  const onClose = useCallback(() => { setSelected(null); setInside(false) }, [])
+  const onClose = useCallback(() => { setSelected(null); setInside(false); setScreen(null) }, [])
+  const onPickScreen = useCallback((id: string) => setScreen(id), [])
+  const closeScreen = useCallback(() => setScreen(null), [])
+  const selectBot = useCallback((bot: string) => setSelected(bot), [])
   const onInside = useCallback(() => setInside(true), [])
   const openSummary = useCallback(() => setShowSummary(true), [])
   const closeSummary = useCallback(() => setShowSummary(false), [])
@@ -95,13 +100,15 @@ export default function App() {
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       if (e.key !== 'Escape' || showSummary) return
-      if (inside) setInside(false)
+      if (screen) setScreen(null)
+      else if (inside) setInside(false)
       else if (selected) setSelected(null)
     }
     window.addEventListener('keydown', key)
     return () => window.removeEventListener('keydown', key)
-  }, [inside, selected, showSummary])
-  useEffect(() => { if (!selected) setInside(false) }, [selected])
+  }, [inside, selected, showSummary, screen])
+  useEffect(() => { if (!selected) { setInside(false); setScreen(null) } }, [selected])
+  useEffect(() => { if (!inside) setScreen(null) }, [inside])
   const sel = selected ? state.bots[selected] ?? placeholder(selected) : null
 
   const room = sel && !inside && (
@@ -130,7 +137,7 @@ export default function App() {
               <div className="stage">
                 <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
                   <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE}
-                    inside={inside} roomData={roomData} floatChart={floatChart} />
+                    inside={inside} roomData={roomData} floatChart={floatChart} screen={screen} onPickScreen={onPickScreen} />
                 </Suspense>
                 {sel && inside && (
                   <div className="insidebar">
@@ -156,6 +163,10 @@ export default function App() {
           {tableOnly && room}
         </div>
       </main>
+      {screen && inside && (
+        <ScreenViewer screen={screen} series={series} tickerTrades={tickerTrades} rows={rows} board={board} feed={state.feed} trades={state.trades}
+          selectedBot={selected} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={selectBot} onClose={closeScreen} />
+      )}
       {showSummary && <Summary rows={rows} trades={state.trades} date={date} onClose={closeSummary} />}
     </div>
   )

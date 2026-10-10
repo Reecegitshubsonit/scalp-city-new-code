@@ -122,3 +122,23 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 .floatchart .chart { background: transparent; border: 0; padding: 0; }
 .insidebar { position: absolute; left: 8px; top: 8px; z-index: 150; display: flex; gap: 8px; align-items: center; background: rgba(14, 10, 70, 0.9); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
 .stepin { margin: 6px 0; width: 100%; font-weight: 700; }
+
+/* screen viewer, zoom chart, billboards, replay */
+.screenmodal { z-index: 300; }
+.bigcard { width: min(1280px, 100%); }
+.bigcard header h2 { margin: 0; }
+.twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 800px) { .twocol { grid-template-columns: 1fr; } }
+.zoomchart { margin: 6px 0; }
+.charthead.big { font-size: 18px; margin-bottom: 6px; }
+.zoombar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 6px; }
+.zoomcanvas { width: 100%; display: block; background: #0b0830; border-radius: 6px; cursor: crosshair; touch-action: none; }
+.zoomcanvas:active { cursor: grabbing; }
+.readout { font-size: 14px; margin-top: 6px; min-height: 22px; font-variant-numeric: tabular-nums; }
+select { font: inherit; color: inherit; background: #1b1666; border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; }
+
+.bbwrap { pointer-events: none; }
+.bb { width: 118px; background: rgba(10, 7, 50, 0.9); border: 1px solid; border-radius: 6px; padding: 3px 6px 4px; box-shadow: 0 0 10px #000a; }
+.bb svg { display: block; width: 100%; height: 30px; }
+.bbtext { font-size: 10px; font-weight: 800; letter-spacing: .04em; line-height: 1.2; white-space: normal; text-align: center; }
+.bbpnl { font-size: 12px; font-weight: 700; text-align: center; }

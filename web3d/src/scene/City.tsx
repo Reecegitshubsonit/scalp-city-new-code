@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import * as THREE from 'three'
-import { badgeFor, type Tone } from '../model/badge'
+import { badgeFor } from '../model/badge'
 import { formatPnl } from '../model/format'
 import { COLORS } from '../model/visual'
 import { LabelLayer, LabelProjector, type Anchor } from './Labels'
@@ -11,62 +11,64 @@ import { TICKERS, TRIGGERS, towerPosition } from '../model/layout'
 import type { BotRow, TradeRec } from '../model/types'
 import { Dome } from './Dome'
 import { TOWER_TOP, Tower } from './Tower'
-import { windowTexture } from './textures'
-import { ROOM_ORIGIN, Room3D, type RoomData } from './Room3D'
+import { SkyDome, Skyline } from './Sky'
+import { Billboard } from './Billboard'
+import { ROOM_ORIGIN, Room3D, screenPose, type RoomData } from './Room3D'
 
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
   reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>; title: string
   inside: boolean; roomData: RoomData; floatChart: ReactNode
+  screen: string | null; onPickScreen: (id: string) => void
 }
 
 const POS: Record<string, [number, number, number]> = Object.fromEntries(
   TICKERS.flatMap((t, ti) => TRIGGERS.map((k, ki) => [`${t}-${k}`, towerPosition(ti, ki)] as const)),
 )
-const TONE_COLOR: Record<Tone, string> = {
-  CALL: COLORS.CALL, PUT: COLORS.PUT, WIN: COLORS.CALL, LOSS: COLORS.PUT, NEUTRAL: COLORS.NEUTRAL,
-  LOCKED: COLORS.locked, PAUSED: COLORS.paused, STALE: COLORS.stale,
-}
 const ROOM_CAM = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.6, ROOM_ORIGIN.z + 3)
 const ROOM_LOOK = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.3, ROOM_ORIGIN.z - 6)
 const HOME_POS = new THREE.Vector3(0, 9, 15)
 const HOME_TARGET = new THREE.Vector3(0, 1.5, 0)
 
-function Skyline() {
-  const items = useMemo(() => {
-    const out: Array<{ x: number; z: number; w: number; h: number; seed: number }> = []
-    let s = 7
-    const r = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296 }
-    for (let i = 0; i < 56; i++) {
-      const a = (i / 56) * Math.PI * 2, d = 26 + r() * 8
-      out.push({ x: Math.cos(a) * d, z: Math.sin(a) * d, w: 1.2 + r() * 1.6, h: 2 + r() * 6, seed: i + 1 })
-    }
-    return out
-  }, [])
-  const tex = useMemo(() => windowTexture(99, false), [])
+/** Big glowing white rings that spin around the clicked tower, like a gyroscope. Static under reduced motion. */
+function GyroRings({ position, reducedMotion }: { position: [number, number, number]; reducedMotion: boolean }) {
+  const g1 = useRef<THREE.Group>(null), g2 = useRef<THREE.Group>(null), g3 = useRef<THREE.Group>(null)
+  useFrame((_, dt) => {
+    if (reducedMotion) return
+    if (g1.current) g1.current.rotation.y += dt * 0.9
+    if (g2.current) g2.current.rotation.x += dt * 0.7
+    if (g3.current) g3.current.rotation.z -= dt * 1.1
+  })
+  const ring = (r: number, tilt: [number, number, number]) => (
+    <group rotation={tilt}>
+      <mesh><torusGeometry args={[r, 0.05, 10, 96]} /><meshBasicMaterial color="#ffffff" toneMapped={false} transparent opacity={0.95} /></mesh>
+      <mesh><torusGeometry args={[r, 0.2, 10, 96]} /><meshBasicMaterial color="#9fd8ff" toneMapped={false} transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} /></mesh>
+    </group>
+  )
   return (
-    <group>
-      {items.map(b => (
-        <mesh key={b.seed} position={[b.x, b.h / 2, b.z]}>
-          <boxGeometry args={[b.w, b.h, b.w]} />
-          <meshStandardMaterial color="#0e0b33" emissive="#6a5cff" emissiveMap={tex} emissiveIntensity={0.35} />
-        </mesh>
-      ))}
+    <group position={[position[0], TOWER_TOP * 0.62, position[2]]}>
+      <group ref={g1} rotation={[0.35, 0, 0.2]}>{ring(3.3, [Math.PI / 2, 0, 0])}</group>
+      <group ref={g2} rotation={[0, 0.4, 0.5]}>{ring(2.7, [0, 0, 0])}</group>
+      <group ref={g3} rotation={[0.9, 0.3, 0]}>{ring(3.9, [0, Math.PI / 2, 0])}</group>
     </group>
   )
 }
 
 /** Flies the camera to the selected tower (shifted so the tower sits right of the scanner panel) and back. */
-function CameraRig({ selected, inside, reducedMotion }: { selected: string | null; inside: boolean; reducedMotion: boolean }) {
+function CameraRig({ selected, inside, screen, reducedMotion }: { selected: string | null; inside: boolean; screen: string | null; reducedMotion: boolean }) {
   const { camera, controls } = useThree() as unknown as { camera: THREE.Camera; controls: { target: THREE.Vector3; update: () => void } | null }
   const anim = useRef({ active: false, t: 0, fp: new THREE.Vector3(), ft: new THREE.Vector3(), tp: new THREE.Vector3(), tt: new THREE.Vector3() })
   const mounted = useRef(false)
+  const aspectRef = useRef(2.4)
+  aspectRef.current = useThree(st => st.size.width / Math.max(1, st.size.height))
   useEffect(() => {
     if (!controls) return
     if (!mounted.current) { mounted.current = true; return }
     const a = anim.current
     a.fp.copy(camera.position); a.ft.copy(controls.target)
-    if (selected && inside) { a.tp.copy(ROOM_CAM); a.tt.copy(ROOM_LOOK) }
+    const sp = selected && inside && screen ? screenPose(screen, aspectRef.current) : null
+    if (sp) { a.tp.copy(sp.cam); a.tt.copy(sp.look) }
+    else if (selected && inside) { a.tp.copy(ROOM_CAM); a.tt.copy(ROOM_LOOK) }
     else if (selected && POS[selected]) {
       const P = new THREE.Vector3(...POS[selected])
       const out = P.clone().setY(0).normalize()
@@ -77,7 +79,7 @@ function CameraRig({ selected, inside, reducedMotion }: { selected: string | nul
       a.tt.copy(look).addScaledVector(right, -2.4)   // tower sits right of centre, clear of the scanner panel
     } else { a.tp.copy(HOME_POS); a.tt.copy(HOME_TARGET) }
     a.t = 0; a.active = true
-  }, [selected, inside, controls, camera])
+  }, [selected, inside, screen, controls, camera])
   useFrame((_, dt) => {
     const a = anim.current
     if (!a.active || !controls) return
@@ -94,7 +96,7 @@ function CameraRig({ selected, inside, reducedMotion }: { selected: string | nul
 // Bloom costs about half the frame rate on integrated GPUs; beams have additive glow shells already, so it is opt-in.
 const BLOOM = new URLSearchParams(location.search).get('fx') === 'high'
 
-export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, floatChart }: Props) {
+export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, floatChart, screen, onPickScreen }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   const spokes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const a = (i / 12) * Math.PI * 2
@@ -127,8 +129,11 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
         const row = byBot[id]
         const [x, , z] = POS[id]
         out.push({ id: `s-${id}`, pos: [x, TOWER_TOP + 1.3, z], className: 'sign', node: k })
-        const b = row ? badgeFor(row, lastTrade[id]) : null
-        if (b) out.push({ id: `b-${id}`, pos: [x, TOWER_TOP + 2.1, z], className: 'tlabel', color: TONE_COLOR[b.tone], node: b.text })
+        if (row) {
+          const closes = (roomData.series[t]?.candles ?? []).slice(-40).map(c => c.close)
+          out.push({ id: `b-${id}`, pos: [x, TOWER_TOP + 2.4, z], className: 'bbwrap',
+            node: <Billboard closes={closes} badge={badgeFor(row, lastTrade[id])} state={row.state} pnl={row.pnl_day} /> })
+        }
       }
     })
     if (selected && POS[selected] && floatChart && !inside) {
@@ -136,10 +141,10 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
       out.push({ id: 'float', pos: [px, TOWER_TOP + 1.5, pz], className: 'floatchart', top: true, node: floatChart })
     }
     return out
-  }, [byBot, lastTrade, total, title, selected, floatChart, inside])
+  }, [byBot, lastTrade, total, title, selected, floatChart, inside, roomData.series])
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)} role="img" aria-label="3D city of bots. Every value shown here is also in the panels.">
-      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>
+      <Canvas dpr={inside ? [1, 2] : [1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>
         <color attach="background" args={['#0b0830']} />
         <fog attach="fog" args={['#0b0830', 30, 70]} />
         <ambientLight intensity={0.55} color="#6a5cff" />
@@ -182,9 +187,11 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
 
         <LabelProjector anchors={anchors} refs={labelRefs} />
         <Dome total={total} onClick={onDome} reducedMotion={reducedMotion} />
+        <SkyDome />
         <Skyline />
-        <CameraRig selected={selected} inside={inside} reducedMotion={reducedMotion} />
-        {selected && <Room3D data={roomData} />}
+        {selected && !inside && <GyroRings position={POS[selected]} reducedMotion={reducedMotion} />}
+        <CameraRig selected={selected} inside={inside} screen={screen} reducedMotion={reducedMotion} />
+        {selected && <Room3D data={roomData} onPick={onPickScreen} />}
         <OrbitControls makeDefault enablePan={false} minDistance={6} maxDistance={40} maxPolarAngle={Math.PI * 0.47}
           autoRotate={!reducedMotion && !selected && !hover} autoRotateSpeed={0.4} target={HOME_TARGET} />
         {BLOOM && (

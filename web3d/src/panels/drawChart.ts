@@ -1,92 +1,145 @@
 import type { Series } from '../model/history'
 import { markLabel } from '../model/history'
+import { fullView, priceRange, type ChartView } from '../model/viewport'
 import { COLORS } from '../model/visual'
 
-export const CHART_COLORS = { bg: '#0b0830', grid: '#241f6a', text: '#9a97c8', vwap: '#ff9d3b', ema50: '#ffe14d', ema9: '#7d6bff', ema21: '#4fb8ff' }
+export const CHART_COLORS = { bg: '#0b0830', grid: '#2a2570', text: '#c9c6ee', vwap: '#ff9d3b', ema50: '#ffe14d', ema9: '#7d6bff', ema21: '#4fb8ff' }
 
-export interface DrawOptions { labels: boolean; axis: boolean }
+export interface DrawOptions {
+  labels: boolean
+  axis: boolean
+  view?: ChartView
+  /** index (into candles) of the hovered candle: draws a crosshair */
+  cross?: number | null
+  /** multiplies font sizes (wall textures are large, so their text needs to scale) */
+  fontScale?: number
+}
 
-/** Draws candles, VWAP/EMA lines and trade markers. Used for the HTML chart and for the 3D wall monitors. */
-export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s: Series, o: DrawOptions): void {
+export interface ChartGeometry {
+  start: number; span: number; n: number
+  padL: number; padR: number; padT: number; padB: number
+  plotW: number; plotH: number; lo: number; hi: number
+  x: (i: number) => number
+  y: (v: number) => number
+}
+
+export function chartGeometry(w: number, h: number, candles: Series['candles'], o: DrawOptions): ChartGeometry {
+  const n = candles.length
+  const view = o.view ?? fullView()
+  const fs = o.fontScale ?? 1
+  const padL = 8 * fs, padR = o.axis ? 62 * fs : 8 * fs, padT = o.labels ? 26 * fs : 10 * fs, padB = o.axis ? 24 * fs : 8 * fs
+  const plotW = Math.max(1, w - padL - padR), plotH = Math.max(1, h - padT - padB)
+  const span = Math.max(1, Math.min(view.span, n))
+  const start = Math.min(Math.max(0, view.start), Math.max(0, n - span))
+  const { lo, hi } = priceRange(candles, { ...view, start, span })
+  return {
+    start, span, n, padL, padR, padT, padB, plotW, plotH, lo, hi,
+    x: i => padL + ((i - start + 0.5) / span) * plotW,
+    y: v => padT + (1 - (v - lo) / (hi - lo)) * plotH,
+  }
+}
+
+const niceStep = (min: number) => [1, 2, 5, 10, 15, 30, 60, 120].find(s => s >= min) ?? 120
+
+/** Draws candles, VWAP/EMA lines and trade markers. Used for the HTML charts and for the 3D wall screens. */
+export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s: Series, o: DrawOptions): ChartGeometry {
+  const fs = o.fontScale ?? 1
   ctx.fillStyle = CHART_COLORS.bg
   ctx.fillRect(0, 0, w, h)
-  const n = s.candles.length
-  if (n < 2) {
+  const g = chartGeometry(w, h, s.candles, o)
+  if (g.n < 2) {
     ctx.fillStyle = CHART_COLORS.text
-    ctx.font = `${Math.round(h / 12)}px system-ui, sans-serif`
+    ctx.font = `${Math.round(14 * fs)}px system-ui, sans-serif`
     ctx.textAlign = 'center'
     ctx.fillText('waiting for prices...', w / 2, h / 2)
-    return
+    return g
   }
-  const padL = 6, padR = o.axis ? 48 : 6, padT = o.labels ? 22 : 8, padB = o.axis ? 18 : 6
-  let lo = Infinity, hi = -Infinity
-  for (const c of s.candles) { if (c.low < lo) lo = c.low; if (c.high > hi) hi = c.high }
-  const pad = (hi - lo) * 0.06 || 0.01
-  lo -= pad; hi += pad
-  const x = (i: number) => padL + ((i + 0.5) / n) * (w - padL - padR)
-  const y = (v: number) => padT + (1 - (v - lo) / (hi - lo)) * (h - padT - padB)
-  const slot = (w - padL - padR) / n
+  const font = Math.max(10, Math.round(11 * fs))
+  const slot = g.plotW / g.span
+  const i0 = Math.max(0, Math.floor(g.start) - 1), i1 = Math.min(g.n, Math.ceil(g.start + g.span) + 1)
 
   if (o.axis) {
     ctx.strokeStyle = CHART_COLORS.grid; ctx.fillStyle = CHART_COLORS.text
-    ctx.font = `${Math.max(9, Math.round(h / 22))}px system-ui, sans-serif`; ctx.lineWidth = 1; ctx.textAlign = 'left'
-    for (let k = 0; k <= 4; k++) {
-      const v = lo + ((hi - lo) * k) / 4, yy = y(v)
-      ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(w - padR, yy); ctx.stroke()
-      ctx.fillText(v.toFixed(2), w - padR + 4, yy + 3)
+    ctx.font = `${font}px system-ui, sans-serif`; ctx.lineWidth = 1; ctx.textAlign = 'left'
+    for (let k = 0; k <= 5; k++) {
+      const v = g.lo + ((g.hi - g.lo) * k) / 5, yy = Math.round(g.y(v)) + 0.5
+      ctx.beginPath(); ctx.moveTo(g.padL, yy); ctx.lineTo(w - g.padR, yy); ctx.stroke()
+      ctx.fillText(v.toFixed(2), w - g.padR + 5, yy + font * 0.35)
     }
     ctx.textAlign = 'center'
-    let lastHour = ''
-    s.candles.forEach((c, i) => {
-      const hr = c.time.slice(11, 13)
-      if (hr !== lastHour) { lastHour = hr; ctx.fillText(`${hr}:00`, x(i), h - 4) }
-    })
+    const step = niceStep(Math.ceil((font * 5) / slot))
+    for (let i = i0; i < i1; i++) {
+      if (i % step !== 0 || g.x(i) < g.padL || g.x(i) > w - g.padR) continue
+      const xx = Math.round(g.x(i)) + 0.5
+      ctx.beginPath(); ctx.moveTo(xx, g.padT); ctx.lineTo(xx, h - g.padB); ctx.stroke()
+      ctx.fillText(s.candles[i].time.slice(11, 16), xx, h - g.padB + font + 4 * fs)
+    }
   }
+
+  ctx.save()
+  ctx.beginPath(); ctx.rect(g.padL, g.padT - 2, g.plotW, g.plotH + 4); ctx.clip()
 
   const line = (key: 'vwap' | 'ema9' | 'ema21' | 'ema50', color: string, width: number, dash: number[]) => {
     const byTime = new Map(s.levels.map(l => [l.time, l[key]]))
-    ctx.strokeStyle = color; ctx.lineWidth = width; ctx.setLineDash(dash); ctx.beginPath()
+    ctx.strokeStyle = color; ctx.lineWidth = width * Math.max(1, fs * 0.8); ctx.setLineDash(dash.map(d => d * fs)); ctx.beginPath()
     let started = false
-    s.candles.forEach((c, i) => {
-      const v = byTime.get(c.time)
-      if (typeof v !== 'number') return
-      if (!started) { ctx.moveTo(x(i), y(v)); started = true } else ctx.lineTo(x(i), y(v))
-    })
+    for (let i = i0; i < i1; i++) {
+      const v = byTime.get(s.candles[i].time)
+      if (typeof v !== 'number') continue
+      if (!started) { ctx.moveTo(g.x(i), g.y(v)); started = true } else ctx.lineTo(g.x(i), g.y(v))
+    }
     ctx.stroke(); ctx.setLineDash([])
   }
-  line('vwap', CHART_COLORS.vwap, 1.4, [])
-  line('ema50', CHART_COLORS.ema50, 1.2, [4, 3])
+  line('vwap', CHART_COLORS.vwap, 1.6, [])
+  line('ema50', CHART_COLORS.ema50, 1.4, [5, 4])
 
-  const bw = Math.max(1, Math.min(8, slot * 0.7))
-  s.candles.forEach((c, i) => {
+  const bw = Math.max(1, Math.min(14 * fs, slot * 0.72))
+  for (let i = i0; i < i1; i++) {
+    const c = s.candles[i]
     const up = c.close >= c.open
     ctx.strokeStyle = ctx.fillStyle = up ? COLORS.CALL : COLORS.PUT
-    ctx.lineWidth = 1
-    ctx.beginPath(); ctx.moveTo(x(i), y(c.high)); ctx.lineTo(x(i), y(c.low)); ctx.stroke()
-    const top = y(Math.max(c.open, c.close)), hgt = Math.max(1, Math.abs(y(c.open) - y(c.close)))
-    ctx.fillRect(x(i) - bw / 2, top, bw, hgt)
-  })
+    ctx.lineWidth = Math.max(1, fs * 0.9)
+    ctx.beginPath(); ctx.moveTo(Math.round(g.x(i)) + 0.5, g.y(c.high)); ctx.lineTo(Math.round(g.x(i)) + 0.5, g.y(c.low)); ctx.stroke()
+    const top = g.y(Math.max(c.open, c.close)), hgt = Math.max(1, Math.abs(g.y(c.open) - g.y(c.close)))
+    ctx.fillRect(Math.round(g.x(i) - bw / 2), top, Math.max(1, Math.round(bw)), hgt)
+  }
 
   const idx = new Map(s.candles.map((c, i) => [c.time, i]))
-  const fs = Math.max(9, Math.round(h / 20))
-  ctx.font = `bold ${fs}px system-ui, sans-serif`; ctx.textAlign = 'center'
+  const mfs = Math.max(10, Math.round(11 * fs))
+  ctx.font = `bold ${mfs}px system-ui, sans-serif`; ctx.textAlign = 'center'
+  const tri = 6 * fs
   for (const m of s.marks) {
     const i = idx.get(m.time)
-    if (i === undefined) continue
+    if (i === undefined || i < i0 || i >= i1) continue
     const c = s.candles[i]
     const col = m.type === 'entry' ? (m.side === 'PUT' ? COLORS.PUT : m.side === 'CALL' ? COLORS.CALL : COLORS.NEUTRAL)
       : typeof m.pnl === 'number' ? (m.pnl >= 0 ? COLORS.CALL : COLORS.PUT) : COLORS.locked
     ctx.fillStyle = col
-    const px = x(i)
+    const px = g.x(i)
     if (m.type === 'entry') {
-      const py = m.side === 'PUT' ? y(c.high) - 4 : y(c.low) + 4
-      const dir = m.side === 'PUT' ? 1 : -1   // PUT: marker above pointing down; CALL: below pointing up
-      ctx.beginPath(); ctx.moveTo(px, py + dir * 0); ctx.lineTo(px - 5, py - dir * 9); ctx.lineTo(px + 5, py - dir * 9); ctx.closePath(); ctx.fill()
-      if (o.labels) ctx.fillText(markLabel(m), px, py - dir * 12 + (dir > 0 ? -2 : fs))
+      const put = m.side === 'PUT'
+      const py = put ? g.y(c.high) - 4 * fs : g.y(c.low) + 4 * fs
+      const dir = put ? 1 : -1
+      ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px - tri, py - dir * tri * 1.7); ctx.lineTo(px + tri, py - dir * tri * 1.7); ctx.closePath(); ctx.fill()
+      if (o.labels) ctx.fillText(markLabel(m), px, put ? py - tri * 1.7 - 3 * fs : py + tri * 1.7 + mfs)
     } else {
-      const py = y(c.close)
-      ctx.fillRect(px - 4, py - 4, 8, 8)
-      if (o.labels) ctx.fillText(markLabel(m), px, py - 8)
+      const py = g.y(c.close)
+      ctx.fillRect(px - 4 * fs, py - 4 * fs, 8 * fs, 8 * fs)
+      if (o.labels) ctx.fillText(markLabel(m), px, py - 8 * fs)
     }
   }
+  ctx.restore()
+
+  if (o.cross != null && o.cross >= 0 && o.cross < g.n) {
+    const c = s.candles[o.cross]
+    const cx = Math.round(g.x(o.cross)) + 0.5, cy = Math.round(g.y(c.close)) + 0.5
+    ctx.strokeStyle = '#ffffffaa'; ctx.lineWidth = 1; ctx.setLineDash([4, 4])
+    ctx.beginPath(); ctx.moveTo(cx, g.padT); ctx.lineTo(cx, h - g.padB); ctx.moveTo(g.padL, cy); ctx.lineTo(w - g.padR, cy); ctx.stroke(); ctx.setLineDash([])
+    if (o.axis) {
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(w - g.padR, cy - font * 0.8, g.padR, font * 1.6)
+      ctx.fillStyle = '#0b0830'; ctx.textAlign = 'left'; ctx.font = `bold ${font}px system-ui, sans-serif`
+      ctx.fillText(c.close.toFixed(2), w - g.padR + 5, cy + font * 0.35)
+    }
+  }
+  return g
 }
