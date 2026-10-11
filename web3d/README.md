@@ -107,7 +107,7 @@ is built only from prices seen since the page loaded.
   three scanners (one per bot VWAP, EMA50, RANGE: signal, charge bar, thoughts with times, day P&L), a big chart of the ticker with only its
   trade markers, the 1-minute chart with WINNING / LOSING, a heatmap + leaderboard of only that ticker's bots, an EARNED screen with only that
   ticker's trades, and a market plaque with that ticker's day total. Robot mood follows that ticker's P&L. The side panel also lists "QQQ bots
-  today" (state and P&L, click to switch bot) and that ticker's recent trades. Everything is the live stream filtered to the ticker
+  today" (state and P&L, click to switch bot) and that ticker's recent trades. The screens are monitors (dark bezel, chin with power LED, wall arm or floor stand; keyboard and mouse on the desk). Everything is the live stream filtered to the ticker
   (`src/model/tower.ts`). The three round desk buttons: green = replay a day / pause / play, pink = back to live, white = cycle speed (this
   mapping is my reading of the video, which is too small to confirm).
 ![backtest room](docs/backtest-room.jpg)

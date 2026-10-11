@@ -92,11 +92,12 @@ function Monitor({ def, paint, deps, everyMs, onPick, flash }: {
   const { size } = def
   const frameMat = useRef<THREE.MeshBasicMaterial>(null)
   const base = useMemo(() => new THREE.Color('#4a3fd0'), [])
+  const hoverCol = useMemo(() => new THREE.Color('#9a8cff'), [])
   const lit = useMemo(() => new THREE.Color(flash?.color ?? '#ffffff'), [flash?.color])
   useFrame(() => {
     const m = frameMat.current
-    if (!m || hover) return
-    m.color.copy(base)
+    if (!m) return
+    m.color.copy(hover ? hoverCol : base)
     if (flash) m.color.lerp(lit, flash.frame.current.flash)   // the firing bot's scanner flashes in the side colour
   })
   return (
@@ -106,15 +107,41 @@ function Monitor({ def, paint, deps, everyMs, onPick, flash }: {
       onPointerOver={e => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer' }}
       onPointerOut={() => { setHover(false); document.body.style.cursor = '' }}
     >
-      {/* frame sits behind the screen; the screen is offset toward the camera so the two never share a depth (no z-fighting) */}
-      <mesh position={[0, 0, -0.08]}>
-        <boxGeometry args={[size[0] + 0.22, size[1] + 0.22, 0.1]} />
-        <meshBasicMaterial ref={frameMat} color={hover ? '#9a8cff' : '#4a3fd0'} toneMapped={false} />
+      {/* a real monitor: dark bezel with a chin and a power LED, thin glowing rim, and a stand (floor) or wall arm (top row).
+          Layers sit at distinct depths (bezel front -0.01, rim 0.0, screen 0.01), so nothing z-fights. */}
+      <mesh position={[0, -0.12, -0.07]}>
+        <boxGeometry args={[size[0] + 0.3, size[1] + 0.54, 0.12]} />
+        <meshStandardMaterial color="#0c0a1e" roughness={0.45} metalness={0.5} />
+      </mesh>
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[size[0] + 0.07, size[1] + 0.07]} />
+        <meshBasicMaterial ref={frameMat} color="#4a3fd0" toneMapped={false} />
       </mesh>
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={size} />
         <meshBasicMaterial map={tex} toneMapped={false} />
       </mesh>
+      <mesh position={[size[0] / 2 - 0.12, -size[1] / 2 - 0.2, 0.001]}>
+        <boxGeometry args={[0.07, 0.07, 0.02]} /><meshBasicMaterial color="#19f5a0" toneMapped={false} />
+      </mesh>
+      <mesh position={[0, -size[1] / 2 - 0.2, 0.001]}>
+        <boxGeometry args={[0.5, 0.045, 0.01]} /><meshStandardMaterial color="#2a2760" roughness={0.4} metalness={0.6} />
+      </mesh>
+      {def.pos[1] - ROOM_ORIGIN.y > 3
+        ? (
+          <>{/* wall arm */}
+            <mesh position={[0, 0, -0.3]}><boxGeometry args={[0.5, 0.7, 0.25]} /><meshStandardMaterial color="#15122e" roughness={0.5} metalness={0.5} /></mesh>
+            <mesh position={[0, 0, -0.5]}><boxGeometry args={[1.1, 1.0, 0.06]} /><meshStandardMaterial color="#15122e" roughness={0.5} metalness={0.5} /></mesh>
+          </>)
+        : (
+          <>{/* stand: neck down to a base plate on the floor */}
+            <mesh position={[0, -(def.pos[1] - ROOM_ORIGIN.y) / 2 - size[1] / 4 - 0.195, -0.2]}>
+              <boxGeometry args={[0.38, def.pos[1] - ROOM_ORIGIN.y - size[1] / 2 - 0.39, 0.12]} /><meshStandardMaterial color="#15122e" roughness={0.5} metalness={0.5} />
+            </mesh>
+            <mesh position={[0, -(def.pos[1] - ROOM_ORIGIN.y) + 0.05, -0.1]}>
+              <boxGeometry args={[1.8, 0.07, 1.0]} /><meshStandardMaterial color="#15122e" roughness={0.5} metalness={0.5} />
+            </mesh>
+          </>)}
     </group>
   )
 }

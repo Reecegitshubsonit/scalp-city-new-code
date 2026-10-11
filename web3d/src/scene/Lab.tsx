@@ -85,7 +85,10 @@ export function Desk({ discs }: { discs: DiscSpec[] }) {
       <mesh position={[0, 1.07, 0.8]}><boxGeometry args={[9.4, 0.04, 0.04]} />{edge}</mesh>
       <mesh position={[-4.7, 0.55, 0]}><boxGeometry args={[0.1, 1.0, 1.4]} /><meshStandardMaterial color="#120e45" /></mesh>
       <mesh position={[4.7, 0.55, 0]}><boxGeometry args={[0.1, 1.0, 1.4]} /><meshStandardMaterial color="#120e45" /></mesh>
-      <mesh position={[0, 1.075, 0.45]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[2.8, 0.5]} /><meshBasicMaterial map={keyTex} toneMapped={false} /></mesh>
+      <mesh position={[0, 1.09, 0.45]}><boxGeometry args={[3.0, 0.05, 0.62]} /><meshStandardMaterial color="#0c0a1e" roughness={0.4} metalness={0.5} /></mesh>
+      <mesh position={[0, 1.12, 0.45]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[2.8, 0.5]} /><meshBasicMaterial map={keyTex} toneMapped={false} /></mesh>
+      <mesh position={[1.95, 1.1, 0.5]}><boxGeometry args={[0.22, 0.06, 0.34]} /><meshStandardMaterial color="#0c0a1e" roughness={0.4} metalness={0.5} /></mesh>
+      <mesh position={[1.95, 1.135, 0.4]}><boxGeometry args={[0.02, 0.01, 0.1]} /><meshBasicMaterial color="#3de0ff" toneMapped={false} /></mesh>
       <mesh position={[-3.3, 1.2, 0]}><cylinderGeometry args={[0.16, 0.14, 0.24, 14]} /><meshStandardMaterial color="#ffe14d" emissive="#ffb020" emissiveIntensity={0.4} /></mesh>
       <mesh position={[-4.1, 1.07, 0.1]} rotation={[0, 0.4, 0]}><boxGeometry args={[0.9, 0.02, 0.65]} /><meshStandardMaterial color="#f4f2ff" /></mesh>
       {discs.map(d => (
