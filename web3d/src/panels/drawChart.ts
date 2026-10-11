@@ -1,5 +1,6 @@
 import type { Series } from '../model/history'
 import { markLabel } from '../model/history'
+import { lineTone } from '../model/lab'
 import { fullView, priceRange, type ChartView } from '../model/viewport'
 import { COLORS } from '../model/visual'
 
@@ -11,6 +12,8 @@ export interface DrawOptions {
   view?: ChartView
   /** index (into candles) of the hovered candle: draws a crosshair */
   cross?: number | null
+  /** 'line': glowing close-price line coloured by performance (wall screens); default candles */
+  style?: 'candles' | 'line'
   /** multiplies font sizes (wall textures are large, so their text needs to scale) */
   fontScale?: number
 }
@@ -93,15 +96,30 @@ export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s
   line('vwap', CHART_COLORS.vwap, 1.6, [])
   line('ema50', CHART_COLORS.ema50, 1.4, [5, 4])
 
-  const bw = Math.max(1, Math.min(14 * fs, slot * 0.72))
-  for (let i = i0; i < i1; i++) {
-    const c = s.candles[i]
-    const up = c.close >= c.open
-    ctx.strokeStyle = ctx.fillStyle = up ? COLORS.CALL : COLORS.PUT
-    ctx.lineWidth = Math.max(1, fs * 0.9)
-    ctx.beginPath(); ctx.moveTo(Math.round(g.x(i)) + 0.5, g.y(c.high)); ctx.lineTo(Math.round(g.x(i)) + 0.5, g.y(c.low)); ctx.stroke()
-    const top = g.y(Math.max(c.open, c.close)), hgt = Math.max(1, Math.abs(g.y(c.open) - g.y(c.close)))
-    ctx.fillRect(Math.round(g.x(i) - bw / 2), top, Math.max(1, Math.round(bw)), hgt)
+  if (o.style === 'line') {
+    const tone = lineTone(s.candles)
+    const col = tone === 'up' ? COLORS.CALL : tone === 'down' ? COLORS.PUT : COLORS.NEUTRAL
+    const grad = ctx.createLinearGradient(0, g.padT, 0, g.padT + g.plotH)
+    grad.addColorStop(0, col + '55'); grad.addColorStop(1, col + '00')
+    ctx.beginPath()
+    let first = true
+    for (let i = i0; i < i1; i++) { const x = g.x(i), y = g.y(s.candles[i].close); if (first) { ctx.moveTo(x, y); first = false } else ctx.lineTo(x, y) }
+    ctx.lineTo(g.x(i1 - 1), g.padT + g.plotH); ctx.lineTo(g.x(i0), g.padT + g.plotH); ctx.closePath()
+    ctx.fillStyle = grad; ctx.fill()
+    ctx.beginPath(); first = true
+    for (let i = i0; i < i1; i++) { const x = g.x(i), y = g.y(s.candles[i].close); if (first) { ctx.moveTo(x, y); first = false } else ctx.lineTo(x, y) }
+    ctx.strokeStyle = col; ctx.lineWidth = 2.4 * fs; ctx.shadowColor = col; ctx.shadowBlur = 10 * fs; ctx.lineJoin = 'round'; ctx.stroke(); ctx.shadowBlur = 0
+  } else {
+    const bw = Math.max(1, Math.min(14 * fs, slot * 0.72))
+    for (let i = i0; i < i1; i++) {
+      const c = s.candles[i]
+      const up = c.close >= c.open
+      ctx.strokeStyle = ctx.fillStyle = up ? COLORS.CALL : COLORS.PUT
+      ctx.lineWidth = Math.max(1, fs * 0.9)
+      ctx.beginPath(); ctx.moveTo(Math.round(g.x(i)) + 0.5, g.y(c.high)); ctx.lineTo(Math.round(g.x(i)) + 0.5, g.y(c.low)); ctx.stroke()
+      const top = g.y(Math.max(c.open, c.close)), hgt = Math.max(1, Math.abs(g.y(c.open) - g.y(c.close)))
+      ctx.fillRect(Math.round(g.x(i) - bw / 2), top, Math.max(1, Math.round(bw)), hgt)
+    }
   }
 
   const idx = new Map(s.candles.map((c, i) => [c.time, i]))

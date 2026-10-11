@@ -120,7 +120,7 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 
 .floatchart { width: 330px; background: rgba(14, 10, 70, 0.92); border: 1px solid #8f84ff; border-radius: 8px; padding: 4px 6px; box-shadow: 0 0 18px #5b4dff88; }
 .floatchart .chart { background: transparent; border: 0; padding: 0; }
-.insidebar { position: absolute; left: 8px; top: 8px; z-index: 150; display: flex; gap: 8px; align-items: center; background: rgba(14, 10, 70, 0.9); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.insidebar { position: absolute; left: 8px; bottom: 8px; z-index: 150; display: flex; gap: 8px; align-items: center; background: rgba(14, 10, 70, 0.9); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
 .stepin { margin: 6px 0; width: 100%; font-weight: 700; }
 
 /* screen viewer, zoom chart, billboards, replay */

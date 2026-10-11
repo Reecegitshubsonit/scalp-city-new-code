@@ -2,15 +2,23 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { Series } from '../model/history'
-import { chartHeader } from '../model/history'
+import { nextSpeed } from '../model/lab'
 import type { BotEvent, BotRow } from '../model/types'
-import { drawChart } from '../panels/drawChart'
-import { paintBoard, paintPlaque, paintScanner } from './roomPaint'
-import { formatNum } from '../model/format'
+import type { Trade } from '../model/trades'
+import { paintBoard, paintChart1m, paintEarned, paintPlaque, paintScanner, paintWallLine } from './roomPaint'
 import { Skyline, SkyDome } from './Sky'
+import { Desk, HexSurfaces, NeonSign, Robot, type DiscSpec } from './Lab'
 
 /** World position of the room: far below the city ground, never visible from the outside view. */
 export const ROOM_ORIGIN = new THREE.Vector3(0, -60, 0)
+/** Default camera pose inside the room: behind and above the robot, looking at the wall of screens. */
+export const ROOM_CAM_POS = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 4.7, ROOM_ORIGIN.z + 4.6)
+export const ROOM_LOOK_POS = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 3.5, ROOM_ORIGIN.z - 6)
+
+export interface LabControls {
+  replayActive: boolean; playing: boolean; speed: number
+  onPlayPause: () => void; onStop: () => void; onSpeed: (s: number) => void; onOpenPicker: () => void
+}
 
 export interface RoomData {
   series: Record<string, Series>
@@ -19,57 +27,63 @@ export interface RoomData {
   feed: BotEvent[]
   selectedRow: BotRow | null
   total: number
+  earned: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }
+  lab: LabControls
 }
 
-/** The six wall screens: position relative to the room origin and size in world units. */
-export const SCREENS: Array<{ id: string; pos: [number, number, number]; size: [number, number]; px: [number, number] }> = [
-  { id: 'SPY', pos: [-4.3, 3.2, -6], size: [4, 2.4], px: [2048, 1228] },
-  { id: 'QQQ', pos: [0, 3.2, -6], size: [4.6, 2.76], px: [2304, 1380] },
-  { id: 'IWM', pos: [4.3, 3.2, -6], size: [4, 2.4], px: [2048, 1228] },
-  { id: 'scanner', pos: [-4.3, 0.9, -6], size: [4, 1.9], px: [1536, 729] },
-  { id: 'plaque', pos: [0, 0.9, -6], size: [3.6, 1.2], px: [1440, 480] },
-  { id: 'board', pos: [4.3, 0.9, -6], size: [4, 1.9], px: [1536, 729] },
+interface ScreenDef { id: string; pos: [number, number, number]; size: [number, number]; px: [number, number]; rotY?: number }
+
+/** The eight wall screens: position relative to the room origin and size in world units. */
+export const SCREENS: ScreenDef[] = [
+  { id: 'SPY', pos: [-4.6, 4.5, -6], size: [4, 2.4], px: [1600, 960] },
+  { id: 'QQQ', pos: [0, 4.5, -6], size: [4.6, 2.76], px: [1840, 1104] },
+  { id: 'IWM', pos: [4.6, 4.5, -6], size: [4, 2.4], px: [1600, 960] },
+  { id: 'scanner', pos: [-4.6, 1.95, -6], size: [4, 1.9], px: [1536, 729] },
+  { id: 'chart1m', pos: [0, 1.95, -6], size: [4.6, 1.9], px: [1840, 760] },
+  { id: 'board', pos: [4.6, 1.95, -6], size: [4, 1.9], px: [1536, 729] },
+  { id: 'plaque', pos: [-8.6, 3.4, -4.3], size: [3.4, 1.15], px: [1360, 460], rotY: 0.55 },
+  { id: 'earned', pos: [8.6, 3.4, -4.3], size: [3.2, 3.2], px: [1024, 1024], rotY: -0.55 },
 ]
 
-/** Camera pose that frames one wall screen. */
+/** Camera pose that frames one wall screen face-on. */
 export function screenPose(id: string, aspect: number): { cam: THREE.Vector3; look: THREE.Vector3 } | null {
   const sc = SCREENS.find(s => s.id === id)
   if (!sc) return null
   const look = ROOM_ORIGIN.clone().add(new THREE.Vector3(...sc.pos))
   const dist = Math.max(sc.size[1] * 1.33, (sc.size[0] * 1.33) / aspect) * 1.08
-  return { cam: look.clone().add(new THREE.Vector3(0, 0, dist)), look }
+  const ry = sc.rotY ?? 0
+  return { cam: look.clone().add(new THREE.Vector3(Math.sin(ry) * dist, 0, Math.cos(ry) * dist)), look }
 }
 
-function Monitor({ id, position, size, px, paint, deps, everyMs, onPick }: {
-  id: string; position: [number, number, number]; size: [number, number]; px: [number, number]
-  paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void; deps: unknown[]; everyMs?: number
-  onPick: (id: string) => void
+function Monitor({ def, paint, deps, everyMs, onPick }: {
+  def: ScreenDef; paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void; deps: unknown[]; everyMs?: number; onPick: (id: string) => void
 }) {
   const gl = useThree(s => s.gl)
   const [hover, setHover] = useState(false)
   const { canvas, tex } = useMemo(() => {
     const canvas = document.createElement('canvas')
-    canvas.width = px[0]; canvas.height = px[1]
+    canvas.width = def.px[0]; canvas.height = def.px[1]
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
     tex.anisotropy = gl.capabilities.getMaxAnisotropy()
     tex.minFilter = THREE.LinearMipmapLinearFilter
     return { canvas, tex }
-  }, [px, gl])
+  }, [def.id, def.px, gl])   // keyed on stable values: re-creating the texture every render would leave the screen black
   // repaint at most every 600 ms: each repaint uploads a multi-megabyte texture, and events can arrive in bursts
   const last = useRef(0)
   useEffect(() => {
-    const run = () => { last.current = performance.now(); paint(canvas.getContext('2d')!, px[0], px[1]); tex.needsUpdate = true }
+    const run = () => { last.current = performance.now(); paint(canvas.getContext('2d')!, def.px[0], def.px[1]); tex.needsUpdate = true }
     const wait = Math.max(0, 600 - (performance.now() - last.current))
     const first = setTimeout(run, wait)
     const id = everyMs ? setInterval(run, everyMs) : undefined
     return () => { clearTimeout(first); if (id) clearInterval(id) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
+  const { size } = def
   return (
     <group
-      position={position}
-      onClick={e => { e.stopPropagation(); onPick(id) }}
+      position={def.pos} rotation={[0, def.rotY ?? 0, 0]}
+      onClick={e => { e.stopPropagation(); onPick(def.id) }}
       onPointerOver={e => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer' }}
       onPointerOut={() => { setHover(false); document.body.style.cursor = '' }}
     >
@@ -86,41 +100,47 @@ function Monitor({ id, position, size, px, paint, deps, everyMs, onPick }: {
   )
 }
 
-/** The room inside a tower: night sky, six wall screens (click one to open it full size). */
-export function Room3D({ data, onPick }: { data: RoomData; onPick: (id: string) => void }) {
-  const { series, tickerTrades, rows, feed, selectedRow, total } = data
-  const chart = (t: string) => (ctx: CanvasRenderingContext2D, w: number, h: number) => {
-    const s = series[t]
-    drawChart(ctx, w, h, s, { labels: true, axis: true, fontScale: 2.1 })
-    const hd = chartHeader(s, tickerTrades[t] ?? 0)
-    ctx.fillStyle = '#fff'; ctx.font = `bold ${Math.round(h * 0.052)}px system-ui, sans-serif`; ctx.textAlign = 'left'
-    ctx.fillText(`${t} 1-MIN   ${hd.time ?? ''}   ${formatNum(hd.price)}   ${hd.changePct == null ? '' : (hd.changePct >= 0 ? '+' : '') + hd.changePct.toFixed(2) + '%'}   ${hd.trades} trades`, 14, h * 0.05)
-  }
+/** The backtest room: night sky and skyline, eight wall screens (click one to open it full size), the robot at its desk, hex floor. */
+export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick: (id: string) => void; reducedMotion: boolean }) {
+  const { series, tickerTrades, rows, feed, selectedRow, total, earned, lab } = data
   const [x, y, z] = [ROOM_ORIGIN.x, ROOM_ORIGIN.y, ROOM_ORIGIN.z]
-  const at = (id: string) => { const s = SCREENS.find(v => v.id === id)!; return { s, pos: [x + s.pos[0], y + s.pos[1], z + s.pos[2]] as [number, number, number] } }
+  const worldScreens = useMemo(() => SCREENS.map(d => ({ ...d, pos: [x + d.pos[0], y + d.pos[1], z + d.pos[2]] as [number, number, number] })), [x, y, z])
+  const ticker = selectedRow?.ticker ?? 'QQQ'
+  const tickerPnl = rows.filter(r => r.ticker === ticker).reduce((a, r) => a + r.pnl_day, 0)
   const paints: Record<string, { paint: (c: CanvasRenderingContext2D, w: number, h: number) => void; deps: unknown[]; everyMs?: number }> = {
-    SPY: { paint: chart('SPY'), deps: [series.SPY, tickerTrades.SPY] },
-    QQQ: { paint: chart('QQQ'), deps: [series.QQQ, tickerTrades.QQQ] },
-    IWM: { paint: chart('IWM'), deps: [series.IWM, tickerTrades.IWM] },
+    SPY: { paint: (c, w, h) => paintWallLine(c, w, h, 'SPY', series.SPY, tickerTrades.SPY ?? 0), deps: [series.SPY, tickerTrades.SPY] },
+    QQQ: { paint: (c, w, h) => paintWallLine(c, w, h, 'QQQ', series.QQQ, tickerTrades.QQQ ?? 0), deps: [series.QQQ, tickerTrades.QQQ] },
+    IWM: { paint: (c, w, h) => paintWallLine(c, w, h, 'IWM', series.IWM, tickerTrades.IWM ?? 0), deps: [series.IWM, tickerTrades.IWM] },
     scanner: { paint: (c, w, h) => paintScanner(c, w, h, selectedRow, feed), deps: [selectedRow, feed] },
+    chart1m: { paint: (c, w, h) => paintChart1m(c, w, h, ticker, series[ticker], tickerPnl), deps: [series[ticker], ticker, tickerPnl] },
     board: { paint: (c, w, h) => paintBoard(c, w, h, rows), deps: [rows] },
     plaque: { paint: (c, w, h) => paintPlaque(c, w, h, Date.now(), total), deps: [total], everyMs: 1000 },
+    earned: { paint: (c, w, h) => paintEarned(c, w, h, earned), deps: [earned] },
   }
+  const discs: DiscSpec[] = [
+    { id: 'play', color: '#19f5a0', x: 2.5, label: lab.replayActive ? (lab.playing ? 'PAUSE' : 'PLAY') : 'REPLAY A DAY', labelColor: '#19f5a0', onClick: lab.replayActive ? lab.onPlayPause : lab.onOpenPicker },
+    { id: 'stop', color: '#ff3bd4', x: 3.5, label: lab.replayActive ? 'BACK TO LIVE' : 'LIVE', labelColor: '#ff9bea', onClick: lab.replayActive ? lab.onStop : () => {} },
+    { id: 'speed', color: '#f4f2ff', x: 4.5, label: `SPEED ${lab.speed}x`, labelColor: '#f4f2ff', onClick: () => lab.onSpeed(nextSpeed(lab.speed)) },
+  ]
+  const mood = tickerPnl > 0 ? 'up' : tickerPnl < 0 ? 'down' : 'flat'
   return (
     <group>
       <SkyDome center={[x, y, z]} radius={120} />
-      <Skyline center={[x, y, z]} rMin={14} rMax={30} count={44} maxH={10} />
-      <pointLight position={[x, y + 4, z + 2]} intensity={60} color="#9fb3ff" distance={30} />
+      <Skyline center={[x, y, z]} rMin={16} rMax={34} count={48} maxH={12} />
+      <pointLight position={[x, y + 5, z + 3]} intensity={70} color="#9fb3ff" distance={34} />
       <mesh position={[x, y - 0.01, z]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[60, 48]} />
         <meshStandardMaterial color="#0d0a3a" roughness={0.9} />
       </mesh>
       <gridHelper args={[60, 60, '#5b4dff', '#241f6a']} position={[x, y, z]} />
-      {SCREENS.map(sc => {
-        const { s, pos } = at(sc.id)
-        const p = paints[sc.id]
-        return <Monitor key={sc.id} id={sc.id} position={pos} size={s.size} px={s.px} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick} />
+      <group position={[x, y, z]}><HexSurfaces /></group>
+      <NeonSign label="NEVER SLEEPS" position={[x, y + 6.95, z - 6.1]} size={[6.4, 1.2]} />
+      {worldScreens.map(def => {
+        const p = paints[def.id]
+        return <Monitor key={def.id} def={def} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick} />
       })}
+      <group position={[x, y, z - 3.7]}><Desk discs={discs} /></group>
+      <group position={[x, y, z - 2.3]}><Robot reducedMotion={reducedMotion} mood={mood} /></group>
     </group>
   )
 }

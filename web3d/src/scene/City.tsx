@@ -13,7 +13,7 @@ import { Dome } from './Dome'
 import { TOWER_TOP, Tower } from './Tower'
 import { SkyDome, Skyline } from './Sky'
 import { Billboard } from './Billboard'
-import { ROOM_ORIGIN, Room3D, screenPose, type RoomData } from './Room3D'
+import { ROOM_CAM_POS, ROOM_LOOK_POS, Room3D, screenPose, type RoomData } from './Room3D'
 
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
@@ -25,8 +25,6 @@ interface Props {
 const POS: Record<string, [number, number, number]> = Object.fromEntries(
   TICKERS.flatMap((t, ti) => TRIGGERS.map((k, ki) => [`${t}-${k}`, towerPosition(ti, ki)] as const)),
 )
-const ROOM_CAM = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.6, ROOM_ORIGIN.z + 3)
-const ROOM_LOOK = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 2.3, ROOM_ORIGIN.z - 6)
 const HOME_POS = new THREE.Vector3(0, 9, 15)
 const HOME_TARGET = new THREE.Vector3(0, 1.5, 0)
 
@@ -70,7 +68,7 @@ function CameraRig({ selected, inside, screen, reducedMotion }: { selected: stri
     a.fp.copy(camera.position); a.ft.copy(controls.target)
     const sp = selected && inside && screen ? screenPose(screen, aspectRef.current) : null
     if (sp) { a.tp.copy(sp.cam); a.tt.copy(sp.look) }
-    else if (selected && inside) { a.tp.copy(ROOM_CAM); a.tt.copy(ROOM_LOOK) }
+    else if (selected && inside) { a.tp.copy(ROOM_CAM_POS); a.tt.copy(ROOM_LOOK_POS) }
     else if (selected && POS[selected]) {
       const P = new THREE.Vector3(...POS[selected])
       const out = P.clone().setY(0).normalize()
@@ -193,7 +191,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
         <Skyline />
         {selected && !inside && <GyroRings position={POS[selected]} reducedMotion={reducedMotion} />}
         <CameraRig selected={selected} inside={inside} screen={screen} reducedMotion={reducedMotion} />
-        {selected && <Room3D data={roomData} onPick={onPickScreen} />}
+        {selected && <Room3D data={roomData} onPick={onPickScreen} reducedMotion={reducedMotion} />}
         <OrbitControls makeDefault enablePan={false} minDistance={6} maxDistance={40} maxPolarAngle={Math.PI * 0.47}
           autoRotate={!reducedMotion && !selected && !hover} autoRotateSpeed={0.4} target={HOME_TARGET} />
         {BLOOM && (

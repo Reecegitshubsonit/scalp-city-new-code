@@ -65,6 +65,14 @@ all events of one day. Both are read-only and live in `scalpcity/history.py` and
 button plays a day through the same reducer as the live stream (speeds 1x to 300x, scrubber, play/pause); live data keeps
 running underneath and **Back to live** returns to it. Charts in replay are built from the replayed events (closing prices).
 
+### `/trades` (engine)
+
+`GET /trades?day=2026-10-09&mode=live` returns every closed trade of a logged day, assembled from the event log:
+`{bot, ticker, side, contract, qty, entry_time, entry_price, exit_time, exit_price, exit_code, pnl, pnl_day, source}`. `/days` rows
+also carry `pnl`, `trades` and `wins`. The view shows them in the **Trades** panel (day picker, bot/ticker/result filters, totals,
+CSV download, "Replay this day"), in the trade tape and day summary, and as EARNED cards. If the engine's own day P&L differs from
+the sum of logged trades the panel says so (for example after an engine restart reset a bot's running total).
+
 ### `/history` (engine)
 
 `GET /history?ticker=QQQ` returns today's one-minute candles, VWAP/EMA levels and trade markers:
@@ -95,6 +103,13 @@ is built only from prices seen since the page loaded.
   keyboard operable): the camera flies to it and a full-size, crisp version opens. Charts zoom with the mouse wheel (time),
   Shift+wheel (price), drag to pan, double-click to reset, with a crosshair and OHLC/VWAP/EMA readout. Keys: `+` `-` zoom,
   arrows pan/zoom price, `0` resets. Esc closes the screen, then leaves the room, then closes the tower.
+- **Backtest room** (Step inside the tower): night-sky room with a robot trader at its desk, hex-tile floor and wall, a NEVER SLEEPS
+  sign and eight screens: SPY / QQQ / IWM line charts (glowing green when up on the day, red when down, with % header), the
+  signal scanner, the selected bot's 1-minute chart with a WINNING / LOSING label, heatmap + leaderboard, a MARKET OPEN plaque and an
+  EARNED screen (big P&L, trade lines). The three round buttons on the desk: green = replay a day / pause / play, pink = back to live,
+  white = cycle speed (this mapping is my reading of the video, which is too small to confirm). The bar at the bottom shows the replay
+  clock (or LIVE) and the bot's state. The robot sways and types, raises an arm when the ticker is winning, bows its head when losing.
+- Leaderboard rows, heatmap tiles and trade rows always open that bot (never toggle it off); inside the room they open its scanner.
 - Panels: trade tape, three ticker charts (price, VWAP, EMA50, entry/exit markers, % change since page load),
   worker heatmap, 9 bot cards, leaderboard, market clock and data freshness, thoughts feed. "Table only" hides the
   canvas. Every state is also written as text with an icon.

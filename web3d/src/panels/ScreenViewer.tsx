@@ -3,6 +3,9 @@ import type { Series } from '../model/history'
 import { daySummary } from '../model/summary'
 import { formatPnl } from '../model/format'
 import type { BotEvent, BotRow, TradeRec } from '../model/types'
+import type { Trade } from '../model/trades'
+import { earnedLines } from '../model/lab'
+import { EarnedCard } from './EarnedCard'
 import type { Status } from '../net/socket'
 import { Clock } from './Clock'
 import { Heatmap } from './Heatmap'
@@ -13,6 +16,7 @@ import { ZoomChart } from './ZoomChart'
 export const SCREEN_TITLES: Record<string, string> = {
   SPY: 'SPY 1-minute chart', QQQ: 'QQQ 1-minute chart', IWM: 'IWM 1-minute chart',
   scanner: 'Signal scanner', board: 'Worker heatmap and leaderboard', plaque: 'Market and day total',
+  chart1m: '1-minute chart of the selected bot', earned: 'Earned: closed trades',
 }
 
 interface Props {
@@ -24,6 +28,7 @@ interface Props {
   feed: BotEvent[]
   trades: TradeRec[]
   selectedBot: string | null
+  earned: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }
   total: number
   lastEventAt: number | null
   dataTime: string | null
@@ -47,6 +52,17 @@ export function ScreenViewer(p: Props) {
         </header>
         {['SPY', 'QQQ', 'IWM'].includes(p.screen) && p.series[p.screen] &&
           <ZoomChart series={p.series[p.screen]} trades={p.tickerTrades[p.screen] ?? 0} height={Math.max(300, Math.min(620, Math.round(window.innerHeight * 0.62)))} />}
+        {p.screen === 'chart1m' && row && p.series[row.ticker] &&
+          <ZoomChart series={p.series[row.ticker]} trades={p.tickerTrades[row.ticker] ?? 0} height={Math.max(300, Math.min(620, Math.round(window.innerHeight * 0.62)))} />}
+        {p.screen === 'earned' && (
+          <div className="twocol">
+            <EarnedCard label={p.earned.label} pnl={p.earned.pnl} count={p.earned.count} wins={p.earned.wins} lines={p.earned.trades} />
+            <ol className="feed small">
+              {earnedLines(p.earned.trades, 200).map((l, i) => <li key={i} className={l.includes('-$') ? 'loss' : 'win'}>{l}</li>)}
+              {p.earned.trades.length === 0 && <li className="muted">No closed trades yet.</li>}
+            </ol>
+          </div>
+        )}
         {p.screen === 'scanner' && row && (
           <>
             <label className="muted">Bot{' '}

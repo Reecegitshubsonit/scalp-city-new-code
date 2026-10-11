@@ -5,7 +5,11 @@ import { mergeSeries } from './model/history'
 import { useHistory } from './net/useHistory'
 import { useDays } from './net/useDays'
 import { useTrades } from './net/useTrades'
-import { mergeTrades, toTradeRecs } from './model/trades'
+import { mergeTrades, toTradeRecs, tradeStats } from './model/trades'
+import { replayClockLabel } from './model/lab'
+import { stateLabel } from './model/visual'
+import { dayLabel } from './panels/EarnedCard'
+import type { LabControls } from './scene/Room3D'
 import { TradesPanel } from './panels/TradesPanel'
 import { leaderboard, totalPnl } from './model/reducer'
 import { formatPnl } from './model/format'
@@ -151,7 +155,17 @@ export default function App() {
       pending={sel.bot in pending} onClose={onClose} onPause={onPause} onInside={tableOnly ? undefined : onInside} />
   )
   const floatChart = sel ? <CandleChart series={series[sel.ticker]} trades={tickerTrades[sel.ticker] ?? 0} height={120} labels={false} compact /> : null
-  const roomData = { series, tickerTrades, rows, feed: state.feed, selectedRow: sel, total }
+  const stats = useMemo(() => tradeStats(currentTrades), [currentTrades])
+  const earned = useMemo(
+    () => ({ label: date ? dayLabel(date) : 'TODAY', pnl: stats.pnl, count: stats.count, wins: stats.wins, trades: currentTrades }),
+    [date, stats, currentTrades],
+  )
+  const lab: LabControls = {
+    replayActive: replay.active, playing: replay.playing, speed: replay.speed,
+    onPlayPause: () => (replay.playing ? replay.pause() : replay.play()), onStop: replay.stop, onSpeed: replay.setSpeed,
+    onOpenPicker: () => setShowPicker(true),
+  }
+  const roomData = { series, tickerTrades, rows, feed: state.feed, selectedRow: sel, total, earned, lab }
 
   return (
     <div className="app">
@@ -180,9 +194,13 @@ export default function App() {
                   <div className="insidebar">
                     <button onClick={() => setInside(false)}>← Back outside (Esc)</button>
                     <b>{sel.bot}</b>
-                    {[['SPY', 'SPY'], ['QQQ', 'QQQ'], ['IWM', 'IWM'], ['scanner', 'Scanner'], ['board', 'Heatmap'], ['plaque', 'Market']].map(([id, label]) => (
-                      <button key={id} onClick={() => onPickScreen(id)} aria-label={`Open ${label} screen`}>{label}</button>
-                    ))}
+                    <span className="muted">{replay.active ? replayClockLabel(replayMs ?? 0) : 'LIVE'} · {stateLabel(sel.state).toLowerCase()}</span>
+                    <label className="muted">Screens{' '}
+                      <select value="" aria-label="Open a wall screen" onChange={e => { if (e.target.value) onPickScreen(e.target.value) }}>
+                        <option value="">Open a screen...</option>
+                        {[['SPY', 'SPY chart'], ['QQQ', 'QQQ chart'], ['IWM', 'IWM chart'], ['chart1m', '1-minute chart'], ['scanner', 'Signal scanner'], ['board', 'Heatmap and leaderboard'], ['plaque', 'Market'], ['earned', 'Earned trades']].map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+                      </select>
+                    </label>
                     <button onClick={onClose}>Close</button>
                   </div>
                 )}
@@ -208,7 +226,7 @@ export default function App() {
       </main>
       {screen && inside && (
         <ScreenViewer screen={screen} series={series} tickerTrades={tickerTrades} rows={rows} board={board} feed={state.feed} trades={tradeRecs}
-          selectedBot={selected} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
+          selectedBot={selected} earned={earned} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
       )}
       {showPicker && <ReplayPicker loading={replay.loading} error={replay.error} onClose={() => setShowPicker(false)} onPick={async d => { await replay.start(d); setShowPicker(false); onClose() }} />}
       {showSummary && <Summary rows={rows} trades={tradeRecs} date={date} onClose={closeSummary} />}

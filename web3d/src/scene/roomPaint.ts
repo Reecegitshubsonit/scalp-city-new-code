@@ -88,3 +88,85 @@ export function paintPlaque(ctx: Ctx, w: number, h: number, nowMs: number, total
   text(ctx, `${et} ET - ${left}`, w * 0.07, h * 0.62, h * 0.13, CHART_COLORS.text)
   text(ctx, `DAY ${formatPnl(total)}`, w * 0.07, h * 0.9, h * 0.2, total >= 0 ? COLORS.CALL : COLORS.PUT, 'left', true)
 }
+
+// ---------- backtest-room screens ----------
+import type { Series } from '../model/history'
+import { chartHeader } from '../model/history'
+import { earnedLines, lineTone, standingLabel } from '../model/lab'
+import type { Trade } from '../model/trades'
+import { drawChart } from '../panels/drawChart'
+import { formatNum } from '../model/format'
+import { fullView } from '../model/viewport'
+
+/** Wall chart in the video's style: glowing close line, green when up on the day and red when down, VWAP in orange, header with price and %. */
+export function paintWallLine(ctx: Ctx, w: number, h: number, ticker: string, s: Series, trades: number): void {
+  drawChart(ctx, w, h, s, { labels: false, axis: false, style: 'line', fontScale: 2.2 })
+  const hd = chartHeader(s, trades)
+  const up = lineTone(s.candles)
+  const col = up === 'up' ? COLORS.CALL : up === 'down' ? COLORS.PUT : '#fff'
+  text(ctx, ticker, w * 0.03, h * 0.12, h * 0.09, '#fff', 'left', true)
+  text(ctx, `${formatNum(hd.price)}   ${hd.changePct == null ? '' : (hd.changePct >= 0 ? '+' : '') + hd.changePct.toFixed(2) + '%'}`, w * 0.97, h * 0.12, h * 0.09, col, 'right', true)
+  text(ctx, `${hd.time ?? ''} · ${hd.trades} trades`, w * 0.03, h * 0.2, h * 0.05, CHART_COLORS.text)
+}
+
+/** Selected ticker's last 90 one-minute candles with VWAP/EMA50 and the WINNING / LOSING standing. */
+export function paintChart1m(ctx: Ctx, w: number, h: number, ticker: string, s: Series, tickerPnl: number): void {
+  const n = s.candles.length
+  drawChart(ctx, w, h, s, { labels: true, axis: true, fontScale: 1.9, view: { ...fullView(), span: Math.min(90, Math.max(2, n)), start: Math.max(0, n - 90) } })
+  const hd = chartHeader(s, 0)
+  text(ctx, `${ticker} · 1-MIN · ${hd.time ?? ''}`, w * 0.02, h * 0.075, h * 0.062, '#fff', 'left', true)
+  text(ctx, standingLabel(tickerPnl), w * 0.62, h * 0.075, h * 0.062, tickerPnl >= 0 ? COLORS.CALL : COLORS.PUT, 'left', true)
+  text(ctx, 'VWAP', w * 0.9, h * 0.075, h * 0.045, CHART_COLORS.vwap, 'right', true)
+  text(ctx, 'EMA50', w * 0.98, h * 0.075, h * 0.045, CHART_COLORS.ema50, 'right', true)
+}
+
+/** "EARNED · Wed 10/7": big P&L with the latest trades under it. */
+export function paintEarned(ctx: Ctx, w: number, h: number, e: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }): void {
+  ctx.fillStyle = '#05031e'; ctx.fillRect(0, 0, w, h)
+  const m = w * 0.06
+  text(ctx, `EARNED · ${e.label}`, m, h * 0.1, h * 0.065, CHART_COLORS.text, 'left', true)
+  text(ctx, formatPnl(e.pnl), m, h * 0.3, h * 0.2, e.pnl >= 0 ? COLORS.CALL : COLORS.PUT, 'left', true)
+  text(ctx, `${e.count} trades · ${e.wins} wins · ${e.count ? Math.round((e.wins / e.count) * 100) : 0}% win rate`, m, h * 0.39, h * 0.05, '#e8e6ff')
+  earnedLines(e.trades, 9).forEach((l, i) => {
+    ctx.font = `${h * 0.045}px ${FONT}`
+    text(ctx, clip(ctx, l, w - 2 * m), m, h * 0.5 + i * h * 0.056, h * 0.045, l.includes('-$') ? COLORS.PUT : COLORS.CALL)
+  })
+  if (!e.trades.length) text(ctx, 'no closed trades yet', m, h * 0.5, h * 0.05, CHART_COLORS.text)
+}
+
+/** Neon sign. */
+export function paintSign(ctx: Ctx, w: number, h: number, label: string): void {
+  ctx.clearRect(0, 0, w, h)
+  ctx.textAlign = 'center'; ctx.font = `bold ${h * 0.7}px ${FONT}`
+  ctx.shadowColor = '#ff3bd4'; ctx.shadowBlur = h * 0.25; ctx.fillStyle = '#ff9bea'
+  ctx.fillText(label, w / 2, h * 0.75)
+  ctx.shadowColor = '#3de0ff'; ctx.shadowBlur = h * 0.12; ctx.strokeStyle = '#3de0ff'; ctx.lineWidth = h * 0.02
+  ctx.strokeText(label, w / 2, h * 0.75)
+  ctx.shadowBlur = 0
+}
+
+/** Purple hexagon tiles with a few pink ones. */
+export function paintHex(ctx: Ctx, w: number, h: number): void {
+  ctx.fillStyle = '#1a1058'; ctx.fillRect(0, 0, w, h)
+  const r = h / 9, dx = r * 1.5, dy = Math.sqrt(3) * r
+  let seed = 5
+  const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296 }
+  for (let col = -1; col * dx < w + r; col++) {
+    for (let row = -1; row * dy < h + dy; row++) {
+      const cx = col * dx, cy = row * dy + (col % 2 ? dy / 2 : 0)
+      ctx.beginPath()
+      for (let k = 0; k < 6; k++) { const a = (Math.PI / 3) * k; ctx.lineTo(cx + (r - 3) * Math.cos(a), cy + (r - 3) * Math.sin(a)) }
+      ctx.closePath()
+      const v = rnd()
+      ctx.fillStyle = v < 0.07 ? '#ff3bd4' : v < 0.2 ? '#3a1d8f' : '#2a1678'
+      ctx.fill()
+    }
+  }
+}
+
+/** Label under a desk button. */
+export function paintDiscLabel(ctx: Ctx, w: number, h: number, label: string, color: string): void {
+  ctx.clearRect(0, 0, w, h)
+  ctx.fillStyle = '#0b0830cc'; ctx.fillRect(0, 0, w, h)
+  text(ctx, label, w / 2, h * 0.68, h * 0.55, color, 'center', true)
+}
