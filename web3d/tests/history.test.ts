@@ -64,3 +64,23 @@ describe('markLabel', () => {
     expect(markLabel({ time: T(1), bot: 'a', type: 'exit', side: null })).toBe('EXIT')
   })
 })
+
+import { truncateHistory } from '../src/model/history'
+describe('truncateHistory', () => {
+  const h = {
+    ticker: 'QQQ',
+    bars: ['09:30', '09:31', '09:32'].map((m, i) => ({ time: `2026-10-07T${m}:00-04:00`, open: 1 + i, high: 2 + i, low: i, close: 1.5 + i })),
+    levels: [{ time: '2026-10-07T09:30:00-04:00', vwap: 1 }, { time: '2026-10-07T09:32:00-04:00', vwap: 3 }],
+    marks: [{ time: '2026-10-07T09:31:00-04:00', bot: 'QQQ-VWAP', type: 'entry' as const, side: 'CALL' as const }, { time: '2026-10-07T09:32:00-04:00', bot: 'QQQ-VWAP', type: 'exit' as const, side: 'CALL' as const, pnl: 5 }],
+  }
+  it('keeps only candles, levels and marks up to the replay position (no future leaks)', () => {
+    const t = truncateHistory(h, Date.parse('2026-10-07T09:31:30-04:00'))
+    expect(t.bars.map(b => b.time.slice(11, 16))).toEqual(['09:30', '09:31'])
+    expect(t.levels).toHaveLength(1)
+    expect(t.marks).toHaveLength(1)
+  })
+  it('keeps everything past the end and nothing before the start', () => {
+    expect(truncateHistory(h, Date.parse('2026-10-07T17:00:00-04:00')).bars).toHaveLength(3)
+    expect(truncateHistory(h, Date.parse('2026-10-07T09:00:00-04:00')).bars).toHaveLength(0)
+  })
+})

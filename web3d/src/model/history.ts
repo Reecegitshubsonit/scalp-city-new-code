@@ -52,3 +52,9 @@ export function markLabel(m: HMark): string {
   if (m.type === 'entry') return m.side ?? 'ENTRY'
   return typeof m.pnl === 'number' ? formatPnl(m.pnl) : 'EXIT'
 }
+
+/** A past day's history cut at the replay position: nothing after `ms` (the replay must not show the future). */
+export function truncateHistory(h: History, ms: number): History {
+  const ok = (t: string) => Date.parse(t) <= ms
+  return { ticker: h.ticker, bars: h.bars.filter(b => ok(b.time)), levels: h.levels.filter(l => ok(l.time)), marks: h.marks.filter(m => ok(m.time)) }
+}

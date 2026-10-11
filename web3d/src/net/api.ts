@@ -10,9 +10,10 @@ export async function postPause(bot: string, paused: boolean): Promise<void> {
 
 import type { History } from '../model/history'
 
-/** Today's candles, indicator levels and trade markers; null when the engine has no /history (older engine). */
-export async function fetchHistory(ticker: string): Promise<History | null> {
-  const r = await fetch(apiUrl(`/history?ticker=${encodeURIComponent(ticker)}`))
+/** Today's candles (or a past day's real cached candles) with indicator levels and trade markers; null when the engine has none. */
+export async function fetchHistory(ticker: string, day?: { day: string; mode: string }): Promise<History | null> {
+  const q = day ? `&day=${encodeURIComponent(day.day)}&mode=${encodeURIComponent(day.mode)}` : ''
+  const r = await fetch(apiUrl(`/history?ticker=${encodeURIComponent(ticker)}${q}`))
   if (r.status === 404) return null
   if (!r.ok) throw new Error(`HTTP ${r.status}`)
   return (await r.json()) as History

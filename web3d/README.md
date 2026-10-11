@@ -73,6 +73,14 @@ also carry `pnl`, `trades` and `wins`. The view shows them in the **Trades** pan
 CSV download, "Replay this day"), in the trade tape and day summary, and as EARNED cards. If the engine's own day P&L differs from
 the sum of logged trades the panel says so (for example after an engine restart reset a bot's running total).
 
+### `/history?day=` (engine, real candles of past days)
+
+`GET /history?ticker=QQQ&day=2026-10-07[&mode=replay]` returns the real one-minute candles of a past day from the Alpaca cache
+(`data/cache/stock-QQQ-2026-10-07.json`, written by `scalpcity/alpaca_history.py`) plus that day's levels and markers from its event log.
+404 when no bars are cached for that day. `run_live.py --cache-dir` sets the folder (default `data/cache`). In a replay the view fetches this
+once and shows candles only up to the replay position; without cached bars it falls back to closing prices from the replayed events.
+Cached days today: 2026-10-05, 10-06, 10-07 (not 10-09).
+
 ### `/history` (engine)
 
 `GET /history?ticker=QQQ` returns today's one-minute candles, VWAP/EMA levels and trade markers:

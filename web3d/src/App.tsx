@@ -1,7 +1,8 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion, useStored } from './hooks'
 import { ALL_BOTS, TICKERS } from './model/layout'
-import { mergeSeries } from './model/history'
+import { mergeSeries, truncateHistory } from './model/history'
+import { useDayHistory } from './net/useDayHistory'
 import { useHistory } from './net/useHistory'
 import { useDays } from './net/useDays'
 import { useTrades } from './net/useTrades'
@@ -66,9 +67,16 @@ export default function App() {
   const board = useMemo(() => leaderboard(state), [state])
   const total = totalPnl(state)
   const history = useHistory(TICKERS, replay.active ? 'down' : status)
+  const replayDay = replay.active && replay.day ? { day: replay.day.day, mode: replay.day.mode } : null
+  const dayHistory = useDayHistory(TICKERS, replayDay)   // real candles of the replayed day, when the engine has them cached
+  const replayAtMs = replay.active ? Math.floor((replay.startMs + replay.posMs) / 60000) * 60000 + 59999 : null   // per minute: one new candle at a time, not a rebuild every tick
   const series = useMemo(
-    () => Object.fromEntries(TICKERS.map(t => [t, mergeSeries(t, replay.active ? null : history[t] ?? null, state.ticks[t] ?? [], state.marks[t] ?? [])])),
-    [history, state.ticks, state.marks, replay.active],
+    () => Object.fromEntries(TICKERS.map(t => {
+      const dh = dayHistory[t]
+      const h = replay.active ? (dh && replayAtMs != null ? truncateHistory(dh, replayAtMs) : null) : history[t] ?? null
+      return [t, mergeSeries(t, h, state.ticks[t] ?? [], state.marks[t] ?? [])]
+    })),
+    [history, state.ticks, state.marks, replay.active, dayHistory, replayAtMs],
   )
   const tickerTrades = useMemo(() => {
     const m: Record<string, number> = {}
