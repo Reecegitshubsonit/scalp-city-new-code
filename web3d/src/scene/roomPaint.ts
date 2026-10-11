@@ -123,6 +123,16 @@ export function paintChart1m(ctx: Ctx, w: number, h: number, ticker: string, s: 
   text(ctx, 'EMA50', w * 0.98, h * 0.075, h * 0.045, CHART_COLORS.ema50, 'right', true)
 }
 
+/** Big chart of one ticker: candles, VWAP/EMA50 and only that ticker's entry/exit markers. */
+export function paintTickerChart(ctx: Ctx, w: number, h: number, ticker: string, s: Series, trades: number): void {
+  drawChart(ctx, w, h, s, { labels: true, axis: true, fontScale: 2 })
+  const hd = chartHeader(s, trades)
+  const up = lineTone(s.candles)
+  text(ctx, ticker, w * 0.02, h * 0.075, h * 0.065, '#fff', 'left', true)
+  text(ctx, `${formatNum(hd.price)} ${hd.changePct == null ? '' : (hd.changePct >= 0 ? '+' : '') + hd.changePct.toFixed(2) + '%'} · ${hd.trades} trades`, w * 0.98, h * 0.075, h * 0.05,
+    up === 'down' ? COLORS.PUT : up === 'up' ? COLORS.CALL : '#fff', 'right', true)
+}
+
 /** "EARNED · Wed 10/7": big P&L with the latest trades under it. */
 export function paintEarned(ctx: Ctx, w: number, h: number, e: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }): void {
   ctx.fillStyle = '#05031e'; ctx.fillRect(0, 0, w, h)

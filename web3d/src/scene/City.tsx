@@ -12,13 +12,14 @@ import type { BotRow, TradeRec } from '../model/types'
 import { Dome } from './Dome'
 import { TOWER_TOP, Tower } from './Tower'
 import { SkyDome, Skyline } from './Sky'
+import type { Series } from '../model/history'
 import { Billboard } from './Billboard'
 import { ROOM_CAM_POS, ROOM_LOOK_POS, Room3D, screenPose, type RoomData } from './Room3D'
 
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
   reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>; title: string
-  inside: boolean; roomData: RoomData; floatChart: ReactNode
+  inside: boolean; roomData: RoomData; allSeries: Record<string, Series>; floatChart: ReactNode
   screen: string | null; onPickScreen: (id: string) => void
 }
 
@@ -96,7 +97,7 @@ function CameraRig({ selected, inside, screen, reducedMotion }: { selected: stri
 // Bloom costs about half the frame rate on integrated GPUs; beams have additive glow shells already, so it is opt-in.
 const BLOOM = new URLSearchParams(location.search).get('fx') === 'high'
 
-export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, floatChart, screen, onPickScreen }: Props) {
+export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, allSeries, floatChart, screen, onPickScreen }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   const spokes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const a = (i / 12) * Math.PI * 2
@@ -130,7 +131,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
         const [x, , z] = POS[id]
         out.push({ id: `s-${id}`, pos: [x, TOWER_TOP + 1.3, z], className: 'sign', node: k })
         if (row) {
-          const closes = (roomData.series[t]?.candles ?? []).slice(-40).map(c => c.close)
+          const closes = (allSeries[t]?.candles ?? []).slice(-40).map(c => c.close)
           out.push({ id: `b-${id}`, pos: [x, TOWER_TOP + 2.4, z], className: 'bbwrap',
             node: <Billboard closes={closes} badge={badgeFor(row, lastTrade[id])} state={row.state} pnl={row.pnl_day} /> })
         }
@@ -141,7 +142,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
       out.push({ id: 'float', pos: [px, TOWER_TOP + 1.5, pz], className: 'floatchart', top: true, node: floatChart })
     }
     return out
-  }, [byBot, lastTrade, total, title, selected, floatChart, inside, roomData.series])
+  }, [byBot, lastTrade, total, title, selected, floatChart, inside, allSeries])
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)} role="img" aria-label="3D city of bots. Every value shown here is also in the panels.">
       <Canvas dpr={[1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>

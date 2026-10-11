@@ -92,23 +92,24 @@ is built only from prices seen since the page loaded.
   candle chart floats above it (header "QQQ . Fri 10/9 . 15:59 . 751.27 -0.16% . 20 trades", VWAP and EMA50 lines, CALL/PUT
   entry markers and "+$380.00" exit labels) and a panel opens with the same chart larger, the scanner (headline,
   charge bar, that bot's thoughts in sentences), inputs and Pause/Resume. "Step inside the tower" flies the camera into a
-  3D room with three wall charts (SPY, QQQ, IWM, 1-MIN), the scanner, heatmap, leaderboard and a market-open plaque.
+  3D room for that ticker (scanners, charts, heatmap, leaderboard, earned, plaque).
   Esc steps back out, then closes. The chart loads the whole day from `GET /history?ticker=QQQ` (engine) and then
   updates on every bar. On narrow screens the panel sits below the 3D view; on wide screens it overlays the left side.
   Auto-rotation pauses while the pointer is over the 3D view so towers can be clicked.
 - Each tower has a floating billboard: sparkline of its ticker, status ("PROFIT LOCKED +$118", "PUT 40% CHARGED") and
   the bot's day P&L. The clicked tower gets big spinning white rings (a gyroscope) around it. The sky is a starfield with a
   purple horizon.
-- Inside the room, **click any of the six screens** (or use the SPY / QQQ / IWM / Scanner / Heatmap / Market buttons, which are
-  keyboard operable): the camera flies to it and a full-size, crisp version opens. Charts zoom with the mouse wheel (time),
+- Inside the room, **click any screen** (or use the "Open a screen" list, which is keyboard operable): the camera flies to it and a full-size, crisp version opens. Charts zoom with the mouse wheel (time),
   Shift+wheel (price), drag to pan, double-click to reset, with a crosshair and OHLC/VWAP/EMA readout. Keys: `+` `-` zoom,
   arrows pan/zoom price, `0` resets. Esc closes the screen, then leaves the room, then closes the tower.
-- **Backtest room** (Step inside the tower): night-sky room with a robot trader at its desk, hex-tile floor and wall, a NEVER SLEEPS
-  sign and eight screens: SPY / QQQ / IWM line charts (glowing green when up on the day, red when down, with % header), the
-  signal scanner, the selected bot's 1-minute chart with a WINNING / LOSING label, heatmap + leaderboard, a MARKET OPEN plaque and an
-  EARNED screen (big P&L, trade lines). The three round buttons on the desk: green = replay a day / pause / play, pink = back to live,
-  white = cycle speed (this mapping is my reading of the video, which is too small to confirm). The bar at the bottom shows the replay
-  clock (or LIVE) and the bot's state. The robot sways and types, raises an arm when the ticker is winning, bows its head when losing.
+- **Tower room** (Step inside the tower): one room per ticker, showing only that ticker. Click any tower of a district and its
+  ticker's room opens (the clicked bot is highlighted). Neon sign "QQQ TOWER", a robot trader at its desk, hex floor, and eight screens:
+  three scanners (one per bot VWAP, EMA50, RANGE: signal, charge bar, thoughts with times, day P&L), a big chart of the ticker with only its
+  trade markers, the 1-minute chart with WINNING / LOSING, a heatmap + leaderboard of only that ticker's bots, an EARNED screen with only that
+  ticker's trades, and a market plaque with that ticker's day total. Robot mood follows that ticker's P&L. The side panel also lists "QQQ bots
+  today" (state and P&L, click to switch bot) and that ticker's recent trades. Everything is the live stream filtered to the ticker
+  (`src/model/tower.ts`). The three round desk buttons: green = replay a day / pause / play, pink = back to live, white = cycle speed (this
+  mapping is my reading of the video, which is too small to confirm).
 ![backtest room](docs/backtest-room.jpg)
 
 - Leaderboard rows, heatmap tiles and trade rows always open that bot (never toggle it off); inside the room they open its scanner.

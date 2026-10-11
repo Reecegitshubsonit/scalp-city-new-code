@@ -5,7 +5,7 @@ import type { Series } from '../model/history'
 import { nextSpeed } from '../model/lab'
 import type { BotEvent, BotRow } from '../model/types'
 import type { Trade } from '../model/trades'
-import { paintBoard, paintChart1m, paintEarned, paintPlaque, paintScanner, paintWallLine } from './roomPaint'
+import { paintChart1m, paintEarned, paintPlaque, paintScanner, paintTickerBoard, paintTickerChart } from './roomPaint'
 import { Skyline, SkyDome } from './Sky'
 import { Desk, HexSurfaces, NeonSign, Robot, type DiscSpec } from './Lab'
 
@@ -20,13 +20,15 @@ export interface LabControls {
   onPlayPause: () => void; onStop: () => void; onSpeed: (s: number) => void; onOpenPicker: () => void
 }
 
+/** Everything one tower room shows: a single ticker, its bots, its events and its trades. */
 export interface RoomData {
-  series: Record<string, Series>
-  tickerTrades: Record<string, number>
-  rows: BotRow[]
+  ticker: string
+  series: Series
+  tradeCount: number
+  tickerRows: BotRow[]
   feed: BotEvent[]
-  selectedRow: BotRow | null
-  total: number
+  selectedBot: string | null
+  tickerPnl: number
   earned: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }
   lab: LabControls
 }
@@ -35,10 +37,10 @@ interface ScreenDef { id: string; pos: [number, number, number]; size: [number, 
 
 /** The eight wall screens: position relative to the room origin and size in world units. */
 export const SCREENS: ScreenDef[] = [
-  { id: 'SPY', pos: [-4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
-  { id: 'QQQ', pos: [0, 4.5, -6], size: [4.6, 2.76], px: [1472, 883] },
-  { id: 'IWM', pos: [4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
-  { id: 'scanner', pos: [-4.6, 1.95, -6], size: [4, 1.9], px: [1280, 608] },
+  { id: 'scan0', pos: [-4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
+  { id: 'chart', pos: [0, 4.5, -6], size: [4.6, 2.76], px: [1472, 883] },
+  { id: 'scan1', pos: [4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
+  { id: 'scan2', pos: [-4.6, 1.95, -6], size: [4, 1.9], px: [1280, 608] },
   { id: 'chart1m', pos: [0, 1.95, -6], size: [4.6, 1.9], px: [1472, 608] },
   { id: 'board', pos: [4.6, 1.95, -6], size: [4, 1.9], px: [1280, 608] },
   { id: 'plaque', pos: [-8.6, 3.4, -4.3], size: [3.4, 1.15], px: [1088, 368], rotY: 0.55 },
@@ -104,19 +106,19 @@ function Monitor({ def, paint, deps, everyMs, onPick }: {
 
 /** The backtest room: night sky and skyline, eight wall screens (click one to open it full size), the robot at its desk, hex floor. */
 export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick: (id: string) => void; reducedMotion: boolean }) {
-  const { series, tickerTrades, rows, feed, selectedRow, total, earned, lab } = data
+  const { ticker, series, tradeCount, tickerRows, feed, selectedBot, tickerPnl, earned, lab } = data
   const [x, y, z] = [ROOM_ORIGIN.x, ROOM_ORIGIN.y, ROOM_ORIGIN.z]
   const worldScreens = useMemo(() => SCREENS.map(d => ({ ...d, pos: [x + d.pos[0], y + d.pos[1], z + d.pos[2]] as [number, number, number] })), [x, y, z])
-  const ticker = selectedRow?.ticker ?? 'QQQ'
-  const tickerPnl = rows.filter(r => r.ticker === ticker).reduce((a, r) => a + r.pnl_day, 0)
+  const botPaint = (i: number) => {
+    const r = tickerRows[i] ?? null
+    return { paint: (c: CanvasRenderingContext2D, w: number, h: number) => paintScanner(c, w, h, r, feed, !!r && r.bot === selectedBot), deps: [r, feed, selectedBot] }
+  }
   const paints: Record<string, { paint: (c: CanvasRenderingContext2D, w: number, h: number) => void; deps: unknown[]; everyMs?: number }> = {
-    SPY: { paint: (c, w, h) => paintWallLine(c, w, h, 'SPY', series.SPY, tickerTrades.SPY ?? 0), deps: [series.SPY, tickerTrades.SPY] },
-    QQQ: { paint: (c, w, h) => paintWallLine(c, w, h, 'QQQ', series.QQQ, tickerTrades.QQQ ?? 0), deps: [series.QQQ, tickerTrades.QQQ] },
-    IWM: { paint: (c, w, h) => paintWallLine(c, w, h, 'IWM', series.IWM, tickerTrades.IWM ?? 0), deps: [series.IWM, tickerTrades.IWM] },
-    scanner: { paint: (c, w, h) => paintScanner(c, w, h, selectedRow, feed), deps: [selectedRow, feed] },
-    chart1m: { paint: (c, w, h) => paintChart1m(c, w, h, ticker, series[ticker], tickerPnl), deps: [series[ticker], ticker, tickerPnl] },
-    board: { paint: (c, w, h) => paintBoard(c, w, h, rows), deps: [rows] },
-    plaque: { paint: (c, w, h) => paintPlaque(c, w, h, Date.now(), total), deps: [total], everyMs: 1000 },
+    scan0: botPaint(0), scan1: botPaint(1), scan2: botPaint(2),
+    chart: { paint: (c, w, h) => paintTickerChart(c, w, h, ticker, series, tradeCount), deps: [series, ticker, tradeCount] },
+    chart1m: { paint: (c, w, h) => paintChart1m(c, w, h, ticker, series, tickerPnl), deps: [series, ticker, tickerPnl] },
+    board: { paint: (c, w, h) => paintTickerBoard(c, w, h, ticker, tickerRows), deps: [tickerRows, ticker] },
+    plaque: { paint: (c, w, h) => paintPlaque(c, w, h, Date.now(), tickerPnl, ticker), deps: [tickerPnl, ticker], everyMs: 1000 },
     earned: { paint: (c, w, h) => paintEarned(c, w, h, earned), deps: [earned] },
   }
   const discs: DiscSpec[] = [
@@ -135,7 +137,7 @@ export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick
       </mesh>
       <gridHelper args={[60, 60, '#5b4dff', '#241f6a']} position={[x, y, z]} />
       <group position={[x, y, z]}><HexSurfaces /></group>
-      <NeonSign label="NEVER SLEEPS" position={[x, y + 6.95, z - 6.1]} size={[6.4, 1.2]} />
+      <NeonSign label={`${ticker} TOWER`} position={[x, y + 6.95, z - 6.1]} size={[6.4, 1.2]} />
       {worldScreens.map(def => {
         const p = paints[def.id]
         return <Monitor key={def.id} def={def} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick} />

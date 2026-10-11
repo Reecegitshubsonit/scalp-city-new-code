@@ -26,3 +26,18 @@ describe('tower scoping', () => {
     expect(eventsOfTicker(ev, 'QQQ').map(e => e.seq)).toEqual([2])
   })
 })
+
+import { botOfScreen, scanId } from '../src/model/tower'
+describe('scanner screen ids', () => {
+  it('maps a bot to its scanner screen by trigger order', () => {
+    expect(scanId('QQQ-VWAP')).toBe('scan0')
+    expect(scanId('SPY-EMA50')).toBe('scan1')
+    expect(scanId('IWM-RANGE')).toBe('scan2')
+    expect(scanId('QQQ-WAT')).toBeNull()
+  })
+  it('maps a scanner screen back to the ticker bot', () => {
+    const rows = [{ bot: 'QQQ-VWAP' }, { bot: 'QQQ-EMA50' }, { bot: 'QQQ-RANGE' }] as never[]
+    expect((botOfScreen('scan1', rows) as { bot: string }).bot).toBe('QQQ-EMA50')
+    expect(botOfScreen('chart', rows)).toBeNull()
+  })
+})

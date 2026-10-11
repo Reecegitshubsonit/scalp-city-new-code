@@ -12,6 +12,7 @@ import { dayLabel } from './panels/EarnedCard'
 import type { LabControls } from './scene/Room3D'
 import { TradesPanel } from './panels/TradesPanel'
 import { leaderboard, totalPnl } from './model/reducer'
+import { botsOfTicker, eventsOfTicker, scanId, tickerPnl as sumTickerPnl, tradesOfTicker } from './model/tower'
 import { formatPnl } from './model/format'
 import type { BotRow, TradeRec } from './model/types'
 import { postPause } from './net/api'
@@ -129,7 +130,7 @@ export default function App() {
   // leaderboard, heatmap and trade rows: open that bot, and always show something (scanner screen inside the room, else scroll to it)
   const openBot = useCallback((bot: string) => {
     setSelected(bot)
-    if (inside) setScreen('scanner')
+    if (inside) setScreen(scanId(bot) ?? 'scan0')
     else setTimeout(() => (document.querySelector('.stage') ?? document.querySelector('.room'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
   }, [inside])
   const onInside = useCallback(() => setInside(true), [])
@@ -149,23 +150,28 @@ export default function App() {
   useEffect(() => { if (!selected) { setInside(false); setScreen(null) } }, [selected])
   useEffect(() => { if (!inside) setScreen(null) }, [inside])
   const sel = selected ? state.bots[selected] ?? placeholder(selected) : null
+  const ticker = sel?.ticker ?? 'QQQ'   // a tower room shows only the clicked tower's ticker
+  const tickerRows = useMemo(() => botsOfTicker(rows, ticker), [rows, ticker])
+  const tickerFeed = useMemo(() => eventsOfTicker(state.feed, ticker), [state.feed, ticker])
+  const tickerTradeList = useMemo(() => tradesOfTicker(currentTrades, ticker), [currentTrades, ticker])
+  const tPnl = useMemo(() => sumTickerPnl(rows, ticker), [rows, ticker])
 
   const room = sel && !inside && (
     <Room row={sel} events={state.feed} series={series[sel.ticker]} tickerTrades={tickerTrades[sel.ticker] ?? 0}
-      pending={sel.bot in pending} onClose={onClose} onPause={onPause} onInside={tableOnly ? undefined : onInside} />
+      siblings={tickerRows} recent={tickerTradeList} onSelectBot={onSelect} pending={sel.bot in pending} onClose={onClose} onPause={onPause} onInside={tableOnly ? undefined : onInside} />
   )
   const floatChart = sel ? <CandleChart series={series[sel.ticker]} trades={tickerTrades[sel.ticker] ?? 0} height={120} labels={false} compact /> : null
-  const stats = useMemo(() => tradeStats(currentTrades), [currentTrades])
+  const stats = useMemo(() => tradeStats(tickerTradeList), [tickerTradeList])
   const earned = useMemo(
-    () => ({ label: date ? dayLabel(date) : 'TODAY', pnl: stats.pnl, count: stats.count, wins: stats.wins, trades: currentTrades }),
-    [date, stats, currentTrades],
+    () => ({ label: `${ticker} · ${date ? dayLabel(date) : 'TODAY'}`, pnl: stats.pnl, count: stats.count, wins: stats.wins, trades: tickerTradeList }),
+    [date, stats, tickerTradeList, ticker],
   )
   const lab: LabControls = {
     replayActive: replay.active, playing: replay.playing, speed: replay.speed,
     onPlayPause: () => (replay.playing ? replay.pause() : replay.play()), onStop: replay.stop, onSpeed: replay.setSpeed,
     onOpenPicker: () => setShowPicker(true),
   }
-  const roomData = { series, tickerTrades, rows, feed: state.feed, selectedRow: sel, total, earned, lab }
+  const roomData = { ticker, series: series[ticker], tradeCount: tickerTrades[ticker] ?? 0, tickerRows, feed: tickerFeed, selectedBot: selected, tickerPnl: tPnl, earned, lab }
 
   return (
     <div className="app">
@@ -188,17 +194,17 @@ export default function App() {
               <div className="stage">
                 <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
                   <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE}
-                    inside={inside} roomData={roomData} floatChart={floatChart} screen={screen} onPickScreen={onPickScreen} />
+                    inside={inside} roomData={roomData} allSeries={series} floatChart={floatChart} screen={screen} onPickScreen={onPickScreen} />
                 </Suspense>
                 {sel && inside && (
                   <div className="insidebar">
                     <button onClick={() => setInside(false)}>← Back outside (Esc)</button>
-                    <b>{sel.bot}</b>
+                    <b>{ticker} tower</b>
                     <span className="muted">{replay.active ? replayClockLabel(replayMs ?? 0) : 'LIVE'} · {stateLabel(sel.state).toLowerCase()}</span>
                     <label className="muted">Screens{' '}
                       <select value="" aria-label="Open a wall screen" onChange={e => { if (e.target.value) onPickScreen(e.target.value) }}>
                         <option value="">Open a screen...</option>
-                        {[['SPY', 'SPY chart'], ['QQQ', 'QQQ chart'], ['IWM', 'IWM chart'], ['chart1m', '1-minute chart'], ['scanner', 'Signal scanner'], ['board', 'Heatmap and leaderboard'], ['plaque', 'Market'], ['earned', 'Earned trades']].map(([id, label]) => <option key={id} value={id}>{label}</option>)}
+                        {[...tickerRows.map((r, i) => [`scan${i}`, `${r.bot.split('-')[1]} scanner`]), ['chart', `${ticker} chart`], ['chart1m', '1-minute chart'], ['board', 'Heatmap and leaderboard'], ['plaque', 'Market'], ['earned', 'Earned trades']].map(([id, label]) => <option key={id} value={id}>{label}</option>)}
                       </select>
                     </label>
                     <button onClick={onClose}>Close</button>
@@ -225,8 +231,8 @@ export default function App() {
         </div>
       </main>
       {screen && inside && (
-        <ScreenViewer screen={screen} series={series} tickerTrades={tickerTrades} rows={rows} board={board} feed={state.feed} trades={tradeRecs}
-          selectedBot={selected} earned={earned} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
+        <ScreenViewer screen={screen} ticker={ticker} series={series[ticker]} tradeCount={tickerTrades[ticker] ?? 0} tickerRows={tickerRows} feed={tickerFeed}
+          earned={earned} tickerPnl={tPnl} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
       )}
       {showPicker && <ReplayPicker loading={replay.loading} error={replay.error} onClose={() => setShowPicker(false)} onPick={async d => { await replay.start(d); setShowPicker(false); onClose() }} />}
       {showSummary && <Summary rows={rows} trades={tradeRecs} date={date} onClose={closeSummary} />}
