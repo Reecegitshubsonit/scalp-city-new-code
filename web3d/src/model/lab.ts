@@ -32,3 +32,9 @@ export function earnedLines(trades: Trade[], n: number): string[] {
   return trades.slice(-n).reverse().map(t =>
     `${formatTime(t.exit_time).slice(0, 5)} ${t.bot} ${t.pnl >= 0 ? 'profit locked' : plainReason(t.exit_code ?? '').replace('Exit: ', '').toLowerCase() || 'closed'} ${formatPnl(t.pnl)}`)
 }
+
+/** Keyboard path to the desk buttons: Space or P = green, L = pink, S = white. */
+export const deskKey = (key: string): 'play' | 'stop' | 'speed' | null => {
+  const k = key.toLowerCase()
+  return k === ' ' || k === 'p' ? 'play' : k === 'l' ? 'stop' : k === 's' ? 'speed' : null
+}

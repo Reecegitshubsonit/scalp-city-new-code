@@ -46,3 +46,13 @@ describe('earnedLines', () => {
     expect(earnedLines([trade(), trade(), trade()], 2)).toHaveLength(2)
   })
 })
+
+import { deskKey } from '../src/model/lab'
+describe('deskKey', () => {
+  it('maps keys to the three desk buttons', () => {
+    expect(deskKey(' ')).toBe('play'); expect(deskKey('p')).toBe('play')
+    expect(deskKey('l')).toBe('stop'); expect(deskKey('L')).toBe('stop')
+    expect(deskKey('s')).toBe('speed')
+    expect(deskKey('x')).toBeNull(); expect(deskKey('Escape')).toBeNull()
+  })
+})

@@ -21,6 +21,7 @@ export const ROOM_LOOK_POS = new THREE.Vector3(ROOM_ORIGIN.x, ROOM_ORIGIN.y + 3.
 
 export interface LabControls {
   replayActive: boolean; playing: boolean; speed: number
+  onHint: (h: string | null) => void
   onPlayPause: () => void; onStop: () => void; onSpeed: (s: number) => void; onOpenPicker: () => void
 }
 
@@ -168,9 +169,9 @@ export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick
     earned: { paint: (c, w, h) => paintEarned(c, w, h, earned), deps: [earned] },
   }
   const discs: DiscSpec[] = [
-    { id: 'play', color: '#19f5a0', x: 2.5, label: lab.replayActive ? (lab.playing ? 'PAUSE' : 'PLAY') : 'REPLAY A DAY', labelColor: '#19f5a0', onClick: lab.replayActive ? lab.onPlayPause : lab.onOpenPicker },
-    { id: 'stop', color: '#ff3bd4', x: 3.5, label: lab.replayActive ? 'BACK TO LIVE' : 'LIVE', labelColor: '#ff9bea', onClick: lab.replayActive ? lab.onStop : () => {} },
-    { id: 'speed', color: '#f4f2ff', x: 4.5, label: `SPEED ${lab.speed}x`, labelColor: '#f4f2ff', onClick: () => lab.onSpeed(nextSpeed(lab.speed)) },
+    { id: 'play', color: '#19f5a0', x: 2.5, label: lab.replayActive ? (lab.playing ? 'PAUSE' : 'PLAY') : 'REPLAY A DAY', labelColor: '#19f5a0', hint: lab.replayActive ? 'Green: pause or play the replay (Space)' : 'Green: pick a logged day to replay (Space)', onClick: lab.replayActive ? lab.onPlayPause : lab.onOpenPicker },
+    { id: 'stop', color: '#ff3bd4', x: 3.5, label: lab.replayActive ? 'BACK TO LIVE' : 'LIVE', labelColor: '#ff9bea', hint: lab.replayActive ? 'Pink: back to live data (L)' : 'Pink: already live (L)', onClick: lab.replayActive ? lab.onStop : () => {} },
+    { id: 'speed', color: '#f4f2ff', x: 4.5, label: `SPEED ${lab.speed}x`, labelColor: '#f4f2ff', hint: 'White: cycle replay speed (S)', onClick: () => lab.onSpeed(nextSpeed(lab.speed)) },
   ]
   const mood = tickerPnl > 0 ? 'up' : tickerPnl < 0 ? 'down' : 'flat'
   return (
@@ -191,7 +192,7 @@ export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick
         return <Monitor key={def.id} def={def} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick}
           flash={fire && scanId(fire.bot) === def.id ? { frame: fireFrameRef, color: fireColor } : null} />
       })}
-      <group position={[x, y, z - 3.7]}><Desk discs={discs} /></group>
+      <group position={[x, y, z - 3.7]}><Desk discs={discs} onHint={lab.onHint} /></group>
       <group position={[x, y, z - 2.3]}><Robot reducedMotion={reducedMotion} mood={mood} fire={fireFrameRef} /></group>
     </group>
   )

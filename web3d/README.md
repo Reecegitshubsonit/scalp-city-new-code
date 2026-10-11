@@ -96,6 +96,7 @@ is built only from prices seen since the page loaded.
   Esc steps back out, then closes. The chart loads the whole day from `GET /history?ticker=QQQ` (engine) and then
   updates on every bar. On narrow screens the panel sits below the 3D view; on wide screens it overlays the left side.
   Auto-rotation pauses while the pointer is over the 3D view so towers can be clicked.
+- Four HUD cards sit at the top-left of the city view: DAY P&L (with goal %), WIN RATE, TRADES and BEST BOT. Click one for the day summary.
 - Each tower has a floating billboard: sparkline of its ticker, status ("PROFIT LOCKED +$118", "PUT 40% CHARGED") and
   the bot's day P&L. The clicked tower gets big spinning white rings (a gyroscope) around it. The sky is a starfield with a
   purple horizon.
@@ -108,8 +109,8 @@ is built only from prices seen since the page loaded.
   trade markers, the 1-minute chart with WINNING / LOSING, a heatmap + leaderboard of only that ticker's bots, an EARNED screen with only that
   ticker's trades, and a market plaque with that ticker's day total. Robot mood follows that ticker's P&L. The side panel also lists "QQQ bots
   today" (state and P&L, click to switch bot) and that ticker's recent trades. The screens are monitors (dark bezel, chin with power LED, wall arm or floor stand; keyboard and mouse on the desk). Everything is the live stream filtered to the ticker
-  (`src/model/tower.ts`). The three round desk buttons: green = replay a day / pause / play, pink = back to live, white = cycle speed (this
-  mapping is my reading of the video, which is too small to confirm).
+  (`src/model/tower.ts`). The three round desk buttons (mapping chosen with you, the video is too small to confirm): green = replay a day / pause / play (Space or P),
+  pink = back to live (L), white = cycle speed (S). Hovering a button shows what it does, and it visibly presses in.
 ![backtest room](docs/backtest-room.jpg)
 
 - Leaderboard rows, heatmap tiles and trade rows always open that bot (never toggle it off); inside the room they open its scanner.

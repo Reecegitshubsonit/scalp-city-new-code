@@ -68,11 +68,12 @@ export function Robot({ reducedMotion, mood, fire }: { reducedMotion: boolean; m
   )
 }
 
-export interface DiscSpec { id: 'play' | 'stop' | 'speed'; color: string; x: number; label: string; labelColor: string; onClick: () => void }
+export interface DiscSpec { id: 'play' | 'stop' | 'speed'; color: string; x: number; label: string; labelColor: string; hint: string; onClick: () => void }
 
 /** Desk with the three round buttons, a keyboard strip, a mug and a sheet of paper. */
-export function Desk({ discs }: { discs: DiscSpec[] }) {
+export function Desk({ discs, onHint }: { discs: DiscSpec[]; onHint: (h: string | null) => void }) {
   const [hover, setHover] = useState<string | null>(null)
+  const [down, setDown] = useState<string | null>(null)
   const keyTex = useCanvasTex(256, 64, (ctx, w, h) => {
     const g = ctx.createLinearGradient(0, 0, w, 0)
     ;['#ff3b6b', '#ffb020', '#ffe14d', '#19f5a0', '#3de0ff', '#7d6bff', '#ff3bd4'].forEach((c, i, a) => g.addColorStop(i / (a.length - 1), c))
@@ -94,9 +95,11 @@ export function Desk({ discs }: { discs: DiscSpec[] }) {
       {discs.map(d => (
         <group key={d.id} position={[d.x, 1.1, 0.1]}
           onClick={e => { e.stopPropagation(); d.onClick() }}
-          onPointerOver={e => { e.stopPropagation(); setHover(d.id); document.body.style.cursor = 'pointer' }}
-          onPointerOut={() => { setHover(null); document.body.style.cursor = '' }}>
-          <mesh scale={hover === d.id ? 1.12 : 1}><cylinderGeometry args={[0.3, 0.3, 0.08, 24]} /><meshBasicMaterial color={d.color} toneMapped={false} /></mesh>
+          onPointerOver={e => { e.stopPropagation(); setHover(d.id); onHint(d.hint); document.body.style.cursor = 'pointer' }}
+          onPointerOut={() => { setHover(null); setDown(null); onHint(null); document.body.style.cursor = '' }}
+          onPointerDown={e => { e.stopPropagation(); setDown(d.id) }}
+          onPointerUp={() => setDown(null)}>
+          <mesh scale={down === d.id ? [0.92, 0.5, 0.92] : hover === d.id ? 1.12 : 1} position={[0, down === d.id ? -0.03 : 0, 0]}><cylinderGeometry args={[0.3, 0.3, 0.08, 24]} /><meshBasicMaterial color={d.color} toneMapped={false} /></mesh>
           <DiscLabel label={d.label} color={d.labelColor} />
         </group>
       ))}

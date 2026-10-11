@@ -25,6 +25,10 @@ import { CandleChart } from './panels/CandleChart'
 import { Charts } from './panels/Charts'
 import { Clock } from './panels/Clock'
 import { Feed } from './panels/Feed'
+import { Hud } from './panels/Hud'
+import { hudCards } from './model/hud'
+import { daySummary } from './model/summary'
+import { deskKey, nextSpeed } from './model/lab'
 import { Heatmap } from './panels/Heatmap'
 import { Leaderboard } from './panels/Leaderboard'
 import { Room } from './panels/Room'
@@ -151,6 +155,7 @@ export default function App() {
   useEffect(() => { if (!inside) setScreen(null) }, [inside])
   const sel = selected ? state.bots[selected] ?? placeholder(selected) : null
   const ticker = sel?.ticker ?? 'QQQ'   // a tower room shows only the clicked tower's ticker
+  const hud = useMemo(() => hudCards(daySummary(rows, tradeRecs)), [rows, tradeRecs])
   const tickerRows = useMemo(() => botsOfTicker(rows, ticker), [rows, ticker])
   const tickerFeed = useMemo(() => eventsOfTicker(state.feed, ticker), [state.feed, ticker])
   const tickerTradeList = useMemo(() => tradesOfTicker(currentTrades, ticker), [currentTrades, ticker])
@@ -171,7 +176,28 @@ export default function App() {
     () => ({ label: `${ticker} · ${date ? dayLabel(date) : 'TODAY'}`, pnl: stats.pnl, count: stats.count, wins: stats.wins, trades: tickerTradeList }),
     [date, stats, tickerTradeList, ticker],
   )
+  const [deskHint, setDeskHint] = useState<string | null>(null)
+  const deskAct = useRef<(a: 'play' | 'stop' | 'speed') => void>(() => {})
+  deskAct.current = a => {
+    if (a === 'play') { if (replay.active) { if (replay.playing) replay.pause(); else replay.play() } else setShowPicker(true) }
+    else if (a === 'stop') { if (replay.active) replay.stop() }
+    else replay.setSpeed(nextSpeed(replay.speed))
+  }
+  useEffect(() => {
+    if (!inside || screen || showPicker) return
+    const key = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null
+      if (t && /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(t.tagName)) return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
+      const a = deskKey(e.key)
+      if (!a) return
+      e.preventDefault(); deskAct.current(a)
+    }
+    window.addEventListener('keydown', key)
+    return () => window.removeEventListener('keydown', key)
+  }, [inside, screen, showPicker])
   const lab: LabControls = {
+    onHint: setDeskHint,
     replayActive: replay.active, playing: replay.playing, speed: replay.speed,
     onPlayPause: () => (replay.playing ? replay.pause() : replay.play()), onStop: replay.stop, onSpeed: replay.setSpeed,
     onOpenPicker: () => setShowPicker(true),
@@ -201,11 +227,13 @@ export default function App() {
                   <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE} fires={state.fires}
                     inside={inside} roomData={roomData} allSeries={series} floatChart={floatChart} screen={screen} onPickScreen={onPickScreen} />
                 </Suspense>
+                {!inside && <Hud cards={hud} onOpen={openSummary} />}
                 {sel && inside && (
                   <div className="insidebar">
                     <button onClick={() => setInside(false)}>← Back outside (Esc)</button>
                     <b>{ticker} tower</b>
                     <span className="muted">{replay.active ? replayClockLabel(replayMs ?? 0) : 'LIVE'} · {stateLabel(sel.state).toLowerCase()}</span>
+                    <span className="deskhint" role="status">{deskHint ?? 'Desk keys: Space replay/pause, L live, S speed'}</span>
                     <label className="muted">Screens{' '}
                       <select value="" aria-label="Open a wall screen" onChange={e => { if (e.target.value) onPickScreen(e.target.value) }}>
                         <option value="">Open a screen...</option>
