@@ -67,10 +67,44 @@ def test_list_days_and_read_day(tmp_path):
     (tmp_path / "junk-live.jsonl").write_text("{}\n")
     days = list_days(str(tmp_path))
     assert days == [
-        {"day": "2026-10-09", "mode": "live", "events": 1, "first": "2026-10-09T09:40:00-04:00", "last": "2026-10-09T09:40:00-04:00"},
-        {"day": "2026-10-07", "mode": "replay", "events": 2, "first": "2026-10-07T09:31:00-04:00", "last": "2026-10-07T16:01:00-04:00"},
+        {"day": "2026-10-09", "mode": "live", "events": 1, "first": "2026-10-09T09:40:00-04:00", "last": "2026-10-09T09:40:00-04:00", "pnl": 0.0, "trades": 0, "wins": 0},
+        {"day": "2026-10-07", "mode": "replay", "events": 2, "first": "2026-10-07T09:31:00-04:00", "last": "2026-10-07T16:01:00-04:00", "pnl": 0.0, "trades": 0, "wins": 0},
     ]
     assert len(read_day(str(tmp_path), "2026-10-07", "replay")) == 2
     assert read_day(str(tmp_path), "2026-10-08", "replay") == []
     assert read_day(str(tmp_path), "../../etc/passwd", "replay") is None
     assert read_day(str(tmp_path), "2026-10-07", "bogus") is None
+
+
+def test_list_days_totals_closed_trades(tmp_path):
+    import json
+    from scalpcity.history import list_days
+    rows = [{"time": "2026-10-09T09:45:00-04:00", "kind": "trade_closed", "pnl": 100.0}, {"time": "2026-10-09T09:50:00-04:00", "kind": "trade_closed", "pnl": -30.5},
+            {"time": "2026-10-09T09:55:00-04:00", "kind": "tick"}]
+    (tmp_path / "2026-10-09-live.jsonl").write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    d = list_days(str(tmp_path))[0]
+    assert (d["pnl"], d["trades"], d["wins"]) == (69.5, 2, 1)
+
+
+def ev(seq, t, bot, kind, **kw):
+    base = {"seq": seq, "time": t, "bot": bot, "ticker": bot.split("-")[0], "kind": kind, "state": "", "reason_code": "", "reason_text": "", "inputs": {}}
+    base.update(kw)
+    return base
+
+
+def test_build_trades_pairs_entry_exit_and_pnl():
+    from scalpcity.history import build_trades
+    events = [
+        ev(1, "2026-10-09T09:43:00-04:00", "IWM-VWAP", "state_change", state="fired", reason_code="SIGNAL", reason_text="PUT signal at 278.1"),
+        ev(2, "2026-10-09T09:43:00-04:00", "IWM-VWAP", "fill", state="managing", reason_code="ENTRY_FILL", contract="IWM261012P00278000", qty=10, fill_price=1.22, fill_source="broker"),
+        ev(3, "2026-10-09T09:50:00-04:00", "IWM-VWAP", "state_change", state="exiting", reason_code="EXIT_TARGET", reason_text="target hit"),
+        ev(4, "2026-10-09T09:50:00-04:00", "IWM-VWAP", "fill", state="exiting", reason_code="EXIT_FILL", fill_price=1.52, fill_source="broker"),
+        ev(5, "2026-10-09T09:50:00-04:00", "IWM-VWAP", "trade_closed", state="cooldown", pnl=300.0, pnl_day=300.0, trades=1),
+        ev(6, "2026-10-09T10:05:00-04:00", "QQQ-EMA50", "trade_closed", state="locked", pnl=-80.0, pnl_day=-80.0, trades=1),   # no entry seen (restart)
+    ]
+    t = build_trades(events)
+    assert t[0] == {"bot": "IWM-VWAP", "ticker": "IWM", "side": "PUT", "contract": "IWM261012P00278000", "qty": 10,
+                    "entry_time": "2026-10-09T09:43:00-04:00", "entry_price": 1.22, "exit_time": "2026-10-09T09:50:00-04:00",
+                    "exit_price": 1.52, "exit_code": "EXIT_TARGET", "pnl": 300.0, "pnl_day": 300.0, "source": "broker"}
+    assert t[1]["bot"] == "QQQ-EMA50" and t[1]["entry_time"] is None and t[1]["pnl"] == -80.0 and t[1]["side"] is None
+    assert build_trades([]) == []

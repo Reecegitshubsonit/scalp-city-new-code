@@ -78,3 +78,14 @@ def test_days_and_day_endpoints(tmp_path):
         assert client.get("/day", params={"day": "2026-10-01"}).status_code == 404
         assert client.get("/day", params={"day": "../x"}).status_code == 400
         assert client.get("/day", params={"day": "2026-10-08", "mode": "x"}).status_code == 400
+
+
+def test_trades_endpoint(tmp_path):
+    log = EventLog(str(tmp_path), "live")
+    log.append(t(9, 50), "QQQ-VWAP", "QQQ", "trade_closed", state="cooldown", pnl=55.0, pnl_day=55.0, trades=1)
+    app = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"))
+    with TestClient(app) as client:
+        got = client.get("/trades", params={"day": "2026-10-08"}).json()
+        assert got["trades"][0]["pnl"] == 55.0 and got["trades"][0]["bot"] == "QQQ-VWAP"
+        assert client.get("/trades", params={"day": "2026-10-01"}).json()["trades"] == []
+        assert client.get("/trades", params={"day": "../x"}).status_code == 400

@@ -70,16 +70,22 @@ def list_days(directory: str) -> list[dict]:
         if not m:
             continue
         first = last = None
-        n = 0
+        n = pnl = wins = closed = 0
         with open(os.path.join(directory, name)) as handle:
             for line in handle:
                 if not line.strip():
                     continue
-                t = json.loads(line).get("time")
+                e = json.loads(line)
+                t = e.get("time")
                 first = first or t
                 last = t
                 n += 1
-        out.append({"day": m.group(1), "mode": m.group(2), "events": n, "first": first, "last": last})
+                if e.get("kind") == "trade_closed" and isinstance(e.get("pnl"), (int, float)):
+                    closed += 1
+                    pnl += e["pnl"]
+                    wins += e["pnl"] > 0
+        out.append({"day": m.group(1), "mode": m.group(2), "events": n, "first": first, "last": last,
+                    "pnl": round(pnl, 2), "trades": closed, "wins": wins})
     return sorted(out, key=lambda d: (d["day"], d["mode"]), reverse=True)
 
 
@@ -92,3 +98,30 @@ def read_day(directory: str, day: str, mode: str) -> list[dict] | None:
         return []
     with open(path) as handle:
         return [json.loads(line) for line in handle if line.strip()]
+
+
+def build_trades(events: list[dict]) -> list[dict]:
+    """Closed trades from one day's event log: entry and exit fills, exit reason and P&L, in the order they closed."""
+    open_: dict[str, dict] = {}
+    out: list[dict] = []
+    for e in events:
+        bot, kind, code = e.get("bot"), e.get("kind"), e.get("reason_code")
+        cur = open_.setdefault(bot, {})
+        if kind == "state_change" and code == "SIGNAL":
+            m = _SIDE.search(e.get("reason_text") or "")
+            cur["side"] = m.group(1) if m else None
+        elif kind == "fill" and code == "ENTRY_FILL":
+            cur.update(contract=e.get("contract"), qty=e.get("qty"), entry_time=e.get("time"), entry_price=e.get("fill_price"), source=e.get("fill_source"))
+        elif kind == "state_change" and (code or "").startswith("EXIT_") and e.get("state") == "exiting":
+            cur["exit_code"] = code
+        elif kind == "fill" and code == "EXIT_FILL":
+            cur["exit_price"] = e.get("fill_price")
+        elif kind == "trade_closed":
+            out.append({
+                "bot": bot, "ticker": e.get("ticker"), "side": cur.get("side"), "contract": cur.get("contract"), "qty": cur.get("qty"),
+                "entry_time": cur.get("entry_time"), "entry_price": cur.get("entry_price"), "exit_time": e.get("time"),
+                "exit_price": cur.get("exit_price"), "exit_code": cur.get("exit_code"), "pnl": e.get("pnl"), "pnl_day": e.get("pnl_day"),
+                "source": cur.get("source"),
+            })
+            open_[bot] = {}
+    return out

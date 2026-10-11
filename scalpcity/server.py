@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from .events import EventLog, build_snapshot
-from .history import build_history, list_days, read_day
+from .history import build_history, build_trades, list_days, read_day
 from .types import ET
 
 
@@ -71,6 +71,13 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
         if not events:
             raise HTTPException(404, "no log for that day")
         return {"day": day, "mode": mode, "events": events}
+
+    @app.get("/trades")
+    def trades(day: str, mode: str = "live"):
+        events = read_day(log.dir, day, mode)
+        if events is None:
+            raise HTTPException(400, "bad day or mode")
+        return {"day": day, "mode": mode, "trades": build_trades(events)}
 
     @app.post("/control/pause")
     def pause(body: PauseBody):
