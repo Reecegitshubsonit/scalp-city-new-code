@@ -27,7 +27,10 @@ export type ServerMsg =
 export interface TickPoint { time: string; price: number; vwap?: number; ema50?: number }
 export interface Mark { time: string; price: number; type: 'entry' | 'exit'; bot: string; side: Side | null; pnl?: number }
 export interface TradeRec { time: string; bot: string; ticker: string; pnl: number; exit_code: string | null; side: Side | null }
+/** The latest entry of a bot: kept even when fired and managing arrive in the same batch, so the view can play the fire effect. */
+export interface Fire { seq: number; side: Side | null; time: string; filled: boolean }
 export interface AppState {
   bots: Record<string, BotRow>; lastSeq: number; feed: BotEvent[]
   ticks: Record<string, TickPoint[]>; marks: Record<string, Mark[]>; trades: TradeRec[]; mode: string | null; lastEventAt: number | null
+  fires: Record<string, Fire>
 }

@@ -197,3 +197,29 @@ describe('aggregates', () => {
     expect(leaderboard(s).map(r => r.bot)).toEqual(['IWM-VWAP', 'QQQ-VWAP', 'SPY-RANGE'])
   })
 })
+
+describe('fire records', () => {
+  const sig = (seq: number, side = 'CALL') => ev(seq, { kind: 'state_change', state: 'fired', reason_code: 'SIGNAL', reason_text: `${side} signal at 100.00` })
+  it('records a fire on SIGNAL even when fired and managing arrive in the same batch', () => {
+    const s = run(snap(0),
+      sig(1),
+      ev(2, { kind: 'state_change', state: 'fired', reason_code: 'BUY_OPEN' }),
+      ev(3, { kind: 'fill', state: 'managing', reason_code: 'ENTRY_FILL' }))
+    expect(s.bots['QQQ-VWAP'].state).toBe('managing')
+    expect(s.fires['QQQ-VWAP']).toMatchObject({ seq: 1, side: 'CALL' })
+  })
+  it('records PUT side, and a new fire per trade', () => {
+    let s = run(snap(0), sig(1, 'PUT'), ev(2, { kind: 'fill', state: 'managing', reason_code: 'ENTRY_FILL' }))
+    expect(s.fires['QQQ-VWAP'].side).toBe('PUT')
+    s = reduce(s, sig(3), 5000)
+    expect(s.fires['QQQ-VWAP']).toMatchObject({ seq: 3, side: 'CALL' })
+  })
+  it('records a fire from ENTRY_FILL alone when no SIGNAL was seen', () => {
+    const s = run(snap(0), ev(4, { kind: 'fill', state: 'managing', reason_code: 'ENTRY_FILL' }))
+    expect(s.fires['QQQ-VWAP'].seq).toBe(4)
+  })
+  it('does not double-fire when ENTRY_FILL follows its SIGNAL', () => {
+    const s = run(snap(0), sig(1), ev(2, { kind: 'fill', state: 'managing', reason_code: 'ENTRY_FILL' }))
+    expect(s.fires['QQQ-VWAP'].seq).toBe(1)
+  })
+})

@@ -6,7 +6,7 @@ export const TICKS_MAX = 390
 export const MARKS_MAX = 100
 export const TRADES_MAX = 100
 
-export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {}, marks: {}, trades: [], mode: null, lastEventAt: null }
+export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {}, marks: {}, trades: [], mode: null, lastEventAt: null, fires: {} }
 
 interface SideState { side: Side | null; sideSource: SideSource }
 const NONE: SideState = { side: null, sideSource: 'none' }
@@ -24,7 +24,7 @@ function applySide(prev: SideState, ev: BotEvent): SideState {
     const s = inferSide(ev.bot, ev.inputs ?? {})
     return s ? { side: s, sideSource: 'inferred' } : NONE
   }
-  return prev
+  return { side: prev.side, sideSource: prev.sideSource }   // not the whole row: Object.assign(r, row) would revert state, charge and inputs to the previous event's
 }
 
 function rowFromSnapshot(b: SnapshotBot): BotRow {
@@ -88,7 +88,7 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
     const restarted = lastSeq < state.lastSeq
     return {
       ...state, bots, lastSeq, lastEventAt: nowMs, ticks,
-      ...(restarted ? { feed: [], ticks: {}, marks: {}, trades: [] } : {}),
+      ...(restarted ? { feed: [], ticks: {}, marks: {}, trades: [], fires: {} } : {}),
     }
   }
   const ev = msg.event
@@ -131,6 +131,13 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
   if (ev.kind === 'trade_closed' && typeof ev.pnl === 'number')
     next.trades = [...state.trades, { time: ev.time, bot: ev.bot, ticker: ev.ticker, pnl: ev.pnl, exit_code: row.exit_code, side: row.side }].slice(-TRADES_MAX)
   next.marks = addMark(state.marks, ev, row.side)
+  // entry effect: triggered by the event, not by the 'fired' state, which the engine can leave within the same bar
+  const old = state.fires[ev.bot]
+  if (ev.reason_code === 'SIGNAL') next.fires = { ...state.fires, [ev.bot]: { seq: ev.seq, side: r.side, time: ev.time, filled: false } }
+  else if (ev.reason_code === 'ENTRY_FILL') {
+    next.fires = old && !old.filled ? { ...state.fires, [ev.bot]: { ...old, filled: true } }
+      : { ...state.fires, [ev.bot]: { seq: ev.seq, side: r.side, time: ev.time, filled: true } }
+  }
   return next
 }
 
