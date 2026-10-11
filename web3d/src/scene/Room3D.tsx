@@ -35,14 +35,14 @@ interface ScreenDef { id: string; pos: [number, number, number]; size: [number, 
 
 /** The eight wall screens: position relative to the room origin and size in world units. */
 export const SCREENS: ScreenDef[] = [
-  { id: 'SPY', pos: [-4.6, 4.5, -6], size: [4, 2.4], px: [1600, 960] },
-  { id: 'QQQ', pos: [0, 4.5, -6], size: [4.6, 2.76], px: [1840, 1104] },
-  { id: 'IWM', pos: [4.6, 4.5, -6], size: [4, 2.4], px: [1600, 960] },
-  { id: 'scanner', pos: [-4.6, 1.95, -6], size: [4, 1.9], px: [1536, 729] },
-  { id: 'chart1m', pos: [0, 1.95, -6], size: [4.6, 1.9], px: [1840, 760] },
-  { id: 'board', pos: [4.6, 1.95, -6], size: [4, 1.9], px: [1536, 729] },
-  { id: 'plaque', pos: [-8.6, 3.4, -4.3], size: [3.4, 1.15], px: [1360, 460], rotY: 0.55 },
-  { id: 'earned', pos: [8.6, 3.4, -4.3], size: [3.2, 3.2], px: [1024, 1024], rotY: -0.55 },
+  { id: 'SPY', pos: [-4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
+  { id: 'QQQ', pos: [0, 4.5, -6], size: [4.6, 2.76], px: [1472, 883] },
+  { id: 'IWM', pos: [4.6, 4.5, -6], size: [4, 2.4], px: [1280, 768] },
+  { id: 'scanner', pos: [-4.6, 1.95, -6], size: [4, 1.9], px: [1280, 608] },
+  { id: 'chart1m', pos: [0, 1.95, -6], size: [4.6, 1.9], px: [1472, 608] },
+  { id: 'board', pos: [4.6, 1.95, -6], size: [4, 1.9], px: [1280, 608] },
+  { id: 'plaque', pos: [-8.6, 3.4, -4.3], size: [3.4, 1.15], px: [1088, 368], rotY: 0.55 },
+  { id: 'earned', pos: [8.6, 3.4, -4.3], size: [3.2, 3.2], px: [896, 896], rotY: -0.55 },
 ]
 
 /** Camera pose that frames one wall screen face-on. */
@@ -65,15 +65,17 @@ function Monitor({ def, paint, deps, everyMs, onPick }: {
     canvas.width = def.px[0]; canvas.height = def.px[1]
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
-    tex.anisotropy = gl.capabilities.getMaxAnisotropy()
+    tex.anisotropy = Math.min(6, gl.capabilities.getMaxAnisotropy())
     tex.minFilter = THREE.LinearMipmapLinearFilter
     return { canvas, tex }
   }, [def.id, def.px, gl])   // keyed on stable values: re-creating the texture every render would leave the screen black
-  // repaint at most every 600 ms: each repaint uploads a multi-megabyte texture, and events can arrive in bursts
+  // repaint is throttled: each repaint uploads a multi-megabyte texture, and events can arrive in bursts
   const last = useRef(0)
   useEffect(() => {
     const run = () => { last.current = performance.now(); paint(canvas.getContext('2d')!, def.px[0], def.px[1]); tex.needsUpdate = true }
-    const wait = Math.max(0, 600 - (performance.now() - last.current))
+    // at most once a second, and staggered per screen so the repaints never land in the same frame
+    const stagger = (SCREENS.findIndex(d => d.id === def.id) % 8) * 110
+    const wait = Math.max(stagger, 1000 - (performance.now() - last.current))
     const first = setTimeout(run, wait)
     const id = everyMs ? setInterval(run, everyMs) : undefined
     return () => { clearTimeout(first); if (id) clearInterval(id) }
@@ -127,7 +129,6 @@ export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick
     <group>
       <SkyDome center={[x, y, z]} radius={120} />
       <Skyline center={[x, y, z]} rMin={16} rMax={34} count={48} maxH={12} />
-      <pointLight position={[x, y + 5, z + 3]} intensity={70} color="#9fb3ff" distance={34} />
       <mesh position={[x, y - 0.01, z]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[60, 48]} />
         <meshStandardMaterial color="#0d0a3a" roughness={0.9} />

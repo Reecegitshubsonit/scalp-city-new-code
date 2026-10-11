@@ -9,7 +9,7 @@ function useCanvasTex(w: number, h: number, paint: (ctx: CanvasRenderingContext2
     const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h
     const tex = new THREE.CanvasTexture(canvas)
     tex.colorSpace = THREE.SRGBColorSpace
-    tex.anisotropy = gl.capabilities.getMaxAnisotropy()
+    tex.anisotropy = Math.min(6, gl.capabilities.getMaxAnisotropy())
     if (opts?.repeat) { tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(...opts.repeat) }
     return { canvas, tex }
     // eslint-disable-next-line react-hooks/exhaustive-deps

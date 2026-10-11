@@ -144,7 +144,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
   }, [byBot, lastTrade, total, title, selected, floatChart, inside, roomData.series])
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative' }} onPointerEnter={() => setHover(true)} onPointerLeave={() => setHover(false)} role="img" aria-label="3D city of bots. Every value shown here is also in the panels.">
-      <Canvas dpr={inside ? [1, 2] : [1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>
+      <Canvas dpr={[1, 1.5]} camera={{ position: [0, 9, 15], fov: 45 }}>
         <color attach="background" args={['#0b0830']} />
         <fog attach="fog" args={['#0b0830', 30, 70]} />
         <ambientLight intensity={0.55} color="#6a5cff" />
@@ -185,7 +185,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
           )
         })}
 
-        <LabelProjector anchors={anchors} refs={labelRefs} />
+        <LabelProjector anchors={anchors} refs={labelRefs} enabled={!inside} />
         <Dome total={total} onClick={onDome} reducedMotion={reducedMotion} />
         <SkyDome />
         <Skyline />
@@ -200,7 +200,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
           </EffectComposer>
         )}
       </Canvas>
-      <LabelLayer anchors={anchors} refs={labelRefs} />
+      <LabelLayer anchors={anchors} refs={labelRefs} hidden={inside} />
     </div>
   )
 }
