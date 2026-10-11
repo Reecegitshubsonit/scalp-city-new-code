@@ -89,3 +89,19 @@ def test_trades_endpoint(tmp_path):
         assert got["trades"][0]["pnl"] == 55.0 and got["trades"][0]["bot"] == "QQQ-VWAP"
         assert client.get("/trades", params={"day": "2026-10-01"}).json()["trades"] == []
         assert client.get("/trades", params={"day": "../x"}).status_code == 400
+
+
+def test_history_with_day_serves_cached_real_bars_and_that_days_markers(tmp_path):
+    import json
+    cache = tmp_path / "cache"; cache.mkdir()
+    (cache / "stock-QQQ-2026-10-07.json").write_text(json.dumps([
+        {"c": 754.03, "h": 754.37, "l": 753.35, "n": 1, "o": 753.8, "t": "2026-10-07T13:30:00Z", "v": 5, "vw": 753.79}]))
+    log = EventLog(str(tmp_path / "logs"), "live")
+    app = create_app(log, lambda: DAY, lambda *a: None, BOTS, web_dir=str(tmp_path / "nonexistent"), cache_dir=str(cache))
+    c = TestClient(app)
+    r = c.get("/history", params={"ticker": "QQQ", "day": "2026-10-07"})
+    assert r.status_code == 200 and r.json()["bars"][0]["close"] == 754.03
+    assert r.json()["bars"][0]["time"] == "2026-10-07T09:30:00-04:00"
+    assert c.get("/history", params={"ticker": "QQQ", "day": "2026-10-08"}).status_code == 404   # no cached bars that day
+    assert c.get("/history", params={"ticker": "QQQ", "day": "bad"}).status_code == 400
+    assert c.get("/history", params={"ticker": "ZZZ", "day": "2026-10-07"}).status_code == 404

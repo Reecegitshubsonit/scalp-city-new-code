@@ -3,7 +3,9 @@ import os
 import re
 import threading
 
-from .types import Bar
+from datetime import datetime
+
+from .types import ET, Bar
 
 _SIDE = re.compile(r"\b(CALL|PUT)\b")
 
@@ -125,3 +127,17 @@ def build_trades(events: list[dict]) -> list[dict]:
             })
             open_[bot] = {}
     return out
+
+
+def read_cached_bars(cache_dir: str, ticker: str, day: str) -> list[Bar] | None:
+    """Real one-minute bars of a past day from the Alpaca cache (data/cache/stock-TICKER-DAY.json), ET bar starts.
+    None when the file is missing or ticker/day are malformed (never reads outside the cache directory)."""
+    if not re.fullmatch(r"[A-Z]{1,6}", ticker) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
+        return None
+    path = os.path.join(cache_dir, f"stock-{ticker}-{day}.json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as handle:
+        rows = json.load(handle)
+    return [Bar(ticker, datetime.fromisoformat(r["t"].replace("Z", "+00:00")).astimezone(ET), r["o"], r["h"], r["l"], r["c"], r["v"])
+            for r in rows]

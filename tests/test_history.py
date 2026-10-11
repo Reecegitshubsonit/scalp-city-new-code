@@ -108,3 +108,30 @@ def test_build_trades_pairs_entry_exit_and_pnl():
                     "exit_price": 1.52, "exit_code": "EXIT_TARGET", "pnl": 300.0, "pnl_day": 300.0, "source": "broker"}
     assert t[1]["bot"] == "QQQ-EMA50" and t[1]["entry_time"] is None and t[1]["pnl"] == -80.0 and t[1]["side"] is None
     assert build_trades([]) == []
+
+
+import json
+
+from scalpcity.history import read_cached_bars
+
+
+def _cache(tmp_path, ticker="QQQ", day="2026-10-07", rows=None):
+    rows = rows if rows is not None else [
+        {"c": 754.03, "h": 754.37, "l": 753.35, "n": 8935, "o": 753.8, "t": "2026-10-07T13:30:00Z", "v": 505774, "vw": 753.79},
+        {"c": 754.515, "h": 754.71, "l": 754.02, "n": 3050, "o": 754.08, "t": "2026-10-07T13:31:00Z", "v": 219489, "vw": 754.43},
+    ]
+    (tmp_path / f"stock-{ticker}-{day}.json").write_text(json.dumps(rows))
+
+
+def test_cached_bars_are_converted_to_et_bars(tmp_path):
+    _cache(tmp_path)
+    got = read_cached_bars(str(tmp_path), "QQQ", "2026-10-07")
+    assert [b.ts.isoformat() for b in got] == ["2026-10-07T09:30:00-04:00", "2026-10-07T09:31:00-04:00"]
+    assert (got[0].open, got[0].high, got[0].low, got[0].close, got[0].volume) == (753.8, 754.37, 753.35, 754.03, 505774)
+
+
+def test_cached_bars_missing_or_bad_input_gives_none(tmp_path):
+    assert read_cached_bars(str(tmp_path), "QQQ", "2026-10-07") is None          # no file
+    _cache(tmp_path)
+    assert read_cached_bars(str(tmp_path), "../QQQ", "2026-10-07") is None       # never leaves the cache directory
+    assert read_cached_bars(str(tmp_path), "QQQ", "2026-10-7") is None
