@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { useThree } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { Series } from '../model/history'
 import { nextSpeed } from '../model/lab'
-import type { BotEvent, BotRow } from '../model/types'
+import type { BotEvent, BotRow, Side } from '../model/types'
 import type { Trade } from '../model/trades'
 import { paintChart1m, paintEarned, paintPlaque, paintScanner, paintTickerBoard, paintTickerChart } from './roomPaint'
 import { Skyline, SkyDome } from './Sky'
 import { Desk, HexSurfaces, NeonSign, Robot, type DiscSpec } from './Lab'
+import { FireLabel, useFireClock } from './FireFx'
+import type { FireFrame } from '../model/fire'
+import { sideColor } from '../model/visual'
+import { scanId } from '../model/tower'
 
 /** World position of the room: far below the city ground, never visible from the outside view. */
 export const ROOM_ORIGIN = new THREE.Vector3(0, -60, 0)
@@ -29,6 +33,7 @@ export interface RoomData {
   feed: BotEvent[]
   selectedBot: string | null
   tickerPnl: number
+  fire: { seq: number; side: Side | null; bot: string } | null   // latest entry among this ticker's bots
   earned: { label: string; pnl: number; count: number; wins: number; trades: Trade[] }
   lab: LabControls
 }
@@ -57,7 +62,8 @@ export function screenPose(id: string, aspect: number): { cam: THREE.Vector3; lo
   return { cam: look.clone().add(new THREE.Vector3(Math.sin(ry) * dist, 0, Math.cos(ry) * dist)), look }
 }
 
-function Monitor({ def, paint, deps, everyMs, onPick }: {
+function Monitor({ def, paint, deps, everyMs, onPick, flash }: {
+  flash?: { frame: React.MutableRefObject<FireFrame>; color: string } | null
   def: ScreenDef; paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void; deps: unknown[]; everyMs?: number; onPick: (id: string) => void
 }) {
   const gl = useThree(s => s.gl)
@@ -84,6 +90,15 @@ function Monitor({ def, paint, deps, everyMs, onPick }: {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
   const { size } = def
+  const frameMat = useRef<THREE.MeshBasicMaterial>(null)
+  const base = useMemo(() => new THREE.Color('#4a3fd0'), [])
+  const lit = useMemo(() => new THREE.Color(flash?.color ?? '#ffffff'), [flash?.color])
+  useFrame(() => {
+    const m = frameMat.current
+    if (!m || hover) return
+    m.color.copy(base)
+    if (flash) m.color.lerp(lit, flash.frame.current.flash)   // the firing bot's scanner flashes in the side colour
+  })
   return (
     <group
       position={def.pos} rotation={[0, def.rotY ?? 0, 0]}
@@ -94,7 +109,7 @@ function Monitor({ def, paint, deps, everyMs, onPick }: {
       {/* frame sits behind the screen; the screen is offset toward the camera so the two never share a depth (no z-fighting) */}
       <mesh position={[0, 0, -0.08]}>
         <boxGeometry args={[size[0] + 0.22, size[1] + 0.22, 0.1]} />
-        <meshBasicMaterial color={hover ? '#9a8cff' : '#4a3fd0'} toneMapped={false} />
+        <meshBasicMaterial ref={frameMat} color={hover ? '#9a8cff' : '#4a3fd0'} toneMapped={false} />
       </mesh>
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={size} />
@@ -106,7 +121,11 @@ function Monitor({ def, paint, deps, everyMs, onPick }: {
 
 /** The backtest room: night sky and skyline, eight wall screens (click one to open it full size), the robot at its desk, hex floor. */
 export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick: (id: string) => void; reducedMotion: boolean }) {
-  const { ticker, series, tradeCount, tickerRows, feed, selectedBot, tickerPnl, earned, lab } = data
+  const { ticker, series, tradeCount, tickerRows, feed, selectedBot, tickerPnl, fire, earned, lab } = data
+  const { frame: fireFrameRef } = useFireClock(fire?.seq, reducedMotion, ticker)
+  const fireColor = sideColor(fire?.side ?? null)
+  const light = useRef<THREE.PointLight>(null)
+  useFrame(() => { if (light.current) light.current.intensity = fireFrameRef.current.flash * 40 })
   const [x, y, z] = [ROOM_ORIGIN.x, ROOM_ORIGIN.y, ROOM_ORIGIN.z]
   const worldScreens = useMemo(() => SCREENS.map(d => ({ ...d, pos: [x + d.pos[0], y + d.pos[1], z + d.pos[2]] as [number, number, number] })), [x, y, z])
   const botPaint = (i: number) => {
@@ -138,12 +157,15 @@ export function Room3D({ data, onPick, reducedMotion }: { data: RoomData; onPick
       <gridHelper args={[60, 60, '#5b4dff', '#241f6a']} position={[x, y, z]} />
       <group position={[x, y, z]}><HexSurfaces /></group>
       <NeonSign label={`${ticker} TOWER`} position={[x, y + 6.95, z - 6.1]} size={[6.4, 1.2]} />
+      <pointLight ref={light} position={[x, y + 4, z - 1]} color={fireColor} intensity={0} distance={16} decay={1.5} />
+      <FireLabel frame={fireFrameRef} side={fire?.side ?? null} base={[x, y + 5.1, z - 5.2]} size={[5, 1.25]} />
       {worldScreens.map(def => {
         const p = paints[def.id]
-        return <Monitor key={def.id} def={def} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick} />
+        return <Monitor key={def.id} def={def} paint={p.paint} deps={p.deps} everyMs={p.everyMs} onPick={onPick}
+          flash={fire && scanId(fire.bot) === def.id ? { frame: fireFrameRef, color: fireColor } : null} />
       })}
       <group position={[x, y, z - 3.7]}><Desk discs={discs} /></group>
-      <group position={[x, y, z - 2.3]}><Robot reducedMotion={reducedMotion} mood={mood} /></group>
+      <group position={[x, y, z - 2.3]}><Robot reducedMotion={reducedMotion} mood={mood} fire={fireFrameRef} /></group>
     </group>
   )
 }

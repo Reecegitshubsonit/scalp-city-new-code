@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
+import type { FireFrame } from '../model/fire'
 import { paintDiscLabel, paintHex, paintSign } from './roomPaint'
 
 function useCanvasTex(w: number, h: number, paint: (ctx: CanvasRenderingContext2D, w: number, h: number) => void, deps: unknown[], opts?: { repeat?: [number, number] }) {
@@ -19,14 +20,15 @@ function useCanvasTex(w: number, h: number, paint: (ctx: CanvasRenderingContext2
 }
 
 /** The trader robot: sits at the desk facing the wall of screens, types, sways, antenna light blinks. Static under reduced motion. */
-export function Robot({ reducedMotion, mood }: { reducedMotion: boolean; mood: 'up' | 'down' | 'flat' }) {
+export function Robot({ reducedMotion, mood, fire }: { reducedMotion: boolean; mood: 'up' | 'down' | 'flat'; fire?: React.MutableRefObject<FireFrame> }) {
   const head = useRef<THREE.Group>(null), armL = useRef<THREE.Group>(null), armR = useRef<THREE.Group>(null), light = useRef<THREE.MeshBasicMaterial>(null)
   useFrame(({ clock }) => {
     if (reducedMotion) return
     const t = clock.elapsedTime
     if (head.current) { head.current.rotation.y = Math.sin(t * 0.5) * 0.18; head.current.rotation.x = mood === 'down' ? 0.25 : Math.sin(t * 0.9) * 0.04 }
-    if (armL.current) armL.current.rotation.x = -1.1 + Math.sin(t * 7) * 0.08
-    if (armR.current) armR.current.rotation.x = mood === 'up' ? -2.6 + Math.sin(t * 6) * 0.2 : -1.1 + Math.sin(t * 7 + 1.7) * 0.08
+    const jolt = fire?.current.active ? Math.min(1, fire.current.flash * 1.5 + 0.35) : 0   // both arms shoot up when a bot fires
+    if (armL.current) armL.current.rotation.x = -1.1 * (1 - jolt) - 2.8 * jolt + Math.sin(t * 7) * 0.08
+    if (armR.current) armR.current.rotation.x = (mood === 'up' ? -2.6 + Math.sin(t * 6) * 0.2 : -1.1 + Math.sin(t * 7 + 1.7) * 0.08) * (1 - jolt) - 2.8 * jolt
     if (light.current) light.current.color.set(Math.sin(t * 3) > 0 ? '#ff3bd4' : '#7a1f6a')
   })
   const white = <meshStandardMaterial color="#f4f2ff" emissive="#3a3680" emissiveIntensity={0.35} roughness={0.25} metalness={0.1} />

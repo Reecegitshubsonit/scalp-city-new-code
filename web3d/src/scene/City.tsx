@@ -8,7 +8,7 @@ import { formatPnl } from '../model/format'
 import { COLORS } from '../model/visual'
 import { LabelLayer, LabelProjector, type Anchor } from './Labels'
 import { TICKERS, TRIGGERS, towerPosition } from '../model/layout'
-import type { BotRow, TradeRec } from '../model/types'
+import type { BotRow, Fire, TradeRec } from '../model/types'
 import { Dome } from './Dome'
 import { TOWER_TOP, Tower } from './Tower'
 import { SkyDome, Skyline } from './Sky'
@@ -19,7 +19,7 @@ import { ROOM_CAM_POS, ROOM_LOOK_POS, Room3D, screenPose, type RoomData } from '
 interface Props {
   rows: BotRow[]; selected: string | null; onSelect: (b: string) => void; onDome: () => void
   reducedMotion: boolean; total: number; lastTrade: Record<string, TradeRec>; title: string
-  inside: boolean; roomData: RoomData; allSeries: Record<string, Series>; floatChart: ReactNode
+  fires: Record<string, Fire>; inside: boolean; roomData: RoomData; allSeries: Record<string, Series>; floatChart: ReactNode
   screen: string | null; onPickScreen: (id: string) => void
 }
 
@@ -97,7 +97,7 @@ function CameraRig({ selected, inside, screen, reducedMotion }: { selected: stri
 // Bloom costs about half the frame rate on integrated GPUs; beams have additive glow shells already, so it is opt-in.
 const BLOOM = new URLSearchParams(location.search).get('fx') === 'high'
 
-export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, inside, roomData, allSeries, floatChart, screen, onPickScreen }: Props) {
+export default function City({ rows, selected, onSelect, onDome, reducedMotion, total, lastTrade, title, fires, inside, roomData, allSeries, floatChart, screen, onPickScreen }: Props) {
   const byBot = useMemo(() => Object.fromEntries(rows.map(r => [r.bot, r])), [rows])
   const spokes = useMemo(() => Array.from({ length: 12 }, (_, i) => {
     const a = (i / 12) * Math.PI * 2
@@ -179,7 +179,7 @@ export default function City({ rows, selected, onSelect, onDome, reducedMotion, 
                 const id = `${t}-${k}`
                 const row = byBot[id]
                 return row ? (
-                  <Tower key={id} row={row} position={POS[id]} reducedMotion={reducedMotion} selected={selected === id} onSelect={onSelect} />
+                  <Tower key={id} row={row} fire={fires[id]} position={POS[id]} reducedMotion={reducedMotion} selected={selected === id} onSelect={onSelect} />
                 ) : null
               })}
             </group>

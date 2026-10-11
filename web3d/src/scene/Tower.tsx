@@ -1,9 +1,10 @@
-import { memo, useEffect, useMemo, useRef } from 'react'
+import { memo, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
-import type { BotRow } from '../model/types'
-import { visualFor } from '../model/visual'
+import type { BotRow, Fire } from '../model/types'
+import { sideColor, visualFor } from '../model/visual'
 import { hashStr, windowTexture } from './textures'
+import { FireBurst } from './FireFx'
 
 export const BEAM_MAX = 16
 const LEVELS: Array<{ w: number; h: number }> = [{ w: 1.7, h: 1.4 }, { w: 1.3, h: 1.1 }, { w: 0.9, h: 0.9 }]
@@ -12,31 +13,24 @@ export const TOWER_TOP = BODY_H + 0.7
 
 interface Props {
   row: BotRow
+  fire?: Fire
   position: [number, number, number]
   reducedMotion: boolean
   selected: boolean
   onSelect: (bot: string) => void
 }
 
-function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) {
+function TowerImpl({ row, fire, position, reducedMotion, selected, onSelect }: Props) {
   const v = visualFor(row, reducedMotion)
   const tex = useMemo(() => windowTexture(hashStr(row.bot), v.hatched), [row.bot, v.hatched])
   const mats = useRef<THREE.MeshStandardMaterial[]>([])
   const beam = useRef<THREE.Mesh>(null)
   const shell = useRef<THREE.Mesh>(null)
-  const ring = useRef<THREE.Mesh>(null)
-  const flash = useRef<THREE.Mesh>(null)
   const orbit = useRef<THREE.Group>(null)
   const beamH = useRef(0)
-  const ringT = useRef(-1)
-  const prev = useRef(row.state)
   const color = useMemo(() => new THREE.Color(v.color), [v.color])
+  const fireColor = useMemo(() => new THREE.Color(sideColor(fire?.side ?? row.side)), [fire?.side, row.side])
   const beamColor = useMemo(() => new THREE.Color(v.color).multiplyScalar(1.8), [v.color])
-
-  useEffect(() => {
-    if (row.state === 'fired' && prev.current !== 'fired') ringT.current = 0
-    prev.current = row.state
-  }, [row.state])
 
   useFrame((st, dt) => {
     const t = st.clock.elapsedTime
@@ -54,26 +48,6 @@ function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) 
       m.position.y = TOWER_TOP + beamH.current / 2
     }
     if (orbit.current && !reducedMotion) orbit.current.rotation.y += dt * (v.glow > 0.4 ? 0.9 : 0.25)
-
-    const set = (m: THREE.Mesh | null, s: number, o: number, show: boolean) => {
-      if (!m) return
-      m.visible = show
-      if (!show) return
-      m.scale.set(s, s, 1)
-      ;(m.material as THREE.MeshBasicMaterial).opacity = o
-    }
-    if (ringT.current >= 0) {
-      ringT.current += dt
-      const dur = reducedMotion ? 2 : 1.1
-      if (ringT.current > dur) { ringT.current = -1; set(ring.current, 1, 0, false); set(flash.current, 1, 0, false) }
-      else {
-        const p = ringT.current / dur
-        const s = reducedMotion ? 2.4 : 1 + p * 3.8
-        const o = reducedMotion ? 0.8 : 1 - p
-        set(ring.current, s, o, true)
-        set(flash.current, s, o * 0.45, true)
-      }
-    } else { set(ring.current, 1, 0, false); set(flash.current, 1, 0, false) }
   })
 
   let y = 0
@@ -128,14 +102,7 @@ function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) 
         <cylinderGeometry args={[0.42, 0.42, 1, 16, 1, true]} />
         <meshBasicMaterial color={beamColor} transparent opacity={0.16} toneMapped={false} depthWrite={false} side={THREE.DoubleSide} blending={THREE.AdditiveBlending} />
       </mesh>
-      <mesh ref={ring} visible={false} position={[0, 0.2, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.3, 0.09, 8, 64]} />
-        <meshBasicMaterial color={beamColor} transparent opacity={1} toneMapped={false} depthWrite={false} />
-      </mesh>
-      <mesh ref={flash} visible={false} position={[0, 0.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[1.3, 48]} />
-        <meshBasicMaterial color={beamColor} transparent opacity={0.4} toneMapped={false} depthWrite={false} blending={THREE.AdditiveBlending} />
-      </mesh>
+      <FireBurst seq={fire?.seq} side={fire?.side ?? row.side} reduced={reducedMotion} color={fireColor} labelY={TOWER_TOP + 4.6} beamHeight={BEAM_MAX} />
       <mesh position={[0, 0.03, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[1.25, 1.4, 40]} />
         <meshBasicMaterial color={selected ? '#ffffff' : color} transparent opacity={selected ? 0.95 : 0.25 + v.glow * 0.4} toneMapped={false} />
@@ -144,5 +111,5 @@ function TowerImpl({ row, position, reducedMotion, selected, onSelect }: Props) 
   )
 }
 export const Tower = memo(TowerImpl, (a, b) =>
-  a.row === b.row && a.selected === b.selected && a.reducedMotion === b.reducedMotion &&
+  a.row === b.row && a.fire === b.fire && a.selected === b.selected && a.reducedMotion === b.reducedMotion &&
   a.position === b.position && a.onSelect === b.onSelect)

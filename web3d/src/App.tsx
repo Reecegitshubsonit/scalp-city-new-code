@@ -154,6 +154,11 @@ export default function App() {
   const tickerRows = useMemo(() => botsOfTicker(rows, ticker), [rows, ticker])
   const tickerFeed = useMemo(() => eventsOfTicker(state.feed, ticker), [state.feed, ticker])
   const tickerTradeList = useMemo(() => tradesOfTicker(currentTrades, ticker), [currentTrades, ticker])
+  const tickerFire = useMemo(() => {
+    let best: { seq: number; side: import('./model/types').Side | null; bot: string } | null = null
+    for (const r of tickerRows) { const f = state.fires[r.bot]; if (f && (!best || f.seq > best.seq)) best = { seq: f.seq, side: f.side, bot: r.bot } }
+    return best
+  }, [tickerRows, state.fires])
   const tPnl = useMemo(() => sumTickerPnl(rows, ticker), [rows, ticker])
 
   const room = sel && !inside && (
@@ -171,7 +176,7 @@ export default function App() {
     onPlayPause: () => (replay.playing ? replay.pause() : replay.play()), onStop: replay.stop, onSpeed: replay.setSpeed,
     onOpenPicker: () => setShowPicker(true),
   }
-  const roomData = { ticker, series: series[ticker], tradeCount: tickerTrades[ticker] ?? 0, tickerRows, feed: tickerFeed, selectedBot: selected, tickerPnl: tPnl, earned, lab }
+  const roomData = { ticker, series: series[ticker], tradeCount: tickerTrades[ticker] ?? 0, tickerRows, feed: tickerFeed, selectedBot: selected, tickerPnl: tPnl, fire: tickerFire, earned, lab }
 
   return (
     <div className="app">
@@ -193,7 +198,7 @@ export default function App() {
             <div className="canvaswrap">
               <div className="stage">
                 <Suspense fallback={<div className="muted pad">Loading 3D...</div>}>
-                  <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE}
+                  <City rows={rows} selected={selected} onSelect={onSelect} onDome={openSummary} reducedMotion={reduced} total={total} lastTrade={lastTrade} title={TITLE} fires={state.fires}
                     inside={inside} roomData={roomData} allSeries={series} floatChart={floatChart} screen={screen} onPickScreen={onPickScreen} />
                 </Suspense>
                 {sel && inside && (

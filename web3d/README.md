@@ -84,7 +84,7 @@ is built only from prices seen since the page loaded.
 
 - 3 districts, 3 towers each, with a trigger sign above each tower and a floating badge: "CALL 62% CHARGED",
   "FIRE PUT", "CALL +$44.00", "PROFIT LOCKED +$118.00", "STOPPED OUT -$48.00", "DAILY GOAL", "PAUSED", "STALE DATA".
-  Beam height = charge %. Green = CALL, red = PUT, violet = side unknown. A wide flash disc on fire, steady glow in a
+  Beam height = charge %. Green = CALL, red = PUT, violet = side unknown. On every entry (SIGNAL or ENTRY_FILL event, shown at least 2.5 s even if the engine leaves `fired` in the same bar): a big expanding glowing disc and two rings at the tower base, a tall bright beam flash, a halo and a "FIRE CALL" / "FIRE PUT" burst label; inside the room the firing bot's scanner flashes, the robot throws both arms up and the room light flashes. Under reduced motion: a static ring and label, no flashing. Steady glow in a
   trade, pulsing on exit, blue cooldown, amber locked, hatched grey paused, flickering red stale. Orbit rings spin
   faster on active towers, link lines tie towers to the centre dome. The dome shows total day P&L; click it (or the
   "Day summary" button) for the summary: total, goal bar ($5,000), a bar per ticker, top worker, recent trades.
