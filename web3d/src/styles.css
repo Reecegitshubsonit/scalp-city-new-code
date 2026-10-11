@@ -147,3 +147,24 @@ select { font: inherit; color: inherit; background: #1b1666; border: 1px solid v
 .replaybar .scrub { flex: 1; min-width: 160px; }
 .daylist { list-style: none; margin: 0; padding: 0; } .daylist li { display: flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); } .daylist button { margin-left: auto; }
 .insidebar { flex-wrap: wrap; max-width: calc(100% - 16px); }
+
+/* trades */
+.trades { margin-bottom: 12px; }
+.tradeshead { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 8px; }
+.tradeshead h2 { margin: 0; }
+.earnedrow { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; margin-bottom: 10px; }
+.earned { min-width: 250px; background: #0b0830; border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; text-align: left; }
+button.earned.active { box-shadow: 0 0 0 2px #fff; }
+.earnedhead { font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+.earnedpnl { font-size: 30px; font-weight: 800; text-shadow: 0 0 10px currentColor; }
+.earnedlines { list-style: none; margin: 6px 0 0; padding: 0; font-size: 12px; }
+.earnedlines li { padding: 1px 0; } .earnedlines li.win { color: var(--call); } .earnedlines li.loss { color: var(--put); }
+.tradestats { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 240px; }
+.warn { border: 1px solid var(--locked); color: var(--locked); border-radius: 6px; padding: 6px 10px; font-size: 13px; }
+.tablewrap { overflow: auto; max-height: 420px; border: 1px solid var(--line); border-radius: 6px; }
+.trades table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.trades th { position: sticky; top: 0; background: #1b1666; text-align: left; padding: 6px 8px; font-weight: 600; white-space: nowrap; }
+.trades td { padding: 5px 8px; border-top: 1px solid var(--line); white-space: nowrap; }
+.trades .num { text-align: right; font-variant-numeric: tabular-nums; } .trades .mono { font-family: ui-monospace, monospace; font-size: 12px; }
+.trades tr.win td:first-child { border-left: 3px solid var(--call); } .trades tr.loss td:first-child { border-left: 3px solid var(--put); }
+button.link { background: transparent; border: 0; color: #b9a7ff; text-decoration: underline; padding: 0; cursor: pointer; }

@@ -37,7 +37,7 @@ export function Summary({ rows, trades, date, onClose }: Props) {
           ))}
         </div>
         <p>{s.top ? <>Top worker <b>{s.top.bot}</b> <b className="pos">{formatPnl(s.top.pnl)}</b></> : <span className="muted">No profitable bot yet</span>}</p>
-        <p className="muted">{s.trades} trades · {s.closed ? `${s.wins} of ${s.closed} wins since page load (${s.winRate!.toFixed(0)}%)` : 'no closed trades since page load'}</p>
+        <p className="muted">{s.trades} trades · {s.closed ? `${s.wins} of ${s.closed} wins today (${s.winRate!.toFixed(0)}%)` : 'no closed trades yet'}</p>
         <ol className="feed">
           {trades.slice(-8).reverse().map((t, i) => (
             <li key={i} className={t.pnl >= 0 ? 'win' : 'loss'}><time>{formatTime(t.time)}</time> <b>{t.bot}</b> {t.pnl >= 0 ? 'profit locked' : 'stopped out'} <b>{formatPnl(t.pnl)}</b></li>

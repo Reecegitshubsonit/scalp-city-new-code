@@ -3,6 +3,10 @@ import { useReducedMotion, useStored } from './hooks'
 import { ALL_BOTS, TICKERS } from './model/layout'
 import { mergeSeries } from './model/history'
 import { useHistory } from './net/useHistory'
+import { useDays } from './net/useDays'
+import { useTrades } from './net/useTrades'
+import { mergeTrades, toTradeRecs } from './model/trades'
+import { TradesPanel } from './panels/TradesPanel'
 import { leaderboard, totalPnl } from './model/reducer'
 import { formatPnl } from './model/format'
 import type { BotRow, TradeRec } from './model/types'
@@ -62,13 +66,32 @@ export default function App() {
     for (const r of rows) m[r.ticker] = (m[r.ticker] ?? 0) + r.trades
     return m
   }, [rows])
-  const lastTrade = useMemo(() => {
-    const m: Record<string, TradeRec> = {}
-    for (const t of state.trades) m[t.bot] = t
-    return m
-  }, [state.trades])
   const newest = useMemo(() => rows.map(r => r.time).filter((t): t is string => !!t).sort().pop() ?? null, [rows])
   const date = newest?.slice(0, 10) ?? null
+
+  // all past trades: the engine's logged trades for the viewed day, merged with trades seen live since the page loaded
+  const enabled = replay.active || status === 'live' || status === 'polling'
+  const currentDay = replay.active && replay.day ? { day: replay.day.day, mode: replay.day.mode } : date ? { day: date, mode: 'live' } : null
+  const currentKey = currentDay ? `${currentDay.day}|${currentDay.mode}` : ''
+  const [panelKey, setPanelKey] = useState<string | null>(null)
+  const viewKey = panelKey ?? currentKey
+  const isCurrent = viewKey === currentKey
+  const cur = useTrades(currentDay?.day ?? null, currentDay?.mode ?? 'live', enabled, replay.active ? 0 : state.trades.length)
+  const [vDay, vMode] = viewKey.split('|')
+  const other = useTrades(!isCurrent && vDay ? vDay : null, vMode ?? 'live', enabled && !isCurrent, 0)
+  const days = useDays(enabled, 0)
+  const replayMs = replay.active ? replay.startMs + replay.posMs : null
+  const currentTrades = useMemo(
+    () => mergeTrades(replayMs == null ? cur.trades : cur.trades.filter(t => Date.parse(t.exit_time) <= replayMs), state.trades),
+    [cur.trades, state.trades, replayMs],
+  )
+  const panelTrades = isCurrent ? currentTrades : other.trades
+  const tradeRecs = useMemo(() => toTradeRecs(currentTrades), [currentTrades])
+  const lastTrade = useMemo(() => {
+    const m: Record<string, TradeRec> = {}
+    for (const t of tradeRecs) m[t.bot] = t
+    return m
+  }, [tradeRecs])
 
   // clear pending once the row reflects the requested value
   useEffect(() => {
@@ -95,11 +118,16 @@ export default function App() {
     }
   }, [replay.active])
 
-  const onSelect = useCallback((bot: string) => setSelected(s => (s === bot ? null : bot)), [])
+  const onSelect = useCallback((bot: string) => setSelected(bot), [])   // selecting never toggles off; close with the X or Esc
   const onClose = useCallback(() => { setSelected(null); setInside(false); setScreen(null) }, [])
   const onPickScreen = useCallback((id: string) => setScreen(id), [])
   const closeScreen = useCallback(() => setScreen(null), [])
-  const selectBot = useCallback((bot: string) => setSelected(bot), [])
+  // leaderboard, heatmap and trade rows: open that bot, and always show something (scanner screen inside the room, else scroll to it)
+  const openBot = useCallback((bot: string) => {
+    setSelected(bot)
+    if (inside) setScreen('scanner')
+    else setTimeout(() => (document.querySelector('.stage') ?? document.querySelector('.room'))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80)
+  }, [inside])
   const onInside = useCallback(() => setInside(true), [])
   const openSummary = useCallback(() => setShowSummary(true), [])
   const closeSummary = useCallback(() => setShowSummary(false), [])
@@ -138,7 +166,7 @@ export default function App() {
       </header>
       {toast && <div className="toast" role="alert">{toast}</div>}
       {replay.active && <ReplayBar r={replay} />}
-      <Tape trades={state.trades} />
+      <Tape trades={tradeRecs} />
       <main className={`main${tableOnly ? ' tableonly' : ''}`}>
         <div className="left">
           {!tableOnly && (
@@ -164,23 +192,26 @@ export default function App() {
           )}
           <div className="insight">
             <Charts series={series} trades={tickerTrades} />
-            <Heatmap rows={rows} onSelect={onSelect} />
+            <Heatmap rows={rows} onSelect={openBot} />
           </div>
           <Cards rows={rows} selected={selected} pending={pending} onSelect={onSelect} onPause={onPause} />
+          <TradesPanel days={days} viewKey={viewKey} onViewDay={d => setPanelKey(`${d.day}|${d.mode}`)} trades={panelTrades} isCurrent={isCurrent}
+            enginePnl={isCurrent && !replay.active ? total : null} supported={isCurrent ? cur.supported : other.supported}
+            onOpenBot={openBot} onReplay={async d => { await replay.start(d); onClose(); window.scrollTo({ top: 0, behavior: 'smooth' }) }} />
         </div>
         <div className="right">
           <Clock lastEventAt={state.lastEventAt} dataTime={newest} status={status} replayMs={replay.active ? replay.startMs + replay.posMs : null} />
-          <Leaderboard rows={board} onSelect={onSelect} />
+          <Leaderboard rows={board} onSelect={openBot} />
           <Feed events={state.feed} />
           {tableOnly && room}
         </div>
       </main>
       {screen && inside && (
-        <ScreenViewer screen={screen} series={series} tickerTrades={tickerTrades} rows={rows} board={board} feed={state.feed} trades={state.trades}
-          selectedBot={selected} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={selectBot} onClose={closeScreen} />
+        <ScreenViewer screen={screen} series={series} tickerTrades={tickerTrades} rows={rows} board={board} feed={state.feed} trades={tradeRecs}
+          selectedBot={selected} total={total} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
       )}
       {showPicker && <ReplayPicker loading={replay.loading} error={replay.error} onClose={() => setShowPicker(false)} onPick={async d => { await replay.start(d); setShowPicker(false); onClose() }} />}
-      {showSummary && <Summary rows={rows} trades={state.trades} date={date} onClose={closeSummary} />}
+      {showSummary && <Summary rows={rows} trades={tradeRecs} date={date} onClose={closeSummary} />}
     </div>
   )
 }

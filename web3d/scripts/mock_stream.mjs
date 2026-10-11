@@ -206,6 +206,22 @@ function advance() {
 for (bar = 1; bar < 120; bar++) stepMarket()
 setInterval(advance, BAR_MS)
 
+function buildTrades() {
+  const open = {}, out = []
+  for (const e of EVENTS) {
+    const cur = (open[e.bot] ??= {})
+    if (e.kind === 'state_change' && e.reason_code === 'SIGNAL') cur.side = (/\b(CALL|PUT)\b/.exec(e.reason_text) || [])[1] ?? null
+    else if (e.kind === 'fill' && e.reason_code === 'ENTRY_FILL') Object.assign(cur, { contract: e.contract ?? null, qty: e.qty ?? null, entry_time: e.time, entry_price: e.fill_price, source: e.fill_source })
+    else if (e.kind === 'state_change' && e.state === 'exiting' && e.reason_code?.startsWith('EXIT_')) cur.exit_code = e.reason_code
+    else if (e.kind === 'fill' && e.reason_code === 'EXIT_FILL') cur.exit_price = e.fill_price
+    else if (e.kind === 'trade_closed') {
+      out.push({ bot: e.bot, ticker: e.ticker, side: cur.side ?? null, contract: cur.contract ?? null, qty: cur.qty ?? null, entry_time: cur.entry_time ?? null, entry_price: cur.entry_price ?? null,
+        exit_time: e.time, exit_price: cur.exit_price ?? null, exit_code: cur.exit_code ?? null, pnl: e.pnl, pnl_day: e.pnl_day, source: cur.source ?? null })
+      open[e.bot] = {}
+    }
+  }
+  return out
+}
 const readBody = req => new Promise(res => { let d = ''; req.on('data', c => (d += c)); req.on('end', () => res(d)) })
 const server = http.createServer(async (req, res) => {
   const h = { 'content-type': 'application/json', 'access-control-allow-origin': '*', 'access-control-allow-headers': 'content-type' }
@@ -213,7 +229,13 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') { res.writeHead(204, h); return res.end() }
   if (req.method === 'GET' && req.url === '/days') {
     res.writeHead(200, h)
-    return res.end(JSON.stringify({ days: [{ day: '2026-10-08', mode: 'mock', events: EVENTS.length, first: EVENTS[0]?.time ?? null, last: EVENTS[EVENTS.length - 1]?.time ?? null }] }))
+    const tr = buildTrades()
+    return res.end(JSON.stringify({ days: [{ day: '2026-10-08', mode: 'mock', events: EVENTS.length, first: EVENTS[0]?.time ?? null, last: EVENTS[EVENTS.length - 1]?.time ?? null,
+      pnl: +tr.reduce((a, t) => a + t.pnl, 0).toFixed(2), trades: tr.length, wins: tr.filter(t => t.pnl > 0).length }] }))
+  }
+  if (req.method === 'GET' && req.url.startsWith('/trades?')) {
+    res.writeHead(200, h)
+    return res.end(JSON.stringify({ day: '2026-10-08', mode: 'mock', trades: buildTrades() }))
   }
   if (req.method === 'GET' && req.url.startsWith('/day?')) {
     res.writeHead(EVENTS.length ? 200 : 404, h)

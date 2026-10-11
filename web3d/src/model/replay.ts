@@ -3,7 +3,7 @@ import { initialState, reduce } from './reducer'
 import type { AppState, BotEvent, ServerMsg } from './types'
 
 /** One row of GET /days. */
-export interface Day { day: string; mode: string; events: number; first: string | null; last: string | null }
+export interface Day { day: string; mode: string; events: number; first: string | null; last: string | null; pnl?: number; trades?: number; wins?: number }
 
 export function placeholderSnapshot(): ServerMsg {
   const bots = Object.fromEntries(ALL_BOTS.map(bot => [bot, {

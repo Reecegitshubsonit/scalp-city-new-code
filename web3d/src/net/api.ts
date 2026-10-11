@@ -34,3 +34,13 @@ export async function fetchDay(day: string, mode: string): Promise<BotEvent[]> {
   if (!r.ok) throw new Error(r.status === 404 ? 'no log for that day' : `HTTP ${r.status}`)
   return ((await r.json()) as { events: BotEvent[] }).events
 }
+
+import type { Trade } from '../model/trades'
+
+/** Closed trades of one logged day (with entry and exit fills); null when the engine has no /trades. */
+export async function fetchTrades(day: string, mode: string): Promise<Trade[] | null> {
+  const r = await fetch(apiUrl(`/trades?day=${encodeURIComponent(day)}&mode=${encodeURIComponent(mode)}`))
+  if (r.status === 404) return null
+  if (!r.ok) throw new Error(`HTTP ${r.status}`)
+  return ((await r.json()) as { trades: Trade[] }).trades
+}

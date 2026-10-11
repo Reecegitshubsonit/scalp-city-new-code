@@ -38,6 +38,14 @@ describe('mock server', () => {
     const day = await (await fetch(base + '/day?day=2026-10-08&mode=mock')).json()
     expect(day.events.length).toBeGreaterThan(0); expect(typeof day.events[0].seq).toBe('number')
   })
+  it('serves closed trades with entry and exit details and totals in /days', async () => {
+    let t = { trades: [] as any[] }
+    for (let i = 0; i < 40 && !t.trades.length; i++) { await wait(250); t = await (await fetch(base + '/trades?day=2026-10-08&mode=mock')).json() }
+    expect(t.trades.length).toBeGreaterThan(0)
+    expect(t.trades[0]).toMatchObject({ bot: expect.any(String), pnl: expect.any(Number), exit_time: expect.any(String) })
+    const d = await (await fetch(base + '/days')).json()
+    expect(d.days[0].trades).toBeGreaterThanOrEqual(t.trades.length)
+  }, 20000)
   it('streams snapshot then events with increasing seq', async () => {
     const msgs: any[] = []
     await new Promise<void>(res => {
