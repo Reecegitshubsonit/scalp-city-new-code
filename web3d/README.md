@@ -109,6 +109,8 @@ is built only from prices seen since the page loaded.
   EARNED screen (big P&L, trade lines). The three round buttons on the desk: green = replay a day / pause / play, pink = back to live,
   white = cycle speed (this mapping is my reading of the video, which is too small to confirm). The bar at the bottom shows the replay
   clock (or LIVE) and the bot's state. The robot sways and types, raises an arm when the ticker is winning, bows its head when losing.
+![backtest room](docs/backtest-room.jpg)
+
 - Leaderboard rows, heatmap tiles and trade rows always open that bot (never toggle it off); inside the room they open its scanner.
 - Panels: trade tape, three ticker charts (price, VWAP, EMA50, entry/exit markers, % change since page load),
   worker heatmap, 9 bot cards, leaderboard, market clock and data freshness, thoughts feed. "Table only" hides the
