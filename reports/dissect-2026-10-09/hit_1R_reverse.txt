@@ -1,0 +1,14 @@
+today: reached +1R: 25 of 52; then reversed to stop: 10 (40% of those reaching 1R, 27% of all 37 stops, 19% of all trades)
+today: logged P&L of the reversals -1680; exit fills -14.81R total
+  # 1 IWM-VWAP   PUT  in 09:43 +1R at 09:45 best +1.99 stopped 10:20 (35 min after +1R) fill -1.48R -230
+  #19 QQQ-EMA50  PUT  in 11:07 +1R at 11:09 best +1.98 stopped 11:27 (18 min after +1R) fill -1.04R -290
+  #20 QQQ-VWAP   PUT  in 11:07 +1R at 11:09 best +1.98 stopped 11:27 (18 min after +1R) fill -1.04R -300
+  #26 IWM-EMA50  PUT  in 11:41 +1R at 11:50 best +1.01 stopped 11:59 (9 min after +1R) fill -1.01R -60
+  #29 QQQ-VWAP   CALL in 11:48 +1R at 11:52 best +2.00 stopped 12:01 (9 min after +1R) fill -1.77R -310
+  #35 IWM-RANGE  CALL in 12:31 +1R at 12:32 best +1.10 stopped 12:43 (11 min after +1R) fill -1.03R -20
+  #36 QQQ-EMA50  PUT  in 12:36 +1R at 12:43 best +1.16 stopped 12:47 (4 min after +1R) fill -1.44R -190
+  #37 IWM-RANGE  CALL in 12:46 +1R at 12:52 best +1.86 stopped 13:14 (22 min after +1R) fill -1.78R -100
+  #39 IWM-EMA50  PUT  in 13:11 +1R at 13:14 best +1.35 stopped 13:20 (6 min after +1R) fill -1.52R -50
+  #49 QQQ-EMA50  PUT  in 14:34 +1R at 14:43 best +1.15 stopped 14:47 (4 min after +1R) fill -2.70R -130
+history dev (first 70 days): 4147 trades; reached +1R 2054 (49.5%); reversed to stop 577 = 28.1% of those, 21.6% of stops, 13.9% of trades; mean net$ of reversals -302.9
+history holdout (last 20 days): 1205 trades; reached +1R 566 (47.0%); reversed to stop 165 = 29.2% of those, 20.5% of stops, 13.7% of trades; mean net$ of reversals -257.3

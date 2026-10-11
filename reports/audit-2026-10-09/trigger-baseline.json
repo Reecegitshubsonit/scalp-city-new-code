@@ -1,0 +1,23 @@
+[
+  {
+    "trigger": "EMA50 cross",
+    "trades": 3347,
+    "win_pct": 31.9,
+    "gross_atr": -0.042,
+    "total_atr": -140
+  },
+  {
+    "trigger": "VWAP cross",
+    "trades": 1498,
+    "win_pct": 31.7,
+    "gross_atr": -0.049,
+    "total_atr": -73
+  },
+  {
+    "trigger": "Opening-range break",
+    "trades": 1445,
+    "win_pct": 33.1,
+    "gross_atr": -0.008,
+    "total_atr": -11
+  }
+]

@@ -1,0 +1,257 @@
+{
+  "purpose": "Integration/accounting validation, not strategy profitability",
+  "feed": "Webull sandbox snapshot quotes",
+  "first_observation": "2026-10-09T14:15:58.592799-04:00",
+  "last_observation": "2026-10-09T14:17:27.707084-04:00",
+  "records": 90,
+  "capture_errors": 1,
+  "contract": "QQQ261012P00751000",
+  "results": [
+    {
+      "lag_seconds": 0,
+      "fee_per_contract_per_side": 0.05,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -21.0,
+      "independent_cash_flow": -21.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 0.5,
+          "at": "2026-10-09T14:15:59.118975-04:00",
+          "quote_at": "2026-10-09T14:15:57.586000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 0,
+      "fee_per_contract_per_side": 0.65,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -33.0,
+      "independent_cash_flow": -33.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 6.5,
+          "at": "2026-10-09T14:15:59.118975-04:00",
+          "quote_at": "2026-10-09T14:15:57.586000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 0.5,
+      "fee_per_contract_per_side": 0.05,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -21.0,
+      "independent_cash_flow": -21.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 0.5,
+          "at": "2026-10-09T14:15:59.799326-04:00",
+          "quote_at": "2026-10-09T14:15:58.565000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 0.5,
+      "fee_per_contract_per_side": 0.65,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -33.0,
+      "independent_cash_flow": -33.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 6.5,
+          "at": "2026-10-09T14:15:59.799326-04:00",
+          "quote_at": "2026-10-09T14:15:58.565000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 1,
+      "fee_per_contract_per_side": 0.05,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -21.0,
+      "independent_cash_flow": -21.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:00.248979-04:00",
+          "quote_at": "2026-10-09T14:15:58.565000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 1,
+      "fee_per_contract_per_side": 0.65,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -33.0,
+      "independent_cash_flow": -33.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:00.248979-04:00",
+          "quote_at": "2026-10-09T14:15:58.565000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 2,
+      "fee_per_contract_per_side": 0.05,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -21.0,
+      "independent_cash_flow": -21.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:03.244172-04:00",
+          "quote_at": "2026-10-09T14:16:01.791000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 0.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    },
+    {
+      "lag_seconds": 2,
+      "fee_per_contract_per_side": 0.65,
+      "fresh_quotes": 42,
+      "rejected_quotes": 3,
+      "filled_orders": 2,
+      "closed": true,
+      "remaining_contracts": 0,
+      "engine_net_pnl": -33.0,
+      "independent_cash_flow": -33.0,
+      "fills": [
+        {
+          "side": "BUY",
+          "qty": 10,
+          "price": 2.53,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:03.244172-04:00",
+          "quote_at": "2026-10-09T14:16:01.791000-04:00"
+        },
+        {
+          "side": "SELL",
+          "qty": 10,
+          "price": 2.51,
+          "fee": 6.5,
+          "at": "2026-10-09T14:16:13.644363-04:00",
+          "quote_at": "2026-10-09T14:16:12.494000-04:00"
+        }
+      ],
+      "accounting_matches": true
+    }
+  ],
+  "limitations": [
+    "90-second sample and one seeded contract, not a representative trading sample.",
+    "Entry is deliberately seeded; 0.03 underlying threshold and 45-second fallback are test inputs.",
+    "Polling can miss updates; displayed liquidity does not guarantee real fills or queue priority.",
+    "Fees are explicit sensitivity assumptions. No quote extrapolation or synthetic bid/ask from bars."
+  ]
+}

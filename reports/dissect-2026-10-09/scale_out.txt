@@ -1,0 +1,29 @@
+STOP WIDTH: worst close before the exit, for trades that ended at the 2R target (live rules)
+  today (15 targets): worst closes [-0.9, -0.9, -0.85, -0.83, -0.78, -0.58, -0.5, -0.5, -0.5, -0.4, -0.29, -0.14, 0, 0, 0]
+    a 0.5R stop would have killed 9 of 15 winners first
+    a 0.75R stop would have killed 5 of 15 winners first
+  history (1876 targets): worst close at or below -0.5R before reaching target: 475 (25.3%)
+  history (1876 targets): worst close at or below -0.75R before reaching target: 218 (11.6%)
+
+TODAY: same 52 entries, each replayed alone on logged closes
+  live 1R stop / 2R target       total  -17.7R  model net $ -3657  positive 16  exits {'STOP': 36, 'TARGET': 16}
+  plan, stop 1R                  total   -7.8R  model net $ -2720  positive 25  exits {'BREAKEVEN': 12, 'STOP': 27, 'TARGET': 13}
+  plan, stop 0.75R               total  -12.6R  model net $ -2911  positive 20  exits {'BREAKEVEN': 10, 'STOP': 32, 'TARGET': 10}
+  plan, stop 0.5R                total  -13.7R  model net $ -2983  positive 17  exits {'BREAKEVEN': 7, 'STOP': 35, 'TARGET': 10}
+  plan, stop 1R, no breakeven    total   -9.4R  model net $ -2682  positive 21  exits {'STOP': 36, 'TARGET': 16}
+
+HISTORY: dev = first 70 days, holdout = last 20 days. R and $ are per 10-contract position.
+  dev     live 1R stop / 2R target     n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  holdout live 1R stop / 2R target     n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.5 (2%:  -79.0) $/day= -2924 hold= 9.3m CI[-70.0,-30.5] P>0=0.00
+  dev     plan, stop 1R                n= 4552 (65.0/day) win=48.7% grossR=-0.038 gross$=  -0.5 net$= -29.4 (2%:  -66.6) $/day= -1915 hold= 5.9m
+  holdout plan, stop 1R                n= 1300 (65.0/day) win=46.4% grossR=-0.079 gross$= -10.4 net$= -35.1 (2%:  -65.6) $/day= -2282 hold= 6.0m CI[-53.5,-17.4] P>0=0.00
+  dev     plan, stop 0.75R             n= 4906 (70.1/day) win=44.2% grossR=-0.027 gross$=  +0.8 net$= -26.4 (2%:  -63.5) $/day= -1853 hold= 4.9m
+  holdout plan, stop 0.75R             n= 1413 (70.7/day) win=41.8% grossR=-0.076 gross$=  -8.7 net$= -31.9 (2%:  -62.3) $/day= -2256 hold= 5.0m CI[-44.6,-16.6] P>0=0.00
+  dev     plan, stop 0.5R              n= 5325 (76.1/day) win=38.4% grossR=-0.023 gross$=  +1.1 net$= -24.4 (2%:  -61.4) $/day= -1858 hold= 4.0m
+  holdout plan, stop 0.5R              n= 1529 (76.5/day) win=37.1% grossR=-0.047 gross$=  -4.8 net$= -26.6 (2%:  -56.9) $/day= -2031 hold= 4.1m CI[-38.1,-12.4] P>0=0.00
+  dev     plan, stop 1R, no breakeven  n= 4147 (59.2/day) win=42.7% grossR=-0.033 gross$=  +4.0 net$= -26.1 (2%:  -63.4) $/day= -1547 hold= 6.5m
+  holdout plan, stop 1R, no breakeven  n= 1205 (60.2/day) win=39.9% grossR=-0.101 gross$= -13.2 net$= -38.9 (2%:  -69.4) $/day= -2344 hold= 6.7m CI[-56.6,-22.5] P>0=0.00
+  dev     live 1R stop / 2R target (touch fills) n= 4887 (69.8/day) win=32.5% grossR=-0.025 gross$=  +1.1 net$= -28.5 (2%:  -65.7) $/day= -1991 hold= 6.2m
+  holdout live 1R stop / 2R target (touch fills) n= 1395 (69.8/day) win=30.9% grossR=-0.073 gross$= -10.2 net$= -35.6 (2%:  -65.6) $/day= -2484 hold= 6.4m CI[-49.9,-21.8] P>0=0.00
+  dev     plan, stop 1R (touch fills)  n= 5390 (77.0/day) win=49.6% grossR=-0.014 gross$=  -0.7 net$= -25.5 (2%:  -62.6) $/day= -1961 hold= 3.6m
+  holdout plan, stop 1R (touch fills)  n= 1541 (77.0/day) win=49.4% grossR=-0.018 gross$=  -3.0 net$= -24.2 (2%:  -54.5) $/day= -1864 hold= 3.7m CI[-32.5,-15.0] P>0=0.00

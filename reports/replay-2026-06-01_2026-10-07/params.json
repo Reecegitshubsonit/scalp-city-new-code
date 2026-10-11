@@ -1,0 +1,81 @@
+{
+  "run_started": "2026-10-09T13:26:22.111488",
+  "argv": [
+    "backtest/replay_harness.py",
+    "--start",
+    "2026-06-01",
+    "--end",
+    "2026-10-07",
+    "--slippage",
+    "0.01",
+    "--fee",
+    "0.0",
+    "--out",
+    "reports/replay-2026-06-01_2026-10-07"
+  ],
+  "start": "2026-06-01",
+  "end": "2026-10-07",
+  "days": 90,
+  "slippage": 0.01,
+  "fee_per_contract_side": 0.0,
+  "latency_s": 0,
+  "offline": false,
+  "settings": {
+    "contracts": 10,
+    "daily_goal": 600.0,
+    "daily_loss": 100.0,
+    "cooldown_s": 120,
+    "last_entry": "15:30:00",
+    "flat_by": "15:55:00",
+    "stale_idle_s": 120,
+    "stale_in_trade_s": 30,
+    "flatten_after_stale_s": 300,
+    "squeeze_atr": 0.15,
+    "trend_side": true,
+    "stop_atr": 1.0,
+    "target_atr": 2.0,
+    "charge_range_atr": 1.0,
+    "forming_min_charge": 30.0,
+    "atr_period": 14,
+    "max_spread_pct": 0.15,
+    "cash_per_bot": 25000.0,
+    "half_spread": {
+      "SPY": 0.01,
+      "QQQ": 0.015,
+      "IWM": 0.02
+    }
+  },
+  "underlying_files": {
+    "QQQ": "/home/ronaldsecret/scalp-city/backtest/data/QQQ_1m.json",
+    "SPY": "/home/ronaldsecret/scalp-city/backtest/data/SPY_1m.json",
+    "IWM": "/home/ronaldsecret/scalp-city/backtest/data/IWM_1m.json"
+  },
+  "short_days_repaired_from_alpaca": {
+    "QQQ 2026-10-07": {
+      "had": 357,
+      "now": 390
+    },
+    "SPY 2026-10-07": {
+      "had": 357,
+      "now": 390
+    },
+    "IWM 2026-10-07": {
+      "had": 357,
+      "now": 390
+    }
+  },
+  "days_excluded_incomplete_data": [],
+  "fill_model": "buy = option last close + half_spread + slippage; sell = close - half_spread - slippage; option close = last Alpaca 1m trade bar ended at fill time, max 5 min old",
+  "git": {
+    "commit": "949d4b4218763a1dd09e1a948ffc909a58d5793c",
+    "scalpcity_dirty_files": [
+      "scalpcity/bot.py",
+      "scalpcity/config.py",
+      "scalpcity/engine.py",
+      "scalpcity/live.py",
+      "scalpcity/types.py",
+      "scalpcity/webull_broker.py"
+    ],
+    "scalpcity_diff_sha256": "8350952a8bd0720fbf3a68995826888f9b9d23ad16807e2d4b70ed535a060dfb"
+  }
+}

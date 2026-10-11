@@ -1,0 +1,250 @@
+{
+  "total": {
+    "trades": 1321,
+    "net_pnl": -45430.0,
+    "gross_pnl_before_fees": -45430.0,
+    "fees": 0.0,
+    "win_rate": 0.3777,
+    "avg_pnl": -34.39,
+    "avg_win": 444.57,
+    "avg_loss": -325.15,
+    "profit_factor": 0.83,
+    "max_drawdown_daily": -53680.0,
+    "days_traded": 90,
+    "positive_days": 31,
+    "by_exit_reason": {
+      "STOP": {
+        "trades": 813,
+        "pnl": -266560.0
+      },
+      "TARGET": {
+        "trades": 508,
+        "pnl": 221130.0
+      }
+    }
+  },
+  "unclosed_trades": 0,
+  "by_bot": {
+    "IWM-EMA50": {
+      "trades": 245,
+      "net_pnl": -12000.0,
+      "gross_pnl_before_fees": -12000.0,
+      "fees": 0.0,
+      "win_rate": 0.3592,
+      "avg_pnl": -48.98,
+      "avg_win": 196.36,
+      "avg_loss": -186.5,
+      "profit_factor": 0.59,
+      "max_drawdown_daily": -12000.0,
+      "days_traded": 90,
+      "positive_days": 11,
+      "by_exit_reason": {
+        "TARGET": {
+          "trades": 93,
+          "pnl": 17150.0
+        },
+        "STOP": {
+          "trades": 152,
+          "pnl": -29150.0
+        }
+      }
+    },
+    "IWM-RANGE": {
+      "trades": 146,
+      "net_pnl": -8000.0,
+      "gross_pnl_before_fees": -8000.0,
+      "fees": 0.0,
+      "win_rate": 0.3288,
+      "avg_pnl": -54.79,
+      "avg_win": 280.62,
+      "avg_loss": -219.08,
+      "profit_factor": 0.627,
+      "max_drawdown_daily": -8450.0,
+      "days_traded": 90,
+      "positive_days": 23,
+      "by_exit_reason": {
+        "STOP": {
+          "trades": 94,
+          "pnl": -21420.0
+        },
+        "TARGET": {
+          "trades": 52,
+          "pnl": 13420.0
+        }
+      }
+    },
+    "IWM-VWAP": {
+      "trades": 177,
+      "net_pnl": -9840.0,
+      "gross_pnl_before_fees": -9840.0,
+      "fees": 0.0,
+      "win_rate": 0.3955,
+      "avg_pnl": -55.59,
+      "avg_win": 203.71,
+      "avg_loss": -225.23,
+      "profit_factor": 0.592,
+      "max_drawdown_daily": -11570.0,
+      "days_traded": 90,
+      "positive_days": 20,
+      "by_exit_reason": {
+        "STOP": {
+          "trades": 107,
+          "pnl": -23980.0
+        },
+        "TARGET": {
+          "trades": 70,
+          "pnl": 14140.0
+        }
+      }
+    },
+    "QQQ-EMA50": {
+      "trades": 114,
+      "net_pnl": -4280.0,
+      "gross_pnl_before_fees": -4280.0,
+      "fees": 0.0,
+      "win_rate": 0.3772,
+      "avg_pnl": -37.54,
+      "avg_win": 745.58,
+      "avg_loss": -511.83,
+      "profit_factor": 0.882,
+      "max_drawdown_daily": -8530.0,
+      "days_traded": 90,
+      "positive_days": 29,
+      "by_exit_reason": {
+        "TARGET": {
+          "trades": 43,
+          "pnl": 32060.0
+        },
+        "STOP": {
+          "trades": 71,
+          "pnl": -36340.0
+        }
+      }
+    },
+    "QQQ-RANGE": {
+      "trades": 96,
+      "net_pnl": -12870.0,
+      "gross_pnl_before_fees": -12870.0,
+      "fees": 0.0,
+      "win_rate": 0.3021,
+      "avg_pnl": -134.06,
+      "avg_win": 924.48,
+      "avg_loss": -592.24,
+      "profit_factor": 0.676,
+      "max_drawdown_daily": -16180.0,
+      "days_traded": 90,
+      "positive_days": 25,
+      "by_exit_reason": {
+        "STOP": {
+          "trades": 69,
+          "pnl": -39490.0
+        },
+        "TARGET": {
+          "trades": 27,
+          "pnl": 26620.0
+        }
+      }
+    },
+    "QQQ-VWAP": {
+      "trades": 101,
+      "net_pnl": 5410.0,
+      "gross_pnl_before_fees": 5410.0,
+      "fees": 0.0,
+      "win_rate": 0.4257,
+      "avg_pnl": 53.56,
+      "avg_win": 934.42,
+      "avg_loss": -599.48,
+      "profit_factor": 1.156,
+      "max_drawdown_daily": -9330.0,
+      "days_traded": 90,
+      "positive_days": 35,
+      "by_exit_reason": {
+        "TARGET": {
+          "trades": 43,
+          "pnl": 40180.0
+        },
+        "STOP": {
+          "trades": 58,
+          "pnl": -34770.0
+        }
+      }
+    },
+    "SPY-EMA50": {
+      "trades": 186,
+      "net_pnl": -940.0,
+      "gross_pnl_before_fees": -940.0,
+      "fees": 0.0,
+      "win_rate": 0.4032,
+      "avg_pnl": -5.05,
+      "avg_win": 379.2,
+      "avg_loss": -264.68,
+      "profit_factor": 0.968,
+      "max_drawdown_daily": -5200.0,
+      "days_traded": 90,
+      "positive_days": 25,
+      "by_exit_reason": {
+        "STOP": {
+          "trades": 110,
+          "pnl": -29270.0
+        },
+        "TARGET": {
+          "trades": 76,
+          "pnl": 28330.0
+        }
+      }
+    },
+    "SPY-RANGE": {
+      "trades": 116,
+      "net_pnl": -3780.0,
+      "gross_pnl_before_fees": -3780.0,
+      "fees": 0.0,
+      "win_rate": 0.3707,
+      "avg_pnl": -32.59,
+      "avg_win": 484.88,
+      "avg_loss": -337.4,
+      "profit_factor": 0.847,
+      "max_drawdown_daily": -6630.0,
+      "days_traded": 90,
+      "positive_days": 30,
+      "by_exit_reason": {
+        "TARGET": {
+          "trades": 43,
+          "pnl": 20850.0
+        },
+        "STOP": {
+          "trades": 73,
+          "pnl": -24630.0
+        }
+      }
+    },
+    "SPY-VWAP": {
+      "trades": 140,
+      "net_pnl": 870.0,
+      "gross_pnl_before_fees": 870.0,
+      "fees": 0.0,
+      "win_rate": 0.4286,
+      "avg_pnl": 6.21,
+      "avg_win": 474.83,
+      "avg_loss": -345.25,
+      "profit_factor": 1.031,
+      "max_drawdown_daily": -4830.0,
+      "days_traded": 90,
+      "positive_days": 30,
+      "by_exit_reason": {
+        "TARGET": {
+          "trades": 61,
+          "pnl": 28380.0
+        },
+        "STOP": {
+          "trades": 79,
+          "pnl": -27510.0
+        }
+      }
+    }
+  },
+  "rejects_by_reason": {
+    "NO_QUOTE": 42
+  },
+  "option_bars_fetched": 883,
+  "option_bars_missing_offline": 0
+}

@@ -1,0 +1,370 @@
+{
+  "cutoff": "2026-10-09T14:13:05.323490-04:00",
+  "log_sha256": "48705e6234dcca67e46422b911475ce88caf98a3254ae770769e73c4d3526883",
+  "log_fills": 97,
+  "matched_fills": 89,
+  "unmatched_sequences": [
+    280,
+    285,
+    337,
+    343
+  ],
+  "ambiguous_sequences": [
+    627,
+    632,
+    1205,
+    1211
+  ],
+  "broker_option_orders": 108,
+  "unsupported_orders": 1,
+  "position_mismatches": [
+    {
+      "contract": "QQQ261012P00749000",
+      "logged_qty": 20,
+      "broker_qty": 30
+    }
+  ],
+  "other_account_instruments": [
+    "QQQ"
+  ],
+  "matched_closed_trades": 41,
+  "matched_closed_gross": -1420.0,
+  "matched_closed_fees": 39.93,
+  "matched_closed_net": -1459.93,
+  "matched_closed_details": [
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 85,
+      "exit_seq": 148,
+      "gross": -250.0,
+      "fees": 0.96,
+      "net": -250.96
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 156,
+      "exit_seq": 168,
+      "gross": 230.0,
+      "fees": 1.01,
+      "net": 228.99
+    },
+    {
+      "bot": "QQQ-RANGE",
+      "entry_seq": 92,
+      "exit_seq": 174,
+      "gross": 190.0,
+      "fees": 1.0,
+      "net": 189.0
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 67,
+      "exit_seq": 196,
+      "gross": -260.0,
+      "fees": 0.96,
+      "net": -260.96
+    },
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 265,
+      "exit_seq": 409,
+      "gross": -130.0,
+      "fees": 0.96,
+      "net": -130.96
+    },
+    {
+      "bot": "IWM-VWAP",
+      "entry_seq": 23,
+      "exit_seq": 488,
+      "gross": -230.0,
+      "fees": 0.96,
+      "net": -230.96
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "entry_seq": 617,
+      "exit_seq": 709,
+      "gross": -310.0,
+      "fees": 0.99,
+      "net": -310.99
+    },
+    {
+      "bot": "SPY-EMA50",
+      "entry_seq": 740,
+      "exit_seq": 772,
+      "gross": -110.0,
+      "fees": 0.97,
+      "net": -110.97
+    },
+    {
+      "bot": "SPY-VWAP",
+      "entry_seq": 359,
+      "exit_seq": 863,
+      "gross": 360.0,
+      "fees": 0.99,
+      "net": 359.01
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 417,
+      "exit_seq": 907,
+      "gross": 380.0,
+      "fees": 1.01,
+      "net": 378.99
+    },
+    {
+      "bot": "SPY-RANGE",
+      "entry_seq": 871,
+      "exit_seq": 944,
+      "gross": 280.0,
+      "fees": 0.98,
+      "net": 279.02
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 854,
+      "exit_seq": 982,
+      "gross": 110.0,
+      "fees": 0.96,
+      "net": 109.04
+    },
+    {
+      "bot": "IWM-VWAP",
+      "entry_seq": 849,
+      "exit_seq": 1074,
+      "gross": 220.0,
+      "fees": 0.97,
+      "net": 219.03
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 1028,
+      "exit_seq": 1080,
+      "gross": -190.0,
+      "fees": 0.95,
+      "net": -190.95
+    },
+    {
+      "bot": "SPY-EMA50",
+      "entry_seq": 1068,
+      "exit_seq": 1096,
+      "gross": -390.0,
+      "fees": 0.97,
+      "net": -390.97
+    },
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 1270,
+      "exit_seq": 1296,
+      "gross": -60.0,
+      "fees": 0.95,
+      "net": -60.95
+    },
+    {
+      "bot": "SPY-EMA50",
+      "entry_seq": 1289,
+      "exit_seq": 1376,
+      "gross": -80.0,
+      "fees": 0.97,
+      "net": -80.97
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "entry_seq": 1411,
+      "exit_seq": 1445,
+      "gross": -170.0,
+      "fees": 0.99,
+      "net": -170.99
+    },
+    {
+      "bot": "SPY-EMA50",
+      "entry_seq": 1455,
+      "exit_seq": 1489,
+      "gross": -130.0,
+      "fees": 0.97,
+      "net": -130.97
+    },
+    {
+      "bot": "SPY-RANGE",
+      "entry_seq": 1318,
+      "exit_seq": 1514,
+      "gross": 210.0,
+      "fees": 0.98,
+      "net": 209.02
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 1359,
+      "exit_seq": 1584,
+      "gross": 150.0,
+      "fees": 1.0,
+      "net": 149.0
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 1385,
+      "exit_seq": 1595,
+      "gross": -60.0,
+      "fees": 0.96,
+      "net": -60.96
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "entry_seq": 1473,
+      "exit_seq": 1630,
+      "gross": -310.0,
+      "fees": 0.99,
+      "net": -310.99
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 1614,
+      "exit_seq": 1636,
+      "gross": 350.0,
+      "fees": 1.0,
+      "net": 349.0
+    },
+    {
+      "bot": "SPY-EMA50",
+      "entry_seq": 1646,
+      "exit_seq": 1691,
+      "gross": -250.0,
+      "fees": 0.97,
+      "net": -250.97
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 1625,
+      "exit_seq": 1700,
+      "gross": -70.0,
+      "fees": 0.96,
+      "net": -70.96
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 1727,
+      "exit_seq": 1806,
+      "gross": -90.0,
+      "fees": 0.96,
+      "net": -90.96
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 1934,
+      "exit_seq": 1966,
+      "gross": 80.0,
+      "fees": 0.95,
+      "net": 79.05
+    },
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 1973,
+      "exit_seq": 2098,
+      "gross": -20.0,
+      "fees": 0.95,
+      "net": -20.95
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2025,
+      "exit_seq": 2146,
+      "gross": -190.0,
+      "fees": 0.98,
+      "net": -190.98
+    },
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 2132,
+      "exit_seq": 2408,
+      "gross": -100.0,
+      "fees": 0.95,
+      "net": -100.95
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2263,
+      "exit_seq": 2465,
+      "gross": 230.0,
+      "fees": 1.0,
+      "net": 229.0
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 2376,
+      "exit_seq": 2476,
+      "gross": -50.0,
+      "fees": 0.96,
+      "net": -50.96
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2506,
+      "exit_seq": 2522,
+      "gross": -90.0,
+      "fees": 0.98,
+      "net": -90.98
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2546,
+      "exit_seq": 2577,
+      "gross": -160.0,
+      "fees": 0.98,
+      "net": -160.98
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 2516,
+      "exit_seq": 2630,
+      "gross": -20.0,
+      "fees": 0.96,
+      "net": -20.96
+    },
+    {
+      "bot": "IWM-EMA50",
+      "entry_seq": 2658,
+      "exit_seq": 2680,
+      "gross": -50.0,
+      "fees": 0.96,
+      "net": -50.96
+    },
+    {
+      "bot": "IWM-RANGE",
+      "entry_seq": 2451,
+      "exit_seq": 2714,
+      "gross": 50.0,
+      "fees": 0.96,
+      "net": 49.04
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2639,
+      "exit_seq": 2750,
+      "gross": -200.0,
+      "fees": 0.99,
+      "net": -200.99
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2774,
+      "exit_seq": 2807,
+      "gross": -140.0,
+      "fees": 0.98,
+      "net": -140.98
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "entry_seq": 2950,
+      "exit_seq": 3000,
+      "gross": -150.0,
+      "fees": 0.99,
+      "net": -150.99
+    }
+  ],
+  "unmatched_broker_filled_orders": 9,
+  "limitations": [
+    "Matching uses contract, side, quantity, price and a 180-second window; old logs lack order IDs.",
+    "Snapshot positions may change during read-only capture; reconcile again before any activation.",
+    "Broker sandbox fills verify accounting, not realistic market execution."
+  ]
+}

@@ -142,7 +142,8 @@ def test_order_failed_entry_returns_to_idle(mk):
 
 
 def test_range_bot_armed_at_940_fires_after_945(mk):
-    bot = Bot("QQQ", BOT_SPECS["range"], RangeBreak(S.charge_range_atr), S)
+    # history ends near 129.5, session trades near 100, so EMA9 < EMA21; keep the cross direction here
+    bot = Bot("QQQ", BOT_SPECS["range"], RangeBreak(S.charge_range_atr), Settings(trend_side=False))
     ind = warmed(mk)
     for minute in range(30, 40):
         step(bot, ind, mk("QQQ", f"9:{minute}", 100, high=101, low=99))
@@ -162,3 +163,31 @@ def test_stale_flag_sets_state_when_flat(mk):
     assert bot.state == State.STALE and ev[0]["kind"] == "feed_stale"
     assert bot.set_stale(True) == []
     assert bot.set_stale(False)[0]["kind"] == "feed_fresh"
+
+
+def test_trend_side_trades_ema9_ema21_direction_against_the_cross(mk):
+    ind = IndicatorSet()
+    for i in range(60):  # falling history: EMA9 well below EMA21
+        c = 250.0 - 2.0 * i
+        ind.warm(mk("QQQ", "15:59", c, high=c + 0.5, low=c - 0.5))
+    last = 250.0 - 2.0 * 59
+    bot = vwap_bot()
+    step(bot, ind, mk("QQQ", "9:30", last - 1.0, volume=1000))
+    step(bot, ind, mk("QQQ", "9:31", last - 1.5, volume=1000))
+    out = step(bot, ind, mk("QQQ", "9:32", last + 1.0, volume=1000))  # closes up through VWAP
+    assert ind.ema9.value < ind.ema21.value
+    assert [i.right for i in out.intents] == ["PUT"]
+    assert bot.position.stop_und > last + 1.0 > bot.position.target_und
+
+
+def test_trend_side_off_keeps_cross_direction(mk):
+    ind = IndicatorSet()
+    for i in range(60):
+        c = 250.0 - 2.0 * i
+        ind.warm(mk("QQQ", "15:59", c, high=c + 0.5, low=c - 0.5))
+    last = 250.0 - 2.0 * 59
+    bot = vwap_bot(trend_side=False)
+    step(bot, ind, mk("QQQ", "9:30", last - 1.0, volume=1000))
+    step(bot, ind, mk("QQQ", "9:31", last - 1.5, volume=1000))
+    out = step(bot, ind, mk("QQQ", "9:32", last + 1.0, volume=1000))
+    assert [i.right for i in out.intents] == ["CALL"]

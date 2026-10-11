@@ -96,3 +96,41 @@ def test_webull_client_parses_stock_bars_and_snapshot_from_real_fixtures():
     assert len(client.recent_bars("QQQ", 5)) == 5
     quote, delay = client.option_quote("QQQ261009C00748000")
     assert (quote.bid, quote.ask, delay) == (2.92, 2.95, 0)
+
+
+def test_paper_broker_books_fill_outside_market_at_the_quote():
+    buy = FakeWebull([{"status": "FILLED", "filled_quantity": "10", "filled_price": "2.50"}])  # below bid
+    f = WebullPaperBroker(buy, "a", sleep=lambda s: None).execute(intent(), "C", QUOTE, NOW)
+    assert (f.price, f.source, f.quote_bid, f.quote_ask) == (2.95, "broker_offmarket", 2.92, 2.95)   # booked at the ask
+    sell = FakeWebull([{"status": "FILLED", "filled_quantity": "10", "filled_price": "3.40"}])  # above ask
+    f = WebullPaperBroker(sell, "a", sleep=lambda s: None).execute(intent(kind="SELL_CLOSE"), "C", QUOTE, NOW)
+    assert (f.price, f.source) == (2.92, "broker_offmarket")                                         # booked at the bid
+    inside = FakeWebull([{"status": "FILLED", "filled_quantity": "10", "filled_price": "2.94"}])
+    f = WebullPaperBroker(inside, "a", sleep=lambda s: None).execute(intent(), "C", QUOTE, NOW)
+    assert (f.price, f.source) == (2.94, "broker")
+
+
+class FakeQuotes:
+    def __init__(self, delay, age_s):
+        self.delay, self.age = delay, age_s
+    def option_quote(self, contract):
+        return Quote(contract, NOW - timedelta(seconds=self.age), 2.92, 2.95), self.delay
+
+
+def test_live_quote_source_refuses_delayed_or_stale_quotes():
+    from scalpcity.live import LiveQuoteSource
+    now = lambda: NOW
+    assert LiveQuoteSource(FakeQuotes(0, 3), now).get("C", NOW) is not None
+    assert LiveQuoteSource(FakeQuotes(15, 3), now).get("C", NOW) is None    # delayed feed
+    assert LiveQuoteSource(FakeQuotes(0, 90), now).get("C", NOW) is None    # old quote
+
+
+def test_paper_broker_survives_failed_status_polls():
+    class Flaky(FakeWebull):
+        def order_detail(self, account_id, oid):
+            if not getattr(self, "n", 0):
+                self.n = 1; raise RuntimeError("429 TOO_MANY_REQUESTS")
+            return super().order_detail(account_id, oid)
+    fake = Flaky([{"status": "FILLED", "filled_quantity": "10", "filled_price": "2.94"}])
+    fill = WebullPaperBroker(fake, "a", sleep=lambda s: None).execute(intent(), "C", QUOTE, NOW)
+    assert fill is not None and fill.price == 2.94

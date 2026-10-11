@@ -1,0 +1,19 @@
+49 clean trades
+VWAP bots                                            n= 8 targets= 3 P&L   -550
+  VWAP: EMA9/21 squeezed (<0.15 ATR)                 n= 0 targets= 0 P&L     +0
+  VWAP: not squeezed                                 n= 8 targets= 3 P&L   -550
+EMA50 bots                                           n=32 targets= 9 P&L  -1590
+  EMA50: EMA9/21 squeezed (<0.15 ATR)                n=17 targets= 3 P&L  -1530
+  EMA50: not squeezed                                n=15 targets= 6 P&L    -60
+RANGE bots                                           n= 9 targets= 3 P&L   -290
+  RANGE: EMA9/21 squeezed (<0.15 ATR)                n= 2 targets= 0 P&L   -520
+  RANGE: not squeezed                                n= 7 targets= 3 P&L   +230
+PUT with price ABOVE VWAP                            n=21 targets= 3 P&L  -1840
+PUT with price below VWAP                            n=11 targets= 3 P&L  -1240
+CALL with price above VWAP                           n=15 targets= 7 P&L   +120
+CALL with price BELOW VWAP                           n= 2 targets= 2 P&L   +530
+EMA50 PUT with price above opening-range high        n= 8 targets= 1 P&L   -550
+ATR under 3 bp                                       n=24 targets= 6 P&L  -1210
+ATR 3 bp or more                                     n=25 targets= 9 P&L  -1220
+before 12:00                                         n=26 targets= 9 P&L  -1520
+12:00 and after                                      n=23 targets= 6 P&L   -910

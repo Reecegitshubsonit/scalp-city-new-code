@@ -1,0 +1,23 @@
+[
+ {
+  "step": "11:58 target touched, order sent",
+  "und": 750.71,
+  "exit_reason": "TARGET",
+  "holding": true,
+  "orders": 1
+ },
+ {
+  "step": "11:59 price reverted below target",
+  "und": 750.46,
+  "exit_reason": "TARGET",
+  "holding": true,
+  "orders": 2
+ },
+ {
+  "step": "12:00 still below target",
+  "und": 750.2,
+  "exit_reason": "TARGET",
+  "holding": true,
+  "orders": 2
+ }
+]

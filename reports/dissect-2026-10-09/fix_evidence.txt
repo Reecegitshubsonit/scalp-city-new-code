@@ -1,0 +1,71 @@
+TODAY: 52 closed trades replayed on logged closes. Live rules total -17.7R, 16 winners. Logged P&L -2270
+
+=== FIX 1: choose side from VWAP ===
+  today vwap   : side changed on 23 trades; loser->winner 14 [21, 23, 28, 31, 32, 33, 42, 43, 44, 45, 46, 47, 48, 50]; winner->loser 5 [10, 25, 38, 51, 52]; total +21.5R (live -17.7R), winners 25
+  today hold15 : side changed on 18 trades; loser->winner 11 [21, 28, 31, 32, 33, 42, 45, 46, 47, 48, 50]; winner->loser 3 [38, 51, 52]; total +16.8R (live -17.7R), winners 24
+  today hold30 : side changed on 14 trades; loser->winner 8 [31, 32, 33, 42, 45, 47, 48, 50]; winner->loser 3 [38, 51, 52]; total +2.9R (live -17.7R), winners 21
+  today hold60 : side changed on  8 trades; loser->winner 4 [42, 45, 48, 50]; winner->loser 2 [51, 52]; total -10.5R (live -17.7R), winners 18
+  today dist1  : side changed on 19 trades; loser->winner 11 [23, 28, 31, 32, 33, 42, 44, 45, 47, 48, 50]; winner->loser 4 [10, 38, 51, 52]; total +10.5R (live -17.7R), winners 23
+  today dist2  : side changed on 10 trades; loser->winner 6 [23, 42, 45, 47, 48, 50]; winner->loser 2 [51, 52]; total -2.6R (live -17.7R), winners 20
+  Today's split by price vs VWAP at the signal (live side):
+    with VWAP    n=29 targets=10 logged $-960 replay +0.5R
+    against VWAP n=23 targets= 5 logged $-1310 replay -18.3R
+
+HISTORY 2026-06-01..2026-10-07 (90 days), dev 70 / holdout 20 (2026-09-10..2026-10-07). Live side rule = raw cross.
+  dev     side=cross                   n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  holdout side=cross                   n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.6 (2%:  -79.1) $/day= -2930 hold= 9.4m CI[-70.2,-30.5] P>0=0.00
+  dev     side=vwap                    n= 4106 (58.7/day) win=35.1% grossR=-0.071 gross$= -10.9 net$= -46.1 (2%:  -83.8) $/day= -2706 hold= 9.3m
+  holdout side=vwap                    n= 1159 (58.0/day) win=37.5% grossR=+0.042 gross$=  +1.9 net$= -28.6 (2%:  -58.9) $/day= -1655 hold= 9.7m CI[-43.5,-14.5] P>0=0.00
+  dev     side=hold15                  n= 4116 (58.8/day) win=35.3% grossR=-0.062 gross$=  -7.6 net$= -42.9 (2%:  -80.5) $/day= -2522 hold= 9.3m
+  holdout side=hold15                  n= 1155 (57.8/day) win=37.9% grossR=+0.059 gross$=  +4.3 net$= -26.5 (2%:  -56.8) $/day= -1532 hold= 9.9m CI[-40.0,-12.7] P>0=0.00
+  dev     side=hold30                  n= 4110 (58.7/day) win=35.4% grossR=-0.057 gross$=  -4.7 net$= -40.1 (2%:  -77.5) $/day= -2354 hold= 9.4m
+  holdout side=hold30                  n= 1168 (58.4/day) win=37.0% grossR=+0.009 gross$=  -5.1 net$= -35.7 (2%:  -66.0) $/day= -2082 hold= 9.8m CI[-55.9,-17.8] P>0=0.00
+  dev     side=hold60                  n= 4119 (58.8/day) win=35.9% grossR=-0.037 gross$=  +4.5 net$= -30.9 (2%:  -68.2) $/day= -1820 hold= 9.4m
+  holdout side=hold60                  n= 1195 (59.8/day) win=35.1% grossR=-0.070 gross$= -17.7 net$= -47.6 (2%:  -78.1) $/day= -2846 hold= 9.4m CI[-71.9,-28.6] P>0=0.00
+  dev     side=dist1                   n= 4115 (58.8/day) win=35.6% grossR=-0.054 gross$=  -3.0 net$= -38.3 (2%:  -75.8) $/day= -2252 hold= 9.3m
+  holdout side=dist1                   n= 1164 (58.2/day) win=35.7% grossR=-0.037 gross$= -10.9 net$= -41.3 (2%:  -71.6) $/day= -2403 hold= 9.7m CI[-62.6,-22.7] P>0=0.00
+  dev     side=dist2                   n= 4119 (58.8/day) win=35.4% grossR=-0.056 gross$=  +0.8 net$= -34.6 (2%:  -71.8) $/day= -2035 hold= 9.3m
+  holdout side=dist2                   n= 1176 (58.8/day) win=35.9% grossR=-0.031 gross$=  -8.6 net$= -38.9 (2%:  -69.3) $/day= -2288 hold= 9.6m CI[-60.6,-20.3] P>0=0.00
+
+=== FIX 2: take profit at 1R (stop stays 1R) ===
+  today: stops that first reached +1R: 10 [1, 19, 20, 26, 29, 35, 36, 37, 39, 49] -> each banks +1R or better instead of the stop
+  today: targets that would be cut to 1R: 15; their replay R live +34.7 vs 1R rule +22.8
+  today total: live -17.7R -> 1R target -4.1R; winners 16 -> 25
+  dev     cross, 1R target             n= 4877 (69.7/day) win=48.7% grossR=-0.042 gross$=  -4.6 net$= -32.4 (2%:  -69.6) $/day= -2256 hold= 5.2m
+  holdout cross, 1R target             n= 1400 (70.0/day) win=47.4% grossR=-0.062 gross$=  -8.0 net$= -31.6 (2%:  -62.2) $/day= -2215 hold= 5.3m CI[-47.3,-15.5] P>0=0.00
+  dev     hold30, 1R target            n= 4877 (69.7/day) win=49.0% grossR=-0.038 gross$=  -8.5 net$= -36.3 (2%:  -73.5) $/day= -2530 hold= 5.2m
+  holdout hold30, 1R target            n= 1400 (70.0/day) win=51.5% grossR=+0.045 gross$=  +2.5 net$= -21.1 (2%:  -51.6) $/day= -1476 hold= 5.3m CI[-35.0,-5.6] P>0=0.00
+
+=== FIX 3: exits fill at the stop line ===
+  today: 37 stops; 37 filled beyond -1R; R lost beyond the line 18.44R; beyond -1.25R: 22
+    of which feed gap 11:09-11:16: [18, 21] = 3.73R
+    of which exit order failed first: [2, 3, 29, 42, 46] = 2.33R
+  distribution of stop fills (R): [-3.15, -2.7, -2.58, -2.53, -2.01, -1.83, -1.78, -1.77, -1.76, -1.74, -1.66, -1.52, -1.48, -1.46, -1.46, -1.44, -1.42, -1.36, -1.35, -1.29, -1.28, -1.27, -1.23, -1.22, -1.2, -1.19, -1.14, -1.11, -1.09, -1.08, -1.08, -1.08, -1.06, -1.04, -1.04, -1.03, -1.01]
+  dev     cross, bar-close stop (live) n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  holdout cross, bar-close stop (live) n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.6 (2%:  -79.1) $/day= -2930 hold= 9.4m CI[-70.2,-30.5] P>0=0.00
+  dev     cross, stop at the line (touch) n= 4722 (67.5/day) win=29.4% grossR=-0.011 gross$=  +7.2 net$= -24.2 (2%:  -61.4) $/day= -1630 hold= 7.2m
+  holdout cross, stop at the line (touch) n= 1349 (67.5/day) win=26.8% grossR=-0.070 gross$=  -9.1 net$= -36.2 (2%:  -66.1) $/day= -2438 hold= 7.5m CI[-49.9,-19.5] P>0=0.00
+
+=== FIX 4: minimum stop width (ATR floor) ===
+  today ATR 0-3 bp: n=24 targets=6 logged $-1210 replay -13.4R, stops filled past -1.25R 12
+  today ATR 3-5 bp: n=11 targets=4 logged $-10 replay +1.4R, stops filled past -1.25R 5
+  today ATR 5-99 bp: n=17 targets=5 logged $-1050 replay -5.8R, stops filled past -1.25R 5
+  today ATR floor 3 bp: total -14.3R (live -17.7R)
+  dev     cross, ATR floor 3bp         n= 4042 (57.7/day) win=35.8% grossR=-0.045 gross$=  +5.0 net$= -31.6 (2%:  -69.4) $/day= -1827 hold=10.1m
+  holdout cross, ATR floor 3bp         n= 1166 (58.3/day) win=32.8% grossR=-0.186 gross$= -22.3 net$= -53.5 (2%:  -84.0) $/day= -3122 hold=10.2m CI[-73.8,-36.9] P>0=0.00
+  today ATR floor 4 bp: total -19.3R (live -17.7R)
+  dev     cross, ATR floor 4bp         n= 3876 (55.4/day) win=35.4% grossR=-0.059 gross$=  +4.1 net$= -34.9 (2%:  -73.1) $/day= -1933 hold=11.3m
+  holdout cross, ATR floor 4bp         n= 1096 (54.8/day) win=32.7% grossR=-0.223 gross$= -23.5 net$= -58.1 (2%:  -88.5) $/day= -3182 hold=12.2m CI[-77.6,-41.0] P>0=0.00
+
+=== FIX 5: execution bugs, today's dollars ===
+  exit retry reverts a target: #29 QQQ-VWAP CALL, target hit 11:58 at +2.00R in replay; logged -310
+  fills outside the quote: [2, 4, 5] logged $+160, at quote mids $-875
+  held through the 11:09-11:16 feed gap: [(16, 'IWM-VWAP', 2.48), (18, 'IWM-EMA50', -2.58), (19, 'QQQ-EMA50', -1.04), (20, 'QQQ-VWAP', -1.04), (21, 'SPY-EMA50', -3.15)]
+  lost at restart: [('QQQ-EMA50', 'PUT', '09:55'), ('QQQ-RANGE', 'PUT', '09:55'), ('SPY-VWAP', 'PUT', '09:43')] (broker showed -$5,900 unrealized at 17:16 MDT)
+
+=== COMBINED: hold30 side + 1R target ===
+  today total +2.7R, winners 27 (live -17.7R, 16)
+
+=== COMBINED: 1R target + stop at the line (history only; today's log has closes, no highs/lows) ===
+  dev     cross, 1R target, stop at line n= 5345 (76.4/day) win=41.8% grossR=-0.006 gross$=  +1.1 net$= -24.7 (2%:  -61.9) $/day= -1884 hold= 4.1m
+  holdout cross, 1R target, stop at line n= 1533 (76.7/day) win=41.4% grossR=+0.004 gross$=  -0.8 net$= -22.8 (2%:  -53.0) $/day= -1744 hold= 4.2m CI[-33.3,-10.4] P>0=0.00

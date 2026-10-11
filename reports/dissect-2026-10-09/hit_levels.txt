@@ -1,0 +1,32 @@
+TODAY (52 closed trades)
+  reached +0.25R: 35 ( 67%)  then stopped: 20 ( 57% of those)  logged $-3270  [1, 2, 6, 11, 18, 19, 20, 23, 26, 29, 33, 35, 36, 37, 39, 42, 44, 47, 49, 50]
+  reached +0.5R: 31 ( 60%)  then stopped: 16 ( 52% of those)  logged $-2560  [1, 2, 6, 18, 19, 20, 23, 26, 29, 35, 36, 37, 39, 42, 44, 49]
+  reached +0.75R: 27 ( 52%)  then stopped: 12 ( 44% of those)  logged $-1780  [1, 19, 20, 23, 26, 29, 35, 36, 37, 39, 42, 49]
+  reached +1.0R: 25 ( 48%)  then stopped: 10 ( 40% of those)  logged $-1680  [1, 19, 20, 26, 29, 35, 36, 37, 39, 49]
+  reached +1.5R: 20 ( 38%)  then stopped:  5 ( 25% of those)  logged $-1230  [1, 19, 20, 29, 37]
+  reached +2.0R: 16 ( 31%)  then stopped:  1 (  6% of those)  logged $-310  [29]
+  never reached +0.5R: 21 [3, 4, 5, 7, 8, 11, 14, 21, 22, 27, 28, 31, 32, 33, 41, 43, 45, 46, 47, 48, 50]
+HISTORY FIRST 70 DAYS (4147 trades)
+  reached +0.25R:  2796 (67.4%)  then stopped:  1319 (47.2% of those)
+  reached +0.5R:  2503 (60.4%)  then stopped:  1026 (41.0% of those)
+  reached +0.75R:  2277 (54.9%)  then stopped:   800 (35.1% of those)
+  reached +1.0R:  2054 (49.5%)  then stopped:   577 (28.1% of those)
+  reached +1.5R:  1714 (41.3%)  then stopped:   237 (13.8% of those)
+  reached +2.0R:  1476 (35.6%)  then stopped:     0 ( 0.0% of those)
+HISTORY LAST 20 DAYS (1205 trades)
+  reached +0.25R:   787 (65.3%)  then stopped:   386 (49.0% of those)
+  reached +0.5R:   700 (58.1%)  then stopped:   299 (42.7% of those)
+  reached +0.75R:   627 (52.0%)  then stopped:   226 (36.0% of those)
+  reached +1.0R:   566 (47.0%)  then stopped:   165 (29.2% of those)
+  reached +1.5R:   462 (38.3%)  then stopped:    61 (13.2% of those)
+  reached +2.0R:   400 (33.2%)  then stopped:     0 ( 0.0% of those)
+TARGET REPLAY (stop 1R)
+  today target 0.5R: total -2.8R, winners 31
+   first 70 target 0.5R                  n= 5495 (78.5/day) win=59.7% grossR=-0.024 gross$=  -0.1 net$= -24.5 (2%:  -61.6) $/day= -1924 hold= 3.4m
+   last 20 target 0.5R                  n= 1553 (77.7/day) win=59.8% grossR=-0.008 gross$=  -4.3 net$= -25.3 (2%:  -55.8) $/day= -1968 hold= 3.7m
+  today target 1.0R: total -4.1R, winners 25
+   first 70 target 1.0R                  n= 4877 (69.7/day) win=48.7% grossR=-0.042 gross$=  -4.6 net$= -32.4 (2%:  -69.6) $/day= -2256 hold= 5.2m
+   last 20 target 1.0R                  n= 1400 (70.0/day) win=47.4% grossR=-0.062 gross$=  -8.0 net$= -31.6 (2%:  -62.2) $/day= -2215 hold= 5.3m
+  today target 2.0R: total -17.7R, winners 16
+   first 70 target 2.0R                  n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+   last 20 target 2.0R                  n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.6 (2%:  -79.1) $/day= -2930 hold= 9.4m

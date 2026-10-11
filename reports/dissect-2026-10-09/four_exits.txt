@@ -1,0 +1,33 @@
+TODAY: 52 live entries, bar-close exits on logged closes
+  live 2R target                     total  -17.7R  winners 16  model net $ -3657  exits {'STOP': 36, 'TARGET': 16}
+  A 0.5R target                      total   -2.8R  winners 31  model net $ -2296  exits {'TARGET': 31, 'STOP': 21}
+  B 5@0.5R + 5@1R                    total   -3.4R  winners 25  model net $ -2248  exits {'TARGET': 25, 'STOP': 27}
+  C ladder 2/3/2/3 + BE              total   -7.8R  winners 25  model net $ -2720  exits {'BREAKEVEN': 12, 'STOP': 27, 'TARGET': 13}
+  D ladder on trend setups, else A   total   -2.8R  winners 31  model net $ -2310  exits {'TARGET': 28, 'STOP': 21, 'BREAKEVEN': 3}
+  trend setups today (D uses the ladder): 4 of 52
+
+HISTORY, bar-close exits (live today). dev = first 70 days, holdout = last 20. net$ per 10-contract position.
+  dev     live 2R target               n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  holdout live 2R target               n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.5 (2%:  -79.0) $/day= -2924 hold= 9.3m CI[-70.0,-30.5] P>0=0.00
+  dev     A 0.5R target                n= 5495 (78.5/day) win=59.7% grossR=-0.024 gross$=  -0.1 net$= -24.5 (2%:  -61.6) $/day= -1924 hold= 3.4m
+  holdout A 0.5R target                n= 1553 (77.7/day) win=59.8% grossR=-0.008 gross$=  -4.3 net$= -25.3 (2%:  -55.8) $/day= -1966 hold= 3.6m CI[-37.8,-12.6] P>0=0.00
+  dev     B 5@0.5R + 5@1R              n= 4877 (69.7/day) win=48.7% grossR=-0.033 gross$=  -2.4 net$= -28.5 (2%:  -65.7) $/day= -1986 hold= 4.3m
+  holdout B 5@0.5R + 5@1R              n= 1400 (70.0/day) win=47.4% grossR=-0.047 gross$=  -7.3 net$= -29.7 (2%:  -60.2) $/day= -2077 hold= 4.5m CI[-42.8,-15.4] P>0=0.00
+  dev     C ladder 2/3/2/3 + BE        n= 4552 (65.0/day) win=48.7% grossR=-0.038 gross$=  -0.5 net$= -29.4 (2%:  -66.6) $/day= -1915 hold= 5.9m
+  holdout C ladder 2/3/2/3 + BE        n= 1300 (65.0/day) win=46.4% grossR=-0.079 gross$= -10.4 net$= -35.1 (2%:  -65.6) $/day= -2282 hold= 6.0m CI[-53.5,-17.4] P>0=0.00
+  dev     D ladder on trend setups, else A n= 5287 (75.5/day) win=57.5% grossR=-0.029 gross$=  -0.4 net$= -25.8 (2%:  -63.1) $/day= -1950 hold= 3.9m
+  holdout D ladder on trend setups, else A n= 1503 (75.2/day) win=57.2% grossR=-0.032 gross$=  -6.7 net$= -28.4 (2%:  -58.9) $/day= -2137 hold= 4.1m CI[-41.4,-15.0] P>0=0.00
+           D: trend setups 1357 of 6790 (20.0%)
+
+HISTORY, touch fills (best case). dev = first 70 days, holdout = last 20. net$ per 10-contract position.
+  dev     live 2R target               n= 4887 (69.8/day) win=32.5% grossR=-0.025 gross$=  +1.1 net$= -28.5 (2%:  -65.7) $/day= -1991 hold= 6.2m
+  holdout live 2R target               n= 1395 (69.8/day) win=30.9% grossR=-0.073 gross$= -10.2 net$= -35.6 (2%:  -65.6) $/day= -2484 hold= 6.4m CI[-49.9,-21.8] P>0=0.00
+  dev     A 0.5R target                n= 6298 (90.0/day) win=64.8% grossR=-0.029 gross$=  -3.2 net$= -25.0 (2%:  -62.2) $/day= -2247 hold= 2.0m
+  holdout A 0.5R target                n= 1812 (90.6/day) win=65.3% grossR=-0.021 gross$=  -3.9 net$= -22.4 (2%:  -52.8) $/day= -2032 hold= 2.0m CI[-27.3,-17.4] P>0=0.00
+  dev     B 5@0.5R + 5@1R              n= 5644 (80.6/day) win=49.2% grossR=-0.020 gross$=  -1.8 net$= -24.8 (2%:  -61.9) $/day= -1998 hold= 2.6m
+  holdout B 5@0.5R + 5@1R              n= 1622 (81.1/day) win=49.3% grossR=-0.019 gross$=  -3.6 net$= -23.2 (2%:  -53.5) $/day= -1883 hold= 2.7m CI[-30.0,-16.3] P>0=0.00
+  dev     C ladder 2/3/2/3 + BE        n= 5390 (77.0/day) win=49.6% grossR=-0.014 gross$=  -0.7 net$= -25.5 (2%:  -62.6) $/day= -1961 hold= 3.6m
+  holdout C ladder 2/3/2/3 + BE        n= 1541 (77.0/day) win=49.4% grossR=-0.018 gross$=  -3.0 net$= -24.2 (2%:  -54.5) $/day= -1864 hold= 3.7m CI[-32.5,-15.0] P>0=0.00
+  dev     D ladder on trend setups, else A n= 6111 (87.3/day) win=61.8% grossR=-0.026 gross$=  -2.9 net$= -25.2 (2%:  -62.6) $/day= -2204 hold= 2.3m
+  holdout D ladder on trend setups, else A n= 1743 (87.2/day) win=61.6% grossR=-0.025 gross$=  -5.1 net$= -24.3 (2%:  -54.7) $/day= -2118 hold= 2.4m CI[-30.1,-18.2] P>0=0.00
+           D: trend setups 1633 of 7854 (20.8%)

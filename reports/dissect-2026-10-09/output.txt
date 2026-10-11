@@ -1,0 +1,82 @@
+PART 1: 52 closed + 3 lost at restart + 4 not filled; logged P&L -2270
+  WORKED                        15    +3070
+  CHOPPED OUT                   10    -1590
+  WRONG SIDE FROM THE START      9     -780
+  CHASED AN EXTENDED MOVE        8    -1290
+  GAVE BACK A 1R+ GAIN           7    -1250
+  LOST AT RESTART                3       +0
+  RIGHT SIDE, STOPPED FIRST      3     -430
+
+PART 2a, today: mean entry-time features, target trades vs stop trades (n is small; descriptive only)
+  pre5       targets +1.11 (n=15)   stops +1.40 (n=33)
+  pre15      targets +0.55 (n=15)   stops +1.15 (n=32)
+  vwap_side  targets -0.10 (n=15)   stops -0.46 (n=37)
+  e50_side   targets +0.58 (n=15)   stops +0.70 (n=37)
+  e921       targets -0.13 (n=15)   stops +0.07 (n=37)
+  e50_slope  targets -0.22 (n=15)   stops -0.16 (n=31)
+  atr_bp     targets +4.12 (n=15)   stops +4.43 (n=37)
+  stops that reached the 2 ATR target within 30 min after the exit: 3 of 37
+  stops whose exit filled more than 0.25 ATR past the stop line: 22 of 37
+
+HISTORY 2026-06-01..2026-10-07, 90 days: train 50, validation 20, holdout 20 (2026-09-10..2026-10-07)
+net$ = per trade, 10 contracts, today's quoted spread per ticker; (2%) = pessimistic 2% spread. CI = day-cluster bootstrap 95% on net$, holdout only.
+
+PART 2b, history (train+validation, live rules): win rate and mean net $ by entry-time bucket (n per bucket in brackets)
+  pre5: [-99,-1) n=1290 win=40% R=+0.107 net$=-20 | [-1,0) n=490 win=39% R=+0.073 net$=-3 | [0,1) n=641 win=37% R=+0.002 net$=-27 | [1,2) n=911 win=37% R=-0.003 net$=-45 | [2,99) n=700 win=38% R=+0.034 net$=-8
+  e921: [0,0.15) n=1141 win=38% R=+0.035 net$=-26 | [0.15,0.5) n=1846 win=38% R=+0.048 net$=-16 | [0.5,1) n=671 win=41% R=+0.157 net$=-15 | [1,99) n=374 win=35% R=-0.099 net$=-58
+  atr_bp: [0,2) n=162 win=30% R=-0.280 net$=-41 | [2,3) n=529 win=40% R=+0.133 net$=-14 | [3,4) n=568 win=40% R=+0.094 net$=-20 | [4,6) n=900 win=37% R=+0.017 net$=-24 | [6,99) n=1873 win=38% R=+0.054 net$=-24
+  hour: [9.5,10) n=588 win=39% R=+0.048 net$=-28 | [10,11) n=815 win=40% R=+0.156 net$=+7 | [11,12) n=632 win=37% R=-0.013 net$=-33 | [12,13) n=588 win=38% R=+0.031 net$=-24 | [13,14) n=531 win=36% R=-0.060 net$=-47 | [14,15) n=587 win=39% R=+0.078 net$=-27 | [15,16) n=291 win=38% R=+0.058 net$=-16
+
+PART 3a, exit variants on 90 days of history (same entry rules; counts move only because a bot is busy longer or shorter)
+
+  -- dev --
+  base 1/2 (live)              n= 4032 (57.6/day) win=38.1% grossR=+0.049 gross$= +13.0 net$= -22.6 (2%:  -60.1) $/day= -1302 hold= 9.5m
+  stop 1 / target 1            n= 4877 (69.7/day) win=53.0% grossR=+0.081 gross$= +16.4 net$= -11.5 (2%:  -48.6) $/day=  -798 hold= 5.2m
+  stop 1 / target 3            n= 3584 (51.2/day) win=29.9% grossR=+0.045 gross$=  +8.3 net$= -36.3 (2%:  -73.4) $/day= -1857 hold=14.2m
+  stop 1.5 / target 3          n= 3005 (42.9/day) win=36.7% grossR=+0.064 gross$= +12.4 net$= -43.0 (2%:  -80.7) $/day= -1844 hold=20.0m
+  stop 2 / target 2            n= 3099 (44.3/day) win=51.0% grossR=+0.058 gross$=  +8.6 net$= -40.9 (2%:  -79.0) $/day= -1812 hold=17.0m
+  stop 2 / target 4            n= 2336 (33.4/day) win=36.1% grossR=+0.025 gross$=  +2.1 net$= -80.5 (2%: -118.9) $/day= -2686 hold=35.6m
+  breakeven after +1R          n= 4387 (62.7/day) win=33.1% grossR=+0.061 gross$= +12.6 net$= -20.0 (2%:  -57.3) $/day= -1256 hold= 7.8m
+  trail 1R after +1R           n= 4538 (64.8/day) win=42.7% grossR=+0.048 gross$= +12.0 net$= -19.6 (2%:  -56.8) $/day= -1269 hold= 7.2m
+  no target, trail 1R          n= 4484 (64.1/day) win=42.4% grossR=+0.050 gross$= +11.9 net$= -24.3 (2%:  -61.6) $/day= -1560 hold= 9.7m
+  time stop 10 min             n= 4667 (66.7/day) win=44.2% grossR=+0.044 gross$= +10.8 net$= -19.4 (2%:  -56.5) $/day= -1292 hold= 6.4m
+  time stop 20 min             n= 4216 (60.2/day) win=39.9% grossR=+0.043 gross$= +10.3 net$= -23.3 (2%:  -60.5) $/day= -1401 hold= 8.3m
+  ATR floor 4bp                n= 3802 (54.3/day) win=37.9% grossR=+0.061 gross$= +14.1 net$= -24.7 (2%:  -63.0) $/day= -1341 hold=11.3m
+  ATR floor 4bp, stop 1.5/3    n= 2813 (40.2/day) win=36.7% grossR=+0.056 gross$= +11.5 net$= -49.4 (2%:  -88.0) $/day= -1986 hold=23.3m
+  side = raw cross             n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  side = opposite of live      n= 4068 (58.1/day) win=34.2% grossR=-0.104 gross$= -16.6 net$= -51.3 (2%:  -88.9) $/day= -2978 hold= 8.9m
+
+  -- holdout --
+  base 1/2 (live)              n= 1149 (57.5/day) win=34.5% grossR=-0.092 gross$=  -2.4 net$= -32.7 (2%:  -63.2) $/day= -1877 hold= 9.7m CI[-51.9,-15.4] P>0=0.00
+  stop 1 / target 1            n= 1400 (70.0/day) win=48.2% grossR=-0.036 gross$=  -1.0 net$= -24.6 (2%:  -55.2) $/day= -1722 hold= 5.3m CI[-38.3,-11.3] P>0=0.00
+  stop 1 / target 3            n= 1032 (51.6/day) win=26.8% grossR=-0.126 gross$=  -9.5 net$= -47.0 (2%:  -77.4) $/day= -2425 hold=14.4m CI[-72.4,-21.5] P>0=0.00
+  stop 1.5 / target 3          n=  872 (43.6/day) win=33.6% grossR=-0.152 gross$=  -6.7 net$= -53.1 (2%:  -83.3) $/day= -2314 hold=19.9m CI[-82.9,-20.8] P>0=0.00
+  stop 2 / target 2            n=  877 (43.9/day) win=46.8% grossR=-0.169 gross$=  -7.3 net$= -50.4 (2%:  -80.7) $/day= -2212 hold=17.9m CI[-76.9,-24.7] P>0=0.00
+  stop 2 / target 4            n=  686 (34.3/day) win=31.5% grossR=-0.356 gross$= -37.3 net$=-106.7 (2%: -136.4) $/day= -3661 hold=35.3m CI[-153.8,-61.6] P>0=0.00
+  breakeven after +1R          n= 1252 (62.6/day) win=30.3% grossR=-0.064 gross$=  -2.5 net$= -30.0 (2%:  -60.8) $/day= -1875 hold= 7.9m CI[-48.4,-12.2] P>0=0.00
+  trail 1R after +1R           n= 1297 (64.8/day) win=39.2% grossR=-0.071 gross$=  -5.5 net$= -31.9 (2%:  -62.7) $/day= -2071 hold= 7.2m CI[-48.5,-16.5] P>0=0.00
+  no target, trail 1R          n= 1280 (64.0/day) win=38.4% grossR=-0.081 gross$=  -1.7 net$= -31.3 (2%:  -62.0) $/day= -2003 hold= 9.2m CI[-47.6,-12.2] P>0=0.00
+  time stop 10 min             n= 1355 (67.8/day) win=41.4% grossR=-0.056 gross$=  +0.1 net$= -25.0 (2%:  -55.7) $/day= -1694 hold= 6.3m CI[-37.1,-11.7] P>0=0.00
+  time stop 20 min             n= 1227 (61.4/day) win=35.8% grossR=-0.105 gross$=  -5.8 net$= -33.8 (2%:  -64.4) $/day= -2071 hold= 8.2m CI[-50.1,-17.2] P>0=0.00
+  ATR floor 4bp                n= 1045 (52.2/day) win=34.9% grossR=-0.060 gross$=  +0.9 net$= -34.4 (2%:  -64.8) $/day= -1800 hold=12.7m CI[-57.3,-15.5] P>0=0.00
+  ATR floor 4bp, stop 1.5/3    n=  786 (39.3/day) win=34.1% grossR=-0.129 gross$=  -7.5 net$= -63.0 (2%:  -93.3) $/day= -2477 hold=25.5m CI[-96.4,-25.1] P>0=0.00
+  side = raw cross             n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.6 (2%:  -79.1) $/day= -2930 hold= 9.4m CI[-70.2,-30.5] P>0=0.00
+  side = opposite of live      n= 1134 (56.7/day) win=39.2% grossR=+0.072 gross$=  +1.5 net$= -29.6 (2%:  -59.6) $/day= -1676 hold=10.0m CI[-49.0,-11.4] P>0=0.00
+
+PART 3b, the same variants on today's actual entries (each entry replayed alone on the logged closes, so overlap with the bot's next trade is ignored)
+  logged P&L of these entries: -2270 (lost-at-restart positions count as 0 here)
+  base 1/2 (live)              n=   55 (55.0/day) win=29.1% grossR=-0.381 gross$= -58.5 net$= -86.9 (2%: -113.9) $/day= -4781 hold=11.3m  total net$=-4781
+  stop 1 / target 1            n=   55 (55.0/day) win=47.3% grossR=-0.086 gross$= -27.3 net$= -49.2 (2%:  -76.2) $/day= -2706 hold= 6.0m  total net$=-2706
+  stop 1 / target 3            n=   55 (55.0/day) win=16.4% grossR=-0.735 gross$=-104.4 net$=-139.4 (2%: -166.3) $/day= -7665 hold=15.7m  total net$=-7665
+  stop 1.5 / target 3          n=   55 (55.0/day) win=20.0% grossR=-0.848 gross$=-131.5 net$=-175.2 (2%: -202.1) $/day= -9634 hold=21.7m  total net$=-9634
+  stop 2 / target 2            n=   55 (55.0/day) win=34.5% grossR=-0.758 gross$=-138.7 net$=-182.3 (2%: -209.2) $/day=-10026 hold=21.4m  total net$=-10026
+  stop 2 / target 4            n=   55 (55.0/day) win=27.3% grossR=-0.511 gross$=-114.7 net$=-186.2 (2%: -213.1) $/day=-10240 hold=41.4m  total net$=-10240
+  breakeven after +1R          n=   55 (55.0/day) win=23.6% grossR=-0.320 gross$= -63.2 net$= -89.2 (2%: -116.2) $/day= -4908 hold= 9.3m  total net$=-4908
+  trail 1R after +1R           n=   55 (55.0/day) win=38.2% grossR=-0.278 gross$= -46.3 net$= -70.9 (2%:  -97.9) $/day= -3901 hold= 8.1m  total net$=-3901
+  no target, trail 1R          n=   55 (55.0/day) win=34.5% grossR=-0.496 gross$= -73.3 net$= -98.9 (2%: -125.8) $/day= -5437 hold= 8.7m  total net$=-5437
+  time stop 10 min             n=   55 (55.0/day) win=40.0% grossR=-0.373 gross$= -58.5 net$= -82.0 (2%: -109.0) $/day= -4512 hold= 7.4m  total net$=-4512
+  time stop 20 min             n=   55 (55.0/day) win=32.7% grossR=-0.351 gross$= -58.9 net$= -85.4 (2%: -112.4) $/day= -4699 hold= 9.8m  total net$=-4699
+  ATR floor 4bp                n=   55 (55.0/day) win=25.5% grossR=-0.570 gross$= -84.9 net$=-118.2 (2%: -145.2) $/day= -6501 hold=15.3m  total net$=-6501
+  ATR floor 4bp, stop 1.5/3    n=   55 (55.0/day) win=25.5% grossR=-0.686 gross$=-117.7 net$=-171.5 (2%: -198.5) $/day= -9434 hold=29.3m  total net$=-9434
+  side = raw cross             not replayable from the log
+  side = opposite of live      n=   55 (55.0/day) win=49.1% grossR=+0.426 gross$= +87.1 net$= +55.0 (2%:  +28.0) $/day= +3022 hold=12.3m  total net$=+3022

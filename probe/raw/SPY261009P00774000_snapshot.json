@@ -1,0 +1,31 @@
+[
+ {
+  "symbol": "SPY261009P00774000",
+  "price": "1.47",
+  "open": "1.84",
+  "high": "4.30",
+  "low": "0.84",
+  "volume": "83145",
+  "change": "0.38",
+  "close": "1.47",
+  "gamma": "0.0953",
+  "delta": "-0.4497",
+  "rho": "-0.0257",
+  "theta": "-1.4511",
+  "vega": "0.1582",
+  "bid": "1.47",
+  "ask": "1.48",
+  "instrument_id": "1063243381",
+  "pre_close": "1.09",
+  "change_ratio": "0.348624",
+  "last_trade_time": 1791490499000,
+  "strike_price": "774.00",
+  "imp_vol": "0.1084",
+  "open_interest": "7588",
+  "quote_time": 1791490500000,
+  "ask_size": "50",
+  "bid_size": "50",
+  "deal_amount": "151898.87",
+  "delay_minutes": 0
+ }
+]

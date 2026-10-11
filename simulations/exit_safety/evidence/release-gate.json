@@ -1,0 +1,19 @@
+{
+  "ready_for_shadow_use": true,
+  "ready_for_paper_order_activation": false,
+  "checks": {
+    "candidate_files_match_tested_manifest": true,
+    "integration_tests_passed": true,
+    "legacy_non_server_tests_passed": true,
+    "server_tests_passed": true,
+    "captured_quote_pnl_accounting_passed": true,
+    "read_only_shadow_runner_passed": true,
+    "broker_positions_match_log": false,
+    "legacy_fills_unambiguously_reconciled": false,
+    "dedicated_options_account": false,
+    "representative_strategy_quote_validation": false,
+    "fresh_startup_broker_reconciliation": false,
+    "paper_order_adapter_smoke_test": false
+  },
+  "modified_candidate_files": []
+}

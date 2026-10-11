@@ -1,0 +1,30 @@
+{
+ "baseline_faults": {
+  "runs": 200,
+  "violations": {},
+  "latch_cleared_runs": 0,
+  "ended_reconciled": 200,
+  "ended_halted_not_reconciled": 0,
+  "ended_with_unknown_order": 0,
+  "ended_diverged_qty": 0,
+  "pnl_mismatch_when_qty_agrees": 0,
+  "unmanaged_latched_runs": 0,
+  "restarts": 360,
+  "orders": 1049,
+  "examples": []
+ },
+ "lossy_submit": {
+  "runs": 200,
+  "violations": {},
+  "latch_cleared_runs": 0,
+  "ended_reconciled": 200,
+  "ended_halted_not_reconciled": 0,
+  "ended_with_unknown_order": 0,
+  "ended_diverged_qty": 0,
+  "pnl_mismatch_when_qty_agrees": 0,
+  "unmanaged_latched_runs": 0,
+  "restarts": 605,
+  "orders": 1035,
+  "examples": []
+ }
+}

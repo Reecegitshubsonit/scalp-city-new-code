@@ -1,0 +1,9 @@
+dev      side from ema9/21            n= 4032 (57.6/day) win=38.1% grossR=+0.049 gross$= +13.0 net$= -22.6 (2%:  -60.1) $/day= -1302 hold= 9.5m
+holdout  side from ema9/21            n= 1149 (57.5/day) win=34.5% grossR=-0.092 gross$=  -2.4 net$= -32.7 (2%:  -63.2) $/day= -1877 hold= 9.7m CI[-51.9,-15.4] P>0=0.00
+dev      side from vwap               n= 4106 (58.7/day) win=35.1% grossR=-0.071 gross$= -10.9 net$= -46.1 (2%:  -83.8) $/day= -2706 hold= 9.3m
+holdout  side from vwap               n= 1159 (58.0/day) win=37.5% grossR=+0.042 gross$=  +1.9 net$= -28.6 (2%:  -58.9) $/day= -1655 hold= 9.7m CI[-43.5,-14.5] P>0=0.00
+dev      side from ema50              n= 4110 (58.7/day) win=35.5% grossR=-0.058 gross$=  -0.0 net$= -35.3 (2%:  -72.7) $/day= -2075 hold= 9.3m
+holdout  side from ema50              n= 1193 (59.6/day) win=34.7% grossR=-0.070 gross$=  -7.2 net$= -37.0 (2%:  -67.7) $/day= -2204 hold= 9.4m CI[-54.8,-17.6] P>0=0.00
+today    side from live   entries=55 puts=38 win=16 total R=-21.0
+today    side from vwap   entries=55 puts=19 win=25 total R=+18.2
+today    side from ema50  entries=55 puts=37 win=15 total R=-24.9

@@ -100,7 +100,10 @@ class Engine:
         self._write(bar.end, bot, [{"kind": "order_sent", "state": bot.state.value, "reason_code": intent.kind,
                                     "reason_text": f"{intent.kind} {intent.qty} {contract} bid/ask {quote.bid}/{quote.ask}",
                                     "inputs": inputs, "charge_pct": None, "contract": contract, "qty": intent.qty}])
-        fill = self.broker.execute(intent, contract, quote, bar.end)
+        try:
+            fill = self.broker.execute(intent, contract, quote, bar.end)
+        except Exception:   # a broker error must not leave the bot waiting on an order, or skip the other bots on this bar
+            fill = None
         if fill is None:
             self._write(bar.end, bot, bot.on_order_failed(intent.kind, "NO_FILL"))
             return

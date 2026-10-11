@@ -1,0 +1,42 @@
+[
+ {
+  "account_id": "\u202644RA",
+  "account_number": "\u20263GT2",
+  "account_type": "CASH",
+  "account_label": "\u2026Cash",
+  "account_class": "EVENTS_CASH",
+  "user_id": "1840180910"
+ },
+ {
+  "account_id": "\u2026ODBB",
+  "account_number": "\u20263GHB",
+  "account_type": "MARGIN",
+  "account_label": "\u2026ures",
+  "account_class": "FUTURES",
+  "user_id": "1840180910"
+ },
+ {
+  "account_id": "\u2026NI3A",
+  "account_number": "\u20263J63",
+  "account_type": "MARGIN",
+  "account_label": "\u2026rgin",
+  "account_class": "INDIVIDUAL_MARGIN",
+  "user_id": "1840180910"
+ },
+ {
+  "account_id": "\u2026M6D9",
+  "account_number": "\u20263J5B",
+  "account_type": "CASH",
+  "account_label": "\u2026Cash",
+  "account_class": "INDIVIDUAL_CASH",
+  "user_id": "1840180910"
+ },
+ {
+  "account_id": "\u20266320",
+  "account_number": "\u20263FS6",
+  "account_type": "CASH",
+  "account_label": "\u2026ypto",
+  "account_class": "CRYPTO",
+  "user_id": "1840180910"
+ }
+]

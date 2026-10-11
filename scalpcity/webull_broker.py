@@ -6,11 +6,16 @@ from .types import Fill, OrderIntent, Quote
 from .webull_parse import TERMINAL_FAILED, parse_order_detail
 
 
+TOL = 0.011  # price tolerance outside bid/ask before a sandbox fill is flagged
+
+
 class WebullPaperBroker:
     """Places a marketable LIMIT on the Webull sandbox and waits for the fill.
 
     Buys at the ask, sells at the bid. If placing fails (e.g. the sandbox rejects option orders), falls back to
     the ModeledBroker, which labels the fill 'modeled'. Not filled in time -> cancel and return None.
+    The fill price is the sandbox's own. One outside the quote's bid/ask is booked at the quote (ask for buys,
+    bid for sells) and labeled 'broker_offmarket'.
     """
     source = "broker"
 
@@ -29,12 +34,23 @@ class WebullPaperBroker:
             return self.fallback.execute(intent, contract, quote, ts) if self.fallback else None
         waited = 0.0
         while waited <= self.fill_timeout_s:
-            status, qty, price = parse_order_detail(self.client.order_detail(self.account_id, order_id))
+            try:
+                status, qty, price = parse_order_detail(self.client.order_detail(self.account_id, order_id))
+            except Exception:   # a throttled or failed poll is not a fill result: keep polling until the timeout
+                status, qty, price = "UNKNOWN", None, None
             if status == "FILLED":
-                return Fill(intent.bot_id, intent.kind, contract, int(qty or intent.qty), round(price or limit, 2), self.source, ts)
+                px, source = round(price or limit, 2), self.source
+                if not quote.bid - TOL <= px <= quote.ask + TOL:
+                    # the sandbox reported a price outside the market: book it at the quote (ask for buys, bid for sells);
+                    # the raw sandbox price stays in the broker's order history
+                    px, source = limit, "broker_offmarket"
+                return Fill(intent.bot_id, intent.kind, contract, int(qty or intent.qty), px, source, ts, quote.bid, quote.ask)
             if status in TERMINAL_FAILED:
                 return None
             self.sleep(self.poll_s)
             waited += self.poll_s
-        self.client.cancel_option(self.account_id, order_id)
+        try:
+            self.client.cancel_option(self.account_id, order_id)
+        except Exception:
+            pass
         return None

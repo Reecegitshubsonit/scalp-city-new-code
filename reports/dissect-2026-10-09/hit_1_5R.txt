@@ -1,0 +1,25 @@
+today: reached +1.0R before exit: 25 of 52 (48%); of those, ended at stop: 10 [1, 19, 20, 26, 29, 35, 36, 37, 39, 49]
+today: reached +1.5R before exit: 20 of 52 (38%); of those, ended at stop: 5 [1, 19, 20, 29, 37]
+today: reached +2.0R before exit: 16 of 52 (31%); of those, ended at stop: 1 [29]
+today: trades reaching +1.5R: #1 IWM-VWAP PUT best +1.99 -> STOP -230, #9 SPY-VWAP CALL best +2.68 -> TARGET +360, #10 QQQ-EMA50 CALL best +2.07 -> TARGET +380, #12 IWM-EMA50 PUT best +2.28 -> TARGET +180, #13 IWM-VWAP PUT best +2.28 -> TARGET +190, #15 IWM-EMA50 CALL best +2.05 -> TARGET +110, #16 IWM-VWAP CALL best +2.48 -> TARGET +220, #17 SPY-RANGE CALL best +2.10 -> TARGET +280, #19 QQQ-EMA50 PUT best +1.98 -> STOP -290, #20 QQQ-VWAP PUT best +1.98 -> STOP -300, #24 SPY-RANGE CALL best +2.43 -> TARGET +210, #25 QQQ-EMA50 CALL best +2.01 -> TARGET +150, #29 QQQ-VWAP CALL best +2.00 -> STOP -310, #30 QQQ-EMA50 PUT best +2.01 -> TARGET +350, #34 IWM-EMA50 CALL best +2.84 -> TARGET +80, #37 IWM-RANGE CALL best +1.86 -> STOP -100, #38 QQQ-EMA50 PUT best +2.49 -> TARGET +230, #40 IWM-RANGE CALL best +2.47 -> TARGET +50, #51 IWM-EMA50 PUT best +2.06 -> TARGET +60, #52 QQQ-EMA50 PUT best +2.87 -> TARGET +220
+today replay: live 2R target -17.7R (16 winners); 1.5R target -11.5R (20 winners); 1R target -4.1R
+  dev: exits at target 1476 of 4147 (35.6%)
+  holdout: exits at target 400 of 1205 (33.2%)
+  dev: exits at target 1827 of 4425 (41.3%)
+  holdout: exits at target 496 of 1282 (38.7%)
+  dev: exits at target 2376 of 4877 (48.7%)
+  holdout: exits at target 663 of 1400 (47.4%)
+  lost at restart: [('QQQ-EMA50', 'PUT', '09:55'), ('QQQ-RANGE', 'PUT', '09:55'), ('SPY-VWAP', 'PUT', '09:43')] (broker showed -$5,900 unrealized at 17:16 MDT)
+
+=== COMBINED: hold30 side + 1R target ===
+  today total +2.7R, winners 27 (live -17.7R, 16)
+
+=== COMBINED: 1R target + stop at the line (history only; today's log has closes, no highs/lows) ===
+  dev     cross, 1R target, stop at line n= 5345 (76.4/day) win=41.8% grossR=-0.006 gross$=  +1.1 net$= -24.7 (2%:  -61.9) $/day= -1884 hold= 4.1m
+  holdout cross, 1R target, stop at line n= 1533 (76.7/day) win=41.4% grossR=+0.004 gross$=  -0.8 net$= -22.8 (2%:  -53.0) $/day= -1744 hold= 4.2m CI[-33.3,-10.4] P>0=0.00
+  dev     cross, 2R target (live)      n= 4147 (59.2/day) win=35.6% grossR=-0.054 gross$=  +4.2 net$= -31.2 (2%:  -68.5) $/day= -1849 hold= 9.4m
+  holdout cross, 2R target (live)      n= 1205 (60.2/day) win=33.3% grossR=-0.144 gross$= -18.8 net$= -48.6 (2%:  -79.1) $/day= -2930 hold= 9.4m CI[-70.2,-30.5] P>0=0.00
+  dev     cross, 1.5R target           n= 4425 (63.2/day) win=41.3% grossR=-0.046 gross$=  +0.6 net$= -31.1 (2%:  -68.3) $/day= -1964 hold= 7.3m
+  holdout cross, 1.5R target           n= 1282 (64.1/day) win=38.7% grossR=-0.133 gross$= -17.9 net$= -44.7 (2%:  -75.3) $/day= -2867 hold= 7.4m CI[-67.8,-24.8] P>0=0.00
+  dev     cross, 1R target             n= 4877 (69.7/day) win=48.7% grossR=-0.042 gross$=  -4.6 net$= -32.4 (2%:  -69.6) $/day= -2256 hold= 5.2m
+  holdout cross, 1R target             n= 1400 (70.0/day) win=47.4% grossR=-0.062 gross$=  -8.0 net$= -31.6 (2%:  -62.2) $/day= -2215 hold= 5.3m CI[-47.3,-15.5] P>0=0.00

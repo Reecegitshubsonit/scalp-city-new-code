@@ -1,0 +1,80 @@
+DAY: each ticker 09:40 -> 15:59 close, and share of minutes above VWAP
+  IWM: 278.30 -> 279.00 (+0.69), above VWAP 89% of minutes
+  QQQ: 751.57 -> 751.34 (-0.23), above VWAP 75% of minutes
+  SPY: 776.65 -> 778.48 (+1.83), above VWAP 92% of minutes
+
+TODAY, 49 clean trades
+  all                                            n=49 targets=15 ( 31%) logged $ -2430 replay  -14.0R  avg best +1.14R
+  PUT                                            n=32 targets= 6 ( 19%) logged $ -3080 replay  -27.4R  avg best +0.90R
+    PUT SPY                                      n= 5 targets= 0 (  0%) logged $  -960 replay   -9.6R  avg best +0.20R
+    PUT QQQ                                      n=14 targets= 3 ( 21%) logged $ -1510 replay   -8.6R  avg best +1.07R
+    PUT IWM                                      n=13 targets= 3 ( 23%) logged $  -610 replay   -9.2R  avg best +0.98R
+  CALL                                           n=17 targets= 9 ( 53%) logged $  +650 replay  +13.4R  avg best +1.59R
+    CALL SPY                                     n= 3 targets= 3 (100%) logged $  +850 replay   +7.2R  avg best +2.40R
+    CALL QQQ                                     n= 6 targets= 2 ( 33%) logged $  -350 replay   +2.0R  avg best +1.08R
+    CALL IWM                                     n= 8 targets= 4 ( 50%) logged $  +150 replay   +4.2R  avg best +1.67R
+
+BY TRIGGER x SIDE
+  VWAP PUT                                       n= 3 targets= 1 ( 33%) logged $  -340 replay   -0.9R  avg best +2.08R
+  VWAP CALL                                      n= 5 targets= 2 ( 40%) logged $  -210 replay   +4.3R  avg best +1.51R
+  EMA50 PUT                                      n=27 targets= 5 ( 19%) logged $ -2220 replay  -24.0R  avg best +0.83R
+  EMA50 CALL                                     n= 5 targets= 4 ( 80%) logged $  +630 replay   +7.3R  avg best +1.79R
+  RANGE PUT                                      n= 2 targets= 0 (  0%) logged $  -520 replay   -2.5R  avg best +0.10R
+  RANGE CALL                                     n= 7 targets= 3 ( 43%) logged $  +230 replay   +1.8R  avg best +1.50R
+
+BIGGER TREND AT THE SIGNAL (in the trade's terms)
+  EMA50 rising for a CALL / falling for a PUT    n=11 targets= 5 ( 45%) logged $  +290 replay   +3.9R  avg best +1.46R
+  EMA50 against the side                         n=29 targets= 9 ( 31%) logged $ -1420 replay   -9.7R  avg best +1.16R
+  price held trade's side of VWAP 80%+ of last 30m n=11 targets= 4 ( 36%) logged $  -490 replay   +0.5R  avg best +1.19R
+  price held OTHER side of VWAP 80%+ of last 30m n=27 targets= 7 ( 26%) logged $ -1150 replay  -15.5R  avg best +0.93R
+  VWAP mixed in last 30m                         n=11 targets= 4 ( 36%) logged $  -790 replay   +1.0R  avg best +1.60R
+
+PUTS ONLY: the pullback question
+  PUT while EMA50 rising (shorting an uptrend)   n=24 targets= 6 ( 25%) logged $ -1500 replay  -16.2R  avg best +1.05R
+  PUT while EMA50 falling                        n= 3 targets= 0 (  0%) logged $  -430 replay   -4.3R  avg best +0.18R
+  PUT while price above VWAP 80%+ of last 30m    n=24 targets= 5 ( 21%) logged $ -1580 replay  -19.0R  avg best +0.83R
+  PUT after a 1+ ATR drop in the prior 5 min     n=23 targets= 6 ( 26%) logged $ -1500 replay  -13.0R  avg best +1.08R
+  stopped PUTs: 26; after the exit, price kept rising (30-min worst <= -2R for the PUT): 23
+  per stopped PUT: #  bot  signal  EMA50 slope20(ATR)  above-VWAP share 30m  prior-5m drop(ATR)  30m after exit worst(R)
+    # 1 IWM-VWAP   09:43  slope   None  aboveVWAP 50%  drop  None  after -2.29
+    # 3 IWM-RANGE  09:47  slope   None  aboveVWAP 17%  drop  None  after -5.27
+    # 7 QQQ-EMA50  10:02  slope   None  aboveVWAP 0%  drop  0.71  after -2.79
+    # 8 QQQ-RANGE  10:02  slope   None  aboveVWAP 0%  drop  0.71  after -2.79
+    #14 SPY-EMA50  10:42  slope   1.71  aboveVWAP 97%  drop  1.41  after -7.09
+    #18 IWM-EMA50  11:07  slope   0.03  aboveVWAP 35%  drop  0.25  after -3.37
+    #19 QQQ-EMA50  11:07  slope   1.17  aboveVWAP 55%  drop  1.39  after -1.77
+    #20 QQQ-VWAP   11:07  slope   1.17  aboveVWAP 55%  drop  1.39  after -1.77
+    #21 SPY-EMA50  11:09  slope   2.06  aboveVWAP 94%  drop  2.49  after -4.49
+    #23 SPY-EMA50  11:33  slope   None  aboveVWAP 100%  drop  2.22  after -3.5
+    #26 IWM-EMA50  11:41  slope   1.52  aboveVWAP 100%  drop  1.52  after -1.56
+    #28 SPY-EMA50  11:46  slope    0.2  aboveVWAP 100%  drop   1.3  after -5.47
+    #31 IWM-EMA50  12:01  slope  -0.03  aboveVWAP 100%  drop  1.69  after -4.9
+    #32 SPY-EMA50  12:01  slope   0.83  aboveVWAP 100%  drop  3.57  after -7.03
+    #33 IWM-EMA50  12:08  slope   0.05  aboveVWAP 100%  drop -0.06  after -4.54
+    #36 QQQ-EMA50  12:36  slope   1.16  aboveVWAP 100%  drop  1.86  after -3.92
+    #39 IWM-EMA50  13:11  slope   1.75  aboveVWAP 100%  drop  1.85  after -3.88
+    #42 IWM-EMA50  13:23  slope    0.5  aboveVWAP 100%  drop  -0.0  after -7.71
+    #43 QQQ-EMA50  13:25  slope   -0.7  aboveVWAP 90%  drop -0.46  after -2.4
+    #44 QQQ-EMA50  13:33  slope  -0.29  aboveVWAP 90%  drop  1.33  after -3.05
+    #45 IWM-EMA50  13:35  slope   0.14  aboveVWAP 100%  drop -0.08  after -7.42
+    #46 QQQ-EMA50  13:45  slope   0.17  aboveVWAP 94%  drop  1.02  after -3.91
+    #47 QQQ-EMA50  14:03  slope   0.73  aboveVWAP 100%  drop  1.88  after -6.32
+    #48 IWM-EMA50  14:31  slope    1.6  aboveVWAP 100%  drop  1.96  after -15.44
+    #49 QQQ-EMA50  14:34  slope   1.92  aboveVWAP 100%  drop  2.02  after -6.53
+    #50 QQQ-EMA50  14:56  slope   0.64  aboveVWAP 100%  drop  3.96  after -3.44
+
+HISTORY FIRST 70 DAYS, live rules
+  PUT                                            n= 2085 win=37.5% grossR=+0.021 net$= -19.9
+  CALL                                           n= 2062 win=33.7% grossR=-0.131 net$= -42.6
+  EMA50 slope agrees with side                   n= 1071 win=34.5% grossR=-0.100 net$= -42.9
+  EMA50 slope against side                       n= 2629 win=36.0% grossR=-0.036 net$= -26.1
+  held trade's side of VWAP 80%+ last 30m        n= 1004 win=33.7% grossR=-0.113 net$= -46.0
+  held OTHER side of VWAP 80%+ last 30m          n= 1953 win=36.1% grossR=-0.027 net$= -21.7
+
+HISTORY LAST 20 DAYS, live rules
+  PUT                                            n=  589 win=34.5% grossR=-0.165 net$= -56.4
+  CALL                                           n=  616 win=32.1% grossR=-0.123 net$= -41.2
+  EMA50 slope agrees with side                   n=  332 win=34.3% grossR=-0.093 net$= -37.0
+  EMA50 slope against side                       n=  766 win=32.9% grossR=-0.176 net$= -52.1
+  held trade's side of VWAP 80%+ last 30m        n=  316 win=32.6% grossR=-0.192 net$= -51.6
+  held OTHER side of VWAP 80%+ last 30m          n=  631 win=32.2% grossR=-0.189 net$= -50.3

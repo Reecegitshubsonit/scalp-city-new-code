@@ -1,0 +1,104 @@
+{
+  "scope": "Underlying ATR only; not option P&L or full production replay",
+  "train_days": 60,
+  "test_days": 30,
+  "selected_on_train": "buffer 0.2 + trend + chop all",
+  "results": [
+    {
+      "variant": "baseline",
+      "extra_lag_minutes": 0,
+      "trades": 1821,
+      "gross_atr": -0.10048408579725153,
+      "day_bootstrap_95_interval": [
+        -0.20804468992089956,
+        0.0127625442488105
+      ],
+      "cost_sensitivity": {
+        "0": -0.10048408579725153,
+        "0.1": -0.20048408579725152,
+        "0.2": -0.30048408579725155,
+        "0.3": -0.40048408579725153
+      }
+    },
+    {
+      "variant": "baseline",
+      "extra_lag_minutes": 1,
+      "trades": 1757,
+      "gross_atr": -0.10503842737123464,
+      "day_bootstrap_95_interval": [
+        -0.23123909652958755,
+        0.021006216358913095
+      ],
+      "cost_sensitivity": {
+        "0": -0.10503842737123464,
+        "0.1": -0.20503842737123465,
+        "0.2": -0.30503842737123466,
+        "0.3": -0.40503842737123463
+      }
+    },
+    {
+      "variant": "baseline",
+      "extra_lag_minutes": 2,
+      "trades": 1693,
+      "gross_atr": -0.14964724036371682,
+      "day_bootstrap_95_interval": [
+        -0.30796982822012847,
+        0.001316669544328597
+      ],
+      "cost_sensitivity": {
+        "0": -0.14964724036371682,
+        "0.1": -0.24964724036371683,
+        "0.2": -0.34964724036371686,
+        "0.3": -0.44964724036371684
+      }
+    },
+    {
+      "variant": "buffer 0.2 + trend + chop all",
+      "extra_lag_minutes": 0,
+      "trades": 883,
+      "gross_atr": 0.025178707825144364,
+      "day_bootstrap_95_interval": [
+        -0.13451978861941424,
+        0.19849912365256164
+      ],
+      "cost_sensitivity": {
+        "0": 0.025178707825144364,
+        "0.1": -0.07482129217485564,
+        "0.2": -0.17482129217485565,
+        "0.3": -0.2748212921748556
+      }
+    },
+    {
+      "variant": "buffer 0.2 + trend + chop all",
+      "extra_lag_minutes": 1,
+      "trades": 863,
+      "gross_atr": 0.048463789707637386,
+      "day_bootstrap_95_interval": [
+        -0.12967528235952905,
+        0.24110248023649317
+      ],
+      "cost_sensitivity": {
+        "0": 0.048463789707637386,
+        "0.1": -0.05153621029236262,
+        "0.2": -0.15153621029236264,
+        "0.3": -0.2515362102923626
+      }
+    },
+    {
+      "variant": "buffer 0.2 + trend + chop all",
+      "extra_lag_minutes": 2,
+      "trades": 841,
+      "gross_atr": 0.010733604240309152,
+      "day_bootstrap_95_interval": [
+        -0.17440555751743517,
+        0.20480795998667242
+      ],
+      "cost_sensitivity": {
+        "0": 0.010733604240309152,
+        "0.1": -0.08926639575969085,
+        "0.2": -0.18926639575969087,
+        "0.3": -0.2892663957596908
+      }
+    }
+  ]
+}

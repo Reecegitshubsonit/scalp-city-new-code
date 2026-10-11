@@ -1,0 +1,21 @@
+90 days; blocks of 30; cost sensitivity 0.2R per trade
+
+TIME SPLIT  (train = first 60 days, test = last 30)
+  buffer 0.2 + trend + chop all      train  1795 tr  avgR +0.053  t +1.57  win 35.1% | test   947 tr  avgR +0.030  t +0.64  win 34.3%
+  trend align (EMA9 vs EMA21)        train  3111 tr  avgR +0.014  t +0.53  win 33.8% | test  1588 tr  avgR -0.023  t -0.66  win 32.6%
+  close buffer 0.4 ATR               train  2605 tr  avgR -0.005  t -0.18  win 33.2% | test  1339 tr  avgR -0.001  t -0.02  win 33.3%
+  baseline (live rules)              train  4192 tr  avgR -0.034  t -1.56  win 32.2% | test  2098 tr  avgR -0.039  t -1.28  win 32.0%
+
+3-BLOCK CROSS-VALIDATION  (variant chosen on the other 2 blocks)
+  held-out block 1 (2026-06-01..2026-07-14): picked 'buffer 0.2 + trend + chop all'
+      picked   884 tr  avgR +0.066  t +1.36  win 35.5%
+      base    2050 tr  avgR -0.020  t -0.63  win 32.7%
+  held-out block 2 (2026-07-15..2026-08-25): picked 'buffer 0.2 + trend + chop all'
+      picked   911 tr  avgR +0.041  t +0.86  win 34.7%
+      base    2142 tr  avgR -0.048  t -1.58  win 31.7%
+  held-out block 3 (2026-08-26..2026-10-07): picked 'buffer 0.2 + trend + chop all'
+      picked   947 tr  avgR +0.030  t +0.64  win 34.3%
+      base    2098 tr  avgR -0.039  t -1.28  win 32.0%
+
+  POOLED out-of-sample  picked  2742 tr  avgR +0.045  t +1.64  win 34.8%  after 0.2R cost -0.155
+  POOLED out-of-sample  base    6290 tr  avgR -0.036  t -2.02  win 32.1%  after 0.2R cost -0.236

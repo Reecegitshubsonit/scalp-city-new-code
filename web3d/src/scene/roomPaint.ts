@@ -24,8 +24,9 @@ function clip(ctx: Ctx, s: string, maxW: number): string {
 }
 
 /** "SIGNAL SCANNER" monitor: headline, charge bar and the bot's latest thoughts. */
-export function paintScanner(ctx: Ctx, w: number, h: number, row: BotRow | null, events: BotEvent[]): void {
+export function paintScanner(ctx: Ctx, w: number, h: number, row: BotRow | null, events: BotEvent[], highlight = false): void {
   ctx.fillStyle = CHART_COLORS.bg; ctx.fillRect(0, 0, w, h)
+  if (highlight) { ctx.strokeStyle = '#ffffff'; ctx.lineWidth = Math.max(4, h * 0.012); ctx.strokeRect(2, 2, w - 4, h - 4) }
   if (!row) { text(ctx, 'Select a tower', w / 2, h / 2, h / 14, CHART_COLORS.text, 'center'); return }
   const m = w * 0.04
   text(ctx, 'SIGNAL SCANNER', m, h * 0.09, h * 0.055, CHART_COLORS.text, 'left', true)
@@ -37,7 +38,9 @@ export function paintScanner(ctx: Ctx, w: number, h: number, row: BotRow | null,
   ctx.fillStyle = row.side === 'PUT' ? COLORS.PUT : row.side === 'CALL' ? COLORS.CALL : COLORS.NEUTRAL
   ctx.fillRect(m, h * 0.23, ((w - 2 * m) * pct) / 100, h * 0.08)
   text(ctx, row.charge_pct == null ? 'NOT CHARGING' : `${Math.round(pct)}% CHARGED`, w / 2, h * 0.287, h * 0.055, '#fff', 'center', true)
-  text(ctx, `${stateLabel(row.state)} - ${plainReason(row.reason_code)}`, m, h * 0.37, h * 0.05, CHART_COLORS.text)
+  ctx.font = `${h * 0.05}px ${FONT}`
+  text(ctx, clip(ctx, `${stateLabel(row.state)} - ${plainReason(row.reason_code)}`, w * 0.62), m, h * 0.37, h * 0.05, CHART_COLORS.text)
+  text(ctx, `Day ${formatPnl(row.pnl_day)} · ${row.trades} trades`, w - m, h * 0.37, h * 0.05, row.pnl_day >= 0 ? COLORS.CALL : COLORS.PUT, 'right', true)
   text(ctx, 'THOUGHTS', m, h * 0.44, h * 0.05, CHART_COLORS.text, 'left', true)
   const mine = events.filter(e => e.bot === row.bot).slice(0, 9)
   mine.forEach((e, i) => {
@@ -77,7 +80,7 @@ export function paintBoard(ctx: Ctx, w: number, h: number, rows: BotRow[]): void
 }
 
 /** "MARKET OPEN, time to close" plaque and the day's total. */
-export function paintPlaque(ctx: Ctx, w: number, h: number, nowMs: number, total: number): void {
+export function paintPlaque(ctx: Ctx, w: number, h: number, nowMs: number, total: number, label = 'DAY'): void {
   ctx.fillStyle = '#05031e'; ctx.fillRect(0, 0, w, h)
   const p = marketPhase(new Date(nowMs))
   const dot = p.phase === 'open' ? COLORS.CALL : COLORS.locked
@@ -86,7 +89,7 @@ export function paintPlaque(ctx: Ctx, w: number, h: number, nowMs: number, total
   const et = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false }).format(nowMs)
   const left = p.seconds ? `${Math.floor(p.seconds / 3600)}h ${String(Math.floor((p.seconds % 3600) / 60)).padStart(2, '0')}m ${p.phase === 'open' ? 'to close' : 'to open'}` : p.label
   text(ctx, `${et} ET - ${left}`, w * 0.07, h * 0.62, h * 0.13, CHART_COLORS.text)
-  text(ctx, `DAY ${formatPnl(total)}`, w * 0.07, h * 0.9, h * 0.2, total >= 0 ? COLORS.CALL : COLORS.PUT, 'left', true)
+  text(ctx, `${label} ${formatPnl(total)}`, w * 0.07, h * 0.9, h * 0.2, total >= 0 ? COLORS.CALL : COLORS.PUT, 'left', true)
 }
 
 // ---------- backtest-room screens ----------
@@ -169,4 +172,30 @@ export function paintDiscLabel(ctx: Ctx, w: number, h: number, label: string, co
   ctx.clearRect(0, 0, w, h)
   ctx.fillStyle = '#0b0830cc'; ctx.fillRect(0, 0, w, h)
   text(ctx, label, w / 2, h * 0.68, h * 0.55, color, 'center', true)
+}
+
+
+/** One ticker's bots: a P&L tile per bot (heatmap) next to the ranking (leaderboard). */
+export function paintTickerBoard(ctx: Ctx, w: number, h: number, ticker: string, rows: BotRow[]): void {
+  ctx.fillStyle = CHART_COLORS.bg; ctx.fillRect(0, 0, w, h)
+  const m = w * 0.04
+  text(ctx, `${ticker} BOTS TODAY`, m, h * 0.09, h * 0.06, CHART_COLORS.text, 'left', true)
+  const scale = Math.max(300, ...rows.map(r => Math.abs(r.pnl_day)))
+  const tw = w * 0.58, th = h * 0.24
+  rows.forEach((r, i) => {
+    const a = Math.min(0.8, 0.15 + (Math.abs(r.pnl_day) / scale) * 0.6)
+    ctx.fillStyle = r.pnl_day > 0 ? `rgba(25,245,160,${a})` : r.pnl_day < 0 ? `rgba(255,59,107,${a})` : 'rgba(120,120,180,0.2)'
+    const y = h * 0.14 + i * (th + 8)
+    ctx.fillRect(m, y, tw, th)
+    text(ctx, `${r.bot.split('-')[1]} · ${stateLabel(r.state)}`, m + 10, y + th * 0.33, h * 0.052, '#e8e6ff')
+    text(ctx, formatPnl(r.pnl_day), m + 10, y + th * 0.78, h * 0.085, '#fff', 'left', true)
+    text(ctx, `${r.trades} trades`, m + tw - 10, y + th * 0.78, h * 0.05, '#e8e6ff', 'right')
+  })
+  const lx = m + tw + w * 0.04
+  text(ctx, 'LEADERBOARD', lx, h * 0.09, h * 0.05, CHART_COLORS.text, 'left', true)
+  ;[...rows].sort((a, b) => b.pnl_day - a.pnl_day).forEach((r, i) => {
+    const y = h * 0.2 + i * h * 0.17
+    text(ctx, `${i + 1}. ${r.bot.split('-')[1]}`, lx, y, h * 0.06, '#e8e6ff', 'left', true)
+    text(ctx, formatPnl(r.pnl_day), w - m, y + h * 0.075, h * 0.06, r.pnl_day >= 0 ? COLORS.CALL : COLORS.PUT, 'right', true)
+  })
 }

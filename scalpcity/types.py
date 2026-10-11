@@ -47,5 +47,7 @@ class Fill:
     contract: str
     qty: int
     price: float
-    source: str  # "broker" | "modeled"
+    source: str  # "broker" | "broker_offmarket" | "modeled"; broker_offmarket = sandbox price outside the quote bid/ask
     ts: datetime
+    quote_bid: float | None = None   # the bid/ask the order was priced from, so P&L can be recomputed either way
+    quote_ask: float | None = None

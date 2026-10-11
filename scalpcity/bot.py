@@ -29,6 +29,8 @@ class Position:
     contract: str | None = None
     entry_price: float | None = None
     opened_at: datetime | None = None
+    entry_qty: int = 0
+    realized_pnl: float = 0.0
 
 
 @dataclass
@@ -50,6 +52,7 @@ class Bot:
     # ---- session ----
     def new_session(self) -> None:
         self.position: Position | None = None
+        self.exit_reason: str | None = None
         self.pending: str | None = None  # "entry" | "exit"
         self.cooldown_until: datetime | None = None
         self.locked: str | None = None   # DAILY_GOAL | DAILY_LOSS
@@ -111,12 +114,19 @@ class Bot:
         elif self.spec.chop_filter and ind.squeezed(self.s.squeeze_atr):
             self._set(State.IDLE, "CHOP_SQUEEZE", "EMA9 and EMA21 squeezed, skipping")
         elif view.signal:
-            return self._fire(bar, ind, view.signal)
+            return self._fire(bar, ind, self._side(view.signal, ind))
         elif view.charge_pct is not None and view.charge_pct >= self.s.forming_min_charge:
             self._set(State.FORMING, "WATCHING", f"{view.distance_atr} ATR from trigger, {view.charge_pct:.0f}% charged")
         else:
             self._set(State.IDLE, "WATCHING", f"{view.distance_atr} ATR from trigger" if view.distance_atr is not None else "watching")
         return []
+
+    def _side(self, signal: str, ind: IndicatorSet) -> str:
+        """Trigger decides when to enter; with trend_side, EMA9 vs EMA21 decides which way."""
+        e9, e21 = ind.ema9.value, ind.ema21.value
+        if not self.s.trend_side or e9 is None or e21 is None or e9 == e21:
+            return signal
+        return "CALL" if e9 > e21 else "PUT"
 
     def _fire(self, bar: Bar, ind: IndicatorSet, side: str) -> list:
         atr = ind.atr.value or 0.0
@@ -131,14 +141,17 @@ class Bot:
     def _manage(self, bar: Bar, now: datetime, ind: IndicatorSet) -> list:
         p = self.position
         sgn = 1 if p.right == "CALL" else -1
-        why = None
-        if now.time() >= self.s.flat_by:
+        why = self.exit_reason
+        if why:
+            pass
+        elif now.time() >= self.s.flat_by:
             why = "TIME"
         elif sgn * (bar.close - p.stop_und) <= 0:
             why = "STOP"
         elif sgn * (bar.close - p.target_und) >= 0:
             why = "TARGET"
         if why:
+            self.exit_reason = why
             self.pending = "exit"
             self._set(State.EXITING, f"EXIT_{why}", f"closing {p.right}: {why.lower()}")
             return [OrderIntent(self.bot_id, self.ticker, "SELL_CLOSE", p.right, p.qty, why, bar.close, contract=p.contract)]
@@ -146,21 +159,41 @@ class Bot:
         return []
 
     # ---- broker results ----
-    def on_fill(self, fill: Fill, inputs: dict | None = None) -> list:
+    def on_fill(self, fill: Fill, inputs: dict | None = None, terminal: bool = True, fee: float = 0.0) -> list:
         inputs = inputs or {}
         p = self.position
+        if p is None or fill.qty <= 0 or fee < 0:
+            raise ValueError("invalid fill for position")
         if fill.kind == "BUY_OPEN":
-            p.contract, p.entry_price, p.opened_at = fill.contract, fill.price, fill.ts
-            self.pending = None
-            self._set(State.MANAGING, "HOLDING", f"{p.right} filled at {fill.price:.2f}")
+            old_qty = p.entry_qty
+            p.entry_price = ((p.entry_price or 0)*old_qty + fill.price*fill.qty)/(old_qty+fill.qty)
+            p.entry_qty += fill.qty
+            p.qty = p.entry_qty
+            p.contract = fill.contract
+            p.opened_at = p.opened_at or fill.ts
+            p.realized_pnl = round(p.realized_pnl-fee, 2)
+            self.pnl_day = round(self.pnl_day-fee, 2)
+            self.pending = None if terminal else "entry"
+            self._set(State.MANAGING, "HOLDING", f"{p.right} filled {p.qty} at {p.entry_price:.2f}")
             self._last_emitted = (self.state, self.reason_code)
             return [self._snapshot_event("state_change", inputs, None),
                     {"kind": "fill", "state": self.state.value, "reason_code": "ENTRY_FILL", "reason_text": f"bought {fill.qty} {fill.contract} @ {fill.price:.2f} ({fill.source})",
-                     "inputs": inputs, "charge_pct": None, "contract": fill.contract, "qty": fill.qty, "fill_price": fill.price, "fill_source": fill.source}]
-        pnl = round((fill.price - p.entry_price) * fill.qty * 100, 2)
-        self.pnl_day = round(self.pnl_day + pnl, 2)
+                     "inputs": inputs, "charge_pct": None, "contract": fill.contract, "qty": fill.qty, "fill_price": fill.price, "fill_source": fill.source, "fee": fee, "quote_bid": fill.quote_bid, "quote_ask": fill.quote_ask}]
+        if fill.qty > p.qty or p.entry_price is None:
+            raise ValueError("exit fill exceeds owned quantity")
+        delta = round((fill.price-p.entry_price)*fill.qty*100-fee, 2)
+        self.pnl_day = round(self.pnl_day+delta, 2)
+        p.realized_pnl = round(p.realized_pnl+delta, 2)
+        p.qty -= fill.qty
+        if p.qty:
+            self.pending = None if terminal else "exit"
+            return [{"kind":"fill", "reason_code":"EXIT_FILL", "state":State.EXITING.value,
+                     "reason_text":"partial exit", "inputs":inputs, "contract":fill.contract,
+                     "qty":fill.qty, "fill_price":fill.price, "fill_source":fill.source,
+                     "fee":fee, "remaining_qty":p.qty, "pnl_day":self.pnl_day}]
+        pnl = p.realized_pnl
         self.trades += 1
-        self.position, self.pending = None, None
+        self.position, self.pending, self.exit_reason = None, None, None
         self.cooldown_until = fill.ts + timedelta(seconds=self.s.cooldown_s)
         if self.pnl_day >= self.s.daily_goal:
             self.locked = "DAILY_GOAL"
@@ -172,7 +205,7 @@ class Bot:
             self._set(State.COOLDOWN, "COOLDOWN", f"cooldown until {self.cooldown_until:%H:%M:%S}")
         self._last_emitted = (self.state, self.reason_code)
         return [{"kind": "fill", "state": self.state.value, "reason_code": "EXIT_FILL", "reason_text": f"sold {fill.qty} {fill.contract} @ {fill.price:.2f} ({fill.source})",
-                 "inputs": inputs, "charge_pct": None, "contract": fill.contract, "qty": fill.qty, "fill_price": fill.price, "fill_source": fill.source},
+                 "inputs": inputs, "charge_pct": None, "contract": fill.contract, "qty": fill.qty, "fill_price": fill.price, "fill_source": fill.source, "fee": fee, "quote_bid": fill.quote_bid, "quote_ask": fill.quote_ask},
                 {"kind": "trade_closed", "state": self.state.value, "reason_code": self.reason_code, "reason_text": f"trade P&L {pnl:+.2f}, day {self.pnl_day:+.2f}",
                  "inputs": inputs, "charge_pct": None, "pnl": pnl, "pnl_day": self.pnl_day, "trades": self.trades},
                 self._snapshot_event("state_change", inputs, None)]

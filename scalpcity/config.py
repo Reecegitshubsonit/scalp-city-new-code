@@ -16,6 +16,7 @@ class Settings:
     stale_in_trade_s: int = 30
     flatten_after_stale_s: int = 300
     squeeze_atr: float = 0.15
+    trend_side: bool = True  # trade every trigger in the EMA9/EMA21 direction instead of the cross direction
     stop_atr: float = 1.0
     target_atr: float = 2.0
     charge_range_atr: float = 1.0

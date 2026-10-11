@@ -1,0 +1,127 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.17, pytest-9.1.1, pluggy-1.6.0 -- /home/ronaldsecret/scalp-city/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/ronaldsecret/scalp-city
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 78 items
+
+tests/test_alpaca_history.py::test_parse_converts_utc_to_new_york PASSED [  1%]
+tests/test_alpaca_history.py::test_pages_are_joined_and_cached PASSED    [  2%]
+tests/test_bot.py::test_before_arm_time_reports_outside_window PASSED    [  3%]
+tests/test_bot.py::test_signal_fires_buy_intent_with_atr_stop_and_target PASSED [  5%]
+tests/test_bot.py::test_chop_squeeze_blocks_vwap_signal PASSED           [  6%]
+tests/test_bot.py::test_fill_moves_to_managing_then_stop_exit_and_cooldown PASSED [  7%]
+tests/test_bot.py::test_goal_locks_for_the_day PASSED                    [  8%]
+tests/test_bot.py::test_small_loss_goes_to_cooldown_then_resumes PASSED  [ 10%]
+tests/test_bot.py::test_time_exit_at_flat_by PASSED                      [ 11%]
+tests/test_bot.py::test_pause_blocks_entries_but_keeps_managing PASSED   [ 12%]
+tests/test_bot.py::test_order_failed_entry_returns_to_idle PASSED        [ 14%]
+tests/test_bot.py::test_range_bot_armed_at_940_fires_after_945 PASSED    [ 15%]
+tests/test_bot.py::test_stale_flag_sets_state_when_flat PASSED           [ 16%]
+tests/test_catchup.py::test_catch_up_rebuilds_vwap_and_range_without_trading_or_logging PASSED [ 17%]
+tests/test_catchup.py::test_live_feed_startup_splits_prior_from_today_and_marks_today_seen PASSED [ 19%]
+tests/test_config.py::test_defaults_match_the_spec PASSED                [ 20%]
+tests/test_config.py::test_nine_bots_worth_of_specs_and_windows PASSED   [ 21%]
+tests/test_engine_replay.py::test_replay_is_deterministic_byte_for_byte PASSED [ 23%]
+tests/test_engine_replay.py::test_every_bot_logs_a_tick_every_bar_and_seq_is_gapless PASSED [ 24%]
+tests/test_engine_replay.py::test_snapshot_covers_all_nine_bots_with_reasons PASSED [ 25%]
+tests/test_engine_replay.py::test_trades_have_matching_fills_and_pnl_adds_up PASSED [ 26%]
+tests/test_engine_replay.py::test_risk_gate_rejects_when_no_quote PASSED [ 28%]
+tests/test_events.py::test_append_assigns_increasing_seq_and_persists PASSED [ 29%]
+tests/test_events.py::test_seq_continues_after_restart PASSED            [ 30%]
+tests/test_events.py::test_listener_called_and_reset_clears_file PASSED  [ 32%]
+tests/test_events.py::test_snapshot_uses_last_state_and_trade_totals PASSED [ 33%]
+tests/test_guard_parse.py::test_guard_selects_matching_account PASSED    [ 34%]
+tests/test_guard_parse.py::test_guard_refuses[mutate0-api.sandbox.webull.com] PASSED [ 35%]
+tests/test_guard_parse.py::test_guard_refuses[mutate1-api.sandbox.webull.com] PASSED [ 37%]
+tests/test_guard_parse.py::test_guard_refuses[mutate2-api.webull.com] PASSED [ 38%]
+tests/test_guard_parse.py::test_guard_refuses[mutate3-api.sandbox.webull.com] PASSED [ 39%]
+tests/test_guard_parse.py::test_guard_refuses[mutate4-api.sandbox.webull.com] PASSED [ 41%]
+tests/test_guard_parse.py::test_parse_real_stock_bars_fixture PASSED     [ 42%]
+tests/test_guard_parse.py::test_parse_real_option_snapshot_fixture PASSED [ 43%]
+tests/test_guard_parse.py::test_parse_snapshot_none_without_bid_ask PASSED [ 44%]
+tests/test_guard_parse.py::test_parse_occ PASSED                         [ 46%]
+tests/test_guard_parse.py::test_parse_order_detail_statuses PASSED       [ 47%]
+tests/test_indicators_contracts.py::test_ema_seeds_with_first_value_then_smooths PASSED [ 48%]
+tests/test_indicators_contracts.py::test_atr_average_then_wilder PASSED  [ 50%]
+tests/test_indicators_contracts.py::test_vwap_is_volume_weighted_and_resets PASSED [ 51%]
+tests/test_indicators_contracts.py::test_warm_feeds_emas_but_not_vwap PASSED [ 52%]
+tests/test_indicators_contracts.py::test_squeeze_needs_atr_and_compares_gap PASSED [ 53%]
+tests/test_indicators_contracts.py::test_occ_symbol_matches_webull_format PASSED [ 55%]
+tests/test_indicators_contracts.py::test_next_trading_day_skips_weekend_and_holiday PASSED [ 56%]
+tests/test_indicators_contracts.py::test_atm_strike_rounds_to_dollar PASSED [ 57%]
+tests/test_live_broker.py::test_live_feed_emits_only_completed_new_bars_once PASSED [ 58%]
+tests/test_live_broker.py::test_market_open_hours PASSED                 [ 60%]
+tests/test_live_broker.py::test_paper_broker_fills_at_ask_and_labels_broker PASSED [ 61%]
+tests/test_live_broker.py::test_paper_broker_sells_at_bid_and_cancels_on_timeout PASSED [ 62%]
+tests/test_live_broker.py::test_paper_broker_returns_none_on_terminal_reject PASSED [ 64%]
+tests/test_live_broker.py::test_paper_broker_falls_back_to_modeled_when_place_fails PASSED [ 65%]
+tests/test_live_broker.py::test_webull_client_parses_stock_bars_and_snapshot_from_real_fixtures PASSED [ 66%]
+tests/test_live_broker.py::test_paper_broker_keeps_sandbox_price_and_flags_fill_outside_market PASSED [ 67%]
+tests/test_live_broker.py::test_live_quote_source_refuses_delayed_or_stale_quotes PASSED [ 69%]
+tests/test_live_broker.py::test_paper_broker_survives_failed_status_polls PASSED [ 70%]
+tests/test_quotes.py::test_uses_last_completed_bar_and_modeled_half_spread PASSED [ 71%]
+tests/test_quotes.py::test_none_when_no_completed_bar_or_too_stale PASSED [ 73%]
+tests/test_recover.py::test_closed_trade_restores_pnl_trades_cooldown_and_lock_follows_the_current_limit PASSED [ 74%]
+tests/test_recover.py::test_open_position_is_rebuilt_with_its_atr_stop_and_target PASSED [ 75%]
+tests/test_recover.py::test_failed_entry_leaves_no_position PASSED       [ 76%]
+tests/test_recover.py::test_unknown_bots_and_empty_log_are_ignored PASSED [ 78%]
+tests/test_risk_broker.py::test_gate_allows_normal_entry_and_all_exits PASSED [ 79%]
+tests/test_risk_broker.py::test_gate_refusals PASSED                     [ 80%]
+tests/test_risk_broker.py::test_modeled_broker_buys_ask_sells_bid PASSED [ 82%]
+tests/test_server.py::test_snapshot_lists_every_bot_even_before_events Timeout (0:00:10)!
+Thread 0x00007ff79bfff6c0 (most recent call first):
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/selectors.py", line 468 in select
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/asyncio/base_events.py", line 1898 in _run_once
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/asyncio/base_events.py", line 608 in run_forever
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/asyncio/base_events.py", line 641 in run_until_complete
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/asyncio/runners.py", line 118 in run
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2548 in run
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/_core/_eventloop.py", line 83 in run
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/from_thread.py", line 538 in run_blocking_portal
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/threading.py", line 982 in run
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/threading.py", line 1045 in _bootstrap_inner
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/threading.py", line 1002 in _bootstrap
+
+Thread 0x00007ff7a4773740 (most recent call first):
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/threading.py", line 327 in wait
+  File "/home/ronaldsecret/.local/share/uv/python/cpython-3.11.17-linux-x86_64-gnu/lib/python3.11/concurrent/futures/_base.py", line 451 in result
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 2780 in run_sync_from_thread
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/from_thread.py", line 119 in run_sync
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/from_thread.py", line 303 in _spawn_task_from_thread
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/anyio/from_thread.py", line 384 in start_task_soon
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/starlette/testclient.py", line 516 in __enter__
+  File "/home/ronaldsecret/scalp-city/tests/test_server.py", line 26 in test_snapshot_lists_every_bot_even_before_events
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/python.py", line 167 in pytest_pyfunc_call
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/python.py", line 1707 in runtest
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 184 in pytest_runtest_call
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 250 in <lambda>
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 361 in from_call
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 249 in call_and_report
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 139 in runtestprotocol
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/runner.py", line 118 in pytest_runtest_protocol
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/main.py", line 408 in pytest_runtestloop
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/main.py", line 384 in _main
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/main.py", line 330 in wrap_session
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/main.py", line 377 in pytest_cmdline_main
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_callers.py", line 121 in _multicall
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_manager.py", line 120 in _hookexec
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pluggy/_hooks.py", line 512 in __call__
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/config/__init__.py", line 229 in _main
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/_pytest/config/__init__.py", line 253 in _console_main
+  File "/home/ronaldsecret/scalp-city/.venv/lib/python3.11/site-packages/pytest/__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main

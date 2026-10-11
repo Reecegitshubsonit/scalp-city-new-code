@@ -1,0 +1,39 @@
+{
+ "scenario1_legacy_trace": [
+  {
+   "bar_close": 750.71,
+   "state": "managing",
+   "reason": "EXIT_RETRY",
+   "holding": true
+  },
+  {
+   "bar_close": 750.46,
+   "state": "managing",
+   "reason": "HOLDING",
+   "holding": true
+  },
+  {
+   "bar_close": 750.2,
+   "state": "managing",
+   "reason": "HOLDING",
+   "holding": true
+  }
+ ],
+ "nofill_then_late_fill": {
+  "runs": 200,
+  "violation_runs": 80,
+  "violations": {
+   "OVERSELL_SUBMIT": 80,
+   "NEGATIVE_BROKER_POSITION": 57
+  },
+  "diverged_runs": 99,
+  "intent_lost_runs": 71
+ },
+ "no_late_fills (pure retry)": {
+  "runs": 200,
+  "violation_runs": 0,
+  "violations": {},
+  "diverged_runs": 0,
+  "intent_lost_runs": 67
+ }
+}

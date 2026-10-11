@@ -51,9 +51,16 @@ def market_open(now: datetime) -> bool:
 class LiveQuoteSource:
     """Live option quotes straight from Webull; implements the QuoteSource protocol."""
 
-    def __init__(self, client):
-        self.client = client
+    def __init__(self, client, now_fn=None, max_age_s: float = 30.0):
+        self.client, self.max_age_s = client, max_age_s
+        self.now_fn = now_fn or (lambda: datetime.now(ET))
 
     def get(self, contract: str, ts: datetime):
+        """None (no trade) when Webull reports the quote as delayed or older than max_age_s: only live data is used."""
         got = self.client.option_quote(contract)
-        return got[0] if got else None
+        if not got:
+            return None
+        quote, delay_minutes = got
+        if delay_minutes > 0 or (self.now_fn() - quote.ts).total_seconds() > self.max_age_s:
+            return None
+        return quote
