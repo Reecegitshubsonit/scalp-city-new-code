@@ -48,13 +48,18 @@ def main():
     broker = ModeledBroker() if args.modeled else WebullPaperBroker(client, account["account_id"], fallback=ModeledBroker())
     engine = Engine(settings, log, broker, LiveQuoteSource(client))
     feed = LiveFeed(client, TICKERS, lambda: datetime.now(ET))
-    today = datetime.now(ET).date()
-    prior, todays = feed.startup(today)
     store = BarStore()
-    store.extend(todays)   # candles for the dashboard's /history
-    engine.start_session(today, prior)
-    engine.catch_up(todays)   # a mid-session start still gets the real VWAP and opening range
-    engine.recover(log.read(today))   # and its day P&L, cooldowns and open positions from the event log
+
+    def begin_day(day):
+        prior, todays = feed.startup(day)
+        store.clear()
+        store.extend(todays)   # candles for the dashboard's /history
+        engine.start_session(day, prior)
+        engine.catch_up(todays)   # a mid-session start still gets the real VWAP and opening range
+        engine.recover(log.read(day))   # and its day P&L, cooldowns and open positions from the event log
+
+    today = datetime.now(ET).date()
+    begin_day(today)
     app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots], history_fn=store.get, cache_dir=args.cache_dir)
     threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
     print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
@@ -62,6 +67,17 @@ def main():
     while True:
         try:
             now = datetime.now(ET)
+            if now.date() != today:
+                # Long-running engine: start the new trading day (indicators, bot P&L and locks) without a restart.
+                if any(b.position is not None for b in engine.bots):
+                    print(f"Day rollover to {now.date()} held: a bot still has an open position.", flush=True)
+                else:
+                    feed.last_ts.clear()
+                    feed.last_bar_wall.clear()
+                    quote_wall.clear()
+                    begin_day(now.date())   # a failed fetch raises before today moves, so the next poll retries
+                    today = now.date()
+                    print(f"New trading day {today}: session reset.", flush=True)
             if market_open(now):
                 for bar in feed.poll():
                     store.add(bar)

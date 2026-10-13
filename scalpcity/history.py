@@ -25,6 +25,11 @@ class BarStore:
         for b in bars:
             self.add(b)
 
+    def clear(self) -> None:
+        """New trading day: drop the previous day's bars."""
+        with self._lock:
+            self._bars.clear()
+
     def get(self, ticker: str) -> list[Bar]:
         with self._lock:
             return [b for _, b in sorted(self._bars.get(ticker, {}).items())]
