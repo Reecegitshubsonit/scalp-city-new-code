@@ -5,7 +5,7 @@ import { COLORS, stateLabel } from '../model/visual'
 
 const TONE_COLOR: Record<Tone, string> = {
   CALL: COLORS.CALL, PUT: COLORS.PUT, WIN: COLORS.CALL, LOSS: COLORS.PUT, NEUTRAL: COLORS.NEUTRAL,
-  LOCKED: COLORS.locked, PAUSED: COLORS.paused, STALE: COLORS.stale,
+  LOCKED: COLORS.locked, GOAL: COLORS.goal, LOSS_LIMIT: COLORS.lossLimit, PAUSED: COLORS.paused, STALE: COLORS.stale,
 }
 
 interface Props { closes: number[]; badge: Badge | null; state: string; pnl: number }

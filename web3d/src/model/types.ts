@@ -24,7 +24,7 @@ export interface BotRow {
 export type ServerMsg =
   | { type: 'snapshot'; bots: Record<string, SnapshotBot>; last_seq: number }
   | { type: 'event'; event: BotEvent }
-export interface TickPoint { time: string; price: number; vwap?: number; ema50?: number }
+export interface TickPoint { time: string; price: number; vwap?: number; ema9?: number; ema21?: number; ema50?: number }
 export interface Mark { time: string; price: number; type: 'entry' | 'exit'; bot: string; side: Side | null; pnl?: number }
 export interface TradeRec { time: string; bot: string; ticker: string; pnl: number; exit_code: string | null; side: Side | null }
 /** The latest entry of a bot: kept even when fired and managing arrive in the same batch, so the view can play the fire effect. */

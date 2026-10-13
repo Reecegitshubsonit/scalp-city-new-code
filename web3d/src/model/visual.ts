@@ -4,6 +4,7 @@ import { formatPnl } from './format'
 export const COLORS = {
   CALL: '#19f5a0', PUT: '#ff3b6b', NEUTRAL: '#b9a7ff',
   idle: '#3a3f6b', cooldown: '#3d8bff', locked: '#ffb020', paused: '#8a90a8', stale: '#ff2d2d',
+  goal: '#ffd23f', lossLimit: '#9e1030',   // locked for the day: daily goal hit (gold) vs daily loss limit hit (dark crimson)
 } as const
 
 export const sideColor = (s: Side | null): string => (s === 'CALL' ? COLORS.CALL : s === 'PUT' ? COLORS.PUT : COLORS.NEUTRAL)
@@ -33,7 +34,10 @@ export function visualFor(row: BotRow, reduced: boolean): TowerVisual {
     case 'managing': return { ...base, color: sc, glow: 0.8, label: formatPnl(row.pnl_day) }
     case 'exiting': return { ...base, color: sc, glow: 0.8, effect: reduced ? 'none' : 'pulse' }
     case 'cooldown': return { ...base, color: COLORS.cooldown, glow: 0.45 }
-    case 'locked': return { ...base, color: COLORS.locked, glow: 0.5, label: 'LOCKED' }
+    case 'locked':
+      return row.reason_code === 'DAILY_LOSS' ? { ...base, color: COLORS.lossLimit, glow: 0.5, label: 'LOSS LIMIT' }
+        : row.reason_code === 'DAILY_GOAL' ? { ...base, color: COLORS.goal, glow: 0.6, label: 'GOAL HIT' }
+        : { ...base, color: COLORS.locked, glow: 0.5, label: 'LOCKED' }
     case 'paused': return { ...base, color: COLORS.paused, glow: 0.1, hatched: true, label: 'PAUSED' }
     case 'stale': return { ...base, color: COLORS.stale, glow: 0.7, effect: reduced ? 'none' : 'flicker', label: 'STALE' }
     default: return base

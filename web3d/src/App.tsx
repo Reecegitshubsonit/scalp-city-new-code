@@ -1,7 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useReducedMotion, useStored } from './hooks'
 import { ALL_BOTS, TICKERS } from './model/layout'
-import { mergeSeries, truncateHistory } from './model/history'
+import { mergeSeries, parseStopTarget, truncateHistory, type OpenPos } from './model/history'
+import { levelsAt } from './model/tradeLevels'
+import { useTradeLevels } from './net/useTradeLevels'
 import { useDayHistory } from './net/useDayHistory'
 import { useHistory } from './net/useHistory'
 import { useDays } from './net/useDays'
@@ -70,21 +72,38 @@ export default function App() {
   const replayDay = replay.active && replay.day ? { day: replay.day.day, mode: replay.day.mode } : null
   const dayHistory = useDayHistory(TICKERS, replayDay)   // real candles of the replayed day, when the engine has them cached
   const replayAtMs = replay.active ? Math.floor((replay.startMs + replay.posMs) / 60000) * 60000 + 59999 : null   // per minute: one new candle at a time, not a rebuild every tick
+  const newest = useMemo(() => rows.map(r => r.time).filter((t): t is string => !!t).sort().pop() ?? null, [rows])
+  const date = newest?.slice(0, 10) ?? null
+  // stop and target of every trade: from the day's event log, reloaded when a trade opens or closes
+  const levelDay = replay.active && replay.day ? replay.day : date ? { day: date, mode: 'live' } : null
+  const levelSignal = replay.active ? 0 : state.trades.length * 1000 + Object.values(state.fires).filter(f => f.filled).length
+  const allLevels = useTradeLevels(levelDay?.day ?? null, levelDay?.mode ?? 'live', replay.active || status === 'live' || status === 'polling', levelSignal)
   const series = useMemo(
     () => Object.fromEntries(TICKERS.map(t => {
       const dh = dayHistory[t]
       const h = replay.active ? (dh && replayAtMs != null ? truncateHistory(dh, replayAtMs) : null) : history[t] ?? null
-      return [t, mergeSeries(t, h, state.ticks[t] ?? [], state.marks[t] ?? [])]
+      const s = mergeSeries(t, h, state.ticks[t] ?? [], state.marks[t] ?? [])
+      const mine = rows.filter(r => r.ticker === t)
+      const positions: OpenPos[] = []
+      for (const r of mine) {
+        if (r.state !== 'managing' && r.state !== 'exiting') continue
+        const st = parseStopTarget(r.reason_text)
+        if (st) positions.push({ bot: r.bot, side: r.side, ...st })
+      }
+      const atr = mine.map(r => r.inputs.atr).find(a => typeof a === 'number') ?? null
+      const lv = allLevels.filter(x => x.ticker === t)
+      const trades = replay.active && replayAtMs != null ? levelsAt(lv, replayAtMs) : lv
+      // an open trade the log fetch has not seen yet still gets its lines from the live bot row
+      const fresh = positions.filter(p => !trades.some(x => x.bot === p.bot && x.exit === null))
+      return [t, { ...s, positions: fresh, trades, atr }]
     })),
-    [history, state.ticks, state.marks, replay.active, dayHistory, replayAtMs],
+    [history, state.ticks, state.marks, replay.active, dayHistory, replayAtMs, rows, allLevels],
   )
   const tickerTrades = useMemo(() => {
     const m: Record<string, number> = {}
     for (const r of rows) m[r.ticker] = (m[r.ticker] ?? 0) + r.trades
     return m
   }, [rows])
-  const newest = useMemo(() => rows.map(r => r.time).filter((t): t is string => !!t).sort().pop() ?? null, [rows])
-  const date = newest?.slice(0, 10) ?? null
 
   // all past trades: the engine's logged trades for the viewed day, merged with trades seen live since the page loaded
   const enabled = replay.active || status === 'live' || status === 'polling'

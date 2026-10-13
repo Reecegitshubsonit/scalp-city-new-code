@@ -55,6 +55,8 @@ describe('visualFor', () => {
   it('cooldown blue, locked amber, paused hatched', () => {
     expect(visualFor(row({ state: 'cooldown' }), false).color).toBe(COLORS.cooldown)
     expect(visualFor(row({ state: 'locked' }), false).color).toBe(COLORS.locked)
+    expect(visualFor(row({ state: 'locked', reason_code: 'DAILY_GOAL' }), false)).toMatchObject({ color: COLORS.goal, label: 'GOAL HIT' })
+    expect(visualFor(row({ state: 'locked', reason_code: 'DAILY_LOSS' }), false)).toMatchObject({ color: COLORS.lossLimit, label: 'LOSS LIMIT' })
     expect(visualFor(row({ state: 'paused' }), false).hatched).toBe(true)
   })
   it('unknown state degrades to idle look', () => {

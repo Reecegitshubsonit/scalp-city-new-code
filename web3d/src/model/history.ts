@@ -1,12 +1,23 @@
 import type { Mark, Side, TickPoint } from './types'
 import { formatPnl } from './format'
+import type { TradeLevel } from './tradeLevels'
 
 export interface Candle { time: string; open: number; high: number; low: number; close: number }
 export interface Level { time: string; vwap?: number | null; ema9?: number | null; ema21?: number | null; ema50?: number | null }
 export interface HMark { time: string; bot: string; type: 'entry' | 'exit'; side: Side | null; pnl?: number | null }
 /** Shape of GET /history?ticker=... */
 export interface History { ticker: string; bars: Candle[]; levels: Level[]; marks: HMark[] }
-export interface Series { ticker: string; candles: Candle[]; levels: Level[]; marks: HMark[] }
+export interface Series {
+  ticker: string; candles: Candle[]; levels: Level[]; marks: HMark[]
+  /** open positions on this ticker, with the engine's stop and target on the underlying */
+  positions?: OpenPos[]
+  /** every trade on this ticker with its own stop and target, entry candle to exit candle */
+  trades?: TradeLevel[]
+  /** latest ATR of this ticker (1-minute bars), as the bots use it */
+  atr?: number | null
+}
+/** One bot's open trade, drawn as stop and target lines. */
+export interface OpenPos { bot: string; side: Side | null; stop: number; target: number }
 
 /** History from the engine plus whatever arrived live since: newer ticks become candles (close price only), marks are merged. */
 export function mergeSeries(ticker: string, history: History | null, ticks: TickPoint[], liveMarks: Mark[]): Series {
@@ -22,7 +33,7 @@ export function mergeSeries(ticker: string, history: History | null, ticks: Tick
       lastCandle = t.time
     }
     if (t.time > lastLevel && (t.vwap != null || t.ema50 != null)) {
-      levels.push({ time: t.time, vwap: t.vwap, ema50: t.ema50 })
+      levels.push({ time: t.time, vwap: t.vwap, ema9: t.ema9, ema21: t.ema21, ema50: t.ema50 })
       lastLevel = t.time
     }
   }
@@ -57,4 +68,61 @@ export function markLabel(m: HMark): string {
 export function truncateHistory(h: History, ms: number): History {
   const ok = (t: string) => Date.parse(t) <= ms
   return { ticker: h.ticker, bars: h.bars.filter(b => ok(b.time)), levels: h.levels.filter(l => ok(l.time)), marks: h.marks.filter(m => ok(m.time)) }
+}
+
+/** Stop and target from the engine's holding text, e.g. "PUT held, stop 740.83, target 738.87". */
+export function parseStopTarget(text: string): { stop: number; target: number } | null {
+  const m = /stop (-?\d+(?:\.\d+)?), target (-?\d+(?:\.\d+)?)/.exec(text ?? '')
+  return m ? { stop: Number(m[1]), target: Number(m[2]) } : null
+}
+
+/** Opening range as the RANGE bots build it: high and low of the latest day's bars starting 9:30..9:44 ET. Null before its first bar. */
+export function openingRange(candles: Candle[]): { hi: number; lo: number; complete: boolean } | null {
+  let hi = -Infinity, lo = Infinity, complete = false
+  const day = candles.length ? candles[candles.length - 1].time.slice(0, 10) : ''
+  for (const c of candles) {
+    if (c.time.slice(0, 10) !== day) continue   // the chart starts with a few bars of the previous session
+    const hm = c.time.slice(11, 16)
+    if (hm < '09:30') continue
+    if (hm >= '09:45') { complete = true; break }
+    hi = Math.max(hi, c.high); lo = Math.min(lo, c.low)
+  }
+  return hi === -Infinity ? null : { hi, lo, complete }
+}
+
+/** EMA9 and EMA21 closer than 0.15 ATR: the chop filter skips VWAP entries (engine: IndicatorSet.squeezed). */
+export const SQUEEZE_ATR = 0.15
+export function squeezed(level: Level | undefined, atr: number | null | undefined): boolean {
+  if (!level || typeof level.ema9 !== 'number' || typeof level.ema21 !== 'number' || !atr) return false
+  return Math.abs(level.ema9 - level.ema21) < SQUEEZE_ATR * atr
+}
+
+/** Bot name without its ticker: "QQQ-EMA50" -> "EMA50". */
+const shortBot = (bot: string) => bot.split('-').slice(1).join('-') || bot
+
+/** Marks grouped per candle and type, so two exits on one candle get one stacked label instead of overwriting each other. */
+export function groupMarks(marks: HMark[]): { time: string; type: HMark['type']; marks: HMark[]; lines: string[] }[] {
+  const groups = new Map<string, { time: string; type: HMark['type']; marks: HMark[]; lines: string[] }>()
+  for (const m of marks) {
+    const key = `${m.time}|${m.type}`
+    let g = groups.get(key)
+    if (!g) groups.set(key, (g = { time: m.time, type: m.type, marks: [], lines: [] }))
+    g.marks.push(m)
+  }
+  for (const g of groups.values())
+    g.lines = g.marks.length === 1 ? [markLabel(g.marks[0])] : g.marks.map(m => `${shortBot(m.bot)} ${markLabel(m)}`)
+  return [...groups.values()]
+}
+
+/** ATR per candle, as the engine computes it (scalpcity/indicators.py Atr): Wilder, plain average of true ranges for the first `period` bars. */
+export function atrSeries(candles: Candle[], period = 14): number[] {
+  const out: number[] = []
+  let prev: number | null = null, value = 0, sum = 0
+  candles.forEach((c, n) => {
+    const tr = prev === null ? c.high - c.low : Math.max(c.high - c.low, Math.abs(c.high - prev), Math.abs(c.low - prev))
+    prev = c.close
+    if (n < period) { sum += tr; value = sum / (n + 1) } else value = (value * (period - 1) + tr) / period
+    out.push(value)
+  })
+  return out
 }

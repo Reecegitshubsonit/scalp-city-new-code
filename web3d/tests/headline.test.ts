@@ -43,8 +43,8 @@ describe('badgeFor', () => {
     expect(badgeFor(row({ state: 'cooldown' }), undefined)).toBeNull()
   })
   it('locked, paused, stale', () => {
-    expect(badgeFor(row({ state: 'locked', reason_code: 'DAILY_GOAL' }), undefined)).toEqual({ text: 'DAILY GOAL', tone: 'LOCKED' })
-    expect(badgeFor(row({ state: 'locked', reason_code: 'DAILY_LOSS' }), undefined)).toEqual({ text: 'LOSS LIMIT', tone: 'LOCKED' })
+    expect(badgeFor(row({ state: 'locked', reason_code: 'DAILY_GOAL' }), undefined)).toEqual({ text: 'DAILY GOAL', tone: 'GOAL' })
+    expect(badgeFor(row({ state: 'locked', reason_code: 'DAILY_LOSS' }), undefined)).toEqual({ text: 'LOSS LIMIT', tone: 'LOSS_LIMIT' })
     expect(badgeFor(row({ state: 'paused' }), undefined)).toEqual({ text: 'PAUSED', tone: 'PAUSED' })
     expect(badgeFor(row({ state: 'stale' }), undefined)).toEqual({ text: 'STALE DATA', tone: 'STALE' })
   })

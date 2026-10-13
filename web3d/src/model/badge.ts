@@ -1,7 +1,7 @@
 import type { BotRow, TradeRec } from './types'
 import { formatPnl } from './format'
 
-export type Tone = 'CALL' | 'PUT' | 'NEUTRAL' | 'WIN' | 'LOSS' | 'LOCKED' | 'PAUSED' | 'STALE'
+export type Tone = 'CALL' | 'PUT' | 'NEUTRAL' | 'WIN' | 'LOSS' | 'LOCKED' | 'GOAL' | 'LOSS_LIMIT' | 'PAUSED' | 'STALE'
 export interface Badge { text: string; tone: Tone }
 
 /** Short floating tag for a tower, from the bot's state and its last closed trade. */
@@ -10,7 +10,10 @@ export function badgeFor(row: BotRow, lastTrade: TradeRec | undefined): Badge | 
   switch (row.state) {
     case 'paused': return { text: 'PAUSED', tone: 'PAUSED' }
     case 'stale': return { text: 'STALE DATA', tone: 'STALE' }
-    case 'locked': return { text: row.reason_code === 'DAILY_LOSS' ? 'LOSS LIMIT' : 'DAILY GOAL', tone: 'LOCKED' }
+    case 'locked':
+      if (row.reason_code === 'DAILY_LOSS') return { text: 'LOSS LIMIT', tone: 'LOSS_LIMIT' }
+      if (row.reason_code === 'DAILY_GOAL') return { text: 'DAILY GOAL', tone: 'GOAL' }
+      return { text: 'LOCKED', tone: 'LOCKED' }
     case 'forming':
       if (row.charge_pct == null) return { text: 'CHARGING', tone: 'NEUTRAL' }
       return { text: `${row.side ? row.side + ' ' : ''}${Math.round(row.charge_pct)}% CHARGED`, tone }

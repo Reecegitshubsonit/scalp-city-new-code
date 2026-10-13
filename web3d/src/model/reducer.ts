@@ -6,6 +6,8 @@ export const TICKS_MAX = 390
 export const MARKS_MAX = 100
 export const TRADES_MAX = 100
 
+const LEVEL_KEYS = ['vwap', 'ema9', 'ema21', 'ema50'] as const
+
 export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {}, marks: {}, trades: [], mode: null, lastEventAt: null, fires: {} }
 
 interface SideState { side: Side | null; sideSource: SideSource }
@@ -79,8 +81,7 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
       const pts = ticks[r.ticker] ?? []
       if (pts.length && pts[pts.length - 1].time === r.time) continue
       const levels: Partial<TickPoint> = {}
-      if (typeof r.inputs.vwap === 'number') levels.vwap = r.inputs.vwap
-      if (typeof r.inputs.ema50 === 'number') levels.ema50 = r.inputs.ema50
+      for (const k of LEVEL_KEYS) if (typeof r.inputs[k] === 'number') levels[k] = r.inputs[k]
       ticks = { ...ticks, [r.ticker]: [...pts, { time: r.time, price: r.inputs.price, ...levels }].slice(-TICKS_MAX) }
     }
     const lastSeq = typeof msg.last_seq === 'number' ? msg.last_seq : 0
@@ -120,8 +121,7 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
     const last = pts[pts.length - 1]
     const levels: Partial<TickPoint> = {}
     if (r.state !== 'forming') {
-      if (typeof ev.inputs.vwap === 'number') levels.vwap = ev.inputs.vwap
-      if (typeof ev.inputs.ema50 === 'number') levels.ema50 = ev.inputs.ema50
+      for (const k of LEVEL_KEYS) if (typeof ev.inputs[k] === 'number') levels[k] = ev.inputs[k]
     }
     if (!last || last.time !== ev.time)
       next.ticks = { ...state.ticks, [ev.ticker]: [...pts, { time: ev.time, price: ev.inputs.price, ...levels }].slice(-TICKS_MAX) }
