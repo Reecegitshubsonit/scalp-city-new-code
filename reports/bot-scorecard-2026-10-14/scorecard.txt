@@ -1,0 +1,62 @@
+Logged paper days: 2026-10-09, 2026-10-12, 2026-10-13, 2026-10-14 (the newest day may be still in progress)
+Excluded: 2026-10-14 QQQ-RANGE 09:48 PUT signal at 740.10 pnl +1340
+Excluded: 2026-10-14 SPY-RANGE 09:50 PUT signal at 776.15 pnl +650
+
+== By strategy and day (P&L $, trades, wins)
+VWAP   2026-10-09: -550 (8t 3w) | 2026-10-12: +1520 (10t 9w) | 2026-10-13: -1160 (14t 4w) | 2026-10-14: +1000 (2t 1w) | ALL: +810 (34t 17w)
+EMA50  2026-10-09: -1620 (34t 10w) | 2026-10-12: +1130 (26t 12w) | 2026-10-13: +360 (21t 9w) | 2026-10-14: +30 (1t 1w) | ALL: -100 (82t 32w)
+RANGE  2026-10-09: -100 (10t 4w) | 2026-10-12: +530 (16t 6w) | 2026-10-13: -910 (10t 2w) | 2026-10-14: -130 (1t 0w) | ALL: -610 (37t 12w)
+
+== By bot, all days (P&L $, trades, win rate, avg per trade)
+IWM-RANGE      -940   18 trades   22.2% wins    -52.2/trade
+IWM-EMA50      -550   28 trades   35.7% wins    -19.6/trade
+QQQ-RANGE      -280    8 trades   37.5% wins    -35.0/trade
+SPY-EMA50      -240   20 trades   35.0% wins    -12.0/trade
+QQQ-VWAP       -170   12 trades   33.3% wins    -14.2/trade
+IWM-VWAP        +90   12 trades   50.0% wins     +7.5/trade
+SPY-RANGE      +610   11 trades   45.5% wins    +55.5/trade
+QQQ-EMA50      +690   34 trades   44.1% wins    +20.3/trade
+SPY-VWAP       +890   10 trades   70.0% wins    +89.0/trade
+
+== RANGE entries: how far the signal close was past the opening-range edge
+(opening range = high/low of the 9:30-9:44 Webull bars; margin = how far the signal close went past that edge)
+2026-10-09 IWM-RANGE 09:47 broke DOWN traded PUT  range 277.71-278.86 close 277.570 margin  14.0c (0.52 ATR)  pnl -250
+2026-10-09 QQQ-RANGE 09:47 broke DOWN traded PUT  range 749.03-752.86 close 748.760 margin  27.0c (0.37 ATR)  pnl +190
+2026-10-09 QQQ-RANGE 10:02 broke DOWN traded PUT  range 749.03-752.86 close 748.830 margin  20.0c (0.33 ATR)  pnl -270
+2026-10-09 IWM-RANGE 10:01 broke UP   traded CALL range 277.71-278.86 close 278.875 margin   1.5c (0.06 ATR)  pnl -130  <5c
+2026-10-09 SPY-RANGE 10:52 broke UP   traded CALL range 775.35-776.84 close 777.004 margin  16.4c (0.70 ATR)  pnl +280
+2026-10-09 IWM-RANGE 11:32 broke UP   traded CALL range 277.71-278.86 close 278.865 margin   0.5c (0.05 ATR)  pnl -60  <5c
+2026-10-09 SPY-RANGE 11:35 broke UP   traded CALL range 775.35-776.84 close 776.885 margin   4.5c (0.24 ATR)  pnl +210  <5c
+2026-10-09 IWM-RANGE 12:31 broke UP   traded CALL range 277.71-278.86 close 278.885 margin   2.5c (0.34 ATR)  pnl -20  <5c
+2026-10-09 IWM-RANGE 12:46 broke UP   traded CALL range 277.71-278.86 close 278.915 margin   5.5c (0.85 ATR)  pnl -100
+2026-10-09 IWM-RANGE 13:18 broke UP   traded CALL range 277.71-278.86 close 278.880 margin   2.0c (0.30 ATR)  pnl +50  <5c
+2026-10-12 SPY-RANGE 09:49 broke DOWN traded PUT  range 778.67-779.40 close 778.420 margin  25.5c (0.84 ATR)  pnl -200
+2026-10-12 SPY-RANGE 09:58 broke DOWN traded PUT  range 778.67-779.40 close 778.550 margin  12.5c (0.50 ATR)  pnl +400
+2026-10-12 IWM-RANGE 10:04 broke DOWN traded PUT  range 278.23-279.10 close 278.160 margin   7.0c (0.39 ATR)  pnl -180
+2026-10-12 QQQ-RANGE 10:07 broke DOWN traded PUT  range 747.10-749.79 close 746.700 margin  40.0c (0.81 ATR)  pnl +320
+2026-10-12 IWM-RANGE 10:18 broke DOWN traded PUT  range 278.23-279.10 close 278.130 margin  10.0c (0.58 ATR)  pnl -90
+2026-10-12 IWM-RANGE 10:23 broke DOWN traded PUT  range 278.23-279.10 close 278.100 margin  13.0c (0.79 ATR)  pnl -90
+2026-10-12 IWM-RANGE 10:30 broke DOWN traded PUT  range 278.23-279.10 close 278.130 margin  10.0c (0.68 ATR)  pnl -130
+2026-10-12 IWM-RANGE 10:45 broke DOWN traded CALL range 278.23-279.10 close 278.090 margin  14.0c (1.06 ATR)  pnl +120  FLIPPED
+2026-10-12 SPY-RANGE 12:22 broke DOWN traded PUT  range 778.67-779.40 close 778.670 margin   0.5c (0.05 ATR)  pnl +350  <5c
+2026-10-12 QQQ-RANGE 12:25 broke DOWN traded PUT  range 747.10-749.79 close 746.800 margin  30.0c (1.45 ATR)  pnl -130
+2026-10-12 QQQ-RANGE 12:34 broke DOWN traded PUT  range 747.10-749.79 close 746.950 margin  15.0c (0.69 ATR)  pnl +350
+2026-10-12 IWM-RANGE 12:53 broke DOWN traded PUT  range 278.23-279.10 close 278.210 margin   2.0c (0.35 ATR)  pnl -90  <5c
+2026-10-12 IWM-RANGE 13:25 broke DOWN traded CALL range 278.23-279.10 close 278.180 margin   5.0c (0.82 ATR)  pnl -60  FLIPPED
+2026-10-12 IWM-RANGE 13:42 broke DOWN traded PUT  range 278.23-279.10 close 278.200 margin   3.0c (0.54 ATR)  pnl -50  <5c
+2026-10-12 IWM-RANGE 14:09 broke DOWN traded CALL range 278.23-279.10 close 278.210 margin   2.0c (0.41 ATR)  pnl -30  <5c  FLIPPED
+2026-10-12 IWM-RANGE 14:25 broke DOWN traded PUT  range 278.23-279.10 close 278.228 margin   0.2c (0.05 ATR)  pnl +40  <5c
+2026-10-13 IWM-RANGE 09:52 broke DOWN traded PUT  range 277.32-278.70 close 277.310 margin   1.0c (0.04 ATR)  pnl +260  <5c
+2026-10-13 QQQ-RANGE 09:50 broke UP   traded CALL range 738.84-743.62 close 743.633 margin   1.3c (0.02 ATR)  pnl -440  <5c
+2026-10-13 SPY-RANGE 10:35 broke DOWN traded PUT  range 777.17-778.75 close 777.160 margin   1.0c (0.05 ATR)  pnl -170  <5c
+2026-10-13 QQQ-RANGE 10:42 broke UP   traded CALL range 738.84-743.62 close 743.636 margin   1.6c (0.04 ATR)  pnl -200  <5c
+2026-10-13 SPY-RANGE 10:54 broke DOWN traded PUT  range 777.17-778.75 close 777.010 margin  16.0c (0.98 ATR)  pnl -170
+2026-10-13 SPY-RANGE 12:28 broke DOWN traded CALL range 777.17-778.75 close 777.150 margin   2.0c (0.16 ATR)  pnl +230  <5c  FLIPPED
+2026-10-13 QQQ-RANGE 12:31 broke UP   traded CALL range 738.84-743.62 close 743.710 margin   9.0c (0.36 ATR)  pnl -100
+2026-10-13 SPY-RANGE 13:01 broke DOWN traded PUT  range 777.17-778.75 close 777.140 margin   3.0c (0.23 ATR)  pnl -70  <5c
+2026-10-13 SPY-RANGE 13:17 broke DOWN traded PUT  range 777.17-778.75 close 777.139 margin   3.1c (0.26 ATR)  pnl -160  <5c
+2026-10-13 SPY-RANGE 13:50 broke DOWN traded CALL range 777.17-778.75 close 777.150 margin   2.0c (0.18 ATR)  pnl -90  <5c  FLIPPED
+2026-10-14 IWM-RANGE 10:00 broke DOWN traded PUT  range 273.18-274.46 close 273.090 margin   9.0c (0.39 ATR)  pnl -130
+
+RANGE entries that broke out by less than 5 cents: 18, total P&L -370
+RANGE entries traded against the breakout direction (trend_side flip): 5, total P&L +170
