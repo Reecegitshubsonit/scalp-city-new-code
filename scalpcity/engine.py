@@ -73,9 +73,32 @@ class Engine:
             ind.update(bar)
             for bot in [b for b in self.bots if b.ticker == bar.ticker]:
                 out = bot.on_bar(bar, ind)
+                if not out.intents:
+                    held = self._held(bot, bar)
+                    for ev in out.events:
+                        if ev["kind"] == "tick":
+                            ev.update(held)
                 self._write(bar.end, bot, out.events)
                 for intent in out.intents:
                     self._execute(bot, intent, bar, ind)
+
+    def _held(self, bot: Bot, bar: Bar) -> dict:
+        """Open position fields for the bar's tick, so the view can show side, stop/target progress and open P&L. Empty when flat."""
+        p = bot.position
+        if p is None or bot.pending is not None or p.entry_price is None or not p.contract:
+            return {}
+        held = {"side": p.right, "contract": p.contract, "qty": p.qty, "entry_price": p.entry_price,
+                "entry_und": round(p.entry_und, 2), "stop_und": round(p.stop_und, 2), "target_und": round(p.target_und, 2)}
+        try:
+            quote = self.quotes.get(p.contract, bar.end)
+        except Exception:   # a quote error must not stop the bar: the tick goes out without open P&L
+            quote = None
+        if quote is not None and quote.bid > 0 and quote.ask >= quote.bid:
+            mid = (quote.bid + quote.ask) / 2
+            held["option_mid"] = round(mid, 4)
+            # realized_pnl holds the entry fee (and any partial exits); the exit fee is not known yet
+            held["open_pnl"] = round(p.realized_pnl + (mid - p.entry_price) * p.qty * 100, 2)
+        return held
 
     def _execute(self, bot: Bot, intent: OrderIntent, bar: Bar, ind: IndicatorSet) -> None:
         if intent.kind == "BUY_OPEN":

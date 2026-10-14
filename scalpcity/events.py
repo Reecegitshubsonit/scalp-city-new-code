@@ -59,6 +59,10 @@ class EventLog:
             return [json.loads(line) for line in handle if line.strip()]
 
 
+# open position fields the engine adds to a holding bot's tick (Engine._held)
+HELD_KEYS = ("side", "entry_und", "stop_und", "target_und", "entry_price", "option_mid", "open_pnl")
+
+
 def build_snapshot(events: list[dict]) -> dict:
     """Current state of every bot, derived purely from the event list."""
     bots: dict[str, dict] = {}
@@ -70,10 +74,12 @@ def build_snapshot(events: list[dict]) -> dict:
             continue
         row = bots.setdefault(bot, {"bot": bot, "ticker": ev["ticker"], "state": "idle", "reason_code": "",
                                     "reason_text": "", "charge_pct": None, "inputs": {}, "time": None,
-                                    "pnl_day": 0.0, "trades": 0, "paused": False})
+                                    "pnl_day": 0.0, "trades": 0, "paused": False, **dict.fromkeys(HELD_KEYS)})
         if ev["kind"] in ("tick", "state_change"):
             row.update(state=ev["state"], reason_code=ev["reason_code"], reason_text=ev["reason_text"],
                        charge_pct=ev["charge_pct"], inputs=ev["inputs"], time=ev["time"])
+            if ev["kind"] == "tick" or ev["state"] != "managing":   # a managing state_change comes just before its tick
+                row.update({k: ev.get(k) for k in HELD_KEYS})
         elif ev["kind"] == "trade_closed":
             row["pnl_day"] = ev.get("pnl_day", row["pnl_day"])
             row["trades"] = ev.get("trades", row["trades"])
