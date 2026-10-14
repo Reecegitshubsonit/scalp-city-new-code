@@ -1,0 +1,106 @@
+RANGE bots: live rule (any close past the opening range) vs 5-cent rule (close >= $0.05 past the edge)
+Days: 2026-10-09, 2026-10-12, 2026-10-13 | data: Webull bars and Webull option bars only | fills: modeled (bar close +/- half spread)
+Today's day (2026-10-14) is left out: it is still trading and its option bars are not saved yet.
+Oct 9 starts with no warm-up bars (no Webull day before it), so its EMAs start cold.
+
+== 2026-10-09
+  live-rule    RANGE    -1860  12 trades   1 wins
+      IWM-RANGE 09:47-09:51 PUT signal at 277.57            -280
+      QQQ-RANGE 09:47-09:53 PUT signal at 748.76            -500
+      QQQ-RANGE 09:55-09:59 PUT signal at 748.78            -390
+      IWM-RANGE 10:01-10:13 CALL signal at 278.88           -160
+      SPY-RANGE 10:52-10:59 CALL signal at 777.00           +240
+      SPY-RANGE 11:11-11:14 PUT signal at 776.91            -170
+      IWM-RANGE 11:23-11:34 CALL signal at 278.87           -110
+      SPY-RANGE 11:35-11:40 PUT signal at 776.88            -170
+      IWM-RANGE 12:31-12:43 CALL signal at 278.88            -70
+      IWM-RANGE 12:46-13:14 CALL signal at 278.92            -80
+      IWM-RANGE 13:18-13:20 PUT signal at 278.88             -60
+      IWM-RANGE 13:30-13:32 PUT signal at 278.88            -110
+  5-cent-rule  RANGE    -1930  12 trades   1 wins
+      IWM-RANGE 09:47-09:51 PUT signal at 277.57            -280
+      QQQ-RANGE 09:47-09:53 PUT signal at 748.76            -500
+      QQQ-RANGE 09:55-09:59 PUT signal at 748.78            -390
+      IWM-RANGE 10:08-10:12 CALL signal at 278.93           -190
+      SPY-RANGE 10:52-10:59 CALL signal at 777.00           +240
+      SPY-RANGE 11:11-11:14 PUT signal at 776.91            -170
+      SPY-RANGE 11:37-11:40 PUT signal at 776.97            -140
+      SPY-RANGE 12:04-12:05 PUT signal at 776.96            -170
+      IWM-RANGE 12:32-12:34 CALL signal at 278.96            -80
+      IWM-RANGE 12:38-12:42 CALL signal at 278.92            -80
+      IWM-RANGE 12:46-13:14 CALL signal at 278.92            -80
+      IWM-RANGE 13:19-13:40 PUT signal at 278.94             -90
+== 2026-10-12
+  live-rule    RANGE     +190  16 trades   6 wins
+      SPY-RANGE 09:49-09:55 PUT signal at 778.42            -210
+      SPY-RANGE 09:58-10:08 PUT signal at 778.55            +330
+      IWM-RANGE 10:04-10:13 PUT signal at 278.16            -190
+      QQQ-RANGE 10:07-10:14 PUT signal at 746.70            +570
+      IWM-RANGE 10:18-10:21 PUT signal at 278.13            -150
+      IWM-RANGE 10:23-10:28 PUT signal at 278.10            -140
+      IWM-RANGE 10:30-10:43 PUT signal at 278.13             -90
+      IWM-RANGE 10:45-10:51 CALL signal at 278.09           +100
+      SPY-RANGE 12:01-12:04 CALL signal at 778.67           +120
+      SPY-RANGE 12:22-12:24 PUT signal at 778.67            +230
+      QQQ-RANGE 12:25-12:31 PUT signal at 746.80            -240
+      QQQ-RANGE 12:34-12:50 PUT signal at 746.95            +250
+      IWM-RANGE 12:53-13:22 PUT signal at 278.21            -100
+      IWM-RANGE 13:25-13:35 CALL signal at 278.18            -90
+      IWM-RANGE 13:42-14:02 PUT signal at 278.20             -80
+      IWM-RANGE 14:09-14:21 CALL signal at 278.21           -120
+  5-cent-rule  RANGE     +100  16 trades   5 wins
+      SPY-RANGE 09:49-09:55 PUT signal at 778.42            -210
+      SPY-RANGE 09:58-10:08 PUT signal at 778.55            +330
+      IWM-RANGE 10:04-10:13 PUT signal at 278.16            -190
+      QQQ-RANGE 10:07-10:14 PUT signal at 746.70            +570
+      IWM-RANGE 10:18-10:21 PUT signal at 278.13            -150
+      IWM-RANGE 10:23-10:28 PUT signal at 278.10            -140
+      IWM-RANGE 10:30-10:43 PUT signal at 278.13             -90
+      IWM-RANGE 10:45-10:51 CALL signal at 278.09           +100
+      SPY-RANGE 12:23-12:25 PUT signal at 778.51            +230
+      QQQ-RANGE 12:25-12:31 PUT signal at 746.80            -240
+      QQQ-RANGE 12:34-12:50 PUT signal at 746.95            +250
+      IWM-RANGE 12:57-13:01 PUT signal at 278.14             -80
+      IWM-RANGE 13:05-13:08 PUT signal at 278.12             -70
+      IWM-RANGE 13:32-13:40 PUT signal at 278.17             -60
+      IWM-RANGE 13:44-14:01 PUT signal at 278.17            -100
+      IWM-RANGE 14:18-14:22 PUT signal at 278.17             -50
+== 2026-10-13
+  live-rule    RANGE    -1160   9 trades   2 wins
+      IWM-RANGE 09:52-09:57 PUT signal at 277.31            +220
+      QQQ-RANGE 09:50-10:20 CALL signal at 743.63           -530
+      SPY-RANGE 10:35-10:38 PUT signal at 777.16            -200
+      QQQ-RANGE 10:42-10:44 CALL signal at 743.64           -340
+      SPY-RANGE 10:54-11:17 PUT signal at 777.01            -140
+      SPY-RANGE 12:28-12:31 CALL signal at 777.15           +220
+      SPY-RANGE 13:01-13:06 PUT signal at 777.14            -100
+      SPY-RANGE 13:17-13:37 PUT signal at 777.14            -160
+      SPY-RANGE 13:50-13:51 CALL signal at 777.15           -130
+  5-cent-rule  RANGE     -430   9 trades   3 wins
+      IWM-RANGE 09:54-09:59 PUT signal at 277.20            +240
+      QQQ-RANGE 10:00-10:20 CALL signal at 743.70           -520
+      SPY-RANGE 10:54-11:17 PUT signal at 777.01            -140
+      SPY-RANGE 11:22-11:26 PUT signal at 776.99            +200
+      SPY-RANGE 12:20-12:31 CALL signal at 777.08           +270
+      QQQ-RANGE 12:31-12:39 CALL signal at 743.71           -200
+      SPY-RANGE 13:19-13:24 PUT signal at 777.08            -100
+      SPY-RANGE 13:27-13:34 PUT signal at 777.00             -90
+      SPY-RANGE 13:51-13:52 PUT signal at 776.87             -90
+
+== Total RANGE over the days
+  live-rule       -2830  37 trades  9 wins
+  5-cent-rule     -2260  37 trades  9 wins
+
+== By RANGE bot, total
+  QQQ-RANGE  live-rule   -1180   5-cent-rule   -1030   change    +150
+  SPY-RANGE  live-rule    -140   5-cent-rule    +160   change    +300
+  IWM-RANGE  live-rule   -1510   5-cent-rule   -1390   change    +120
+
+== Option contracts the run wanted but Webull has no saved bars for (entry or exit could not be priced)
+  live-rule: 2026-10-09 SPY261012C00778000 first asked 14:05, 2026-10-09 SPY261012C00779000 first asked 15:30, 2026-10-09 SPY261012P00778000 first asked 13:10, 2026-10-12 QQQ261013P00748000 first asked 09:56, 2026-10-13 QQQ261014C00742000 first asked 13:47, 2026-10-13 QQQ261014P00739000 first asked 09:32
+  5-cent-rule: 2026-10-09 SPY261012C00778000 first asked 14:05, 2026-10-09 SPY261012C00779000 first asked 15:30, 2026-10-09 SPY261012P00778000 first asked 13:10, 2026-10-12 QQQ261013P00748000 first asked 09:56, 2026-10-13 QQQ261014C00742000 first asked 13:47, 2026-10-13 QQQ261014P00739000 first asked 09:32
+
+== Sanity check: live-rule replay vs what actually happened (RANGE P&L per day, real fills)
+  2026-10-09  real    -100   replay   -1860
+  2026-10-12  real    +530   replay    +190
+  2026-10-13  real    -910   replay   -1160
