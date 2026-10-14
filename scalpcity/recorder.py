@@ -2,7 +2,8 @@
 
 Files under data/webull/YYYY-MM-DD/:
   stock-TICKER.live.jsonl   every one-minute bar the engine received, as it received it
-  snapshots.jsonl           each minute: full option snapshots (bid/ask, sizes, greeks, IV, volume) of held + ATM contracts
+  snapshots.jsonl           after each new bar (at least once a minute): full option snapshots (bid/ask, sizes, greeks,
+                            IV, volume) of held contracts and the ATM strike +/- STRIKES_EACH_SIDE, calls and puts
   contracts.json            every contract snapshotted or traded that day
   stock-TICKER.json         end of day: Webull's full-day one-minute bars (raw rows)
   option-CONTRACT.json      end of day: Webull's full-day one-minute bars of that option (raw rows)
@@ -14,7 +15,7 @@ import json
 import os
 import threading
 import traceback
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta
 
 from .config import TICKERS
 from .contracts import atm_strike, next_trading_day, occ_symbol
@@ -23,6 +24,8 @@ from .types import ET, Bar
 MAX_BARS = 1200          # Webull's limit per request
 OPTION_BATCH = 10        # contracts per option bars / snapshot request
 EOD_AFTER = time(16, 5)  # closing bars are final
+STRIKES_EACH_SIDE = 2    # strikes recorded above and below ATM, so replays can price entries a rule change moves
+SNAPSHOT_EVERY = timedelta(seconds=60)   # snapshot interval when no new bar arrives
 
 
 def day_dir(root: str, day: date) -> str:
@@ -37,10 +40,12 @@ def traded_contracts(events: list[dict]) -> set[str]:
     return {ev["contract"] for ev in events if ev.get("contract") and ev["kind"] in ("order_sent", "fill")}
 
 
-def atm_contracts(ticker: str, price: float, day: date) -> list[str]:
-    """The contracts a bot on this ticker would buy right now (next-day expiry, ATM strike)."""
+def atm_contracts(ticker: str, price: float, day: date, width: int = 0) -> list[str]:
+    """The contracts a bot on this ticker would buy right now (next-day expiry, ATM strike), plus `width`
+    one-dollar strikes above and below it."""
     expiry = next_trading_day(day)
-    return [occ_symbol(ticker, expiry, right, atm_strike(price)) for right in ("CALL", "PUT")]
+    atm = atm_strike(price)
+    return [occ_symbol(ticker, expiry, right, atm + k) for k in range(-width, width + 1) for right in ("CALL", "PUT")]
 
 
 def _write_json(path: str, rows) -> None:
@@ -90,8 +95,10 @@ class Recorder:
         self.client, self.root, self.held_fn, self.events_fn, self.now_fn = client, root, held_fn, events_fn, now_fn
         self.tickers = tickers
         self._lock = threading.Lock()
-        self._price: dict[str, float] = {}
-        self._minute = None            # last bar minute snapshotted
+        self._price: dict[str, tuple[date, float]] = {}   # ticker -> (bar day, last close)
+        self._bar = None               # start of the newest bar received
+        self._snapped_bar = None       # newest bar when the last snapshot was taken
+        self._snapped_at = None        # wall time of the last snapshot
         self._seen: dict[date, set[str]] = {}
         self._eod_done: set[date] = set()
 
@@ -105,7 +112,8 @@ class Recorder:
                    "volume": bar.volume, "received_at": self.now_fn().isoformat()}
             with self._lock, open(path, "a") as handle:
                 handle.write(json.dumps(row, separators=(",", ":")) + "\n")
-                self._price[bar.ticker] = bar.close
+                self._price[bar.ticker] = (day, bar.close)
+                self._bar = bar.ts if self._bar is None else max(self._bar, bar.ts)
         except Exception:
             traceback.print_exc()
 
@@ -126,20 +134,25 @@ class Recorder:
         now = self.now_fn()
         if now.weekday() >= 5:
             return
-        minute = now.replace(second=0, microsecond=0)
-        if time(9, 30) <= now.time() < time(16, 0) and minute != self._minute:
-            self._minute = minute
-            self.snapshot(now)
+        if time(9, 30) <= now.time() < time(16, 0):
+            with self._lock:
+                bar = self._bar
+            new_bar = bar is not None and bar.date() == now.date() and bar != self._snapped_bar
+            overdue = self._snapped_at is not None and now - self._snapped_at >= SNAPSHOT_EVERY
+            if new_bar or overdue:
+                # right after the engine acts on a bar, so the quotes are the ones its orders saw
+                self._snapped_bar, self._snapped_at = bar, now
+                self.snapshot(now)
         if now.time() >= EOD_AFTER and now.date() not in self._eod_done:
             self.end_of_day(now.date())
 
     def snapshot(self, now: datetime) -> None:
         day = now.date()
         with self._lock:
-            prices = dict(self._price)
+            prices = {t: p for t, (d, p) in self._price.items() if d == day}   # never strikes from a prior day's price
         contracts = set(self.held_fn())
         for t, price in prices.items():
-            contracts.update(atm_contracts(t, price, day))
+            contracts.update(atm_contracts(t, price, day, STRIKES_EACH_SIDE))
         if not contracts:
             return
         names = sorted(contracts)

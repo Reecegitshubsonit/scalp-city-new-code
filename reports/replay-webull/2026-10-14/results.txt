@@ -1,0 +1,18 @@
+Replay of 2026-10-14: Webull bars, fills at the recorded Webull bid/ask (buy at ask, sell at bid)
+range margin 0, daily loss 800, warm-up days: 2026-10-12, 2026-10-13
+
+bot        real entry-exit  real in/out  real P&L | replay entry-exit replay in/out replay P&L
+IWM-RANGE  10:00-10:02   1.24/1.11        -130.0 | 10:00-10:02    1.28/1.07           -210.0
+IWM-RANGE  10:11---:--   1.21/None          open | 10:11---:--    1.22/None             open
+IWM-VWAP                                         | 09:35-09:58    1.41/1.62            210.0
+QQQ-EMA50  09:31-09:34   3.51/3.54          30.0 | 
+QQQ-RANGE  09:48-09:53   3.31/4.65        1340.0 | 
+QQQ-VWAP   09:48-09:53   3.37/4.6         1230.0 | 09:35-09:41    3.88/3.28           -600.0
+SPY-RANGE  09:50-09:53   2.23/2.88         650.0 | 09:50-09:53    2.21/2.89            680.0
+SPY-VWAP   09:31-09:34   2.41/2.18        -230.0 | 09:33-09:34    2.34/2.2            -140.0
+SPY-VWAP                                         | 09:36-09:39    2.51/2.04           -470.0
+
+Total closed P&L: real +2890 (7 trades)   replay -530 (7 trades)
+Same trade in both (3): average fill gap $0.024 per contract, largest $0.04
+
+Unpriced (no recorded quote for the contract near that minute): QQQ261015P00736000 at 09:58, QQQ261015P00737000 at 09:32, QQQ261015P00738000 at 09:53, QQQ261015P00739000 at 09:34, QQQ261015P00740000 at 09:48, SPY261015P00775000 at 09:53, SPY261015P00776000 at 09:48

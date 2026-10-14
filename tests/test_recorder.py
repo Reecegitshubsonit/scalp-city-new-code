@@ -46,6 +46,9 @@ def test_traded_and_atm_contracts():
               {"kind": "fill", "contract": "QQQ261014C00741000"}]
     assert traded_contracts(events) == {"SPY261014P00777000", "QQQ261014C00741000"}
     assert atm_contracts("SPY", 777.4, DAY) == ["SPY261014C00777000", "SPY261014P00777000"]
+    assert atm_contracts("SPY", 777.4, DAY, width=1) == [
+        "SPY261014C00776000", "SPY261014P00776000", "SPY261014C00777000", "SPY261014P00777000",
+        "SPY261014C00778000", "SPY261014P00778000"]
 
 
 def test_recorder_writes_bars_snapshots_and_end_of_day(tmp_path):
@@ -60,9 +63,9 @@ def test_recorder_writes_bars_snapshots_and_end_of_day(tmp_path):
     out = tmp_path / "2026-10-13"
     assert len((out / "stock-SPY.live.jsonl").read_text().splitlines()) == 1
     lines = (out / "snapshots.jsonl").read_text().splitlines()
-    assert len(lines) == 1 and len(json.loads(lines[0])["snapshots"]) == 3
-    assert set(json.loads((out / "contracts.json").read_text())) == {
-        "IWM261014C00276000", "SPY261014C00777000", "SPY261014P00777000"}
+    assert len(lines) == 1 and len(json.loads(lines[0])["snapshots"]) == 11   # held + ATM +/- 2 strikes, calls and puts
+    assert set(json.loads((out / "contracts.json").read_text())) == {"IWM261014C00276000"} | set(
+        atm_contracts("SPY", 777.4, DAY, width=2))
     clock["now"] = datetime(2026, 10, 13, 16, 6, tzinfo=ET)
     rec.step()
     assert (out / "stock-SPY.json").exists() and (out / "option-SPY261014P00777000.json").exists()
@@ -87,3 +90,27 @@ def test_background_call_waits_for_queued_engine_call():
     client._waiting = 0
     bg.join(2)
     assert order == ["background"]
+
+
+def test_recorder_ignores_yesterdays_price_and_snapshots_after_each_new_bar(tmp_path):
+    clock = {"now": datetime(2026, 10, 13, 9, 30, 5, tzinfo=ET)}
+    client = FakeClient()
+    rec = Recorder(client, str(tmp_path), held_fn=lambda: [], events_fn=lambda d: [],
+                   now_fn=lambda: clock["now"], tickers=("SPY",))
+    rec.on_bar(Bar("SPY", datetime(2026, 10, 10, 15, 59, tzinfo=ET), 770, 771, 769, 770.2, 1000))   # last bar of the prior day
+    rec.step()
+    assert client.snap_calls == []            # no strikes picked from yesterday's price
+    clock["now"] = datetime(2026, 10, 13, 9, 31, 7, tzinfo=ET)
+    rec.on_bar(Bar("SPY", datetime(2026, 10, 13, 9, 30, tzinfo=ET), 777, 778, 776, 777.4, 1000))
+    rec.step()
+    assert len(client.snap_calls) == 1 and "SPY261014C00777000" in client.snap_calls[0]
+    clock["now"] = datetime(2026, 10, 13, 9, 31, 40, tzinfo=ET)
+    rec.step()                                # no new bar and under a minute since the last snapshot
+    assert len(client.snap_calls) == 1
+    clock["now"] = datetime(2026, 10, 13, 9, 32, 6, tzinfo=ET)
+    rec.on_bar(Bar("SPY", datetime(2026, 10, 13, 9, 31, tzinfo=ET), 777, 778, 776, 779.6, 1000))
+    rec.step()                                # new bar: snapshot right away, strikes follow the new price
+    assert len(client.snap_calls) == 2 and "SPY261014C00780000" in client.snap_calls[1]
+    clock["now"] = datetime(2026, 10, 13, 9, 33, 30, tzinfo=ET)
+    rec.step()                                # bars stopped: still one snapshot a minute
+    assert len(client.snap_calls) == 3
