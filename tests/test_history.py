@@ -112,26 +112,35 @@ def test_build_trades_pairs_entry_exit_and_pnl():
 
 import json
 
-from scalpcity.history import read_cached_bars
+from scalpcity.history import read_webull_bars
 
 
-def _cache(tmp_path, ticker="QQQ", day="2026-10-07", rows=None):
+def _webull(tmp_path, ticker="QQQ", day="2026-10-07", name=None, rows=None):
     rows = rows if rows is not None else [
-        {"c": 754.03, "h": 754.37, "l": 753.35, "n": 8935, "o": 753.8, "t": "2026-10-07T13:30:00Z", "v": 505774, "vw": 753.79},
-        {"c": 754.515, "h": 754.71, "l": 754.02, "n": 3050, "o": 754.08, "t": "2026-10-07T13:31:00Z", "v": 219489, "vw": 754.43},
+        {"time": "2026-10-07T13:31:00.000+0000", "open": "754.08", "close": "754.515", "high": "754.71", "low": "754.02", "volume": "219489", "trading_session": "RTH"},
+        {"time": "2026-10-07T13:30:00.000+0000", "open": "753.8", "close": "754.03", "high": "754.37", "low": "753.35", "volume": "505774", "trading_session": "RTH"},
     ]
-    (tmp_path / f"stock-{ticker}-{day}.json").write_text(json.dumps(rows))
+    (tmp_path / day).mkdir(exist_ok=True)
+    (tmp_path / day / (name or f"stock-{ticker}.json")).write_text(json.dumps(rows))
 
 
-def test_cached_bars_are_converted_to_et_bars(tmp_path):
-    _cache(tmp_path)
-    got = read_cached_bars(str(tmp_path), "QQQ", "2026-10-07")
+def test_webull_bars_are_converted_to_et_bars(tmp_path):
+    _webull(tmp_path)
+    got = read_webull_bars(str(tmp_path), "QQQ", "2026-10-07")
     assert [b.ts.isoformat() for b in got] == ["2026-10-07T09:30:00-04:00", "2026-10-07T09:31:00-04:00"]
     assert (got[0].open, got[0].high, got[0].low, got[0].close, got[0].volume) == (753.8, 754.37, 753.35, 754.03, 505774)
 
 
-def test_cached_bars_missing_or_bad_input_gives_none(tmp_path):
-    assert read_cached_bars(str(tmp_path), "QQQ", "2026-10-07") is None          # no file
-    _cache(tmp_path)
-    assert read_cached_bars(str(tmp_path), "../QQQ", "2026-10-07") is None       # never leaves the cache directory
-    assert read_cached_bars(str(tmp_path), "QQQ", "2026-10-7") is None
+def test_webull_bars_fall_back_to_what_the_live_engine_received(tmp_path):
+    rows = [{"time": "2026-10-07T09:30:00-04:00", "open": 1, "high": 2, "low": 0.5, "close": 1.5, "volume": 9, "received_at": "x"}]
+    (tmp_path / "2026-10-07").mkdir()
+    (tmp_path / "2026-10-07" / "stock-QQQ.live.jsonl").write_text("\n".join(json.dumps(r) for r in rows * 2) + "\n")
+    got = read_webull_bars(str(tmp_path), "QQQ", "2026-10-07")
+    assert len(got) == 1 and got[0].close == 1.5   # a repeated bar (engine restart) counts once
+
+
+def test_webull_bars_missing_or_bad_input_gives_none(tmp_path):
+    assert read_webull_bars(str(tmp_path), "QQQ", "2026-10-07") is None          # no file
+    _webull(tmp_path)
+    assert read_webull_bars(str(tmp_path), "../QQQ", "2026-10-07") is None       # never leaves the Webull directory
+    assert read_webull_bars(str(tmp_path), "QQQ", "2026-10-7") is None

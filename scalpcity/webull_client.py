@@ -13,6 +13,15 @@ def _is_throttled(error: Exception) -> bool:
     return "429" in text or "TOO_MANY_REQUESTS" in text
 
 
+def _rows(body) -> list[dict]:
+    """Stock bar rows from a history response: [{symbol, result: [...]}] or a bare list of rows."""
+    if isinstance(body, dict):
+        body = body.get("result", [])
+    if isinstance(body, list) and body and isinstance(body[0], dict) and "result" in body[0]:
+        return body[0]["result"] or []
+    return body if isinstance(body, list) else []
+
+
 def _json(response):
     return response.json() if hasattr(response, "json") else response
 
@@ -20,26 +29,47 @@ def _json(response):
 class WebullClient:
     """Thin wrapper over the Webull SDK. `data` and `trade` are injectable for tests."""
 
-    def __init__(self, data, trade, min_interval: float = 0.5, sleep=_time.sleep, clock=_time.monotonic):
+    def __init__(self, data, trade, min_interval: float = 0.5, sleep=_time.sleep, clock=_time.monotonic,
+                 background_gap: float = 1.0):
         self.data, self.trade = data, trade
         self.min_interval, self.sleep, self.clock = min_interval, sleep, clock
+        self.background_gap = background_gap
         self._lock, self._last = threading.Lock(), None
+        self._waiting = 0   # engine (foreground) calls queued for a slot; background calls yield to them
 
-    def _call(self, fn, *args, **kwargs):
-        """Every Webull request goes through here: spaced by min_interval, and retried with backoff on HTTP 429."""
+    def _call(self, fn, *args, background: bool = False, **kwargs):
+        """Every Webull request goes through here: spaced by min_interval, and retried with backoff on HTTP 429.
+        A background call (the data recorder) waits until no engine call is queued and background_gap has passed."""
         for attempt in range(5):
-            with self._lock:
-                if self._last is not None:
-                    wait = self.min_interval - (self.clock() - self._last)
-                    if wait > 0:
-                        self.sleep(wait)
-                self._last = self.clock()
+            if background:
+                self._wait_for_quiet()
+            else:
+                with self._lock:
+                    self._waiting += 1
+            try:
+                with self._lock:
+                    if self._last is not None:
+                        wait = self.min_interval - (self.clock() - self._last)
+                        if wait > 0:
+                            self.sleep(wait)
+                    self._last = self.clock()
+            finally:
+                if not background:
+                    with self._lock:
+                        self._waiting -= 1
             try:
                 return fn(*args, **kwargs)
             except Exception as error:
                 if not _is_throttled(error) or attempt == 4:
                     raise
                 self.sleep(1.5 * (attempt + 1))
+
+    def _wait_for_quiet(self) -> None:
+        while True:
+            with self._lock:
+                if self._waiting == 0 and (self._last is None or self.clock() - self._last >= self.background_gap):
+                    return
+            self.sleep(0.05)
 
     @classmethod
     def from_env(cls, env) -> "WebullClient":
@@ -61,6 +91,25 @@ class WebullClient:
     def option_quote(self, contract: str) -> tuple[Quote, int] | None:
         resp = self._call(self.data.option_market_data.get_option_snapshot, contract, "US_OPTION")
         return parse_snapshot(_json(resp), contract)
+
+    # ---- raw data for the recorder (background priority, rows exactly as Webull sends them) ----
+    def stock_bars_raw(self, ticker: str, count: int) -> list[dict]:
+        resp = self._call(self.data.market_data.get_history_bar, ticker, "US_STOCK", "M1", count=str(count),
+                          real_time_required=True, trading_sessions="RTH", background=True)
+        return _rows(_json(resp))
+
+    def option_bars_raw(self, contracts: list[str], count: int) -> dict[str, list[dict]]:
+        resp = self._call(self.data.option_market_data.get_option_history_bars, contracts, "US_OPTION", "M1",
+                          count=str(count), real_time_required=True, background=True)
+        body = _json(resp)
+        body = body.get("result", []) if isinstance(body, dict) else body
+        return {item["symbol"]: item.get("result") or [] for item in (body if isinstance(body, list) else [])
+                if isinstance(item, dict) and "symbol" in item}
+
+    def option_snapshots_raw(self, contracts: list[str]) -> list[dict]:
+        resp = self._call(self.data.option_market_data.get_option_snapshot, contracts, "US_OPTION", background=True)
+        body = _json(resp)
+        return [r for r in (body if isinstance(body, list) else []) if isinstance(r, dict)]
 
     # ---- account / orders ----
     def accounts(self) -> list[dict]:

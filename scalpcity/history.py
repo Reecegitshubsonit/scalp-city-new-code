@@ -134,15 +134,22 @@ def build_trades(events: list[dict]) -> list[dict]:
     return out
 
 
-def read_cached_bars(cache_dir: str, ticker: str, day: str) -> list[Bar] | None:
-    """Real one-minute bars of a past day from the Alpaca cache (data/cache/stock-TICKER-DAY.json), ET bar starts.
-    None when the file is missing or ticker/day are malformed (never reads outside the cache directory)."""
+def read_webull_bars(webull_dir: str, ticker: str, day: str) -> list[Bar] | None:
+    """Real one-minute bars of a day, all from Webull (data/webull/DAY/), ET bar starts: the end-of-day full-day file,
+    else the bars the live engine received that day. None when there are none or ticker/day are malformed
+    (never reads outside the Webull directory)."""
     if not re.fullmatch(r"[A-Z]{1,6}", ticker) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
         return None
-    path = os.path.join(cache_dir, f"stock-{ticker}-{day}.json")
-    if not os.path.exists(path):
+    full = os.path.join(webull_dir, day, f"stock-{ticker}.json")
+    live = os.path.join(webull_dir, day, f"stock-{ticker}.live.jsonl")
+    if os.path.exists(full):
+        with open(full) as handle:
+            rows = json.load(handle)
+    elif os.path.exists(live):
+        with open(live) as handle:
+            rows = list({r["time"]: r for r in map(json.loads, filter(str.strip, handle))}.values())   # a restart can repeat a bar
+    else:
         return None
-    with open(path) as handle:
-        rows = json.load(handle)
-    return [Bar(ticker, datetime.fromisoformat(r["t"].replace("Z", "+00:00")).astimezone(ET), r["o"], r["h"], r["l"], r["c"], r["v"])
-            for r in rows]
+    bars = [Bar(ticker, datetime.fromisoformat(r["time"].replace("Z", "+00:00")).astimezone(ET), float(r["open"]),
+                float(r["high"]), float(r["low"]), float(r["close"]), float(r.get("volume") or 0)) for r in rows]
+    return sorted(bars, key=lambda b: b.ts) or None

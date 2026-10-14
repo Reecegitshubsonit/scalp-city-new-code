@@ -11,7 +11,7 @@ from pydantic import BaseModel
 from .events import EventLog, build_snapshot
 import re
 
-from .history import build_history, build_trades, list_days, read_cached_bars, read_day
+from .history import build_history, build_trades, list_days, read_day, read_webull_bars
 from .types import ET
 
 
@@ -35,7 +35,7 @@ class PauseBody(BaseModel):
 
 
 def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool, datetime], None],
-               bot_ids: list[str], web_dir: str | None = None, history_fn: Callable[[str], list] | None = None, cache_dir: str | None = None) -> FastAPI:
+               bot_ids: list[str], web_dir: str | None = None, history_fn: Callable[[str], list] | None = None, webull_dir: str | None = None) -> FastAPI:
     hub = Hub()
 
     @asynccontextmanager
@@ -63,12 +63,12 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
             if history_fn is None:
                 raise HTTPException(404, "unknown ticker or no history")
             return build_history(ticker, history_fn(ticker), log.read(day_fn()))
-        # a past day: real cached candles, with levels and markers from that day's event log
+        # a past day: real Webull candles, with levels and markers from that day's event log
         if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day) or mode not in (None, "live", "replay"):
             raise HTTPException(400, "bad day or mode")
-        bars = read_cached_bars(cache_dir, ticker, day) if cache_dir else None
+        bars = read_webull_bars(webull_dir, ticker, day) if webull_dir else None
         if not bars:
-            raise HTTPException(404, "no cached bars for that day")
+            raise HTTPException(404, "no Webull bars for that day")
         events: list[dict] = []
         for m in ((mode,) if mode else ("live", "replay")):
             events = read_day(log.dir, day, m) or []

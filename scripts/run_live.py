@@ -17,6 +17,7 @@ from scalpcity.events import EventLog
 from scalpcity.guard import SANDBOX_HOST, assert_paper_only
 from scalpcity.history import BarStore
 from scalpcity.live import LiveFeed, LiveQuoteSource, market_open
+from scalpcity.recorder import Recorder
 from scalpcity.server import create_app
 from scalpcity.types import ET
 from scalpcity.webull_broker import WebullPaperBroker
@@ -37,7 +38,7 @@ def main():
     ap.add_argument("--modeled", action="store_true", help="no broker orders: fills are modeled from live bid/ask")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--logdir", default="logs")
-    ap.add_argument("--cache-dir", default="data/cache", help="cached real minute bars of past days, served by /history?day=")
+    ap.add_argument("--webull-dir", default="data/webull", help="recorded Webull bars, option snapshots and end-of-day bars per day; served by /history?day=")
     ap.add_argument("--daily-loss", type=float, default=Settings.daily_loss, help="per-bot loss that locks the bot for the day (dollars)")
     ap.add_argument("--daily-goal", type=float, default=Settings.daily_goal, help="per-bot profit that locks the bot for the day (dollars)")
     args = ap.parse_args()
@@ -60,7 +61,11 @@ def main():
 
     today = datetime.now(ET).date()
     begin_day(today)
-    app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots], history_fn=store.get, cache_dir=args.cache_dir)
+    # full market picture of the day, all from Webull; background priority, so engine calls always go first
+    recorder = Recorder(client, args.webull_dir, events_fn=log.read,
+                        held_fn=lambda: [b.position.contract for b in engine.bots if b.position is not None and b.position.contract])
+    recorder.start()
+    app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots], history_fn=store.get, webull_dir=args.webull_dir)
     threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
     print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
     quote_wall: dict[str, datetime] = {}
@@ -81,6 +86,7 @@ def main():
             if market_open(now):
                 for bar in feed.poll():
                     store.add(bar)
+                    recorder.on_bar(bar)
                     engine.on_bar(bar)
                 for bot in engine.bots:
                     if bot.position is not None and bot.position.contract:
