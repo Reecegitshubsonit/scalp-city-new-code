@@ -19,7 +19,7 @@ export function badgeFor(row: BotRow, lastTrade: TradeRec | undefined): Badge | 
       return { text: `${row.side ? row.side + ' ' : ''}${Math.round(row.charge_pct)}% CHARGED`, tone }
     case 'fired': return { text: row.side ? `FIRE ${row.side}` : 'FIRE', tone }
     case 'exiting': return { text: 'EXITING', tone }
-    case 'managing': return { text: `${row.side ?? 'IN TRADE'} ${formatPnl(row.pnl_day)}`, tone }
+    case 'managing': return { text: holdingText(row), tone }
     case 'cooldown':
       if (!lastTrade) return null
       if (lastTrade.pnl > 0) return { text: `PROFIT LOCKED ${formatPnl(lastTrade.pnl)}`, tone: 'WIN' }
@@ -27,4 +27,16 @@ export function badgeFor(row: BotRow, lastTrade: TradeRec | undefined): Badge | 
       return { text: 'CLOSED FLAT', tone: 'NEUTRAL' }
     default: return null
   }
+}
+
+/** "PUT +$180.00" from the engine's open P&L; else "PUT +62% TO TARGET" / "PUT 40% TO STOP" from the underlying; else "PUT HOLDING". */
+function holdingText(row: BotRow): string {
+  const label = row.side ?? 'IN TRADE'
+  const h = row.held
+  if (h && h.open_pnl !== null) return `${label} ${formatPnl(h.open_pnl)}`
+  const price = row.inputs.price
+  if (!h || h.entry_und === null || typeof price !== 'number' || h.target === h.entry_und || h.stop === h.entry_und) return row.side ? `${label} HOLDING` : label
+  const toTarget = (price - h.entry_und) / (h.target - h.entry_und)
+  if (toTarget >= 0) return `${label} +${Math.round(toTarget * 100)}% TO TARGET`
+  return `${label} ${Math.round(((price - h.entry_und) / (h.stop - h.entry_und)) * 100)}% TO STOP`
 }

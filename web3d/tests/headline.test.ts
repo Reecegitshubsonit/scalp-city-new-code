@@ -33,8 +33,26 @@ describe('badgeFor', () => {
   })
   it('fired and managing', () => {
     expect(badgeFor(row({ state: 'fired', side: 'PUT' }), undefined)).toEqual({ text: 'FIRE PUT', tone: 'PUT' })
-    expect(badgeFor(row({ state: 'managing', side: 'CALL', pnl_day: 44 }), undefined)).toEqual({ text: 'CALL +$44.00', tone: 'CALL' })
-    expect(badgeFor(row({ state: 'managing', pnl_day: -3 }), undefined)).toEqual({ text: 'IN TRADE -$3.00', tone: 'NEUTRAL' })
+  })
+  it('managing shows open P&L from the engine, never the day P&L', () => {
+    const held = { entry_und: 776.2, stop: 776.6, target: 775.4, open_pnl: 180 }
+    expect(badgeFor(row({ state: 'managing', side: 'PUT', pnl_day: 0, held }), undefined)).toEqual({ text: 'PUT +$180.00', tone: 'PUT' })
+    expect(badgeFor(row({ state: 'managing', side: 'PUT', held: { ...held, open_pnl: -45.5 } }), undefined)).toEqual({ text: 'PUT -$45.50', tone: 'PUT' })
+  })
+  it('managing without open P&L shows progress from entry toward target or stop', () => {
+    const held = { entry_und: 776.2, stop: 776.6, target: 775.4, open_pnl: null }
+    const at = (price: number) => badgeFor(row({ state: 'managing', side: 'PUT', inputs: { price }, held }), undefined)
+    expect(at(775.704)).toEqual({ text: 'PUT +62% TO TARGET', tone: 'PUT' })
+    expect(at(776.2)).toEqual({ text: 'PUT +0% TO TARGET', tone: 'PUT' })
+    expect(at(776.36)).toEqual({ text: 'PUT 40% TO STOP', tone: 'PUT' })
+    const call = { entry_und: 100, stop: 99, target: 102, open_pnl: null }
+    expect(badgeFor(row({ state: 'managing', side: 'CALL', inputs: { price: 101 }, held: call }), undefined)).toEqual({ text: 'CALL +50% TO TARGET', tone: 'CALL' })
+  })
+  it('managing with nothing known says holding, not a day P&L', () => {
+    expect(badgeFor(row({ state: 'managing', side: 'CALL', pnl_day: 44 }), undefined)).toEqual({ text: 'CALL HOLDING', tone: 'CALL' })
+    expect(badgeFor(row({ state: 'managing', pnl_day: -3 }), undefined)).toEqual({ text: 'IN TRADE', tone: 'NEUTRAL' })
+    const noEntry = { entry_und: null, stop: 776.6, target: 775.4, open_pnl: null }
+    expect(badgeFor(row({ state: 'managing', side: 'PUT', inputs: { price: 776 }, held: noEntry }), undefined)).toEqual({ text: 'PUT HOLDING', tone: 'PUT' })
   })
   it('after a trade, cooldown shows the outcome', () => {
     expect(badgeFor(row({ state: 'cooldown' }), trade())).toEqual({ text: 'PROFIT LOCKED +$118.00', tone: 'WIN' })

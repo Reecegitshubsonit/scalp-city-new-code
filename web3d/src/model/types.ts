@@ -8,18 +8,24 @@ export interface BotEvent {
   side?: Side | null
   contract?: string; qty?: number; fill_price?: number; fill_source?: string
   pnl?: number; pnl_day?: number; trades?: number; paused?: boolean
+  // open position, on a holding bot's tick (engine Engine._held); option_mid and open_pnl only when a live quote was read
+  entry_und?: number; stop_und?: number; target_und?: number; entry_price?: number; option_mid?: number; open_pnl?: number
   prev_state?: string   // added by the view: the bot's state before this event
 }
 export interface SnapshotBot {
   bot: string; ticker: string; state: string; reason_code: string; reason_text: string
   charge_pct: number | null; inputs: Inputs; time: string | null; pnl_day: number; trades: number; paused: boolean
   side?: Side | null
+  entry_und?: number | null; stop_und?: number | null; target_und?: number | null; entry_price?: number | null; option_mid?: number | null; open_pnl?: number | null
 }
+/** A held position as the view knows it: stop and target on the underlying, entry when known, open dollar P&L when the engine read a quote. */
+export interface Held { entry_und: number | null; stop: number; target: number; open_pnl: number | null }
 export interface BotRow {
   bot: string; ticker: string; state: string; reason_code: string; reason_text: string
   charge_pct: number | null; inputs: Inputs; time: string | null; pnl_day: number; trades: number; paused: boolean
   side: Side | null; sideSource: SideSource
   exit_code: string | null   // reason code of the last exit, kept for trade summaries
+  held?: Held | null         // set while managing or exiting
 }
 export type ServerMsg =
   | { type: 'snapshot'; bots: Record<string, SnapshotBot>; last_seq: number }

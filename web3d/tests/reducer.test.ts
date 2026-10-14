@@ -223,3 +223,36 @@ describe('fire records', () => {
     expect(s.fires['QQQ-VWAP'].seq).toBe(1)
   })
 })
+
+describe('open position', () => {
+  const HELD = { side: 'PUT' as const, entry_und: 776.2, stop_und: 776.6, target_und: 775.4, entry_price: 1.96, option_mid: 2.05, open_pnl: 90 }
+  it('snapshot carries the engine open position', () => {
+    const s = run(snap(3, [snapBot('SPY-VWAP', { state: 'managing', reason_text: 'PUT held, stop 776.60, target 775.40', ...HELD })]))
+    expect(s.bots['SPY-VWAP'].side).toBe('PUT')
+    expect(s.bots['SPY-VWAP'].held).toEqual({ entry_und: 776.2, stop: 776.6, target: 775.4, open_pnl: 90 })
+  })
+  it('snapshot without side (old engine) recovers side and levels from the reason text', () => {
+    let s = run(snap(3, [snapBot('SPY-VWAP', { state: 'managing', reason_text: 'PUT held, stop 776.60, target 775.40' })]))
+    expect(s.bots['SPY-VWAP'].side).toBe('PUT'); expect(s.bots['SPY-VWAP'].sideSource).toBe('signal')
+    expect(s.bots['SPY-VWAP'].held).toEqual({ entry_und: null, stop: 776.6, target: 775.4, open_pnl: null })
+    s = run(snap(3, [snapBot('SPY-VWAP', { state: 'managing', reason_text: 'CALL filled 10 at 1.50' })]))
+    expect(s.bots['SPY-VWAP'].side).toBe('CALL'); expect(s.bots['SPY-VWAP'].held ?? null).toBeNull()
+  })
+  it('ticks update open P&L, other events keep it, leaving the trade clears it', () => {
+    let s = run(snap(0, [snapBot('QQQ-VWAP')]),
+      ev(1, { kind: 'state_change', state: 'managing', reason_code: 'HOLDING', reason_text: 'CALL filled 10 at 1.50' }))
+    expect(s.bots['QQQ-VWAP'].side).toBe('CALL')
+    s = reduce(s, ev(2, { state: 'managing', reason_code: 'HOLDING', reason_text: 'CALL held, stop 99.00, target 102.00', side: 'CALL', entry_und: 100, stop_und: 99, target_und: 102, open_pnl: 40 }), 2000)
+    expect(s.bots['QQQ-VWAP'].held).toEqual({ entry_und: 100, stop: 99, target: 102, open_pnl: 40 })
+    s = reduce(s, ev(3, { kind: 'state_change', state: 'exiting', reason_code: 'EXIT_TARGET', reason_text: 'closing CALL: target' }), 2001)
+    expect(s.bots['QQQ-VWAP'].held?.open_pnl).toBe(40)
+    s = reduce(s, ev(4, { kind: 'state_change', state: 'cooldown', reason_code: 'COOLDOWN', reason_text: 'cooldown until 10:05:00' }), 2002)
+    expect(s.bots['QQQ-VWAP'].held ?? null).toBeNull()
+  })
+  it('tick without a quote keeps levels but drops a stale open P&L', () => {
+    let s = run(snap(0, [snapBot('QQQ-VWAP')]),
+      ev(1, { state: 'managing', reason_text: 'CALL held, stop 99.00, target 102.00', side: 'CALL', entry_und: 100, stop_und: 99, target_und: 102, open_pnl: 40 }))
+    s = reduce(s, ev(2, { state: 'managing', reason_text: 'CALL held, stop 99.00, target 102.00', side: 'CALL', entry_und: 100, stop_und: 99, target_und: 102 }), 2000)
+    expect(s.bots['QQQ-VWAP'].held).toEqual({ entry_und: 100, stop: 99, target: 102, open_pnl: null })
+  })
+})

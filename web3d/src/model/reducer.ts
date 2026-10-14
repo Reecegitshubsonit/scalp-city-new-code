@@ -1,5 +1,6 @@
-import type { AppState, BotEvent, BotRow, Mark, ServerMsg, Side, SideSource, SnapshotBot, TickPoint } from './types'
+import type { AppState, BotEvent, BotRow, Held, Mark, ServerMsg, Side, SideSource, SnapshotBot, TickPoint } from './types'
 import { inferSide, parseSignalSide } from './side'
+import { parseStopTarget } from './history'
 
 export const FEED_MAX = 200
 export const TICKS_MAX = 390
@@ -13,6 +14,19 @@ export const initialState: AppState = { bots: {}, lastSeq: 0, feed: [], ticks: {
 interface SideState { side: Side | null; sideSource: SideSource }
 const NONE: SideState = { side: null, sideSource: 'none' }
 const CLEARING = new Set(['idle', 'cooldown', 'locked', 'paused', 'stale'])
+const HOLDING = new Set(['managing', 'exiting'])
+const num = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null)
+
+/** Open position after an event or snapshot row: engine fields first, else stop/target from "PUT held, stop X, target Y". */
+function heldFrom(prev: Held | null | undefined, src: Partial<BotEvent> | SnapshotBot, isTick: boolean): Held | null {
+  if (!HOLDING.has(src.state ?? '')) return null
+  const stop = num(src.stop_und), target = num(src.target_und)
+  const st = stop !== null && target !== null ? { stop, target } : parseStopTarget(src.reason_text ?? '')
+  const base = st ? { entry_und: num(src.entry_und) ?? prev?.entry_und ?? null, ...st, open_pnl: prev?.open_pnl ?? null } : prev ?? null
+  if (!base) return null
+  // open P&L comes only on ticks: a tick without it means no live quote this bar, so the old number is dropped
+  return isTick ? { ...base, open_pnl: num(src.open_pnl) } : base
+}
 
 function applySide(prev: SideState, ev: BotEvent): SideState {
   if (ev.side === 'CALL' || ev.side === 'PUT') return { side: ev.side, sideSource: 'explicit' }
@@ -22,6 +36,10 @@ function applySide(prev: SideState, ev: BotEvent): SideState {
     if (s) return { side: s, sideSource: 'signal' }
   }
   if (CLEARING.has(ev.state)) return NONE
+  if (HOLDING.has(ev.state) && !prev.side) {
+    const s = parseSignalSide(ev.reason_text)   // "PUT held, ...", "PUT filled 10 at ...": a page loaded mid-trade
+    if (s) return { side: s, sideSource: 'signal' }
+  }
   if (ev.state === 'forming') {
     const s = inferSide(ev.bot, ev.inputs ?? {})
     return s ? { side: s, sideSource: 'inferred' } : NONE
@@ -36,11 +54,15 @@ function rowFromSnapshot(b: SnapshotBot): BotRow {
     const s = inferSide(b.bot, b.inputs ?? {})
     if (s) side = { side: s, sideSource: 'inferred' }
   }
+  if (!explicit && HOLDING.has(b.state)) {
+    const s = parseSignalSide(b.reason_text)
+    if (s) side = { side: s, sideSource: 'signal' }
+  }
   return {
     bot: b.bot, ticker: b.ticker ?? b.bot.split('-')[0], state: b.state ?? 'idle', reason_code: b.reason_code ?? '',
     reason_text: b.reason_text ?? '', charge_pct: b.charge_pct ?? null, inputs: b.inputs ?? {}, time: b.time ?? null,
     pnl_day: typeof b.pnl_day === 'number' ? b.pnl_day : 0, trades: typeof b.trades === 'number' ? b.trades : 0,
-    paused: !!b.paused, ...side, exit_code: null,
+    paused: !!b.paused, ...side, exit_code: null, held: heldFrom(null, b, true),
   }
 }
 
@@ -107,6 +129,7 @@ export function reduce(state: AppState, msg: ServerMsg, nowMs: number): AppState
     r.time = ev.time ?? r.time
     if (ev.inputs && Object.keys(ev.inputs).length) r.inputs = ev.inputs
     Object.assign(r, applySide(row, ev))
+    r.held = heldFrom(row.held, ev, ev.kind === 'tick')
     if (ev.state === 'exiting' && ev.reason_code?.startsWith('EXIT_')) r.exit_code = ev.reason_code
     else if (ev.state === 'fired') r.exit_code = null
   }
