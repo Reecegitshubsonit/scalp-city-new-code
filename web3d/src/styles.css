@@ -113,6 +113,10 @@ h3 { font-size: 13px; margin: 10px 0 4px; color: var(--muted); }
 
 .mode { font-size: 11px; font-weight: 800; letter-spacing: .08em; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--locked); color: var(--locked); }
 .mode.m-mock { background: #4a2a00; }
+.engaged { font-size: 13px; font-weight: 800; letter-spacing: .08em; padding: 3px 10px; border-radius: 4px; border: 2px solid currentColor; white-space: nowrap; }
+.e-on { color: var(--call); background: rgba(25, 245, 160, 0.15); }
+.e-paused { color: var(--locked); background: rgba(255, 176, 32, 0.15); }
+.e-off { color: var(--put); background: rgba(255, 59, 107, 0.15); }
 .sign.title { font-size: 26px; padding: 4px 22px; letter-spacing: .25em; text-transform: uppercase; }
 
 .labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }

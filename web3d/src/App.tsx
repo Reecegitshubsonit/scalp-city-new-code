@@ -52,6 +52,11 @@ export default function App() {
   const { state: liveState, status } = useStream()
   const replay = useReplay()
   const state = replay.active ? replay.state : liveState   // replaying a logged day swaps the whole view's data; live keeps running underneath
+  // premarket ready signal: always from the live engine, even while a replay fills the view
+  const liveBots = Object.values(liveState.bots)
+  const engaged = status !== 'live' && status !== 'polling' ? { cls: 'off', text: 'NOT ENGAGED' }
+    : liveBots.length > 0 && liveBots.every(b => b.paused) ? { cls: 'paused', text: 'PAPER PAUSED' }
+    : { cls: 'on', text: 'PAPER ENGAGED' }
   const [showPicker, setShowPicker] = useState(false)
   const reduced = useReducedMotion()
   const [tableOnly, setTableOnly] = useStored<boolean>('tableOnly', false)
@@ -237,6 +242,7 @@ export default function App() {
         <h1>{TITLE}</h1>
         <span className={`conn c-${status}`} role="status">{status === 'live' ? 'Connected' : status === 'polling' ? 'Polling every 2 s (no websocket)' : status === 'connecting' ? 'Connecting...' : 'Disconnected, retrying...'}</span>
         {(replay.active || state.mode) && <span className={`mode m-${replay.active ? 'replay' : state.mode}`}>{replay.active ? 'REPLAY' : state.mode === 'mock' ? 'MOCK DATA, NOT REAL' : state.mode === 'replay' ? 'REPLAY' : state.mode === 'live' ? 'LIVE PAPER' : state.mode!.toUpperCase()}</span>}
+        <span className={`engaged e-${engaged.cls}`} role="status">{engaged.text}</span>
         <span className="total">Day P&amp;L <b className={total > 0 ? 'pos' : total < 0 ? 'neg' : ''}>{formatPnl(total)}</b></span>
         <button onClick={openSummary}>Day summary</button>
         <button onClick={() => setShowPicker(true)}>Replay</button>
