@@ -1,0 +1,272 @@
+Volume at entry vs trade outcome, Webull paper days 2026-10-09, 2026-10-12, 2026-10-13, 2026-10-14, 2026-10-15
+Bar source per day: 2026-10-09 eod, 2026-10-12 eod, 2026-10-13 eod, 2026-10-14 eod, 2026-10-15 live
+Trades matched to their signal bar: 181; alignment check: {'close matches signal price': 181}
+
+ALL (10+ bars into session): 166 trades, 62 wins, net -1860
+   median rel1   winners 0.94  losers 0.92
+   median rel3   winners 0.91  losers 0.91
+   median flow5  winners -0.01  losers +0.46
+   signal bar agrees with side: winners 36/62  losers 85/104
+EARLY (first 10 bars): 15 trades, 6 wins, net -1350
+   median rel1   winners 0.53  losers 0.51
+   median rel3   winners 0.53  losers 0.52
+   median flow5  winners +1.00  losers +0.33
+   signal bar agrees with side: winners 4/6  losers 4/9
+
+VWAP: 30 trades, 15 wins, net +680
+   median rel1   winners 1.01  losers 0.91
+   median rel3   winners 1.00  losers 0.93
+   median flow5  winners +0.42  losers +0.59
+   signal bar agrees with side: winners 9/15  losers 12/15
+EMA50: 92 trades, 33 wins, net -1840
+   median rel1   winners 0.93  losers 0.88
+   median rel3   winners 0.91  losers 0.83
+   median flow5  winners -0.09  losers +0.38
+   signal bar agrees with side: winners 17/33  losers 47/59
+RANGE: 44 trades, 14 wins, net -700
+   median rel1   winners 0.79  losers 0.94
+   median rel3   winners 0.99  losers 0.97
+   median flow5  winners +0.02  losers +0.45
+   signal bar agrees with side: winners 10/14  losers 26/30
+
+ALL buckets (rel1):
+           0-0.8x:  67 trades,  26 wins ( 39%), net   -2080, avg   -31
+         0.8-1.2x:  51 trades,  16 wins ( 31%), net    -430, avg    -8
+           1.2-2x:  26 trades,  14 wins ( 54%), net   +1630, avg   +63
+             >=2x:  22 trades,   6 wins ( 27%), net    -980, avg   -45
+ALL buckets (flow5):
+          against:  31 trades,  16 wins ( 52%), net   +3750, avg  +121
+            mixed:  56 trades,  27 wins ( 48%), net    +890, avg   +16
+       with trade:  79 trades,  19 wins ( 24%), net   -6500, avg   -82
+VWAP buckets (flow5):
+          against:   5 trades,   4 wins ( 80%), net   +1470, avg  +294
+            mixed:   5 trades,   2 wins ( 40%), net     -20, avg    -4
+       with trade:  20 trades,   9 wins ( 45%), net    -770, avg   -38
+EMA50 buckets (flow5):
+          against:  16 trades,   7 wins ( 44%), net    +380, avg   +24
+            mixed:  39 trades,  20 wins ( 51%), net    +800, avg   +21
+       with trade:  37 trades,   6 wins ( 16%), net   -3020, avg   -82
+RANGE buckets (flow5):
+          against:  10 trades,   5 wins ( 50%), net   +1900, avg  +190
+            mixed:  12 trades,   5 wins ( 42%), net    +110, avg    +9
+       with trade:  22 trades,   4 wins ( 18%), net   -2710, avg  -123
+
+Control: same buckets on dir5 (no volume). If the split matches flow5, the effect is price direction, not volume.
+ALL buckets (dir5):
+          against:  20 trades,   7 wins ( 35%), net    +260, avg   +13
+            mixed:  84 trades,  41 wins ( 49%), net   +2640, avg   +31
+       with trade:  62 trades,  14 wins ( 23%), net   -4760, avg   -77
+
+Independence: several bots often signal on the same ticker and bar. Distinct signal bars per flow5 bucket:
+      against: 31 trades on 28 distinct bars, over 4 days
+        mixed: 56 trades on 52 distinct bars, over 5 days
+   with trade: 79 trades on 78 distinct bars, over 5 days
+
+flow5 buckets per day (is it one day carrying the result?):
+2026-10-09 buckets (flow5):
+          against:   4 trades,   4 wins (100%), net    +590, avg  +148
+            mixed:  18 trades,   6 wins ( 33%), net    -950, avg   -53
+       with trade:  30 trades,   7 wins ( 23%), net   -1910, avg   -64
+2026-10-12 buckets (flow5):
+          against:   9 trades,   4 wins ( 44%), net    +310, avg   +34
+            mixed:  21 trades,  14 wins ( 67%), net   +2740, avg  +130
+       with trade:  19 trades,   7 wins ( 37%), net    -640, avg   -34
+2026-10-13 buckets (flow5):
+          against:   9 trades,   4 wins ( 44%), net    +280, avg   +31
+            mixed:   9 trades,   4 wins ( 44%), net    -270, avg   -30
+       with trade:  19 trades,   5 wins ( 26%), net    -330, avg   -17
+2026-10-14 buckets (flow5):
+          against:   9 trades,   4 wins ( 44%), net   +2570, avg  +286
+            mixed:   7 trades,   3 wins ( 43%), net    -380, avg   -54
+       with trade:   6 trades,   0 wins (  0%), net   -1190, avg  -198
+2026-10-15 buckets (flow5):
+            mixed:   1 trades,   0 wins (  0%), net    -250, avg  -250
+       with trade:   5 trades,   0 wins (  0%), net   -2430, avg  -486
+
+Outliers: each flow5 bucket with its 3 biggest winners removed:
+      against: 28 trades, 13 wins, net +530 (removed [650.0, 1230.0, 1340.0])
+        mixed: 53 trades, 24 wins, net -290 (removed [380.0, 400.0, 400.0])
+   with trade: 76 trades, 16 wins, net -7660 (removed [320.0, 360.0, 480.0])
+
+Every trade (ET signal time, bot, side, rel1, rel3, flow5, agree, pnl):
+  2026-10-09 09:42 IWM-VWAP   PUT  rel1 0.60 rel3 0.50 flow5 +0.28 agree     -230
+  2026-10-09 09:45 IWM-EMA50  PUT  rel1 0.43 rel3 0.72 flow5 +0.45 agree     -260
+  2026-10-09 09:46 IWM-RANGE  PUT  rel1 0.45 rel3 0.70 flow5 +0.66 agree     -250
+  2026-10-09 09:46 QQQ-RANGE  PUT  rel1 0.77 rel3 1.18 flow5 +1.00 agree     +190
+  2026-10-09 09:51 QQQ-EMA50  PUT  rel1 0.85 rel3 0.63 flow5 +0.23 agree     +230
+  2026-10-09 10:00 IWM-RANGE  CALL rel1 2.13 rel3 1.39 flow5 +0.81 agree     -130
+  2026-10-09 10:01 QQQ-EMA50  PUT  rel1 0.59 rel3 0.55 flow5 +0.03 agree     -320
+  2026-10-09 10:01 QQQ-RANGE  PUT  rel1 0.59 rel3 0.55 flow5 +0.03 agree     -270
+  2026-10-09 10:07 SPY-VWAP   CALL rel1 0.89 rel3 0.76 flow5 +0.46 agree     +360
+  2026-10-09 10:12 QQQ-EMA50  CALL rel1 1.10 rel3 1.19 flow5 -0.22 agree     +380
+  2026-10-09 10:30 QQQ-VWAP   CALL rel1 1.34 rel3 0.92 flow5 +0.59 agree     -310
+  2026-10-09 10:31 IWM-VWAP   PUT  rel1 0.52 rel3 0.60 flow5 +0.61 agree     +190
+  2026-10-09 10:31 IWM-EMA50  PUT  rel1 0.52 rel3 0.60 flow5 +0.61 agree     +180
+  2026-10-09 10:41 SPY-EMA50  PUT  rel1 1.33 rel3 0.83 flow5 +0.35 agree     -110
+  2026-10-09 10:51 SPY-RANGE  CALL rel1 4.07 rel3 2.15 flow5 +0.65 agree     +280
+  2026-10-09 10:51 IWM-EMA50  CALL rel1 1.83 rel3 1.64 flow5 -0.33 agree     +110
+  2026-10-09 10:51 IWM-VWAP   CALL rel1 1.83 rel3 1.64 flow5 -0.33 agree     +220
+  2026-10-09 11:06 IWM-EMA50  PUT  rel1 0.52 rel3 0.45 flow5 +0.48 agree     -190
+  2026-10-09 11:06 QQQ-VWAP   PUT  rel1 1.33 rel3 0.91 flow5 +0.29 agree     -300
+  2026-10-09 11:06 QQQ-EMA50  PUT  rel1 1.33 rel3 0.91 flow5 +0.29 agree     -290
+  2026-10-09 11:08 SPY-EMA50  PUT  rel1 0.49 rel3 0.82 flow5 +0.29 agree     -390
+  2026-10-09 11:31 IWM-RANGE  CALL rel1 1.07 rel3 0.96 flow5 +0.30 agree      -60
+  2026-10-09 11:32 SPY-EMA50  PUT  rel1 1.75 rel3 1.12 flow5 +0.60 agree      -80
+  2026-10-09 11:34 SPY-RANGE  CALL rel1 0.68 rel3 1.24 flow5 -0.41 agree     +210
+  2026-10-09 11:38 QQQ-EMA50  CALL rel1 1.90 rel3 1.23 flow5 +0.61 agree     +150
+  2026-10-09 11:40 IWM-EMA50  PUT  rel1 3.11 rel3 1.33 flow5 +0.79 agree      -60
+  2026-10-09 11:42 QQQ-VWAP   CALL rel1 1.12 rel3 0.86 flow5 +0.47 agree     -170
+  2026-10-09 11:45 SPY-EMA50  PUT  rel1 1.87 rel3 0.97 flow5 +0.38 agree     -130
+  2026-10-09 11:47 QQQ-VWAP   CALL rel1 1.19 rel3 0.93 flow5 +0.38 agree     -310
+  2026-10-09 11:59 QQQ-EMA50  PUT  rel1 1.01 rel3 1.01 flow5 +0.28 agree     +350
+  2026-10-09 12:00 SPY-EMA50  PUT  rel1 2.81 rel3 1.66 flow5 +0.67 agree     -250
+  2026-10-09 12:00 IWM-EMA50  PUT  rel1 0.84 rel3 0.57 flow5 +0.51 agree      -70
+  2026-10-09 12:07 IWM-EMA50  PUT  rel1 1.00 rel3 0.87 flow5 +0.40 agree      -90
+  2026-10-09 12:27 IWM-EMA50  CALL rel1 2.38 rel3 1.45 flow5 +0.27 agree      +80
+  2026-10-09 12:30 IWM-RANGE  CALL rel1 0.84 rel3 0.81 flow5 +1.00 agree      -20
+  2026-10-09 12:35 QQQ-EMA50  PUT  rel1 0.56 rel3 2.77 flow5 +0.69 agree     -190
+  2026-10-09 12:45 IWM-RANGE  CALL rel1 1.12 rel3 0.83 flow5 -0.11 agree     -100
+  2026-10-09 12:58 QQQ-EMA50  PUT  rel1 0.18 rel3 0.31 flow5 +0.22 agree     +230
+  2026-10-09 13:10 IWM-EMA50  PUT  rel1 0.49 rel3 0.70 flow5 -0.26 agree      -50
+  2026-10-09 13:17 IWM-RANGE  CALL rel1 0.33 rel3 0.70 flow5 -0.56 agree      +50
+  2026-10-09 13:21 QQQ-EMA50  CALL rel1 1.09 rel3 1.09 flow5 +0.11 agree      -90
+  2026-10-09 13:22 IWM-EMA50  PUT  rel1 0.71 rel3 0.48 flow5 +0.18 agree      -20
+  2026-10-09 13:24 QQQ-EMA50  PUT  rel1 0.52 rel3 0.68 flow5 -0.23 agree     -160
+  2026-10-09 13:32 QQQ-EMA50  PUT  rel1 2.13 rel3 1.23 flow5 +0.67 agree     -200
+  2026-10-09 13:34 IWM-EMA50  PUT  rel1 0.92 rel3 2.37 flow5 +0.62 agree      -50
+  2026-10-09 13:44 QQQ-EMA50  PUT  rel1 2.32 rel3 1.26 flow5 +0.52 agree     -140
+  2026-10-09 14:02 QQQ-EMA50  PUT  rel1 0.88 rel3 0.77 flow5 +0.62 agree     -150
+  2026-10-09 14:30 IWM-EMA50  PUT  rel1 0.71 rel3 0.60 flow5 +0.89 agree      -30
+  2026-10-09 14:33 QQQ-EMA50  PUT  rel1 0.66 rel3 0.45 flow5 +0.64 agree     -130
+  2026-10-09 14:55 QQQ-EMA50  PUT  rel1 0.41 rel3 0.74 flow5 +1.00 agree     -160
+  2026-10-09 15:05 IWM-EMA50  PUT  rel1 0.23 rel3 0.56 flow5 +0.07 agree      +60
+  2026-10-09 15:29 QQQ-EMA50  PUT  rel1 0.45 rel3 0.45 flow5 +0.62 agree     +220
+  2026-10-12 09:30 QQQ-VWAP   PUT  rel1   -   rel3   -   flow5 +1.00 agree     +400  early
+  2026-10-12 09:30 QQQ-EMA50  PUT  rel1   -   rel3   -   flow5 +1.00 agree     +390  early
+  2026-10-12 09:30 SPY-EMA50  CALL rel1   -   rel3   -   flow5 +1.00 agree      -20  early
+  2026-10-12 09:42 IWM-VWAP   PUT  rel1 0.70 rel3 1.04 flow5 +0.23 against    -30
+  2026-10-12 09:43 IWM-EMA50  PUT  rel1 0.84 rel3 1.08 flow5 -0.09 against   +150
+  2026-10-12 09:47 SPY-EMA50  CALL rel1 2.31 rel3 1.01 flow5 -0.79 against   -140
+  2026-10-12 09:48 SPY-RANGE  PUT  rel1 0.63 rel3 1.12 flow5 +0.78 agree     -200
+  2026-10-12 09:51 IWM-VWAP   PUT  rel1 0.59 rel3 0.39 flow5 +0.50 against   +270
+  2026-10-12 09:52 IWM-EMA50  PUT  rel1 0.73 rel3 0.45 flow5 -0.26 against   +240
+  2026-10-12 09:55 SPY-VWAP   PUT  rel1 0.99 rel3 0.58 flow5 -0.43 against   +260
+  2026-10-12 09:55 SPY-EMA50  PUT  rel1 0.99 rel3 0.58 flow5 -0.43 against   +280
+  2026-10-12 09:57 SPY-RANGE  PUT  rel1 0.79 rel3 0.76 flow5 +0.07 agree     +400
+  2026-10-12 10:03 IWM-RANGE  PUT  rel1 0.53 rel3 0.53 flow5 +0.49 agree     -180
+  2026-10-12 10:06 QQQ-RANGE  PUT  rel1 1.94 rel3 1.21 flow5 +0.70 agree     +320
+  2026-10-12 10:13 IWM-EMA50  PUT  rel1 0.65 rel3 0.87 flow5 -0.66 against   +190
+  2026-10-12 10:17 IWM-RANGE  PUT  rel1 0.79 rel3 1.06 flow5 +0.70 agree      -90
+  2026-10-12 10:22 IWM-RANGE  PUT  rel1 0.59 rel3 0.58 flow5 -0.30 agree      -90
+  2026-10-12 10:29 IWM-RANGE  PUT  rel1 0.95 rel3 0.83 flow5 +0.23 agree     -130
+  2026-10-12 10:44 IWM-EMA50  CALL rel1 0.69 rel3 0.52 flow5 +0.20 against   +140
+  2026-10-12 10:44 IWM-RANGE  CALL rel1 0.69 rel3 0.52 flow5 +0.20 against   +120
+  2026-10-12 10:47 SPY-EMA50  CALL rel1 0.54 rel3 3.01 flow5 +0.42 agree      +70
+  2026-10-12 10:48 QQQ-EMA50  CALL rel1 0.92 rel3 1.16 flow5 +0.49 agree     -170
+  2026-10-12 10:54 QQQ-EMA50  CALL rel1 1.04 rel3 0.65 flow5 +0.64 agree     -190
+  2026-10-12 10:57 QQQ-EMA50  CALL rel1 1.83 rel3 1.00 flow5 +0.79 agree     -100
+  2026-10-12 11:15 QQQ-EMA50  PUT  rel1 1.01 rel3 1.56 flow5 +0.15 against   +310
+  2026-10-12 11:36 QQQ-EMA50  PUT  rel1 0.80 rel3 0.54 flow5 -1.00 against   -220
+  2026-10-12 11:36 IWM-VWAP   CALL rel1 1.13 rel3 1.51 flow5 +0.79 agree      +40
+  2026-10-12 11:48 QQQ-VWAP   CALL rel1 1.67 rel3 1.14 flow5 +0.71 agree      +30
+  2026-10-12 11:48 IWM-VWAP   CALL rel1 0.68 rel3 0.49 flow5 -0.78 against    +70
+  2026-10-12 12:00 QQQ-VWAP   CALL rel1 1.01 rel3 1.00 flow5 -0.13 against   +340
+  2026-10-12 12:19 IWM-VWAP   PUT  rel1 0.23 rel3 1.71 flow5 +0.39 against    +60
+  2026-10-12 12:21 SPY-EMA50  PUT  rel1 1.67 rel3 1.16 flow5 -0.01 agree     +240
+  2026-10-12 12:21 SPY-RANGE  PUT  rel1 1.67 rel3 1.16 flow5 -0.01 agree     +350
+  2026-10-12 12:23 SPY-VWAP   PUT  rel1 2.15 rel3 2.15 flow5 +0.56 agree      +80
+  2026-10-12 12:24 QQQ-RANGE  PUT  rel1 1.17 rel3 1.78 flow5 +0.71 agree     -130
+  2026-10-12 12:33 QQQ-RANGE  PUT  rel1 0.54 rel3 0.68 flow5 -0.06 agree     +350
+  2026-10-12 12:39 QQQ-EMA50  PUT  rel1 0.46 rel3 0.47 flow5 -0.20 against   +260
+  2026-10-12 12:52 IWM-RANGE  PUT  rel1 0.63 rel3 1.69 flow5 +0.67 agree      -90
+  2026-10-12 13:20 SPY-EMA50  CALL rel1 0.59 rel3 0.66 flow5 +0.01 agree      -70
+  2026-10-12 13:24 IWM-RANGE  CALL rel1 0.66 rel3 1.15 flow5 -0.29 against    -60
+  2026-10-12 13:41 IWM-RANGE  PUT  rel1 0.87 rel3 0.79 flow5 -0.63 agree      -50
+  2026-10-12 13:46 SPY-EMA50  CALL rel1 0.76 rel3 0.37 flow5 +0.04 agree      -60
+  2026-10-12 13:46 QQQ-EMA50  CALL rel1 1.06 rel3 0.80 flow5 +0.71 agree     -140
+  2026-10-12 13:58 SPY-EMA50  CALL rel1 0.92 rel3 0.75 flow5 -0.69 against    -50
+  2026-10-12 14:08 IWM-RANGE  CALL rel1 1.14 rel3 0.94 flow5 -0.43 against    -30
+  2026-10-12 14:14 QQQ-EMA50  CALL rel1 0.69 rel3 1.15 flow5 +0.73 against    -90
+  2026-10-12 14:24 IWM-RANGE  PUT  rel1 0.79 rel3 0.94 flow5 +0.04 agree      +40
+  2026-10-12 14:28 QQQ-EMA50  PUT  rel1 1.29 rel3 1.11 flow5 -0.23 against   +200
+  2026-10-12 14:42 QQQ-EMA50  CALL rel1 0.85 rel3 0.82 flow5 +0.84 agree      -60
+  2026-10-12 14:42 SPY-EMA50  CALL rel1 1.11 rel3 0.90 flow5 +0.14 agree      -60
+  2026-10-12 15:19 SPY-EMA50  CALL rel1 1.65 rel3 0.91 flow5 +0.65 agree      -70
+  2026-10-12 15:19 QQQ-EMA50  CALL rel1 1.76 rel3 1.22 flow5 -0.06 agree     +100
+  2026-10-13 09:30 IWM-VWAP   PUT  rel1   -   rel3   -   flow5 +1.00 agree     -250  early
+  2026-10-13 09:30 SPY-VWAP   CALL rel1   -   rel3   -   flow5 +1.00 agree      +80  early
+  2026-10-13 09:30 SPY-EMA50  CALL rel1   -   rel3   -   flow5 +1.00 agree      +90  early
+  2026-10-13 09:30 QQQ-VWAP   PUT  rel1   -   rel3   -   flow5 -1.00 against   -180  early
+  2026-10-13 09:30 QQQ-EMA50  PUT  rel1   -   rel3   -   flow5 -1.00 against   -120  early
+  2026-10-13 09:31 IWM-EMA50  PUT  rel1 0.51 rel3   -   flow5 +0.33 against   -210  early
+  2026-10-13 09:36 SPY-EMA50  PUT  rel1 0.40 rel3 0.34 flow5 -0.62 against   -350  early
+  2026-10-13 09:38 QQQ-VWAP   PUT  rel1 0.98 rel3 0.71 flow5 -0.57 against   -450  early
+  2026-10-13 09:47 IWM-EMA50  CALL rel1 0.85 rel3 0.71 flow5 -0.74 against   -190
+  2026-10-13 09:49 QQQ-RANGE  CALL rel1 0.40 rel3 1.00 flow5 -0.20 agree     -440
+  2026-10-13 09:51 IWM-RANGE  PUT  rel1 0.71 rel3 0.55 flow5 +0.56 agree     +260
+  2026-10-13 09:57 SPY-EMA50  PUT  rel1 0.62 rel3 0.50 flow5 -0.20 agree     +400
+  2026-10-13 09:59 QQQ-EMA50  CALL rel1 0.28 rel3 0.30 flow5 +0.04 agree     -430
+  2026-10-13 10:00 SPY-VWAP   PUT  rel1 0.82 rel3 0.47 flow5 +0.42 agree     +240
+  2026-10-13 10:19 QQQ-VWAP   PUT  rel1 0.27 rel3 1.97 flow5 +0.70 agree     -140
+  2026-10-13 10:24 SPY-EMA50  PUT  rel1 0.99 rel3 0.91 flow5 -0.59 against   +230
+  2026-10-13 10:27 QQQ-VWAP   PUT  rel1 0.41 rel3 0.31 flow5 -0.36 agree     -310
+  2026-10-13 10:34 SPY-RANGE  PUT  rel1 1.19 rel3 0.97 flow5 +0.59 agree     -170
+  2026-10-13 10:40 QQQ-EMA50  PUT  rel1 0.50 rel3 0.84 flow5 -0.61 against   +490
+  2026-10-13 10:40 SPY-EMA50  PUT  rel1 1.25 rel3 0.91 flow5 -0.71 against   +230
+  2026-10-13 10:41 QQQ-RANGE  CALL rel1 1.40 rel3 0.91 flow5 +0.64 agree     -200
+  2026-10-13 10:53 SPY-RANGE  PUT  rel1 4.47 rel3 2.28 flow5 +0.82 agree     -170
+  2026-10-13 11:09 IWM-EMA50  CALL rel1 0.24 rel3 0.46 flow5 +0.27 agree     -100
+  2026-10-13 11:54 QQQ-EMA50  CALL rel1 1.74 rel3 1.16 flow5 +0.70 agree     +480
+  2026-10-13 11:58 IWM-EMA50  CALL rel1 4.15 rel3 2.32 flow5 +0.71 agree      -70
+  2026-10-13 12:11 IWM-EMA50  CALL rel1 0.72 rel3 0.58 flow5 -0.14 agree     +100
+  2026-10-13 12:27 SPY-RANGE  CALL rel1 5.21 rel3 3.24 flow5 -0.55 against   +230
+  2026-10-13 12:30 QQQ-RANGE  CALL rel1 2.49 rel3 2.44 flow5 +0.74 agree     -100
+  2026-10-13 12:30 SPY-VWAP   CALL rel1 3.34 rel3 1.82 flow5 -0.06 agree     +200
+  2026-10-13 12:59 QQQ-EMA50  PUT  rel1 1.96 rel3 6.59 flow5 +0.86 agree     +220
+  2026-10-13 12:59 SPY-VWAP   PUT  rel1 6.05 rel3 2.91 flow5 +0.65 agree      +20
+  2026-10-13 13:00 IWM-EMA50  PUT  rel1 2.22 rel3 3.55 flow5 +0.30 agree      -50
+  2026-10-13 13:00 SPY-RANGE  PUT  rel1 4.02 rel3 4.50 flow5 +0.76 agree      -70
+  2026-10-13 13:07 IWM-EMA50  PUT  rel1 0.77 rel3 0.84 flow5 -0.21 against   +110
+  2026-10-13 13:16 SPY-RANGE  PUT  rel1 0.33 rel3 1.13 flow5 +0.37 agree     -160
+  2026-10-13 13:30 IWM-EMA50  PUT  rel1 1.06 rel3 0.63 flow5 -0.26 against    -60
+  2026-10-13 13:37 SPY-VWAP   CALL rel1 3.17 rel3 1.82 flow5 +0.83 agree      -50
+  2026-10-13 13:47 IWM-EMA50  CALL rel1 1.97 rel3 1.29 flow5 -0.63 against    -50
+  2026-10-13 13:49 SPY-RANGE  CALL rel1 2.69 rel3 1.24 flow5 -0.85 against    -90
+  2026-10-13 14:01 IWM-EMA50  PUT  rel1 0.60 rel3 0.46 flow5 -0.59 against   -260
+  2026-10-13 14:06 IWM-VWAP   CALL rel1 6.90 rel3 3.94 flow5 +1.00 agree     -100
+  2026-10-13 14:38 IWM-EMA50  PUT  rel1 0.35 rel3 1.96 flow5 +0.94 agree     -100
+  2026-10-13 14:39 IWM-VWAP   PUT  rel1 0.33 rel3 1.14 flow5 +0.92 against    -40
+  2026-10-13 14:46 SPY-VWAP   PUT  rel1 1.58 rel3 1.35 flow5 +0.72 agree      -70
+  2026-10-13 14:48 IWM-VWAP   PUT  rel1 0.41 rel3 4.77 flow5 +0.84 against   -110
+  2026-10-14 09:30 QQQ-EMA50  PUT  rel1   -   rel3   -   flow5 -1.00 against    +30  early
+  2026-10-14 09:30 SPY-VWAP   PUT  rel1   -   rel3   -   flow5 +1.00 agree     -230  early
+  2026-10-14 09:47 QQQ-VWAP   PUT  rel1 1.07 rel3 0.59 flow5 -0.36 against  +1230
+  2026-10-14 09:47 QQQ-RANGE  PUT  rel1 1.07 rel3 0.59 flow5 -0.36 against  +1340
+  2026-10-14 09:49 SPY-RANGE  PUT  rel1 1.30 rel3 1.04 flow5 -0.48 against   +650
+  2026-10-14 09:59 IWM-RANGE  PUT  rel1 1.19 rel3 1.06 flow5 +1.00 agree     -130
+  2026-10-14 10:10 IWM-RANGE  PUT  rel1 1.00 rel3 0.64 flow5 -0.57 agree     -220
+  2026-10-14 10:42 IWM-EMA50  CALL rel1 1.56 rel3 1.12 flow5 +0.23 agree     -100
+  2026-10-14 10:48 QQQ-EMA50  CALL rel1 0.57 rel3 1.04 flow5 +0.47 against   -380
+  2026-10-14 10:50 IWM-RANGE  CALL rel1 0.92 rel3 0.99 flow5 -1.00 against   -190
+  2026-10-14 12:38 IWM-EMA50  CALL rel1 0.24 rel3 0.57 flow5 +0.54 agree     -120
+  2026-10-14 12:40 SPY-EMA50  CALL rel1 1.12 rel3 0.94 flow5 +0.59 agree     -100
+  2026-10-14 12:40 QQQ-EMA50  CALL rel1 1.18 rel3 0.91 flow5 +1.00 agree     -310
+  2026-10-14 12:57 QQQ-EMA50  CALL rel1 0.34 rel3 0.32 flow5 -0.82 agree     -160
+  2026-10-14 12:58 SPY-EMA50  CALL rel1 2.83 rel3 1.50 flow5 +0.80 agree     -150
+  2026-10-14 12:59 IWM-EMA50  PUT  rel1 1.85 rel3 2.47 flow5 +0.21 against   +140
+  2026-10-14 14:13 SPY-EMA50  CALL rel1 0.64 rel3 0.61 flow5 +0.26 agree     -210
+  2026-10-14 14:13 IWM-EMA50  PUT  rel1 0.80 rel3 0.80 flow5 -0.28 against   +110
+  2026-10-14 14:28 SPY-EMA50  CALL rel1 0.83 rel3 0.75 flow5 -0.27 agree     -180
+  2026-10-14 14:35 SPY-EMA50  PUT  rel1 0.96 rel3 0.91 flow5 -0.19 against    +60
+  2026-10-14 14:47 SPY-EMA50  PUT  rel1 3.04 rel3 1.78 flow5 -0.83 against   -100
+  2026-10-14 14:54 IWM-EMA50  PUT  rel1 0.93 rel3 0.82 flow5 -0.46 against   +120
+  2026-10-14 14:57 SPY-EMA50  CALL rel1 0.62 rel3 0.87 flow5 -0.21 against   -200
+  2026-10-14 15:08 IWM-EMA50  PUT  rel1 0.77 rel3 1.80 flow5 -0.85 against   -100
+  2026-10-15 09:30 SPY-VWAP   PUT  rel1   -   rel3   -   flow5 +1.00 agree     -670  early
+  2026-10-15 09:35 IWM-VWAP   CALL rel1 0.53 rel3 0.53 flow5 -0.63 against   +140  early
+  2026-10-15 09:53 IWM-EMA50  PUT  rel1 1.04 rel3 0.64 flow5 +0.08 agree     -250
+  2026-10-15 09:53 QQQ-RANGE  PUT  rel1 0.93 rel3 0.76 flow5 +0.65 agree     -630
+  2026-10-15 09:53 SPY-RANGE  PUT  rel1 0.89 rel3 0.69 flow5 +0.33 agree     -900
+  2026-10-15 09:54 IWM-RANGE  PUT  rel1 1.14 rel3 0.85 flow5 +0.40 agree     -140
+  2026-10-15 10:10 SPY-VWAP   CALL rel1 0.91 rel3 0.59 flow5 +0.60 agree     -180
+  2026-10-15 10:23 QQQ-VWAP   CALL rel1 0.83 rel3 0.82 flow5 +0.53 agree     -580
