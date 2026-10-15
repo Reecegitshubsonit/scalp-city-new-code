@@ -236,6 +236,8 @@ export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s
     const c = s.candles[i]
     const px = g.x(i)
     const cols = grp.marks.map(markColor)
+    const lines = grp.lines.map(l => l.text)
+    const lineCols = grp.lines.map(l => (l.bot ? CHART_COLORS.text : cols[l.mark]))   // side or P&L in its color, bot name under it in plain text
     if (grp.type === 'entry') {
       for (const m of grp.marks) {
         const put = m.side === 'PUT'
@@ -246,12 +248,12 @@ export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s
       }
       if (o.labels) {
         const put = grp.marks[0].side === 'PUT'
-        label(px, put ? g.y(c.high) - 4 * fs - tri * 1.7 - 2 * fs : g.y(c.low) + 4 * fs + tri * 1.7 + 2 * fs, put, grp.lines, cols)
+        label(px, put ? g.y(c.high) - 4 * fs - tri * 1.7 - 2 * fs : g.y(c.low) + 4 * fs + tri * 1.7 + 2 * fs, put, lines, lineCols)
       }
     } else {
       const py = g.y(c.close)
       for (const col of cols) { ctx.fillStyle = col; ctx.fillRect(px - 4 * fs, py - 4 * fs, 8 * fs, 8 * fs) }
-      if (o.labels) label(px, py - 7 * fs, true, grp.lines, cols)
+      if (o.labels) label(px, py - 7 * fs, true, lines, lineCols)
     }
   }
   ctx.restore()

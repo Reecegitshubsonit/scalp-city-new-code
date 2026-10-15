@@ -100,9 +100,13 @@ export function squeezed(level: Level | undefined, atr: number | null | undefine
 /** Bot name without its ticker: "QQQ-EMA50" -> "EMA50". */
 const shortBot = (bot: string) => bot.split('-').slice(1).join('-') || bot
 
-/** Marks grouped per candle and type, so two exits on one candle get one stacked label instead of overwriting each other. */
-export function groupMarks(marks: HMark[]): { time: string; type: HMark['type']; marks: HMark[]; lines: string[] }[] {
-  const groups = new Map<string, { time: string; type: HMark['type']; marks: HMark[]; lines: string[] }>()
+/** One label line: the mark's side or P&L, or the bot under it (`mark` indexes the group's marks). */
+export interface MarkLine { text: string; mark: number; bot: boolean }
+
+/** Marks grouped per candle and type, so two exits on one candle get one stacked label instead of overwriting each other.
+ *  Each mark gets two lines, its side or P&L with the bot under it ("PUT" / "VWAP"), so the label grows taller, not wider. */
+export function groupMarks(marks: HMark[]): { time: string; type: HMark['type']; marks: HMark[]; lines: MarkLine[] }[] {
+  const groups = new Map<string, { time: string; type: HMark['type']; marks: HMark[]; lines: MarkLine[] }>()
   for (const m of marks) {
     const key = `${m.time}|${m.type}`
     let g = groups.get(key)
@@ -110,7 +114,7 @@ export function groupMarks(marks: HMark[]): { time: string; type: HMark['type'];
     g.marks.push(m)
   }
   for (const g of groups.values())
-    g.lines = g.marks.length === 1 ? [markLabel(g.marks[0])] : g.marks.map(m => `${shortBot(m.bot)} ${markLabel(m)}`)
+    g.lines = g.marks.flatMap((m, k) => [{ text: markLabel(m), mark: k, bot: false }, { text: shortBot(m.bot), mark: k, bot: true }])
   return [...groups.values()]
 }
 

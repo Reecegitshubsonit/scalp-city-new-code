@@ -37,13 +37,18 @@ describe('squeezed', () => {
 
 describe('groupMarks', () => {
   const exit = (bot: string, pnl: number): HMark => ({ time: T(9, 34), bot, type: 'exit', side: 'PUT', pnl })
-  it('stacks two exits on one candle instead of overlapping', () => {
+  const texts = (g: ReturnType<typeof groupMarks>) => g[0].lines.map(l => l.text)
+  it('stacks two exits on one candle instead of overlapping, each with its bot under it', () => {
     const g = groupMarks([exit('QQQ-VWAP', -180), exit('QQQ-EMA50', -120)])
     expect(g).toHaveLength(1)
-    expect(g[0].lines).toEqual(['VWAP -$180.00', 'EMA50 -$120.00'])
+    expect(texts(g)).toEqual(['-$180.00', 'VWAP', '-$120.00', 'EMA50'])
   })
-  it('a lone exit keeps its plain label', () => {
-    expect(groupMarks([exit('QQQ-VWAP', -180)])[0].lines).toEqual(['-$180.00'])
+  it('a lone exit names its bot on the line under the P&L', () => {
+    expect(texts(groupMarks([exit('QQQ-VWAP', -180)]))).toEqual(['-$180.00', 'VWAP'])
+  })
+  it('an entry shows the side with the bot under it', () => {
+    const g = groupMarks([{ time: T(9, 46), bot: 'SPY-RANGE', type: 'entry', side: 'CALL', pnl: null }])
+    expect(g[0].lines).toEqual([{ text: 'CALL', mark: 0, bot: false }, { text: 'RANGE', mark: 0, bot: true }])
   })
 })
 
