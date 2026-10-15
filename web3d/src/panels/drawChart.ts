@@ -1,5 +1,5 @@
 import type { Series } from '../model/history'
-import { atrSeries, groupMarks, openingRange, squeezed, volumeCap } from '../model/history'
+import { atrSeries, groupMarks, openingRange, relVolume, squeezed, volumeCap } from '../model/history'
 import { formatVolume } from '../model/format'
 import { lineTone } from '../model/lab'
 import { fullView, priceRange, type ChartView } from '../model/viewport'
@@ -259,7 +259,7 @@ export function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, s
   }
   ctx.restore()
 
-  if (g.atrH) drawAtrPanel(ctx, s, g, w, fs, font, i0, i1, o.axis)
+  if (g.atrH) drawAtrPanel(ctx, s, g, w, fs, font, i0, i1, o.axis, o.cross ?? null)
   if (o.style !== 'line') drawLegend(ctx, s, g, fs)   // every value the bots use, on every price chart (not the tower sparklines)
 
   if (o.axis) {
@@ -327,8 +327,9 @@ function drawLegend(ctx: CanvasRenderingContext2D, s: Series, g: ChartGeometry, 
 
 /** ATR(14) of the 1-minute bars in its own panel under the price (its own scale, not a second price axis).
  *  The bots set stop = 1 ATR and target = 2 ATR from entry, and the squeeze test uses 0.15 ATR.
- *  Volume shares the panel as faded bars on their own scale, drawn first so the ATR line always stays on top. */
-function drawAtrPanel(ctx: CanvasRenderingContext2D, s: Series, g: ChartGeometry, w: number, fs: number, font: number, i0: number, i1: number, axis: boolean) {
+ *  Volume shares the panel as faded bars on their own scale, drawn first so the ATR line always stays on top.
+ *  The VOL text names the hovered candle (else the last one in view) by its time, and the hovered bar is drawn solid. */
+function drawAtrPanel(ctx: CanvasRenderingContext2D, s: Series, g: ChartGeometry, w: number, fs: number, font: number, i0: number, i1: number, axis: boolean, cross: number | null) {
   // latest session only: the chart opens with a few bars of the previous day, and the overnight gap would read as one huge bar
   const day = s.candles[g.n - 1].time.slice(0, 10)
   const first = s.candles.findIndex(c => c.time.slice(0, 10) === day)
@@ -342,13 +343,14 @@ function drawAtrPanel(ctx: CanvasRenderingContext2D, s: Series, g: ChartGeometry
   ctx.save(); ctx.beginPath(); ctx.rect(g.padL, g.atrTop, g.plotW, g.atrH); ctx.clip()
   // volume: up bars green, down bars red, faded; scale capped at the 95th percentile of the bars in view
   const cap = volumeCap(s.candles.slice(i0, i1).map(c => c.volume))
+  const volAt = cross != null && cross >= i0 && cross < i1 ? cross : i1 - 1
   if (cap) {
     const bw = Math.max(1, Math.min(14 * fs, (g.plotW / g.span) * 0.72))
-    ctx.globalAlpha = 0.25
     for (let i = i0; i < i1; i++) {
       const c = s.candles[i]
       if (!c.volume) continue
       const hgt = Math.min(1, c.volume / cap) * g.atrH
+      ctx.globalAlpha = i === cross ? 1 : 0.25
       ctx.fillStyle = c.close >= c.open ? COLORS.CALL : COLORS.PUT
       ctx.fillRect(Math.round(g.x(i) - bw / 2), g.atrTop + g.atrH - hgt, Math.max(1, Math.round(bw)), hgt)
     }
@@ -372,10 +374,11 @@ function drawAtrPanel(ctx: CanvasRenderingContext2D, s: Series, g: ChartGeometry
   ctx.font = `bold ${f}px system-ui, sans-serif`; ctx.textAlign = 'left'; ctx.fillStyle = CHART_COLORS.atr
   const now = s.atr ?? vals[vals.length - 1] ?? 0
   ctx.fillText(g.atrH >= 40 ? `ATR(14) ${now.toFixed(2)}   stop 1 ATR, target 2 ATR` : `ATR ${now.toFixed(2)}`, g.padL + 4 * fs, g.atrTop + f + 2 * fs)
-  const lastVol = s.candles[i1 - 1]?.volume
-  if (lastVol) {
+  const vc = s.candles[volAt]
+  if (vc?.volume) {
+    const rel = relVolume(s.candles, volAt)
     const x = g.padL + 4 * fs + ctx.measureText(g.atrH >= 40 ? `ATR(14) ${now.toFixed(2)}   stop 1 ATR, target 2 ATR` : `ATR ${now.toFixed(2)}`).width + 12 * fs
-    ctx.fillStyle = CHART_COLORS.text; ctx.fillText(`VOL ${formatVolume(lastVol)}`, x, g.atrTop + f + 2 * fs)
+    ctx.fillStyle = CHART_COLORS.text; ctx.fillText(`VOL ${vc.time.slice(11, 16)} ${formatVolume(vc.volume)}${rel != null ? ` ${rel.toFixed(1)}× avg` : ''}`, x, g.atrTop + f + 2 * fs)
   }
   if (axis) {
     ctx.font = `${font}px system-ui, sans-serif`

@@ -127,6 +127,16 @@ export function volumeCap(volumes: (number | null | undefined)[], q = 0.95): num
   return v[Math.min(v.length - 1, Math.floor(q * (v.length - 1)))]
 }
 
+/** Volume of candle `i` against the average of the `n` bars before it that have volume (1.8 = 80% heavier than usual).
+ *  Null when the candle has no volume or nothing before it does. */
+export function relVolume(candles: Candle[], i: number, n = 20): number | null {
+  const v = candles[i]?.volume
+  if (!v) return null
+  const prior = candles.slice(Math.max(0, i - n), i).map(c => c.volume).filter((x): x is number => typeof x === 'number' && x > 0)
+  if (!prior.length) return null
+  return v / (prior.reduce((a, b) => a + b, 0) / prior.length)
+}
+
 /** ATR per candle, as the engine computes it (scalpcity/indicators.py Atr): Wilder, plain average of true ranges for the first `period` bars. */
 export function atrSeries(candles: Candle[], period = 14): number[] {
   const out: number[] = []

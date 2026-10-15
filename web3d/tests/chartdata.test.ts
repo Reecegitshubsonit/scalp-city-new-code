@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { atrSeries, groupMarks, mergeSeries, volumeCap, openingRange, parseStopTarget, squeezed, type Candle, type HMark } from '../src/model/history'
+import { atrSeries, groupMarks, mergeSeries, relVolume, volumeCap, openingRange, parseStopTarget, squeezed, type Candle, type HMark } from '../src/model/history'
 
 const T = (h: number, m: number) => `2026-10-13T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00-04:00`
 const bar = (h: number, m: number, high: number, low: number): Candle => ({ time: T(h, m), open: low, high, low, close: high })
@@ -88,5 +88,19 @@ describe('mergeSeries volume', () => {
     const s = mergeSeries('QQQ', h, [{ time: T(9, 32), price: 2.1, vwap: 2, ema9: 2, ema21: 2, ema50: 2 }], [])
     expect(s.candles[0].volume).toBe(129870)
     expect(s.candles[1].volume).toBeUndefined()
+  })
+})
+
+describe('relVolume', () => {
+  const vc = (volume: number | null): Candle => ({ time: '', open: 1, high: 1, low: 1, close: 1, volume })
+  it('compares a bar with the average of the bars before it', () => {
+    expect(relVolume([vc(100), vc(300), vc(400)], 2)).toBe(2)
+  })
+  it('uses at most n prior bars and skips bars without volume', () => {
+    expect(relVolume([vc(1000), vc(100), vc(null), vc(100), vc(150)], 4, 3)).toBe(1.5)
+  })
+  it('null for the first bar or a bar without volume', () => {
+    expect(relVolume([vc(100)], 0)).toBeNull()
+    expect(relVolume([vc(100), vc(null)], 1)).toBeNull()
   })
 })

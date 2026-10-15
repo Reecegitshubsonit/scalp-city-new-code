@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Series } from '../model/history'
-import { chartHeader, markLabel } from '../model/history'
+import { chartHeader, markLabel, relVolume } from '../model/history'
 import { fullView, panPrice, panTime, zoomPrice, zoomTime, type ChartView } from '../model/viewport'
 import { drawChart, CHART_COLORS, type ChartGeometry } from './drawChart'
 import { formatPnl } from '../model/format'
@@ -94,6 +94,7 @@ export function ZoomChart({ series, trades, height = 460 }: Props) {
   const c = hover != null ? series.candles[hover] : series.candles[n - 1]
   const lv = useMemo(() => (c ? series.levels.find(l => l.time === c.time) : undefined), [series.levels, c])
   const marksHere = c ? series.marks.filter(m => m.time === c.time) : []
+  const rel = c ? relVolume(series.candles, hover ?? n - 1) : null
   const zoomed = view.span < n || view.priceZoom > 1
 
   return (
@@ -121,6 +122,7 @@ export function ZoomChart({ series, trades, height = 460 }: Props) {
       <div className="readout" aria-live="off">
         {c ? <>
           <b>{c.time.slice(11, 16)}</b> O {c.open.toFixed(2)} H {c.high.toFixed(2)} L {c.low.toFixed(2)} C <b>{c.close.toFixed(2)}</b>
+          {c.volume ? <span> V {Math.round(c.volume).toLocaleString('en-US')}{rel != null && <span className="muted"> ({rel.toFixed(1)}× avg of prior 20)</span>}</span> : <span className="muted"> V -</span>}
           {lv?.vwap != null && <span style={{ color: CHART_COLORS.vwap }}> VWAP {lv.vwap.toFixed(2)}</span>}
           {lv?.ema50 != null && <span style={{ color: CHART_COLORS.ema50 }}> EMA50 {lv.ema50.toFixed(2)}</span>}
           {marksHere.map((m, i) => <span key={i} className={m.type === 'entry' ? '' : (m.pnl ?? 0) >= 0 ? 'pos' : 'neg'}> · {m.bot} {m.type} {markLabel(m)}{m.type === 'exit' && typeof m.pnl === 'number' ? ` (${formatPnl(m.pnl)})` : ''}</span>)}
