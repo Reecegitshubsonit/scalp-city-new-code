@@ -1,0 +1,121 @@
+Five paper days: 2026-10-09, 2026-10-12, 2026-10-13, 2026-10-14, 2026-10-15 - all trades, nothing excluded
+ALL 198t    -1790    -9.0/t  win   38%  avgW  +258 avgL  -175  PF 0.92
+
+== By day
+  2026-10-09              52t    -2270   -43.7/t  win   33%  avgW  +205 avgL  -165  PF 0.61
+  2026-10-12              52t    +3180   +61.2/t  win   52%  avgW  +211 avgL  -101  PF 2.26
+  2026-10-13              45t    -1710   -38.0/t  win   33%  avgW  +225 avgL  -170  PF 0.66
+  2026-10-14              24t     +800   +33.3/t  win   33%  avgW  +460 avgL  -180  PF 1.28
+  2026-10-15              25t    -1790   -71.6/t  win   36%  avgW  +372 avgL  -321  PF 0.65
+
+== By strategy
+  EMA50                  114t    -2020   -17.7/t  win   37%  avgW  +218 avgL  -155  PF 0.82
+  RANGE                   45t      +10    +0.2/t  win   33%  avgW  +367 avgL  -183  PF 1.00
+  VWAP                    39t     +220    +5.6/t  win   49%  avgW  +259 avgL  -236  PF 1.05
+
+== By bot
+  IWM-EMA50               43t     -860   -20.0/t  win   40%  avgW  +120 avgL  -112  PF 0.70
+  IWM-RANGE               21t    -1490   -71.0/t  win   19%  avgW  +118 avgL  -115  PF 0.24
+  IWM-VWAP                13t     +230   +17.7/t  win   54%  avgW  +141 avgL  -127  PF 1.30
+  QQQ-EMA50               38t     +950   +25.0/t  win   42%  avgW  +322 avgL  -191  PF 1.23
+  QQQ-RANGE               11t    +1140  +103.6/t  win   45%  avgW  +582 avgL  -295  PF 1.64
+  QQQ-VWAP                14t      -50    -3.6/t  win   36%  avgW  +540 avgL  -306  PF 0.98
+  SPY-EMA50               33t    -2110   -63.9/t  win   27%  avgW  +220 avgL  -170  PF 0.48
+  SPY-RANGE               13t     +360   +27.7/t  win   46%  avgW  +353 avgL  -251  PF 1.20
+  SPY-VWAP                12t      +40    +3.3/t  win   58%  avgW  +177 avgL  -240  PF 1.03
+
+== By exit reason
+  STOP                   125t   -20130  -161.0/t  win    5%  avgW  +108 avgL  -175  PF 0.03
+  TARGET                  73t   +18340  +251.2/t  win   96%  avgW  +271 avgL  -203  PF 31.07
+
+== By side
+  CALL                    80t    -1430   -17.9/t  win   35%  avgW  +239 avgL  -156  PF 0.82
+  PUT                    118t     -360    -3.1/t  win   41%  avgW  +269 avgL  -190  PF 0.97
+
+== Traded against raw cross (trend_side flip)
+  False                  143t    -7560   -52.9/t  win   31%  avgW  +227 avgL  -181  PF 0.57
+  True                    55t    +5770  +104.9/t  win   56%  avgW  +303 avgL  -150  PF 2.60
+
+== By entry hour
+  09                      40t     +890   +22.2/t  win   48%  avgW  +370 avgL  -292  PF 1.14
+  10                      44t     +980   +22.3/t  win   43%  avgW  +330 avgL  -212  PF 1.19
+  11                      25t    -1660   -66.4/t  win   36%  avgW  +166 avgL  -197  PF 0.47
+  12                      33t     +430   +13.0/t  win   42%  avgW  +232 avgL  -148  PF 1.15
+  13                      26t    -1030   -39.6/t  win   23%  avgW  +107 avgL   -84  PF 0.38
+  14                      25t    -1610   -64.4/t  win   24%  avgW   +90 avgL  -113  PF 0.25
+  15                       5t     +210   +42.0/t  win   60%  avgW  +127 avgL   -85  PF 2.24
+
+== First 15 min (9:30-9:44) vs later
+  09:30-09:44             18t    -1460   -81.1/t  win   39%  avgW  +183 avgL  -249  PF 0.47
+  09:45+                 180t     -330    -1.8/t  win   38%  avgW  +266 avgL  -168  PF 0.98
+
+== Hold time bucket
+  0-2m                    35t     -360   -10.3/t  win   29%  avgW  +230 avgL  -106  PF 0.86
+  16m+                    36t    +1740   +48.3/t  win   64%  avgW  +193 avgL  -208  PF 1.64
+  3-5m                    52t    -1980   -38.1/t  win   27%  avgW  +369 avgL  -188  PF 0.72
+  6-15m                   75t    -1190   -15.9/t  win   39%  avgW  +265 avgL  -193  PF 0.87
+
+== EMA9-21 gap at entry (ATR, signed with side)
+  0.25-0.75               80t    +1020   +12.8/t  win   40%  avgW  +304 avgL  -182  PF 1.12
+  0.75+                   19t    -1400   -73.7/t  win   32%  avgW  +223 avgL  -211  PF 0.49
+  <0.25                   99t    -1410   -14.2/t  win   38%  avgW  +224 avgL  -163  PF 0.86
+
+== Distance from VWAP at entry, signed with trade side (ATR)
+  0-1 with                33t    +1560   +47.3/t  win   52%  avgW  +309 avgL  -231  PF 1.42
+  1-2 with                14t     -550   -39.3/t  win   50%  avgW  +189 avgL  -267  PF 0.71
+  2+ with                 61t    -4480   -73.4/t  win   31%  avgW  +180 avgL  -188  PF 0.43
+  against VWAP            90t    +1680   +18.7/t  win   37%  avgW  +291 avgL  -139  PF 1.21
+
+== ATR as % of price
+  0.06-0.10%              39t    -3960  -101.5/t  win   33%  avgW  +213 avgL  -259  PF 0.41
+  0.10%+                   8t    +3430  +428.8/t  win   62%  avgW +1018 avgL  -553  PF 3.07
+  <0.06%                 151t    -1260    -8.3/t  win   38%  avgW  +202 avgL  -140  PF 0.90
+
+== Excursion while held (underlying, ATR of signal bar)
+  STOP   n=125  avg MFE 0.46  avg MAE 2.07  avg move at exit -1.48  avg hold 7.3m
+  TARGET n= 73  avg MFE 2.98  avg MAE 0.28  avg move at exit +2.37  avg hold 12.0m
+  STOP trades that never went +0.5 ATR in favor first: 66/125
+  STOP trades that went +1.0 ATR in favor before stopping: 39/125, P&L -6130
+  STOP exits where the close was past 1.5 ATR (overshoot from bar-close stop): 42/125, P&L -8430
+  STOP trades where price reached the original +2 ATR target within 30 min after exit: 36/125
+  Stopped in 0-2 minutes: 29/125, P&L -2230
+  TARGET trades where price ran a further +1 ATR (to 3+ ATR) within 30 min after exit: 61/73
+
+== Option fills (cents vs quote at fill)
+  entries: avg fill-ask -0.58c, avg spread 1.34c, n=177
+  exits:   avg fill-bid +0.44c, n=179
+  spread cost per round trip at 10 contracts ~= $13
+  exits that needed retries: 25, P&L -790
+
+== Entry orders not filled (ORDER_FAILED) by day
+  2026-10-09: 4  {'QQQ-EMA50': 3, 'IWM-EMA50': 1}
+  2026-10-12: 5  {'IWM-EMA50': 1, 'SPY-VWAP': 1, 'SPY-RANGE': 1, 'QQQ-EMA50': 2}
+  2026-10-13: 1  {'IWM-VWAP': 1}
+  2026-10-14: 3  {'SPY-RANGE': 1, 'QQQ-EMA50': 1, 'SPY-EMA50': 1}
+  2026-10-15: 12  {'QQQ-VWAP': 3, 'QQQ-EMA50': 2, 'SPY-EMA50': 4, 'IWM-VWAP': 1, 'IWM-RANGE': 1, 'QQQ-RANGE': 1}
+
+== Concurrency: trades opened on the same ticker within 2 minutes by different bots (same idea, stacked size)
+  stacked pairs: 21, combined P&L +5740
+  minutes with 3+ bots entering at once: 5, trades 17, P&L -1560
+
+== Worst 20 trades
+  2026-10-15 SPY-RANGE 09:54-10:02 PUT  raw PUT  STOP     -900  MFE 1.03 MAE 3.23 exit -3.04ATR  gap -0.73  retries 0
+  2026-10-15 SPY-VWAP  09:31-09:40 PUT  raw PUT  STOP     -670  MFE 1.03 MAE 1.91 exit -1.74ATR  gap -0.34  retries 0
+  2026-10-15 QQQ-RANGE 09:54-10:01 PUT  raw PUT  STOP     -630  MFE 0.71 MAE 2.38 exit -1.03ATR  gap -1.17  retries 0
+  2026-10-15 QQQ-VWAP  10:24-10:31 CALL raw CALL STOP     -580  MFE -0.06 MAE 1.84 exit -1.29ATR  gap +0.34  retries 0
+  2026-10-13 QQQ-VWAP  09:39-09:42 PUT  raw CALL STOP     -450  MFE -0.21 MAE 1.56 exit -1.44ATR  gap -1.63  retries 0
+  2026-10-15 SPY-EMA50 12:45-12:50 CALL raw CALL STOP     -450  MFE 0.00 MAE 2.71 exit -1.34ATR  gap +0.32  retries 0
+  2026-10-13 QQQ-RANGE 09:50-10:21 CALL raw CALL STOP     -440  MFE 0.85 MAE 1.66 exit -1.28ATR  gap +0.06  retries 1
+  2026-10-13 QQQ-EMA50 10:00-10:20 CALL raw CALL STOP     -430  MFE 0.88 MAE 1.80 exit -1.61ATR  gap +0.25  retries 0
+  2026-10-09 SPY-EMA50 11:09-11:16 PUT  raw PUT  STOP     -390  MFE -0.75 MAE 3.21 exit -3.15ATR  gap +0.09  retries 0
+  2026-10-14 QQQ-EMA50 10:49-10:52 CALL raw PUT  STOP     -380  MFE -0.53 MAE 2.48 exit -1.18ATR  gap +0.12  retries 0
+  2026-10-13 SPY-EMA50 09:37-09:41 PUT  raw CALL STOP     -350  MFE -1.41 MAE 3.78 exit -1.56ATR  gap -0.20  retries 3
+  2026-10-09 QQQ-EMA50 10:02-10:07 PUT  raw PUT  STOP     -320  MFE 0.18 MAE 1.66 exit -1.08ATR  gap -0.15  retries 0
+  2026-10-09 QQQ-VWAP  10:31-10:40 CALL raw CALL STOP     -310  MFE 0.40 MAE 2.06 exit -1.22ATR  gap +0.50  retries 0
+  2026-10-09 QQQ-VWAP  11:48-12:01 CALL raw CALL TARGET   -310  MFE 2.18 MAE 2.19 exit +2.00ATR  gap +0.23  retries 1
+  2026-10-13 QQQ-VWAP  10:28-10:42 PUT  raw PUT  STOP     -310  MFE 1.43 MAE 1.75 exit -1.75ATR  gap -0.25  retries 0
+  2026-10-14 QQQ-EMA50 12:41-12:51 CALL raw CALL STOP     -310  MFE 0.50 MAE 1.47 exit -1.16ATR  gap +0.33  retries 0
+  2026-10-09 QQQ-VWAP  11:07-11:27 PUT  raw PUT  STOP     -300  MFE 2.17 MAE 1.24 exit -1.04ATR  gap +0.21  retries 0
+  2026-10-09 QQQ-EMA50 11:07-11:27 PUT  raw PUT  STOP     -290  MFE 2.17 MAE 1.24 exit -1.04ATR  gap +0.21  retries 0
+  2026-10-09 QQQ-RANGE 10:02-10:07 PUT  raw PUT  STOP     -270  MFE 0.18 MAE 1.66 exit -1.08ATR  gap -0.15  retries 0
+  2026-10-15 SPY-EMA50 11:34-11:36 PUT  raw PUT  STOP     -270  MFE 0.04 MAE 1.86 exit -1.83ATR  gap -0.40  retries 0
