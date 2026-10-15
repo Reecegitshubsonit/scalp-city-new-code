@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { atrSeries, groupMarks, mergeSeries, openingRange, parseStopTarget, squeezed, type Candle, type HMark } from '../src/model/history'
+import { atrSeries, groupMarks, mergeSeries, volumeCap, openingRange, parseStopTarget, squeezed, type Candle, type HMark } from '../src/model/history'
 
 const T = (h: number, m: number) => `2026-10-13T${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:00-04:00`
 const bar = (h: number, m: number, high: number, low: number): Candle => ({ time: T(h, m), open: low, high, low, close: high })
@@ -66,5 +66,27 @@ describe('atrSeries', () => {
     expect(v[0]).toBeCloseTo(1)          // first bar: high - low
     expect(v[1]).toBeCloseTo(1.25)       // average of 1 and 1.5
     expect(v[2]).toBeCloseTo((1.25 + 0.2) / 2)   // Wilder: (prev * (n-1) + tr) / n
+  })
+})
+
+describe('volumeCap', () => {
+  it('caps at the 95th percentile so the opening spike does not flatten the day', () => {
+    const vols = [5_000_000, ...Array.from({ length: 99 }, (_, i) => 100_000 + i * 1000)]
+    const cap = volumeCap(vols)!
+    expect(cap).toBeLessThan(5_000_000)
+    expect(cap).toBeGreaterThanOrEqual(190_000)
+  })
+  it('ignores missing volumes and is null when none', () => {
+    expect(volumeCap([null, undefined, 0])).toBeNull()
+    expect(volumeCap([null, 200])).toBe(200)
+  })
+})
+
+describe('mergeSeries volume', () => {
+  it('keeps the volume of history bars; tick candles have none', () => {
+    const h = { ticker: 'QQQ', bars: [{ time: T(9, 31), open: 1, high: 2, low: 1, close: 2, volume: 129870 }], levels: [], marks: [] }
+    const s = mergeSeries('QQQ', h, [{ time: T(9, 32), price: 2.1, vwap: 2, ema9: 2, ema21: 2, ema50: 2 }], [])
+    expect(s.candles[0].volume).toBe(129870)
+    expect(s.candles[1].volume).toBeUndefined()
   })
 })

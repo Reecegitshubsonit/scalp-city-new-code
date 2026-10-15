@@ -2,7 +2,8 @@ import type { Mark, Side, TickPoint } from './types'
 import { formatPnl } from './format'
 import type { TradeLevel } from './tradeLevels'
 
-export interface Candle { time: string; open: number; high: number; low: number; close: number }
+/** volume: shares traded in the bar, from the engine's bars; absent on candles built from live ticks until the next history refresh */
+export interface Candle { time: string; open: number; high: number; low: number; close: number; volume?: number | null }
 export interface Level { time: string; vwap?: number | null; ema9?: number | null; ema21?: number | null; ema50?: number | null }
 export interface HMark { time: string; bot: string; type: 'entry' | 'exit'; side: Side | null; pnl?: number | null }
 /** Shape of GET /history?ticker=... */
@@ -116,6 +117,14 @@ export function groupMarks(marks: HMark[]): { time: string; type: HMark['type'];
   for (const g of groups.values())
     g.lines = g.marks.flatMap((m, k) => [{ text: markLabel(m), mark: k, bot: false }, { text: shortBot(m.bot), mark: k, bot: true }])
   return [...groups.values()]
+}
+
+/** Top of the volume scale: the 95th percentile of the volumes, so the opening bar's spike does not flatten the rest of the day.
+ *  Bars above it are drawn at full height. Null when no bar has volume. */
+export function volumeCap(volumes: (number | null | undefined)[], q = 0.95): number | null {
+  const v = volumes.filter((x): x is number => typeof x === 'number' && x > 0).sort((a, b) => a - b)
+  if (!v.length) return null
+  return v[Math.min(v.length - 1, Math.floor(q * (v.length - 1)))]
 }
 
 /** ATR per candle, as the engine computes it (scalpcity/indicators.py Atr): Wilder, plain average of true ranges for the first `period` bars. */

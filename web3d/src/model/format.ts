@@ -7,6 +7,8 @@ export function formatPnl(n: number): string {
 }
 export const formatPct = (n: number | null | undefined) => (n == null ? '-' : `${Math.round(n)}%`)
 export const formatNum = (n: number | undefined | null, d = 2) => (typeof n === 'number' ? n.toFixed(d) : '-')
+/** Volume as "129.9K" or "2.98M". */
+export const formatVolume = (n: number) => (n >= 1e6 ? `${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `${(n / 1e3).toFixed(1)}K` : `${Math.round(n)}`)
 export const formatTime = (iso: string | null) => (iso && iso.length >= 19 ? iso.slice(11, 19) : '-')
 
 function etParts(now: Date) {
