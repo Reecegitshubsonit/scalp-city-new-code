@@ -1,0 +1,7 @@
+[Unit]
+Description=Scalp City morning engine check, pushed to phone via ntfy
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/scalp-city
+ExecStart=/usr/bin/python3 %h/scalp-city/scripts/engine_check_push.py

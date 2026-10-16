@@ -1,0 +1,10 @@
+[Unit]
+Description=Start the Scalp City paper engine before the open, Mon-Fri
+
+[Timer]
+OnCalendar=Mon..Fri 07:10 America/Denver
+Persistent=true
+Unit=scalpcity-engine.service
+
+[Install]
+WantedBy=timers.target

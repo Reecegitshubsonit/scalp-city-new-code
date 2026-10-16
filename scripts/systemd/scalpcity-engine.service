@@ -1,0 +1,16 @@
+[Unit]
+Description=Scalp City live paper engine (Webull sandbox)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/scalp-city
+ExecStart=/bin/bash -c 'exec %h/scalp-city/.venv/bin/python scripts/run_live.py --port 8010 --daily-loss 800 >> %h/scalp-city/logs/engine-$(date +%%F).out 2>&1'
+KillSignal=SIGTERM
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=20
+
+[Install]
+WantedBy=default.target

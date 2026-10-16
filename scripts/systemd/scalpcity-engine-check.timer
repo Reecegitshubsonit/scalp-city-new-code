@@ -1,0 +1,9 @@
+[Unit]
+Description=Check the Scalp City paper engine after the open, Mon-Fri
+
+[Timer]
+OnCalendar=Mon..Fri 07:36 America/Denver
+Unit=scalpcity-engine-check.service
+
+[Install]
+WantedBy=timers.target
