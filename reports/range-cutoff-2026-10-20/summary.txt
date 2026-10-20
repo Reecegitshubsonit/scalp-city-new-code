@@ -1,0 +1,4 @@
+days: ['2026-10-09', '2026-10-12', '2026-10-13', '2026-10-14', '2026-10-15', '2026-10-16', '2026-10-19', '2026-10-20']
+all bots seen: ['IWM-EMA50', 'IWM-RANGE', 'IWM-VWAP', 'QQQ-EMA50', 'QQQ-RANGE', 'QQQ-VWAP', 'SPY-EMA50', 'SPY-RANGE', 'SPY-VWAP']
+filter: range bots only
+trades analysed: 56  total pnl: 120.0
