@@ -1,0 +1,43 @@
+Range bots: first range-break trade, then a trend rule for the rest of the day
+Webull paper days, replayed through the engine. Range bots only (IWM/QQQ/SPY-RANGE). P&L in dollars, 10 contracts.
+2026-10-19 skipped: engine did not run (DNS failure). 10-12/10-13 priced from option candles (lower fidelity).
+
+day         pricing                     range               pullback                reenter                  cross
+2026-10-12  candles            +190 (16t, 6w)        -1860 (52t,16w)         -460 (36t,12w)         -180 (23t, 6w)
+2026-10-13  candles           -1160 ( 9t, 2w)        -1990 (44t,18w)        -2530 (53t,17w)        -1410 (26t, 9w)
+2026-10-14  snapshots         +1120 ( 5t, 2w)        +1480 (26t,12w)        +1330 (36t,15w)        +1370 (11t, 5w)
+2026-10-15  snapshots         -2120 ( 6t, 1w)        +2180 (27t,14w)        -2520 (38t,16w)         -550 (25t, 9w)
+2026-10-16  snapshots         -1260 ( 9t, 3w)         +170 (21t,10w)         +310 (25t,12w)         -360 (11t, 5w)
+2026-10-20  snapshots         +1720 ( 3t, 3w)        +2530 ( 5t, 5w)        +2980 ( 8t, 7w)        +1720 ( 3t, 3w)
+TOTAL                         -1510 (48t,17w)       +2510 (175t,75w)        -890 (196t,79w)         +590 (99t,37w)
+per trade                               -31.5                  +14.3                   -4.5                   +6.0
+unpriced (range bots)                       0                     42                     28                      0
+
+Replay check: real live range-bot P&L those days (from reports/range-cutoff-2026-10-20/trades.csv, 10-20 morning only):
+  10-12: +530 (16t)  10-13: -910 (10t)  10-14: +1450 (5t)  10-15: -960 (4t)  10-16: -1660 (8t)  10-20: +1770 (3t)
+  The 'range' column is the same bot replayed; differences are replay fidelity, not strategy.
+
+2026-10-20 covers bars up to 10:35 ET only (run during the session).
+
+Per bot totals (all days):
+  range     IWM-RANGE: -720 (20t)  QQQ-RANGE: -790 (11t)  SPY-RANGE: +0 (17t)
+  pullback  IWM-RANGE: -250 (92t)  QQQ-RANGE: +960 (37t)  SPY-RANGE: +1800 (46t)
+  reenter   IWM-RANGE: -650 (142t)  QQQ-RANGE: -270 (10t)  SPY-RANGE: +30 (44t)
+  cross     IWM-RANGE: -540 (49t)  QQQ-RANGE: -200 (17t)  SPY-RANGE: +1330 (33t)
+
+Trades after the first range trade only (the part the trend rule adds):
+  range      30 trades     -2060  per trade -68.7  wins 10
+  pullback  157 trades     +1960  per trade +12.5  wins 68
+  reenter   178 trades     -1440  per trade -8.1  wins 72
+  cross      81 trades       +40  per trade +0.5  wins 30
+
+Unpriced range-bot orders (entry refused for no quote at HH:MM, or exit retried for no quote), by variant/day:
+  pullback  2026-10-12: QQQ261013P00745000@14:49, QQQ261013P00745000@14:56, QQQ261013P00745000@14:59, QQQ261013P00745000@15:10, QQQ261013P00745000@15:13, QQQ261013P00745000@15:14, QQQ261013P00745000@15:17, SPY261013P00777000@14:20, SPY261013P00777000@14:21, SPY261013P00777000@14:27, SPY261013P00777000@14:30, SPY261013P00777000@14:32, SPY261013P00777000@14:33, SPY261013P00777000@14:34, SPY261013P00777000@14:35, SPY261013P00777000@14:55, SPY261013P00777000@14:56, SPY261013P00777000@14:59, SPY261013P00777000@15:01, SPY261013P00777000@15:07, SPY261013P00777000@15:10, SPY261013P00777000@15:14, SPY261013P00777000@15:15, SPY261013P00777000@15:18
+  pullback  2026-10-13: QQQ261014C00742000@12:09, QQQ261014C00742000@12:12, QQQ261014C00742000@12:13, QQQ261014C00742000@12:14, QQQ261014C00742000@13:46, QQQ261014C00742000@13:49, QQQ261014C00743000@10:44, QQQ261014C00743000@10:45, QQQ261014C00743000@12:17, QQQ261014C00743000@12:24, QQQ261014C00743000@12:25, QQQ261014C00743000@12:28, QQQ261014C00743000@12:29, SPY261014P00776000@11:34, SPY261014P00776000@11:38, SPY261014P00776000@11:43, SPY261014P00776000@11:47, SPY261014P00776000@11:52
+  reenter   2026-10-13: SPY261014P00776000@11:27, SPY261014P00776000@11:28, SPY261014P00776000@11:29, SPY261014P00776000@11:30, SPY261014P00776000@11:31, SPY261014P00776000@11:32, SPY261014P00776000@11:33, SPY261014P00776000@11:34, SPY261014P00776000@11:35, SPY261014P00776000@11:36, SPY261014P00776000@11:37, SPY261014P00776000@11:38, SPY261014P00776000@11:39, SPY261014P00776000@11:40, SPY261014P00776000@11:41, SPY261014P00776000@11:42, SPY261014P00776000@11:43, SPY261014P00776000@11:44, SPY261014P00776000@11:45, SPY261014P00776000@11:46, SPY261014P00776000@11:47, SPY261014P00776000@11:48, SPY261014P00776000@11:49, SPY261014P00776000@11:50, SPY261014P00776000@11:51, SPY261014P00776000@11:52, SPY261014P00776000@11:53, SPY261014P00776000@11:54
+
+Candle fallback used for range-bot contracts on snapshot days (contract@first minute):
+  range     2026-10-14: QQQ261015P00740000@09:48, SPY261015P00776000@09:48
+  pullback  2026-10-14: IWM261015P00271000@12:37, IWM261015P00272000@13:08, QQQ261015P00740000@09:48, SPY261015P00776000@09:48
+  reenter   2026-10-14: IWM261015C00274000@10:43, IWM261015P00271000@12:37, IWM261015P00272000@12:19, QQQ261015P00740000@09:48, SPY261015P00776000@09:48
+  cross     2026-10-14: IWM261015P00272000@12:58, QQQ261015P00740000@09:48, SPY261015P00776000@09:48
