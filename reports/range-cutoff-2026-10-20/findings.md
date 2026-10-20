@@ -16,3 +16,19 @@ Script: `analyze.py`. Tables: `buckets.csv`, `cutoffs.csv`, `cutoffs_by_day.csv`
   (09:30) keeps -150, which is worse than no cutoff.
 - With 10-20 excluded, every cutoff still loses money (08:00 keeps -900; no cutoff gives -1650).
   The time of day does not turn the range bots profitable on the finished days.
+
+## Entry conditions (criteria.py, criteria.txt, crosstab.txt, range_trades_features.csv)
+
+- Break direction is the largest split. Breaks below the 9:30-9:44 ET range: 40 trades, -3840,
+  28% wins, 5 losing days of 6. Breaks above: 16 trades, +3960, 56% wins, 4 winning days of 5.
+- The time effect is mostly break direction. Up breaks in the first 30 minutes: 6 trades, +3320,
+  5 wins. Down breaks in the first 30 minutes: 11 trades, -2450, 3 wins. Down breaks in minutes
+  30-60: 11 trades, -1750, 2 wins.
+- 30-60 minutes after the open: 12 trades, -1880, 0 winning days, 4 losing days.
+- The 2nd trade of the day per bot: 13 trades, -1030, 23% wins.
+- Wide opening range (>= 8.02 x 1-minute ATR): 19 trades, -830, 21% wins.
+- By bot: IWM-RANGE -1400 (25 trades, 24% wins), QQQ-RANGE +650, SPY-RANGE +870.
+- Hindsight check: trades where price at 15:55 ET was further in the traded direction made +3590;
+  the rest lost -3470. The losses are trades taken against the way the day went.
+- Caveat: the up/down split may be the market's direction over these two weeks, not a property of
+  the bot. 6 first-30-minute up breaks is a small sample.

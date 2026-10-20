@@ -1,0 +1,58 @@
+days: ['2026-10-09', '2026-10-12', '2026-10-13', '2026-10-14', '2026-10-15', '2026-10-16', '2026-10-19', '2026-10-20']
+range trades: 56  total pnl: 120.0
+
+== window
+  value          n      pnl     avg  win% days+ days-
+  0-30          17      870      51    47     3     4
+  120+          18      270      15    33     2     1
+  30-60         12    -1880    -157    17     0     4
+  60-90          8      250      31    38     2     3
+  90-120         1      610     610   100     1     0
+
+== nth_band
+  value          n      pnl     avg  win% days+ days-
+  1             21      500      24    43     3     4
+  2             13    -1030     -79    23     2     4
+  3+            22      650      30    36     2     3
+
+== side
+  value          n      pnl     avg  win% days+ days-
+  CALL          20     1950      98    45     4     2
+  PUT           36    -1830     -51    31     2     4
+
+== break_dir
+  value          n      pnl     avg  win% days+ days-
+  down          40    -3840     -96    28     1     5
+  up            16     3960     248    56     4     1
+
+== side_agrees
+  value          n      pnl     avg  win% days+ days-
+  False          8     1970     246    50     3     0
+  True          48    -1850     -39    33     2     5
+
+== vwap_side
+  value          n      pnl     avg  win% days+ days-
+  False          8     1670     209    50     3     0
+  True          48    -1550     -32    33     3     4
+
+== range_atr_band
+  value          n      pnl     avg  win% days+ days-
+  5.24-8.02     19      300      16    47     3     3
+  <5.24         18      650      36    39     2     4
+  >=8.02        19     -830     -44    21     1     2
+
+== open_drive
+  value          n      pnl     avg  win% days+ days-
+  against       34     1010      30    35     3     4
+  with          22     -890     -40    36     3     4
+
+== day_with
+  value          n      pnl     avg  win% days+ days-
+  False         17    -3470    -204    12     1     4
+  True          39     3590      92    46     6     1
+
+== bot
+  value          n      pnl     avg  win% days+ days-
+  IWM-RANGE     25    -1400     -56    24     2     5
+  QQQ-RANGE     14      650      46    43     4     3
+  SPY-RANGE     17      870      51    47     5     2
