@@ -5,6 +5,10 @@ Wants=network-online.target
 
 [Service]
 Type=simple
+# network-online.target does nothing for a user unit, so wait here until the Webull host resolves
+# (after boot DNS is not ready for a few seconds and the engine used to crash on startup).
+ExecStartPre=/bin/bash -c 'for i in $(seq 150); do getent hosts api.sandbox.webull.com >/dev/null && exit 0; sleep 2; done; exit 1'
+TimeoutStartSec=360
 WorkingDirectory=%h/scalp-city
 ExecStart=/bin/bash -c 'exec %h/scalp-city/.venv/bin/python scripts/run_live.py --port 8010 --daily-loss 800 >> %h/scalp-city/logs/engine-$(date +%%F).out 2>&1'
 KillSignal=SIGTERM
