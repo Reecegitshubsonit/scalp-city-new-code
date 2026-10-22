@@ -23,6 +23,7 @@ import { useStream } from './net/useStream'
 import { useReplay } from './net/useReplay'
 import { ReplayBar } from './panels/ReplayBar'
 import { ReplayPicker } from './panels/ReplayPicker'
+import { Calendar } from './panels/Calendar'
 import { Cards } from './panels/Cards'
 import { CandleChart } from './panels/CandleChart'
 import { Charts } from './panels/Charts'
@@ -62,6 +63,7 @@ export default function App() {
   const [tableOnly, setTableOnly] = useStored<boolean>('tableOnly', false)
   const [selected, setSelected] = useState<string | null>(null)
   const [showSummary, setShowSummary] = useState(false)
+  const [showCalendar, setShowCalendar] = useState(false)
   const [inside, setInside] = useState(false)
   const [screen, setScreen] = useState<string | null>(null)
   const [pending, setPending] = useState<Record<string, boolean>>({})
@@ -245,6 +247,7 @@ export default function App() {
         <span className={`engaged e-${engaged.cls}`} role="status">{engaged.text}</span>
         <span className="total">Day P&amp;L <b className={total > 0 ? 'pos' : total < 0 ? 'neg' : ''}>{formatPnl(total)}</b></span>
         <button onClick={openSummary}>Day summary</button>
+        <button onClick={() => setShowCalendar(true)}>Calendar</button>
         <button onClick={() => setShowPicker(true)}>Replay</button>
         <button aria-pressed={tableOnly} onClick={() => setTableOnly(!tableOnly)}>{tableOnly ? 'Show 3D' : 'Table only'}</button>
       </header>
@@ -301,6 +304,7 @@ export default function App() {
           earned={earned} tickerPnl={tPnl} lastEventAt={state.lastEventAt} dataTime={newest} status={status} onSelectBot={openBot} onClose={closeScreen} />
       )}
       {showPicker && <ReplayPicker loading={replay.loading} error={replay.error} onClose={() => setShowPicker(false)} onPick={async d => { await replay.start(d); setShowPicker(false); onClose() }} />}
+      {showCalendar && <Calendar loading={replay.loading} onClose={() => setShowCalendar(false)} onPick={async d => { await replay.start(d); setShowCalendar(false); onClose() }} />}
       {showSummary && <Summary rows={rows} trades={tradeRecs} date={date} onClose={closeSummary} />}
     </div>
   )

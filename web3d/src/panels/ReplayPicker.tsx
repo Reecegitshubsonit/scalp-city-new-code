@@ -24,6 +24,16 @@ export function ReplayPicker({ loading, error, onPick, onClose }: Props) {
         {days === undefined && !err && <p className="muted">Loading days...</p>}
         {days === null && <p className="neg">This engine has no /days endpoint. Restart it with the latest code.</p>}
         {days && days.length === 0 && <p className="muted">No logged days yet.</p>}
+        {days && days.length > 0 && (() => {
+          const paper = days.filter(d => d.mode === 'live')
+          const pnl = paper.reduce((a, d) => a + (d.pnl ?? 0), 0)
+          const trades = paper.reduce((a, d) => a + (d.trades ?? 0), 0)
+          const wins = paper.reduce((a, d) => a + (d.wins ?? 0), 0)
+          return (
+            <p className="overall">Overall paper P&amp;L <b className={pnl > 0 ? 'pos' : pnl < 0 ? 'neg' : ''}>{formatPnl(pnl)}</b>
+              <span className="muted"> · {paper.length} days · {trades} trades · {wins} wins (replay days not counted)</span></p>
+          )
+        })()}
         <ol className="daylist">
           {days?.map(d => (
             <li key={`${d.day}-${d.mode}`}>

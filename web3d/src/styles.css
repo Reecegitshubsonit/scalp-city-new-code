@@ -150,6 +150,20 @@ select { font: inherit; color: inherit; background: #1b1666; border: 1px solid v
 .replaytag { color: #ffb020; letter-spacing: .08em; }
 .replaybar .scrub { flex: 1; min-width: 160px; }
 .daylist { list-style: none; margin: 0; padding: 0; } .daylist li { display: flex; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--line); } .daylist li > b { white-space: nowrap; } .daylist .daypnl { margin-left: auto; white-space: nowrap; } .daylist .daypnl + button { margin-left: 0; } .daylist button { margin-left: auto; }
+.overall { font-size: 1.05em; margin: 4px 0 8px; } .overall b { font-size: 1.2em; }
+.calcard { width: min(860px, 100%); }
+.calnav { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; } .calnav .calsum { margin-left: auto; }
+.calgrid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.calwd { text-align: center; font-size: .8em; }
+.calday { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 92px; padding: 6px; text-align: left; border: 1px solid var(--line); border-radius: 6px; background: rgba(255,255,255,.03); color: inherit; font: inherit; min-width: 0; }
+button.calday { cursor: pointer; } button.calday:hover, .calday.on { border-color: #ffb020; }
+.calday.empty { opacity: .35; min-height: 0; }
+.caldate { font-size: .8em; display: flex; gap: 4px; align-items: center; }
+.calday small { font-size: .72em; overflow-wrap: anywhere; }
+.caldown { color: #ffb020; }
+.caldetail { margin-top: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 6px; }
+.caldetail header { gap: 10px; flex-wrap: wrap; justify-content: flex-start; } .caldetail header button { margin-left: auto; }
+@media (max-width: 560px) { .calday { min-height: 70px; padding: 4px; } .calday .caldown, .calday small.muted { display: none; } }
 .insidebar { flex-wrap: wrap; max-width: calc(100% - 16px); }
 
 /* trades */
