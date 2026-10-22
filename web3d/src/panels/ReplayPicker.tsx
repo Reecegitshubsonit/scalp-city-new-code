@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { fetchDays } from '../net/api'
 import type { Day } from '../model/replay'
-import { formatTime } from '../model/format'
+import { formatPnl, formatTime } from '../model/format'
 
 interface Props { loading: boolean; error: string | null; onPick: (d: Day) => void; onClose: () => void }
 
@@ -29,6 +29,10 @@ export function ReplayPicker({ loading, error, onPick, onClose }: Props) {
             <li key={`${d.day}-${d.mode}`}>
               <b>{d.day}</b> <span className="chip">{d.mode}</span>
               <span className="muted"> {d.events.toLocaleString()} events · {formatTime(d.first)} to {formatTime(d.last)} ET</span>
+              {typeof d.pnl === 'number' && (
+                <span className="daypnl"><b className={d.pnl > 0 ? 'pos' : d.pnl < 0 ? 'neg' : ''}>{formatPnl(d.pnl)}</b>
+                  <span className="muted"> · {d.trades ?? 0} trades · {d.wins ?? 0} wins</span></span>
+              )}
               <button disabled={loading} onClick={() => onPick(d)}>{loading ? '...' : 'Replay'}</button>
             </li>
           ))}
