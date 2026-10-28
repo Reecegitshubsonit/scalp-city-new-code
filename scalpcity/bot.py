@@ -105,8 +105,8 @@ class Bot:
             self._set(State.IDLE, "OUTSIDE_WINDOW", f"before {self.spec.arm:%H:%M}")
         elif t < self.spec.start:
             self._set(State.IDLE, "RANGE_FORMING", f"armed, range forming until {self.spec.start:%H:%M}")
-        elif t > self.s.last_entry:
-            self._set(State.IDLE, "OUTSIDE_WINDOW", f"after last entry {self.s.last_entry:%H:%M}")
+        elif t > (self.spec.last_entry or self.s.last_entry):
+            self._set(State.IDLE, "OUTSIDE_WINDOW", f"after last entry {self.spec.last_entry or self.s.last_entry:%H:%M}")
         elif not view.ready:
             self._set(State.IDLE, view.reason_code or "NOT_READY", "waiting for indicator or range")
         elif self.cooldown_until is not None and now < self.cooldown_until:
@@ -114,7 +114,7 @@ class Bot:
         elif self.spec.chop_filter and ind.squeezed(self.s.squeeze_atr):
             self._set(State.IDLE, "CHOP_SQUEEZE", "EMA9 and EMA21 squeezed, skipping")
         elif view.signal:
-            return self._fire(bar, ind, self._side(view.signal, ind))
+            return self._fire(bar, ind, self._side(view.signal, ind), view)
         elif view.charge_pct is not None and view.charge_pct >= self.s.forming_min_charge:
             self._set(State.FORMING, "WATCHING", f"{view.distance_atr} ATR from trigger, {view.charge_pct:.0f}% charged")
         else:
@@ -122,20 +122,25 @@ class Bot:
         return []
 
     def _side(self, signal: str, ind: IndicatorSet) -> str:
-        """Trigger decides when to enter; with trend_side, EMA9 vs EMA21 decides which way."""
+        """Trigger decides when to enter; the spec's side rule decides which way.
+        "own": the trigger's direction. "trend": EMA9 vs EMA21 (the trigger's direction while they are unset or equal)."""
+        if self.spec.side == "own":
+            return signal
         e9, e21 = ind.ema9.value, ind.ema21.value
-        if not self.s.trend_side or e9 is None or e21 is None or e9 == e21:
+        if e9 is None or e21 is None or e9 == e21:
             return signal
         return "CALL" if e9 > e21 else "PUT"
 
-    def _fire(self, bar: Bar, ind: IndicatorSet, side: str) -> list:
-        atr = ind.atr.value or 0.0
+    def _fire(self, bar: Bar, ind: IndicatorSet, side: str, view=None) -> list:
+        """Stop and target in the trigger's own ATR when it has one (5-minute EMA50), else the 1-minute ATR."""
+        atr = (view.atr if view is not None and view.atr else None) or ind.atr.value or 0.0
         sgn = 1 if side == "CALL" else -1
         self.position = Position(side, self.s.contracts, bar.close,
                                  stop_und=bar.close - sgn * self.s.stop_atr * atr,
                                  target_und=bar.close + sgn * self.s.target_atr * atr)
         self.pending = "entry"
-        self._set(State.FIRED, "SIGNAL", f"{side} signal at {bar.close:.2f}")
+        trig = f" ({view.signal} trigger, {self.spec.side} side)" if view is not None and view.signal else ""
+        self._set(State.FIRED, "SIGNAL", f"{side} signal at {bar.close:.2f}{trig}")
         return [OrderIntent(self.bot_id, self.ticker, "BUY_OPEN", side, self.s.contracts, "signal", bar.close)]
 
     def _manage(self, bar: Bar, now: datetime, ind: IndicatorSet) -> list:
@@ -227,8 +232,10 @@ class Bot:
         if kind == "order_sent" and code == "BUY_OPEN":
             sgn = 1 if ev["contract"][len(self.ticker) + 6] == "C" else -1
             price, atr = ev["inputs"]["price"], ev["inputs"].get("atr") or 0.0
+            stop, target = ev.get("stop_und"), ev.get("target_und")   # logged since the 5-minute EMA50; older logs: 1-minute ATR
             self.position = Position("CALL" if sgn == 1 else "PUT", ev["qty"], price,
-                                     stop_und=price - sgn * self.s.stop_atr * atr, target_und=price + sgn * self.s.target_atr * atr)
+                                     stop_und=stop if stop is not None else price - sgn * self.s.stop_atr * atr,
+                                     target_und=target if target is not None else price + sgn * self.s.target_atr * atr)
         elif kind == "fill" and code == "ENTRY_FILL" and self.position is not None:
             self.position.contract, self.position.entry_price, self.position.opened_at = ev["contract"], ev["fill_price"], when
         elif kind == "state_change" and code == "ORDER_FAILED" and self.position is not None and self.position.entry_price is None:

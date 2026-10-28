@@ -12,7 +12,7 @@ class ReplayFeed:
     def days(self) -> list[date]:
         return sorted({b.ts.date() for v in self.bars.values() for b in v})
 
-    def warm_bars(self, day: date, n: int = 200) -> dict:
+    def warm_bars(self, day: date, n: int = 600) -> dict:   # same count as LiveFeed.startup
         out = {}
         for t, v in self.bars.items():
             prior = [b for b in v if b.ts.date() < day]

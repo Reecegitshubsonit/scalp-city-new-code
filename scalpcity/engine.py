@@ -7,10 +7,10 @@ from .contracts import atm_strike, next_trading_day, occ_symbol
 from .events import EventLog
 from .indicators import IndicatorSet
 from .risk import RiskGate
-from .triggers import Ema50Cross, RangeBreak, VwapCross
+from .triggers import Ema50Cross5m, RangeBreak, VwapCross
 from .types import Bar, OrderIntent
 
-_TRIGGERS = {"vwap": VwapCross, "ema50": Ema50Cross, "range": RangeBreak}
+_TRIGGERS = {"vwap": VwapCross, "ema50": Ema50Cross5m, "range": RangeBreak}
 
 
 def build_bots(settings: Settings) -> list[Bot]:
@@ -40,6 +40,9 @@ class Engine:
                     self.ind[ticker].warm(bar)
             for bot in self.bots:
                 bot.new_session()
+                warm_up = getattr(bot.trigger, "warm_up", None)   # triggers with their own timeframe (5-minute EMA50)
+                if warm_up is not None:
+                    warm_up(warm_bars.get(bot.ticker, []))
 
     def catch_up(self, bars) -> None:
         """Mid-session start: rebuild VWAP, EMAs, ATR and trigger state from today's completed bars. Never trades or logs."""
@@ -69,6 +72,8 @@ class Engine:
 
     def on_bar(self, bar: Bar) -> None:
         with self.lock:
+            if self.day is not None and bar.ts.date() < self.day:
+                return   # a previous session's bar (e.g. re-sent by the feed at the open) must never reach today's VWAP or triggers
             ind = self.ind[bar.ticker]
             ind.update(bar)
             for bot in [b for b in self.bots if b.ticker == bar.ticker]:
@@ -120,9 +125,12 @@ class Engine:
                                         "reason_text": "no quote to exit; retrying next bar", "inputs": inputs, "charge_pct": None, "contract": contract}])
             self._write(bar.end, bot, bot.on_order_failed("SELL_CLOSE", "NO_QUOTE"))
             return
+        levels = {}
+        if intent.kind == "BUY_OPEN" and bot.position is not None:   # so a restart rebuilds the same stop/target
+            levels = {"stop_und": round(bot.position.stop_und, 4), "target_und": round(bot.position.target_und, 4)}
         self._write(bar.end, bot, [{"kind": "order_sent", "state": bot.state.value, "reason_code": intent.kind,
                                     "reason_text": f"{intent.kind} {intent.qty} {contract} bid/ask {quote.bid}/{quote.ask}",
-                                    "inputs": inputs, "charge_pct": None, "contract": contract, "qty": intent.qty}])
+                                    "inputs": inputs, "charge_pct": None, "contract": contract, "qty": intent.qty, **levels}])
         try:
             fill = self.broker.execute(intent, contract, quote, bar.end)
         except Exception:   # a broker error must not leave the bot waiting on an order, or skip the other bots on this bar

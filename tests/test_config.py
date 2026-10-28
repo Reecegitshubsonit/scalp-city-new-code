@@ -1,6 +1,8 @@
 from datetime import time
 
-from scalpcity.config import BOT_SPECS, TICKERS, Settings
+import pytest
+
+from scalpcity.config import BOT_SPECS, TICKERS, BotSpec, Settings
 
 
 def test_defaults_match_the_spec():
@@ -13,5 +15,18 @@ def test_defaults_match_the_spec():
 def test_nine_bots_worth_of_specs_and_windows():
     assert TICKERS == ("QQQ", "SPY", "IWM") and set(BOT_SPECS) == {"vwap", "ema50", "range"}
     assert BOT_SPECS["range"].arm == time(9, 40) and BOT_SPECS["range"].start == time(9, 45)
-    assert BOT_SPECS["vwap"].start == time(9, 30) and BOT_SPECS["ema50"].start == time(9, 30)
+    assert BOT_SPECS["vwap"].start == time(9, 30) and BOT_SPECS["ema50"].start == time(10, 0)
+    assert BOT_SPECS["ema50"].last_entry == time(10, 59) and BOT_SPECS["vwap"].last_entry is None and BOT_SPECS["range"].last_entry is None
     assert BOT_SPECS["vwap"].chop_filter is True and BOT_SPECS["ema50"].chop_filter is False and BOT_SPECS["range"].chop_filter is False
+
+
+def test_every_bot_names_its_side_rule():
+    assert {k: v.side for k, v in BOT_SPECS.items()} == {"vwap": "trend", "range": "trend", "ema50": "own"}
+    assert not hasattr(Settings(), "trend_side")   # no global switch can flip a cross bot into a fade bot
+
+
+def test_unknown_side_rule_is_refused():
+    with pytest.raises(ValueError):
+        BotSpec("vwap", time(9, 30), time(9, 30), True, side="fade")
+    with pytest.raises(TypeError):
+        BotSpec("vwap", time(9, 30), time(9, 30), True)   # side has no default

@@ -1,3 +1,4 @@
+from dataclasses import replace
 from datetime import datetime, timedelta
 
 import pytest
@@ -11,8 +12,9 @@ from scalpcity.types import ET, Fill
 S = Settings()
 
 
-def vwap_bot(**kw):
-    return Bot("QQQ", BOT_SPECS["vwap"], VwapCross(S.charge_range_atr), Settings(**kw) if kw else S)
+def vwap_bot(side=None, **kw):
+    spec = BOT_SPECS["vwap"] if side is None else replace(BOT_SPECS["vwap"], side=side)
+    return Bot("QQQ", spec, VwapCross(S.charge_range_atr), Settings(**kw) if kw else S)
 
 
 B = 129.5  # last warm-up close below
@@ -143,7 +145,7 @@ def test_order_failed_entry_returns_to_idle(mk):
 
 def test_range_bot_armed_at_940_fires_after_945(mk):
     # history ends near 129.5, session trades near 100, so EMA9 < EMA21; keep the cross direction here
-    bot = Bot("QQQ", BOT_SPECS["range"], RangeBreak(S.charge_range_atr), Settings(trend_side=False))
+    bot = Bot("QQQ", replace(BOT_SPECS["range"], side="own"), RangeBreak(S.charge_range_atr), S)
     ind = warmed(mk)
     for minute in range(30, 40):
         step(bot, ind, mk("QQQ", f"9:{minute}", 100, high=101, low=99))
@@ -186,7 +188,7 @@ def test_trend_side_off_keeps_cross_direction(mk):
         c = 250.0 - 2.0 * i
         ind.warm(mk("QQQ", "15:59", c, high=c + 0.5, low=c - 0.5))
     last = 250.0 - 2.0 * 59
-    bot = vwap_bot(trend_side=False)
+    bot = vwap_bot(side="own")
     step(bot, ind, mk("QQQ", "9:30", last - 1.0, volume=1000))
     step(bot, ind, mk("QQQ", "9:31", last - 1.5, volume=1000))
     out = step(bot, ind, mk("QQQ", "9:32", last + 1.0, volume=1000))

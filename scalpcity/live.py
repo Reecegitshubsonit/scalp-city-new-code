@@ -15,7 +15,11 @@ class LiveFeed:
         return {t: self.client.recent_bars(t, count) for t in self.tickers}
 
     def startup(self, today, count: int = 600):
-        """Returns (prior-session warm bars, today's completed bars) and marks today's bars as already seen."""
+        """Returns (prior-session warm bars, today's completed bars) and marks every completed bar it fetched as already seen.
+
+        Prior-session bars count as seen too: they go into the warm-up, so poll() must not hand them out again.
+        (Before, a start before 9:30 or a day rollover left last_ts empty, and the first poll re-sent yesterday's
+        last bars into the new session's VWAP and triggers.)"""
         prior, todays = {}, []
         now = self.now_fn()
         for t in self.tickers:
@@ -23,8 +27,10 @@ class LiveFeed:
             prior[t] = [b for b in rows if b.ts.date() < today]
             done = [b for b in rows if b.ts.date() == today and b.end + timedelta(seconds=self.lag) <= now]
             todays += done
+            seen = [b.ts for b in rows if b.end + timedelta(seconds=self.lag) <= now]
+            if seen:
+                self.last_ts[t] = max(seen)
             if done:
-                self.last_ts[t] = done[-1].ts
                 self.last_bar_wall[t] = now
         return prior, sorted(todays, key=lambda b: (b.ts, b.ticker))
 
