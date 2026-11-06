@@ -44,3 +44,5 @@ def check_stale(engine, now, last_bar_wall: dict, open_quote_wall: dict) -> None
                 continue
             fill = engine.broker.execute(intent, intent.contract, quote, now)
             engine._write(now, bot, bot.on_fill(fill, {}) if fill else bot.on_order_failed("SELL_CLOSE", "NO_FILL"))
+            if fill and hasattr(engine, "apply_engine_cap"):
+                engine.apply_engine_cap(now)

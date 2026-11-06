@@ -1,7 +1,7 @@
 import threading
 from datetime import date
 
-from .bot import Bot
+from .bot import Bot, State
 from .config import BOT_SPECS, TICKERS, Settings
 from .contracts import atm_strike, next_trading_day, occ_symbol
 from .events import EventLog
@@ -63,6 +63,30 @@ class Engine:
                     bot.restore(ev)
             for bot in self.bots:
                 bot.finish_restore()
+            self.apply_engine_cap(None, write=False)
+
+    # ---- engine-wide daily loss cap (Settings.daily_loss is shared by all bots) ----
+    def engine_pnl(self) -> float:
+        return round(sum(b.pnl_day for b in self.bots), 2)
+
+    def loss_room(self) -> float:
+        """Dollars the engine can still lose today: daily_loss + realized P&L of every bot (down $600 of $800 -> $200)."""
+        return round(self.s.daily_loss + self.engine_pnl(), 2)
+
+    def apply_engine_cap(self, time, write: bool = True) -> None:
+        """Once the engine's realized P&L reaches -daily_loss, lock every bot for the day. Open positions keep being
+        managed to their exits (and the 11:00 ET flatten); nothing new opens."""
+        if self.engine_pnl() > -self.s.daily_loss:
+            return
+        for bot in self.bots:
+            if bot.locked:   # already locked (its own DAILY_LOSS / DAILY_GOAL, or the engine cap)
+                continue
+            bot.locked = "ENGINE_DAILY_LOSS"
+            if bot.position is None and bot.pending is None:
+                bot._set(State.LOCKED, bot.locked, f"engine locked for the day, engine P&L {self.engine_pnl():+.0f}")
+                if write:
+                    bot._last_emitted = (bot.state, bot.reason_code)
+                    self._write(time, bot, [bot._snapshot_event("state_change", {}, None)])
 
     def _write(self, time, bot, events: list) -> None:
         for ev in events:
@@ -120,6 +144,16 @@ class Engine:
                                             "reason_text": f"risk gate refused entry: {why}", "inputs": inputs, "charge_pct": None, "contract": contract}])
                 self._write(bar.end, bot, bot.on_order_failed("BUY_OPEN", why))
                 return
+            p = bot.position
+            stop_dist = abs(p.entry_und - p.stop_und) if p is not None else None
+            est, room = self.risk.entry_risk(intent, quote, stop_dist), self.loss_room()
+            ok, why = self.risk.check_room(est, room)
+            if not ok:
+                self._write(bar.end, bot, [{"kind": "order_rejected", "state": bot.state.value, "reason_code": why,
+                                            "reason_text": f"engine loss cap: est. stop loss ${est if est is not None else '?'} vs ${room:.0f} room left",
+                                            "inputs": inputs, "charge_pct": None, "contract": contract, "est_risk": est, "loss_room": room}])
+                self._write(bar.end, bot, bot.on_order_failed("BUY_OPEN", why))
+                return
         elif quote is None:
             self._write(bar.end, bot, [{"kind": "order_rejected", "state": bot.state.value, "reason_code": "NO_QUOTE",
                                         "reason_text": "no quote to exit; retrying next bar", "inputs": inputs, "charge_pct": None, "contract": contract}])
@@ -139,6 +173,7 @@ class Engine:
             self._write(bar.end, bot, bot.on_order_failed(intent.kind, "NO_FILL"))
             return
         self._write(bar.end, bot, bot.on_fill(fill, inputs))
+        self.apply_engine_cap(bar.end)
 
     def check_stale(self, now, last_bar_wall: dict, open_quote_wall: dict | None = None) -> None:
         """Live only. Implemented in scalpcity/stale.py (plan Task 11)."""

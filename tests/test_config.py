@@ -7,9 +7,9 @@ from scalpcity.config import BOT_SPECS, TICKERS, BotSpec, Settings
 
 def test_defaults_match_the_spec():
     s = Settings()
-    assert (s.contracts, s.daily_goal, s.daily_loss, s.cooldown_s) == (10, 600.0, 100.0, 120)
+    assert (s.contracts, s.daily_goal, s.daily_loss, s.cooldown_s) == (10, 600.0, 800.0, 120)
     assert (s.stale_idle_s, s.stale_in_trade_s, s.flatten_after_stale_s) == (120, 30, 300)
-    assert s.last_entry == time(15, 30) and s.flat_by == time(15, 55)
+    assert s.last_entry == time(10, 59) and s.flat_by == time(11, 0)   # session ends 11:00 ET
 
 
 def test_nine_bots_worth_of_specs_and_windows():

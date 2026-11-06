@@ -4,7 +4,7 @@ from enum import Enum
 
 from .config import BotSpec, Settings
 from .indicators import IndicatorSet
-from .types import Bar, Fill, OrderIntent
+from .types import ET, Bar, Fill, OrderIntent
 
 
 class State(str, Enum):
@@ -81,7 +81,7 @@ class Bot:
 
     # ---- per bar ----
     def on_bar(self, bar: Bar, ind: IndicatorSet) -> BotOutput:
-        now = bar.end
+        now = bar.end.astimezone(ET)   # every session time (arm, last entry, 11:00 flatten) is US/Eastern bar time
         view = self.trigger.update(bar, ind)
         inputs = ind.as_dict()
         inputs["distance_atr"] = view.distance_atr
@@ -101,6 +101,8 @@ class Bot:
             self._set(State.PAUSED, "PAUSED", "paused by user; no new entries")
         elif self.stale:
             self._set(State.STALE, "STALE_DATA", "no fresh data")
+        elif t >= self.s.flat_by:
+            self._set(State.IDLE, "OUTSIDE_WINDOW", f"session over at {self.s.flat_by:%H:%M} ET; flat for the day")
         elif t < self.spec.arm:
             self._set(State.IDLE, "OUTSIDE_WINDOW", f"before {self.spec.arm:%H:%M}")
         elif t < self.spec.start:
@@ -144,13 +146,27 @@ class Bot:
         """Stop and target in the trigger's own ATR when it has one (5-minute EMA50), else the 1-minute ATR."""
         atr = (view.atr if view is not None and view.atr else None) or ind.atr.value or 0.0
         sgn = 1 if side == "CALL" else -1
-        self.position = Position(side, self.s.contracts, bar.close,
+        qty, sizing = self._qty(ind, view)
+        self.position = Position(side, qty, bar.close,
                                  stop_und=bar.close - sgn * self.s.stop_atr * atr,
                                  target_und=bar.close + sgn * self.s.target_atr * atr)
         self.pending = "entry"
         trig = f" ({view.signal} trigger, {self.spec.side} side)" if view is not None and view.signal else ""
-        self._set(State.FIRED, "SIGNAL", f"{side} signal at {bar.close:.2f}{trig}")
-        return [OrderIntent(self.bot_id, self.ticker, "BUY_OPEN", side, self.s.contracts, "signal", bar.close)]
+        self._set(State.FIRED, "SIGNAL", f"{side} signal at {bar.close:.2f}{trig}{sizing}")
+        return [OrderIntent(self.bot_id, self.ticker, "BUY_OPEN", side, qty, "signal", bar.close)]
+
+    def _qty(self, ind: IndicatorSet, view=None) -> tuple[int, str]:
+        """1-minute bots trade Settings.contracts. A bot stopping on its own (5-minute) ATR is shrunk so a 1-ATR stop risks
+        about what a full-size 1-minute ATR stop does: max(1, round(contracts * atr_1m / atr_5m)), never above contracts."""
+        own = view.atr if view is not None and view.atr else None
+        if not own:
+            return self.s.contracts, ""
+        atr1 = ind.atr.value
+        if not atr1 or atr1 <= 0:
+            q = self.s.ema50_fallback_contracts
+            return q, f", qty {q} (fallback: no 1m ATR)"
+        q = max(1, min(self.s.contracts, int(self.s.contracts * atr1 / own + 0.5)))
+        return q, f", qty {q} (1m ATR {atr1:.3f} / own ATR {own:.3f})"
 
     def _manage(self, bar: Bar, now: datetime, ind: IndicatorSet) -> list:
         p = self.position
@@ -158,7 +174,7 @@ class Bot:
         why = self.exit_reason
         if why:
             pass
-        elif now.time() >= self.s.flat_by:
+        elif now.astimezone(ET).time() >= self.s.flat_by:   # 11:00 ET session end
             why = "TIME"
         elif sgn * (bar.close - p.stop_und) <= 0:
             why = "STOP"

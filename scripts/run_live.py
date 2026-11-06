@@ -39,7 +39,7 @@ def main():
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--logdir", default="logs")
     ap.add_argument("--webull-dir", default="data/webull", help="recorded Webull bars, option snapshots and end-of-day bars per day; served by /history?day=")
-    ap.add_argument("--daily-loss", type=float, default=Settings.daily_loss, help="per-bot loss that locks the bot for the day (dollars)")
+    ap.add_argument("--daily-loss", type=float, default=Settings.daily_loss, help="ENGINE-WIDE realized loss cap for the day, all bots summed (dollars); entries whose est. stop loss exceeds the room left are skipped")
     ap.add_argument("--daily-goal", type=float, default=Settings.daily_goal, help="per-bot profit that locks the bot for the day (dollars)")
     args = ap.parse_args()
     load_env()

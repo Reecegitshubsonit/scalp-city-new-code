@@ -1,0 +1,218 @@
+"""2026-11-06 risk changes: 5-minute EMA50 sizing, engine-wide remaining-room loss cap, 11:00 ET flatten-and-stop."""
+from datetime import date, datetime, timezone
+from types import SimpleNamespace
+
+import pytest
+
+from scalpcity.bot import Bot, Position, State
+from scalpcity.broker import ModeledBroker
+from scalpcity.config import BOT_SPECS, Settings
+from scalpcity.engine import Engine
+from scalpcity.events import EventLog
+from scalpcity.indicators import IndicatorSet
+from scalpcity.triggers import Ema50Cross5m, RangeBreak, VwapCross
+from scalpcity.types import ET, Bar, Fill, OrderIntent, Quote
+
+from tests.test_bot import B, _enter, step, vwap_bot, warmed
+
+DAY = date(2026, 11, 9)
+LIVE = Settings(daily_loss=800)   # what run_newcode.sh passes
+
+
+def ind_with_atr(atr1):
+    return SimpleNamespace(atr=SimpleNamespace(value=atr1))
+
+
+# ---- A) 5-minute EMA50 contracts ----
+
+@pytest.mark.parametrize("atr1, atr5, qty", [
+    (1.0, 1.0, 10),     # same ATR -> full size
+    (1.0, 2.0, 5),
+    (1.0, 2.3, 4),      # 2026-11-06 QQQ-EMA50: 5m stop ~2.3x a 1m stop
+    (1.0, 2.5, 4),      # 10 / 2.5 = 4
+    (1.0, 4.0, 3),      # 2.5 rounds half up to 3
+    (1.0, 30.0, 1),     # never below 1
+    (2.0, 1.0, 10),     # never above Settings.contracts
+])
+def test_ema50_qty_matches_a_full_size_one_minute_stop(atr1, atr5, qty):
+    bot = Bot("QQQ", BOT_SPECS["ema50"], Ema50Cross5m(), LIVE)
+    got, _ = bot._qty(ind_with_atr(atr1), SimpleNamespace(atr=atr5))
+    assert got == qty
+
+
+def test_ema50_without_a_one_minute_atr_uses_the_fallback_of_4():
+    bot = Bot("QQQ", BOT_SPECS["ema50"], Ema50Cross5m(), LIVE)
+    assert bot._qty(ind_with_atr(None), SimpleNamespace(atr=2.5))[0] == 4 == LIVE.ema50_fallback_contracts
+
+
+@pytest.mark.parametrize("kind, trig", [("vwap", VwapCross), ("range", RangeBreak)])
+def test_vwap_and_range_stay_at_ten(kind, trig):
+    bot = Bot("QQQ", BOT_SPECS[kind], trig(), LIVE)
+    assert bot._qty(ind_with_atr(1.0), SimpleNamespace(atr=None))[0] == 10
+    assert bot._qty(ind_with_atr(1.0), None)[0] == 10
+
+
+def test_ema50_fire_puts_the_shrunk_qty_on_position_and_intent_and_keeps_1_and_2_atr_levels(mk):
+    bot = Bot("QQQ", BOT_SPECS["ema50"], Ema50Cross5m(), LIVE)
+    ind = warmed(mk)
+    view = SimpleNamespace(atr=ind.atr.value * 2.5, signal="CALL")
+    b = mk("QQQ", "10:10", 130.0)
+    [intent] = bot._fire(b, ind, "CALL", view)
+    assert intent.qty == bot.position.qty == 4
+    assert bot.position.stop_und == pytest.approx(130.0 - view.atr) and bot.position.target_und == pytest.approx(130.0 + 2 * view.atr)
+
+
+# ---- B) engine-wide loss cap ----
+
+class Quotes:
+    def __init__(self, bid=2.00, ask=2.02):
+        self.bid, self.ask = bid, ask
+
+    def get(self, contract, ts):
+        return Quote(contract, ts, self.bid, self.ask)
+
+
+def engine(tmp_path, quotes=None):
+    e = Engine(LIVE, EventLog(str(tmp_path), "live"), ModeledBroker(), quotes or Quotes())
+    e.start_session(DAY, {})
+    return e
+
+
+def at(h, m):
+    return datetime(2026, 11, 9, h, m, tzinfo=ET)
+
+
+def bar_for(ticker, h, m, close=100.0):
+    return Bar(ticker, at(h, m), close, close, close, close, 1000)
+
+
+def open_and_close(e, bot_id, entry, exit_, qty=10, h=9, m=40):
+    """Run a full trade through Engine._execute: buy at `entry`, sell at `exit_` (bid==ask for exact P&L)."""
+    bot, ind = e.by_id[bot_id], IndicatorSet()
+    e.quotes.bid = e.quotes.ask = entry
+    bot.position, bot.pending = Position("CALL", qty, 100.0, 99.9, 100.2), "entry"
+    e._execute(bot, OrderIntent(bot_id, bot.ticker, "BUY_OPEN", "CALL", qty, "signal", 100.0), bar_for(bot.ticker, h, m), ind)
+    assert bot.position.entry_price == entry
+    e.quotes.bid = e.quotes.ask = exit_
+    bot.pending = "exit"
+    e._execute(bot, OrderIntent(bot_id, bot.ticker, "SELL_CLOSE", "CALL", qty, "STOP", 99.9, contract=bot.position.contract),
+               bar_for(bot.ticker, h, m + 1), ind)
+    assert bot.position is None
+
+
+def test_two_bots_whose_losses_reach_800_lock_every_bot(tmp_path):
+    e = engine(tmp_path)
+    open_and_close(e, "IWM-RANGE", 2.00, 1.55)    # -450
+    assert e.loss_room() == 350 and not any(b.locked for b in e.bots)
+    open_and_close(e, "IWM-VWAP", 2.00, 1.65)     # -350 -> engine -800
+    assert e.engine_pnl() == -800 and e.loss_room() == 0
+    assert all(b.locked for b in e.bots)
+    assert {b.locked for b in e.bots} == {"ENGINE_DAILY_LOSS"}
+    assert all(b.state == State.LOCKED for b in e.bots)
+
+
+def test_one_loser_past_800_locks_every_bot(tmp_path):
+    e = engine(tmp_path)
+    open_and_close(e, "QQQ-EMA50", 2.00, 0.05)    # -1,950
+    assert e.by_id["QQQ-EMA50"].locked == "DAILY_LOSS"   # its own per-bot lock is kept
+    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots if b.bot_id != "QQQ-EMA50")
+
+
+def test_other_bots_up_keep_the_engine_open(tmp_path):
+    e = engine(tmp_path)
+    open_and_close(e, "SPY-VWAP", 2.00, 2.50)     # +500
+    open_and_close(e, "IWM-VWAP", 2.00, 1.30)     # -700 -> engine -200
+    assert e.loss_room() == 600 and not any(b.locked for b in e.bots)
+
+
+def fire(e, bot_id, stop_dist, qty=10):
+    bot = e.by_id[bot_id]
+    bot.position, bot.pending = Position("CALL", qty, 100.0, 100.0 - stop_dist, 100.0 + 2 * stop_dist), "entry"
+    e._execute(bot, OrderIntent(bot_id, bot.ticker, "BUY_OPEN", "CALL", qty, "signal", 100.0), bar_for(bot.ticker, 10, 5), IndicatorSet())
+    return bot
+
+
+def test_entry_whose_stop_risk_exceeds_remaining_room_is_skipped(tmp_path):
+    e = engine(tmp_path)
+    e.by_id["IWM-RANGE"].pnl_day = -600.0          # room $200
+    assert e.loss_room() == 200
+    bot = fire(e, "SPY-VWAP", 0.40)                 # 0.40 * 0.75 * 10 * 100 = $300 > $200
+    assert bot.position is None and bot.reason_code == "ORDER_FAILED"
+    rej = [ev for ev in e.log.read(DAY) if ev["kind"] == "order_rejected"][-1]
+    assert rej["reason_code"] == "LOSS_ROOM" and rej["est_risk"] == 300.0 and rej["loss_room"] == 200.0
+    bot = fire(e, "SPY-RANGE", 0.20)                # $150 <= $200 -> sent and filled
+    assert bot.position is not None and bot.position.entry_price is not None
+
+
+def test_entry_risk_never_exceeds_premium_and_unknown_risk_is_refused(tmp_path):
+    e = engine(tmp_path, Quotes(0.10, 0.11))
+    bot = fire(e, "QQQ-VWAP", 5.0)                  # $3,750 by ATR but only $110 of premium at risk
+    assert bot.position is not None
+    e2 = engine(tmp_path / "b")
+    bot = fire(e2, "QQQ-VWAP", 0.0)                 # no ATR -> cannot size the risk -> skip
+    assert bot.position is None
+    assert [ev for ev in e2.log.read(DAY) if ev["kind"] == "order_rejected"][-1]["reason_code"] == "RISK_UNKNOWN"
+
+
+def test_restart_rebuilds_the_engine_lock(tmp_path):
+    from tests.test_recover import ev, t
+    closed = [ev(1, t(9, 47), "IWM-RANGE", "trade_closed", "", pnl=-500.0, pnl_day=-500.0, trades=1),
+              ev(2, t(9, 50), "IWM-VWAP", "trade_closed", "", pnl=-300.0, pnl_day=-300.0, trades=1)]
+    e = Engine(LIVE, EventLog(str(tmp_path), "live"), ModeledBroker(), None)
+    e.start_session(date(2026, 10, 9), {})
+    e.recover(closed)
+    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots)
+
+
+# ---- C) 11:00 ET flatten and stop ----
+
+def signal_bars(bot, ind, mk, first):
+    """VWAP cross up on the third bar starting at `first` (HH:MM)."""
+    h, m = map(int, first.split(":"))
+    step(bot, ind, mk("QQQ", f"{h}:{m:02d}", B - 1.0))
+    step(bot, ind, mk("QQQ", f"{h}:{m + 1:02d}", B - 1.5))
+    return step(bot, ind, mk("QQQ", f"{h}:{m + 2:02d}", B + 5.0))
+
+
+def test_entry_on_the_bar_ending_1059_is_allowed(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    out = signal_bars(bot, ind, mk, "10:56")       # third bar 10:58-10:59
+    assert out.intents and out.intents[0].kind == "BUY_OPEN"
+
+
+def test_no_entry_at_or_after_1100_et(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    out = signal_bars(bot, ind, mk, "10:57")       # third bar ends 11:00:00 ET
+    assert not out.intents and bot.reason_code == "OUTSIDE_WINDOW"
+    bot2, ind2 = vwap_bot(), warmed(mk)
+    out = signal_bars(bot2, ind2, mk, "11:30")
+    assert not out.intents and bot2.position is None
+
+
+@pytest.mark.parametrize("kind", ["vwap", "ema50", "range"])
+def test_every_bot_kind_refuses_entries_after_1100(kind, mk):
+    bot = Bot("QQQ", BOT_SPECS[kind], {"vwap": VwapCross, "ema50": Ema50Cross5m, "range": RangeBreak}[kind](), LIVE)
+    view = SimpleNamespace(ready=True, signal="CALL", charge_pct=100.0, distance_atr=0.0, reason_code=None, atr=None)
+    ind = warmed(mk)
+    assert bot._evaluate_flat(mk("QQQ", "10:59", 130), mk("QQQ", "10:59", 130).end, ind, view) == []
+    assert bot.reason_code == "OUTSIDE_WINDOW"
+
+
+def test_position_open_at_1059_is_flattened_on_the_1100_bar_and_stays_flat(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    _enter(bot, ind, mk)
+    out = step(bot, ind, mk("QQQ", "10:58", B + 5.1))          # ends 10:59: still held
+    assert not out.intents and bot.state == State.MANAGING
+    out = step(bot, ind, mk("QQQ", "10:59", B + 5.1))          # ends 11:00 ET
+    assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_TIME"
+    bot.on_fill(Fill(bot.bot_id, "SELL_CLOSE", "QQQ261009C00105000", 10, 3.0, "modeled", mk("QQQ", "10:59", 1).end))
+    out = signal_bars(bot, ind, mk, "11:10")
+    assert not out.intents and bot.position is None
+
+
+def test_1100_cutoff_is_eastern_even_for_a_utc_stamped_bar(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    _enter(bot, ind, mk)
+    utc = mk("QQQ", "10:59", B + 5.1).ts.astimezone(timezone.utc)   # 15:59 UTC, i.e. 10:59 ET (EDT) start
+    out = step(bot, ind, Bar("QQQ", utc, B + 5.1, B + 5.1, B + 5.1, B + 5.1, 1000))
+    assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_TIME"
