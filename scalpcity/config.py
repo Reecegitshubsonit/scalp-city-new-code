@@ -15,6 +15,9 @@ class Settings:
     daily_goal: float = 600.0
     daily_loss: float = 800.0   # ENGINE-WIDE (live passes --daily-loss 800): the whole engine's realized loss cap for the session (all bots summed)
     cooldown_s: int = 120
+    # Tickers exempt from the daily_loss cap (2026-11-06, Reece): never locked by it and, on the new code, never
+    # refused for loss room. The daily_goal profit lock still applies to them.
+    loss_cap_exempt: tuple = ("QQQ",)
     # US/Eastern bar end times. No new entries from 11:00:00 ET (last entry on the bar ending 10:59). A trade already
     # open is NOT closed at 11:00: it runs to its stop, its target, or the 15:55 ET end-of-day flatten.
     last_entry: time = time(10, 59)

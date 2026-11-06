@@ -236,7 +236,7 @@ class Bot:
         self.cooldown_until = fill.ts + timedelta(seconds=self.s.cooldown_s)
         if self.pnl_day >= self.s.daily_goal:
             self.locked = "DAILY_GOAL"
-        elif self.pnl_day <= -self.s.daily_loss:
+        elif self.pnl_day <= -self.s.daily_loss and self.ticker not in self.s.loss_cap_exempt:
             self.locked = "DAILY_LOSS"
         if self.locked:
             self._set(State.LOCKED, self.locked, f"locked for the day, day P&L {self.pnl_day:+.0f}")
@@ -283,7 +283,7 @@ class Bot:
         self.pending = None
         if self.position is not None and self.position.entry_price is None:
             self.position = None   # entry order logged but never filled
-        self.locked = "DAILY_GOAL" if self.pnl_day >= self.s.daily_goal else "DAILY_LOSS" if self.pnl_day <= -self.s.daily_loss else None
+        self.locked = "DAILY_GOAL" if self.pnl_day >= self.s.daily_goal else "DAILY_LOSS" if self.pnl_day <= -self.s.daily_loss and self.ticker not in self.s.loss_cap_exempt else None
         if self.position is not None:
             self._set(State.MANAGING, "HOLDING", f"{self.position.right} recovered, stop {self.position.stop_und:.2f}, target {self.position.target_und:.2f}")
         elif self.locked:

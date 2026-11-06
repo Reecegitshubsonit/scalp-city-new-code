@@ -79,3 +79,12 @@ the whole engine, not $800 per bot.
   being managed to its stop/target/15:55 exit; nothing new opens.
 - Unchanged: the per-bot $600 goal lock, and a bot whose own P&L reaches -800
   still locks itself (`DAILY_LOSS`, stricter than the engine cap, never looser).
+
+### QQQ exempt from the $800 cap (2026-11-06, later)
+
+`Settings.loss_cap_exempt = ("QQQ",)`. QQQ bots are never refused for loss room
+(no `LOSS_ROOM` / `ENGINE_DAILY_LOSS` / `RISK_UNKNOWN` on entry), never locked by
+the engine cap, and never locked by their own -$800 (`DAILY_LOSS`). The $600
+`DAILY_GOAL` lock still applies to QQQ. The shared cap above now covers SPY and
+IWM only: their remaining room and lock use SPY + IWM realized P&L only, so a
+QQQ winner or loser neither uses up nor inflates it.

@@ -89,7 +89,7 @@ def test_fill_moves_to_managing_then_stop_exit_and_cooldown(mk):
     events = bot.on_fill(Fill(bot.bot_id, "SELL_CLOSE", "QQQ261009C00105000", 10, 2.00, "modeled", t))
     assert [e["kind"] for e in events] == ["fill", "trade_closed", "state_change"]
     assert bot.pnl_day == pytest.approx(-1000.0)            # (2.00-3.00)*10*100
-    assert bot.locked == "DAILY_LOSS" and bot.state == State.LOCKED
+    assert bot.locked is None and bot.state == State.COOLDOWN   # QQQ is exempt from the daily_loss lock (2026-11-06)
 
 
 def test_goal_locks_for_the_day(mk):

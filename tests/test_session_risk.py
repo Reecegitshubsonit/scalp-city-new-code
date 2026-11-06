@@ -106,16 +106,17 @@ def test_two_bots_whose_losses_reach_800_lock_every_bot(tmp_path):
     assert e.loss_room() == 350 and not any(b.locked for b in e.bots)
     open_and_close(e, "IWM-VWAP", 2.00, 1.65)     # -350 -> engine -800
     assert e.engine_pnl() == -800 and e.loss_room() == 0
-    assert all(b.locked for b in e.bots)
-    assert {b.locked for b in e.bots} == {"ENGINE_DAILY_LOSS"}
-    assert all(b.state == State.LOCKED for b in e.bots)
+    capped = [b for b in e.bots if b.ticker != "QQQ"]
+    assert {b.locked for b in capped} == {"ENGINE_DAILY_LOSS"} and all(b.state == State.LOCKED for b in capped)
+    assert all(b.locked is None for b in e.bots if b.ticker == "QQQ")   # QQQ keeps trading
 
 
-def test_one_loser_past_800_locks_every_bot(tmp_path):
+def test_one_loser_past_800_locks_every_spy_and_iwm_bot_but_not_qqq(tmp_path):
     e = engine(tmp_path)
-    open_and_close(e, "QQQ-EMA50", 2.00, 0.05)    # -1,950
-    assert e.by_id["QQQ-EMA50"].locked == "DAILY_LOSS"   # its own per-bot lock is kept
-    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots if b.bot_id != "QQQ-EMA50")
+    open_and_close(e, "SPY-EMA50", 2.00, 0.05)    # -1,950
+    assert e.by_id["SPY-EMA50"].locked == "DAILY_LOSS"   # its own per-bot lock is kept
+    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots if b.ticker != "QQQ" and b.bot_id != "SPY-EMA50")
+    assert all(b.locked is None for b in e.bots if b.ticker == "QQQ")
 
 
 def test_other_bots_up_keep_the_engine_open(tmp_path):
@@ -149,7 +150,7 @@ def test_entry_risk_never_exceeds_premium_and_unknown_risk_is_refused(tmp_path):
     bot = fire(e, "QQQ-VWAP", 5.0)                  # $3,750 by ATR but only $110 of premium at risk
     assert bot.position is not None
     e2 = engine(tmp_path / "b")
-    bot = fire(e2, "QQQ-VWAP", 0.0)                 # no ATR -> cannot size the risk -> skip
+    bot = fire(e2, "SPY-VWAP", 0.0)                 # no ATR -> cannot size the risk -> skip
     assert bot.position is None
     assert [ev for ev in e2.log.read(DAY) if ev["kind"] == "order_rejected"][-1]["reason_code"] == "RISK_UNKNOWN"
 
@@ -161,7 +162,41 @@ def test_restart_rebuilds_the_engine_lock(tmp_path):
     e = Engine(LIVE, EventLog(str(tmp_path), "live"), ModeledBroker(), None)
     e.start_session(date(2026, 10, 9), {})
     e.recover(closed)
-    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots)
+    assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots if b.ticker != "QQQ")
+    assert all(b.locked is None for b in e.bots if b.ticker == "QQQ")
+
+
+# ---- QQQ exempt from the $800 cap (2026-11-06, Reece) ----
+
+def test_qqq_entry_over_800_and_over_remaining_room_is_allowed_but_spy_and_iwm_are_skipped(tmp_path):
+    e = engine(tmp_path)
+    e.by_id["IWM-RANGE"].pnl_day = -600.0              # capped room $200
+    bot = fire(e, "QQQ-VWAP", 1.50)                     # 1.50 * 0.75 * 10 * 100 = $1,125 > $800 and > $200
+    assert bot.position is not None and bot.position.entry_price is not None
+    for bot_id in ("SPY-VWAP", "IWM-VWAP"):
+        bot = fire(e, bot_id, 1.50)
+        assert bot.position is None and bot.reason_code == "ORDER_FAILED"
+    assert [ev["reason_code"] for ev in e.log.read(DAY) if ev["kind"] == "order_rejected"] == ["LOSS_ROOM", "LOSS_ROOM"]
+
+
+def test_qqq_entry_allowed_even_after_spy_and_iwm_hit_the_cap(tmp_path):
+    e = engine(tmp_path)
+    open_and_close(e, "IWM-RANGE", 2.00, 1.10)          # -900 -> capped bots locked
+    assert e.loss_room() <= 0 and e.by_id["SPY-VWAP"].locked == "ENGINE_DAILY_LOSS"
+    assert e.by_id["QQQ-RANGE"].locked is None
+    bot = fire(e, "QQQ-RANGE", 1.50)
+    assert bot.position is not None
+
+
+def test_qqq_pnl_neither_uses_up_nor_inflates_spy_iwm_room(tmp_path):
+    e = engine(tmp_path)
+    open_and_close(e, "QQQ-EMA50", 2.00, 0.05)          # QQQ -1,950: no lock anywhere, room untouched
+    assert e.loss_room() == 800 and not any(b.locked for b in e.bots)
+    open_and_close(e, "QQQ-VWAP", 2.00, 5.00)           # QQQ +3,000 (goal lock for that bot only)
+    assert e.loss_room() == 800 and e.by_id["QQQ-VWAP"].locked == "DAILY_GOAL"
+    open_and_close(e, "IWM-VWAP", 2.00, 1.20)           # IWM -800 -> capped bots lock despite QQQ net +1,050
+    assert all(b.locked for b in e.bots if b.ticker != "QQQ")
+    assert e.by_id["QQQ-RANGE"].locked is None and e.by_id["QQQ-EMA50"].locked is None
 
 
 # ---- C) no new entries from 11:00 ET; open trades run to stop, target or 15:55 ET ----

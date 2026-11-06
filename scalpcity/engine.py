@@ -65,25 +65,29 @@ class Engine:
                 bot.finish_restore()
             self.apply_engine_cap(None, write=False)
 
-    # ---- engine-wide daily loss cap (Settings.daily_loss is shared by all bots) ----
+    # ---- engine-wide daily loss cap: Settings.daily_loss is shared by every bot NOT in Settings.loss_cap_exempt (QQQ) ----
+    def capped(self, bot) -> bool:
+        return bot.ticker not in self.s.loss_cap_exempt
+
     def engine_pnl(self) -> float:
-        return round(sum(b.pnl_day for b in self.bots), 2)
+        """Realized day P&L of the capped (non-QQQ) bots; QQQ neither uses up nor adds to their room."""
+        return round(sum(b.pnl_day for b in self.bots if self.capped(b)), 2)
 
     def loss_room(self) -> float:
-        """Dollars the engine can still lose today: daily_loss + realized P&L of every bot (down $600 of $800 -> $200)."""
+        """Dollars the capped bots can still lose today: daily_loss + their realized P&L (down $600 of $800 -> $200)."""
         return round(self.s.daily_loss + self.engine_pnl(), 2)
 
     def apply_engine_cap(self, time, write: bool = True) -> None:
-        """Once the engine's realized P&L reaches -daily_loss, lock every bot for the day. Open positions keep being
-        managed to their exits (stop, target or the 15:55 ET flatten); nothing new opens."""
+        """Once the capped bots' realized P&L reaches -daily_loss, lock every capped bot for the day (QQQ keeps trading).
+        Open positions keep being managed to their exits (stop, target or the 15:55 ET flatten); nothing new opens."""
         if self.engine_pnl() > -self.s.daily_loss:
             return
         for bot in self.bots:
-            if bot.locked:   # already locked (its own DAILY_LOSS / DAILY_GOAL, or the engine cap)
+            if bot.locked or not self.capped(bot):   # already locked (own DAILY_LOSS / DAILY_GOAL, or the cap), or exempt
                 continue
             bot.locked = "ENGINE_DAILY_LOSS"
             if bot.position is None and bot.pending is None:
-                bot._set(State.LOCKED, bot.locked, f"engine locked for the day, engine P&L {self.engine_pnl():+.0f}")
+                bot._set(State.LOCKED, bot.locked, f"engine locked for the day, capped P&L {self.engine_pnl():+.0f}")
                 if write:
                     bot._last_emitted = (bot.state, bot.reason_code)
                     self._write(time, bot, [bot._snapshot_event("state_change", {}, None)])
@@ -147,7 +151,7 @@ class Engine:
             p = bot.position
             stop_dist = abs(p.entry_und - p.stop_und) if p is not None else None
             est, room = self.risk.entry_risk(intent, quote, stop_dist), self.loss_room()
-            ok, why = self.risk.check_room(est, room)
+            ok, why = self.risk.check_room(est, room) if self.capped(bot) else (True, "")   # QQQ: no loss-room check
             if not ok:
                 self._write(bar.end, bot, [{"kind": "order_rejected", "state": bot.state.value, "reason_code": why,
                                             "reason_text": f"engine loss cap: est. stop loss ${est if est is not None else '?'} vs ${room:.0f} room left",
