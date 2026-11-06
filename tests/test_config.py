@@ -9,7 +9,7 @@ def test_defaults_match_the_spec():
     s = Settings()
     assert (s.contracts, s.daily_goal, s.daily_loss, s.cooldown_s) == (10, 600.0, 800.0, 120)
     assert (s.stale_idle_s, s.stale_in_trade_s, s.flatten_after_stale_s) == (120, 30, 300)
-    assert s.last_entry == time(10, 59) and s.flat_by == time(11, 0)   # session ends 11:00 ET
+    assert s.last_entry == time(10, 59) and s.no_entry_from == time(11, 0) and s.flat_by == time(15, 55)   # entries stop 11:00 ET, flatten 15:55 ET
 
 
 def test_nine_bots_worth_of_specs_and_windows():

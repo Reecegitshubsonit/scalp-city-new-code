@@ -41,16 +41,15 @@ option P&L obtainable at that delayed entry.
 
 ## Session window, sizing and loss cap (2026-11-06 afternoon)
 
-### 11:00 ET flatten and stop (every bot)
+### No new entries from 11:00 ET (every bot)
 
 All session times are US/Eastern bar end times (`bar.end` converted to
 America/New_York explicitly). `Settings.last_entry = 10:59` and
-`Settings.flat_by = 11:00`: the last possible entry is on the bar ending 10:59;
-nothing opens at or after 11:00:00 ET (reason `OUTSIDE_WINDOW`, "session over at
-11:00 ET"). Any position still open is closed with `EXIT_TIME` on the bar ending
-11:00 ET, through the same exit path the old 15:55 flatten used, and on every
-later bar if an exit has to retry. Bots stay flat for the rest of the day. The
-old 15:55 flatten is subsumed: any bar at or after 11:00 flattens.
+`Settings.no_entry_from = 11:00`: the last possible entry is on the bar ending
+10:59; nothing opens at or after 11:00:00 ET (reason `OUTSIDE_WINDOW`, "no new
+entries from 11:00 ET"). A trade already open is NOT closed at 11:00: it runs to
+its 1-ATR stop or 2-ATR target (bar.close), or the 15:55 ET end-of-day flatten
+(`Settings.flat_by = 15:55`, `EXIT_TIME`) if still open then.
 
 ### 5-minute EMA50 contracts
 
@@ -77,6 +76,6 @@ the whole engine, not $800 per bot.
   close-based overshoot and spread); ATM delta alone would be 0.5.
 - After any completed trade (and after a restart), if engine P&L <= -800 every
   bot is locked for the day (`ENGINE_DAILY_LOSS`). A bot still holding keeps
-  being managed to its stop/target/11:00 exit; nothing new opens.
+  being managed to its stop/target/15:55 exit; nothing new opens.
 - Unchanged: the per-bot $600 goal lock, and a bot whose own P&L reaches -800
   still locks itself (`DAILY_LOSS`, stricter than the engine cap, never looser).

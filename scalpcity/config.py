@@ -15,10 +15,11 @@ class Settings:
     daily_goal: float = 600.0
     daily_loss: float = 800.0   # ENGINE-WIDE (live passes --daily-loss 800): the whole engine's realized loss cap for the session (all bots summed)
     cooldown_s: int = 120
-    # Session ends 11:00 ET (US/Eastern; bar end times). Last entry on a bar ending 10:59; no entry at or after
-    # 11:00:00; any open position is flattened on the bar ending 11:00 and every bar after it.
+    # US/Eastern bar end times. No new entries from 11:00:00 ET (last entry on the bar ending 10:59). A trade already
+    # open is NOT closed at 11:00: it runs to its stop, its target, or the 15:55 ET end-of-day flatten.
     last_entry: time = time(10, 59)
-    flat_by: time = time(11, 0)
+    no_entry_from: time = time(11, 0)
+    flat_by: time = time(15, 55)
     stale_idle_s: int = 120
     stale_in_trade_s: int = 30
     flatten_after_stale_s: int = 300

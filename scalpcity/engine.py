@@ -75,7 +75,7 @@ class Engine:
 
     def apply_engine_cap(self, time, write: bool = True) -> None:
         """Once the engine's realized P&L reaches -daily_loss, lock every bot for the day. Open positions keep being
-        managed to their exits (and the 11:00 ET flatten); nothing new opens."""
+        managed to their exits (stop, target or the 15:55 ET flatten); nothing new opens."""
         if self.engine_pnl() > -self.s.daily_loss:
             return
         for bot in self.bots:

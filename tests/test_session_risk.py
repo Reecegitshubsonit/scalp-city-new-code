@@ -1,4 +1,4 @@
-"""2026-11-06 risk changes: 5-minute EMA50 sizing, engine-wide remaining-room loss cap, 11:00 ET flatten-and-stop."""
+"""2026-11-06 risk changes: 5-minute EMA50 sizing, engine-wide remaining-room loss cap, no new entries from 11:00 ET (open trades run to stop, target or 15:55 ET)."""
 from datetime import date, datetime, timezone
 from types import SimpleNamespace
 
@@ -164,7 +164,7 @@ def test_restart_rebuilds_the_engine_lock(tmp_path):
     assert all(b.locked == "ENGINE_DAILY_LOSS" for b in e.bots)
 
 
-# ---- C) 11:00 ET flatten and stop ----
+# ---- C) no new entries from 11:00 ET; open trades run to stop, target or 15:55 ET ----
 
 def signal_bars(bot, ind, mk, first):
     """VWAP cross up on the third bar starting at `first` (HH:MM)."""
@@ -198,21 +198,56 @@ def test_every_bot_kind_refuses_entries_after_1100(kind, mk):
     assert bot.reason_code == "OUTSIDE_WINDOW"
 
 
-def test_position_open_at_1059_is_flattened_on_the_1100_bar_and_stays_flat(mk):
+def _enter_at_1059(bot, ind, mk):
+    """Signal on the bar ending 10:59 ET (the last allowed entry), filled."""
+    out = signal_bars(bot, ind, mk, "10:56")
+    assert out.intents and out.intents[0].kind == "BUY_OPEN"
+    bot.on_fill(Fill(bot.bot_id, "BUY_OPEN", "QQQ261009C00130000", 10, 3.00, "modeled", mk("QQQ", "10:58", 1).end))
+    assert bot.state == State.MANAGING
+    return bot.position
+
+
+def test_position_open_at_1059_is_not_flattened_at_1100_or_after(mk):
     bot, ind = vwap_bot(), warmed(mk)
-    _enter(bot, ind, mk)
-    out = step(bot, ind, mk("QQQ", "10:58", B + 5.1))          # ends 10:59: still held
-    assert not out.intents and bot.state == State.MANAGING
-    out = step(bot, ind, mk("QQQ", "10:59", B + 5.1))          # ends 11:00 ET
+    p = _enter_at_1059(bot, ind, mk)
+    hold = p.entry_und + 0.1   # between stop and target
+    for hhmm in ("10:59", "11:00", "11:30", "13:00", "15:53"):   # bars ending 11:00, 11:01, 11:31, 13:01, 15:54 ET
+        out = step(bot, ind, mk("QQQ", hhmm, hold))
+        assert not out.intents and bot.position is p and bot.state == State.MANAGING and bot.reason_code == "HOLDING"
+
+
+def test_held_position_still_exits_on_its_stop_after_1100(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    p = _enter_at_1059(bot, ind, mk)
+    step(bot, ind, mk("QQQ", "10:59", p.entry_und + 0.1))
+    out = step(bot, ind, mk("QQQ", "11:20", p.stop_und - 0.01))
+    assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_STOP"
+
+
+def test_held_position_still_exits_on_its_target_after_1100(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    p = _enter_at_1059(bot, ind, mk)
+    step(bot, ind, mk("QQQ", "10:59", p.entry_und + 0.1))
+    out = step(bot, ind, mk("QQQ", "11:20", p.target_und + 0.01))
+    assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_TARGET"
+
+
+def test_held_position_is_flattened_at_1555_et_and_no_reentry(mk):
+    bot, ind = vwap_bot(), warmed(mk)
+    p = _enter_at_1059(bot, ind, mk)
+    step(bot, ind, mk("QQQ", "10:59", p.entry_und + 0.1))
+    out = step(bot, ind, mk("QQQ", "15:54", p.entry_und + 0.1))   # bar ends 15:55 ET
     assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_TIME"
-    bot.on_fill(Fill(bot.bot_id, "SELL_CLOSE", "QQQ261009C00105000", 10, 3.0, "modeled", mk("QQQ", "10:59", 1).end))
-    out = signal_bars(bot, ind, mk, "11:10")
-    assert not out.intents and bot.position is None
+    bot.on_fill(Fill(bot.bot_id, "SELL_CLOSE", p.contract, 10, 3.0, "modeled", mk("QQQ", "15:54", 1).end))
+    assert not step(bot, ind, mk("QQQ", "15:56", B + 9.0)).intents and bot.position is None
 
 
-def test_1100_cutoff_is_eastern_even_for_a_utc_stamped_bar(mk):
+def test_times_are_eastern_even_for_a_utc_stamped_bar(mk):
     bot, ind = vwap_bot(), warmed(mk)
-    _enter(bot, ind, mk)
-    utc = mk("QQQ", "10:59", B + 5.1).ts.astimezone(timezone.utc)   # 15:59 UTC, i.e. 10:59 ET (EDT) start
-    out = step(bot, ind, Bar("QQQ", utc, B + 5.1, B + 5.1, B + 5.1, B + 5.1, 1000))
+    p = _enter_at_1059(bot, ind, mk)
+    def utc(hhmm):
+        b = mk("QQQ", hhmm, p.entry_und + 0.1)
+        return Bar("QQQ", b.ts.astimezone(timezone.utc), b.open, b.high, b.low, b.close, b.volume)
+    assert not step(bot, ind, utc("10:59")).intents and bot.state == State.MANAGING     # 11:00 ET: no flatten
+    out = step(bot, ind, utc("15:54"))                                                  # 15:55 ET: flatten
     assert out.intents[0].kind == "SELL_CLOSE" and bot.reason_code == "EXIT_TIME"

@@ -101,8 +101,8 @@ class Bot:
             self._set(State.PAUSED, "PAUSED", "paused by user; no new entries")
         elif self.stale:
             self._set(State.STALE, "STALE_DATA", "no fresh data")
-        elif t >= self.s.flat_by:
-            self._set(State.IDLE, "OUTSIDE_WINDOW", f"session over at {self.s.flat_by:%H:%M} ET; flat for the day")
+        elif t >= self.s.no_entry_from:
+            self._set(State.IDLE, "OUTSIDE_WINDOW", f"no new entries from {self.s.no_entry_from:%H:%M} ET")
         elif t < self.spec.arm:
             self._set(State.IDLE, "OUTSIDE_WINDOW", f"before {self.spec.arm:%H:%M}")
         elif t < self.spec.start:
@@ -174,7 +174,7 @@ class Bot:
         why = self.exit_reason
         if why:
             pass
-        elif now.astimezone(ET).time() >= self.s.flat_by:   # 11:00 ET session end
+        elif now.astimezone(ET).time() >= self.s.flat_by:   # 15:55 ET end-of-day flatten
             why = "TIME"
         elif sgn * (bar.close - p.stop_und) <= 0:
             why = "STOP"
