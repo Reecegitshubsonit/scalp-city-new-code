@@ -24,7 +24,9 @@ def make_feed():
     prev = date(2026, 10, 7)
     bars = {}
     for tk, base in (("QQQ", 748.0), ("SPY", 774.0), ("IWM", 278.0)):
-        bars[tk] = synth_bars(tk, prev, base, drift=0.05) + synth_bars(tk, DAY, base + 20, drift=0.0, wiggle=0.6)
+        # Include trend-aligned breakouts, not only alternating fades: the trend rule
+        # now filters disagreements and failure memory rejects one-close pokes.
+        bars[tk] = synth_bars(tk, prev, base, drift=0.05) + synth_bars(tk, DAY, base + 20, drift=0.02, wiggle=0.6)
     return ReplayFeed(bars)
 
 

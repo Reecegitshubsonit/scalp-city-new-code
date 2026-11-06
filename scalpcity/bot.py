@@ -111,25 +111,34 @@ class Bot:
             self._set(State.IDLE, view.reason_code or "NOT_READY", "waiting for indicator or range")
         elif self.cooldown_until is not None and now < self.cooldown_until:
             self._set(State.COOLDOWN, "COOLDOWN", f"cooldown until {self.cooldown_until:%H:%M:%S}")
+        elif view.reason_code == "FAILED_BREAKOUT_HOLD":
+            self._set(State.IDLE, view.reason_code, view.reason_text or "failed-breakout retry needs confirmation")
         elif self.spec.chop_filter and ind.squeezed(self.s.squeeze_atr):
             self._set(State.IDLE, "CHOP_SQUEEZE", "EMA9 and EMA21 squeezed, skipping")
         elif view.signal:
-            return self._fire(bar, ind, self._side(view.signal, ind), view)
+            side = self._side(view.signal, ind)
+            if side is None:
+                e9, e21 = ind.ema9.value, ind.ema21.value
+                trend = "UNAVAILABLE" if e9 is None or e21 is None else ("CALL" if e9 > e21 else "PUT")
+                self._set(State.IDLE, "TREND_FILTER_SKIP",
+                          f"trend-filter skip: {view.signal} trigger vs 9/21 {trend} (EMA9={e9}, EMA21={e21})")
+                return []
+            return self._fire(bar, ind, side, view)
         elif view.charge_pct is not None and view.charge_pct >= self.s.forming_min_charge:
             self._set(State.FORMING, "WATCHING", f"{view.distance_atr} ATR from trigger, {view.charge_pct:.0f}% charged")
         else:
             self._set(State.IDLE, "WATCHING", f"{view.distance_atr} ATR from trigger" if view.distance_atr is not None else "watching")
         return []
 
-    def _side(self, signal: str, ind: IndicatorSet) -> str:
-        """Trigger decides when to enter; the spec's side rule decides which way.
-        "own": the trigger's direction. "trend": EMA9 vs EMA21 (the trigger's direction while they are unset or equal)."""
+    def _side(self, signal: str, ind: IndicatorSet) -> str | None:
+        """Own trades its cross unchanged. Trend requires 9/21 agreement; never flips/fades."""
         if self.spec.side == "own":
             return signal
         e9, e21 = ind.ema9.value, ind.ema21.value
-        if e9 is None or e21 is None or e9 == e21:
-            return signal
-        return "CALL" if e9 > e21 else "PUT"
+        if e9 is None or e21 is None:
+            return None  # agreement cannot be established without the indicators
+        trend = "CALL" if e9 > e21 else "PUT"
+        return signal if signal == trend else None
 
     def _fire(self, bar: Bar, ind: IndicatorSet, side: str, view=None) -> list:
         """Stop and target in the trigger's own ATR when it has one (5-minute EMA50), else the 1-minute ATR."""
@@ -153,6 +162,10 @@ class Bot:
             why = "TIME"
         elif sgn * (bar.close - p.stop_und) <= 0:
             why = "STOP"
+            # Stops remain close-based. Wicks only affect entry memory in the trigger.
+            remember = getattr(self.trigger, "on_trade_exit", None)
+            if remember is not None:
+                remember(p.right, "STOP")
         elif sgn * (bar.close - p.target_und) >= 0:
             why = "TARGET"
         if why:
@@ -197,6 +210,11 @@ class Bot:
                      "qty":fill.qty, "fill_price":fill.price, "fill_source":fill.source,
                      "fee":fee, "remaining_qty":p.qty, "pnl_day":self.pnl_day}]
         pnl = p.realized_pnl
+        # Clear a successful side only after the full target exit actually fills.
+        if self.exit_reason == "TARGET":
+            remember = getattr(self.trigger, "on_trade_exit", None)
+            if remember is not None:
+                remember(p.right, "TARGET")
         self.trades += 1
         self.position, self.pending, self.exit_reason = None, None, None
         self.cooldown_until = fill.ts + timedelta(seconds=self.s.cooldown_s)

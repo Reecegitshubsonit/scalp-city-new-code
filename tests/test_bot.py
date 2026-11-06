@@ -167,7 +167,7 @@ def test_stale_flag_sets_state_when_flat(mk):
     assert bot.set_stale(False)[0]["kind"] == "feed_fresh"
 
 
-def test_trend_side_trades_ema9_ema21_direction_against_the_cross(mk):
+def test_trend_filter_skips_when_ema9_ema21_disagrees_with_cross(mk):
     ind = IndicatorSet()
     for i in range(60):  # falling history: EMA9 well below EMA21
         c = 250.0 - 2.0 * i
@@ -178,8 +178,9 @@ def test_trend_side_trades_ema9_ema21_direction_against_the_cross(mk):
     step(bot, ind, mk("QQQ", "9:31", last - 1.5, volume=1000))
     out = step(bot, ind, mk("QQQ", "9:32", last + 1.0, volume=1000))  # closes up through VWAP
     assert ind.ema9.value < ind.ema21.value
-    assert [i.right for i in out.intents] == ["PUT"]
-    assert bot.position.stop_und > last + 1.0 > bot.position.target_und
+    assert out.intents == [] and bot.position is None
+    assert bot.reason_code == "TREND_FILTER_SKIP"
+    assert "CALL trigger vs 9/21 PUT" in bot.reason_text
 
 
 def test_trend_side_off_keeps_cross_direction(mk):

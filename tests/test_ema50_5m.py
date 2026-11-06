@@ -125,8 +125,8 @@ def falling_ind():
     return ind
 
 
-def test_own_side_trades_the_cross_even_against_the_trend_and_trend_side_fades_it():
-    for side, want in (("own", "CALL"), ("trend", "PUT")):
+def test_own_side_keeps_cross_and_trend_side_skips_disagreement():
+    for side, want in (("own", ["CALL"]), ("trend", [])):
         ind = falling_ind()
         last = 250.0 - 2.0 * 59
         bot = Bot("QQQ", replace(BOT_SPECS["vwap"], side=side, chop_filter=False), VwapCross(1.0), S)
@@ -135,8 +135,11 @@ def test_own_side_trades_the_cross_even_against_the_trend_and_trend_side_fades_i
             ind.update(b)
             out = bot.on_bar(b, ind)
         assert ind.ema9.value < ind.ema21.value
-        assert [i.right for i in out.intents] == [want], side
-        assert f"{side} side" in bot.reason_text and "CALL trigger" in bot.reason_text
+        assert [i.right for i in out.intents] == want, side
+        if side == "own":
+            assert "own side" in bot.reason_text and "CALL trigger" in bot.reason_text
+        else:
+            assert bot.reason_code == "TREND_FILTER_SKIP"
 
 
 def ema50_session(start_h=9, start_m=30, minutes=40, cross_at=None):

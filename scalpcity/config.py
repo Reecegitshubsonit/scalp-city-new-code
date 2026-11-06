@@ -4,8 +4,8 @@ from datetime import time
 TICKERS = ("QQQ", "SPY", "IWM")
 
 # Which way a bot trades when its trigger fires. Every BotSpec must name one; there is no global switch.
-#   "trend": EMA9 vs EMA21 picks CALL/PUT, so the bot can trade against its own trigger (fade it)
-#   "own":   the trigger's own direction (cross up = CALL, cross down = PUT)
+#   "trend": require EMA9/EMA21 agreement with the trigger; otherwise skip (never flip/fade)
+#   "own":   the trigger's own direction (cross up = CALL, cross down = PUT), exempt from the trend filter
 SIDE_RULES = ("trend", "own")
 
 

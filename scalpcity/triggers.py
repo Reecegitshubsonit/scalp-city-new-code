@@ -13,11 +13,63 @@ class TriggerView:
     reason_code: str | None = None  # why not ready: WARMING_UP / RANGE_FORMING / NO_RANGE
     ready: bool = True
     atr: float | None = None  # ATR the trigger works in, used for stop/target; None = the 1-minute ATR
+    reason_text: str | None = None
 
 
 def charge(dist_atr: float, range_atr: float) -> float:
     """0-100: 100 at the trigger, 0 at range_atr ATR away. 0.6 ATR with range 1.0 -> 40."""
     return round(max(0.0, min(1.0, 1 - dist_atr / range_atr)) * 100, 1)
+
+
+@dataclass
+class _RetrySide:
+    failed: bool = False
+    armed: bool = False
+    closes: int = 0
+    non_signal: bool = False
+
+
+class _BreakoutMemory:
+    """Session-local, independent CALL/PUT failures. Only a target or new session clears failure.
+
+    A rejection/stop needs a return to the non-signal side before counting two closes.
+    Confirmation consumes the arm, so remaining outside never repeatedly fires entries.
+    """
+
+    def __init__(self):
+        self.sides = {side: _RetrySide() for side in ("CALL", "PUT")}
+
+    def fail(self, side):
+        state = self.sides[side]
+        state.failed, state.armed, state.closes = True, state.non_signal, 0
+
+    def clear(self, side):
+        state = self.sides[side]
+        self.sides[side] = _RetrySide(non_signal=state.non_signal)
+
+    def observe(self, side, *, beyond, non_signal, rejection, fresh):
+        state = self.sides[side]
+        state.non_signal = non_signal
+        if rejection:
+            self.fail(side)
+        if not state.failed:
+            return fresh, None
+        if non_signal:
+            state.armed, state.closes = True, 0
+        elif not beyond:
+            state.closes = 0
+        elif state.armed:
+            state.closes += 1
+            if state.closes == 2:
+                state.armed, state.closes = False, 0
+                return True, None
+        if beyond:
+            text = (f"{side} failed-breakout retry blocked: {state.closes}/2 consecutive closes beyond level"
+                    if state.armed else f"{side} failed-breakout retry blocked: return to non-signal side to re-arm")
+            return False, text
+        if rejection:
+            return False, f"{side} wick rejection: marked failed; next attempt needs re-arm and two closes"
+        return False, None
 
 
 class _LevelCross:
@@ -54,8 +106,43 @@ class _LevelCross:
 class VwapCross(_LevelCross):
     name = "vwap"
 
+    def __init__(self, charge_range_atr: float = 1.0):
+        super().__init__(charge_range_atr)
+        self.new_session()
+
+    def new_session(self):
+        super().new_session()
+        self.memory = _BreakoutMemory()
+
+    def on_trade_exit(self, side, reason):
+        if reason == "STOP":
+            self.memory.fail(side)
+        elif reason == "TARGET":
+            self.memory.clear(side)
+
     def level(self, ind):
         return ind.vwap.value
+
+    def update(self, bar, ind):
+        view = super().update(bar, ind)
+        lvl = self.level(ind)
+        if lvl is None:
+            return view
+        signal, reason = None, None
+        for side in ("CALL", "PUT"):
+            beyond = bar.close > lvl if side == "CALL" else bar.close < lvl
+            # VWAP moves: compare each close with that bar's VWAP, not a frozen entry VWAP.
+            non_signal = bar.close <= lvl if side == "CALL" else bar.close >= lvl
+            rejection = (bar.high > lvl if side == "CALL" else bar.low < lvl) and non_signal
+            fire, blocked = self.memory.observe(side, beyond=beyond, non_signal=non_signal,
+                                                rejection=rejection, fresh=view.signal == side)
+            if fire:
+                signal = side
+            reason = blocked or reason
+        return TriggerView(signal=signal, charge_pct=100.0 if signal else view.charge_pct,
+                           distance_atr=view.distance_atr,
+                           reason_code="FAILED_BREAKOUT_HOLD" if reason and not signal else None,
+                           reason_text=reason if not signal else None)
 
 
 class Ema50Cross(_LevelCross):
@@ -66,7 +153,12 @@ class Ema50Cross(_LevelCross):
 
 
 class RangeBreak:
-    """First-15-minute range (bars starting 9:30..9:44). Signal on a close that moves from inside to outside."""
+    """First-15-minute range (bars starting 9:30..9:44).
+
+    An unfailed side keeps the inside-to-outside rule. A failed side instead fires on
+    its second consecutive outside close after returning inside, even though the
+    previous close is now outside (and the original crossing rule would miss it).
+    """
     name = "range"
 
     def __init__(self, charge_range_atr: float = 1.0, start: time = time(9, 30), end: time = time(9, 45)):
@@ -77,6 +169,13 @@ class RangeBreak:
         self.hi: float | None = None
         self.lo: float | None = None
         self.prev_close: float | None = None
+        self.memory = _BreakoutMemory()
+
+    def on_trade_exit(self, side, reason):
+        if reason == "STOP":
+            self.memory.fail(side)
+        elif reason == "TARGET":
+            self.memory.clear(side)
 
     def update(self, bar: Bar, ind: IndicatorSet) -> TriggerView:
         t = bar.ts.time()
@@ -90,18 +189,25 @@ class RangeBreak:
         atr = ind.atr.value or 0.0
         inside = self.lo <= bar.close <= self.hi
         prev_inside = self.prev_close is not None and self.lo <= self.prev_close <= self.hi
-        sig = None
-        if prev_inside and bar.close > self.hi:
-            sig = "CALL"
-        elif prev_inside and bar.close < self.lo:
-            sig = "PUT"
+        sig, reason = None, None
+        for side, beyond, rejection in (
+            ("CALL", bar.close > self.hi, bar.high > self.hi and inside),
+            ("PUT", bar.close < self.lo, bar.low < self.lo and inside),
+        ):
+            fire, blocked = self.memory.observe(side, beyond=beyond, non_signal=inside,
+                                                rejection=rejection, fresh=prev_inside and beyond)
+            if fire:
+                sig = side
+            reason = blocked or reason
         self.prev_close = bar.close
         if inside:
             dist = min(self.hi - bar.close, bar.close - self.lo) / atr if atr > 0 else 0.0
             pct = charge(dist, self.rng)
         else:
             dist, pct = 0.0, (100.0 if sig else 0.0)
-        return TriggerView(signal=sig, charge_pct=pct, distance_atr=round(dist, 3))
+        return TriggerView(signal=sig, charge_pct=pct, distance_atr=round(dist, 3),
+                           reason_code="FAILED_BREAKOUT_HOLD" if reason and not sig else None,
+                           reason_text=reason if not sig else None)
 
 
 class FiveMinBars:
