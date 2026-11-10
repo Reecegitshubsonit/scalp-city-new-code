@@ -251,6 +251,9 @@ class Bot:
 
     def on_order_failed(self, kind: str, reason: str) -> list:
         if kind == "BUY_OPEN":
+            missed = getattr(self.trigger, "on_entry_unfilled", None)   # range trigger only: retry while still outside
+            if missed is not None and self.position is not None:
+                missed(self.position.right)
             self.position, self.pending = None, None
             self._set(State.IDLE, "ORDER_FAILED", f"entry not filled: {reason}")
         else:

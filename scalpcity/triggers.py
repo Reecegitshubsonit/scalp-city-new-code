@@ -170,12 +170,18 @@ class RangeBreak:
         self.lo: float | None = None
         self.prev_close: float | None = None
         self.memory = _BreakoutMemory()
+        self.retry = {"CALL": False, "PUT": False}   # entry order did not fill: refire while still outside
 
     def on_trade_exit(self, side, reason):
         if reason == "STOP":
             self.memory.fail(side)
         elif reason == "TARGET":
             self.memory.clear(side)
+
+    def on_entry_unfilled(self, side):
+        """A missed fill neither clears nor re-fails the side. Fire again on the next close still beyond the level."""
+        if side in self.retry:
+            self.retry[side] = True
 
     def update(self, bar: Bar, ind: IndicatorSet) -> TriggerView:
         t = bar.ts.time()
@@ -196,6 +202,10 @@ class RangeBreak:
         ):
             fire, blocked = self.memory.observe(side, beyond=beyond, non_signal=inside,
                                                 rejection=rejection, fresh=prev_inside and beyond)
+            if self.retry[side]:
+                self.retry[side] = False   # one retry per missed fill; the bot re-arms it if that order misses too
+                if beyond:
+                    fire, blocked = True, None
             if fire:
                 sig = side
             reason = blocked or reason
