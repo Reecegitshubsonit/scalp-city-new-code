@@ -11,7 +11,7 @@ import uvicorn
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scalpcity.broker import ModeledBroker
-from scalpcity.config import TICKERS, Settings
+from scalpcity.config import ENGINE_NAME, TICKERS, Settings
 from scalpcity.engine import Engine
 from scalpcity.events import EventLog
 from scalpcity.guard import SANDBOX_HOST, assert_paper_only
@@ -67,7 +67,9 @@ def main():
     recorder.start()
     app = create_app(log, lambda: datetime.now(ET).date(), engine.set_paused, [b.bot_id for b in engine.bots], history_fn=store.get, webull_dir=args.webull_dir)
     threading.Thread(target=uvicorn.run, args=(app,), kwargs=dict(host="127.0.0.1", port=args.port, log_level="warning"), daemon=True).start()
-    print(f"Live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
+    trail = f"trailing stop {settings.trail_atr:g} ATR armed at +{settings.trail_arm_atr:g} ATR, no target" if settings.trail_enabled else "1 ATR stop / 2 ATR target"
+    print(f"{ENGINE_NAME}: exits = {trail}", flush=True)
+    print(f"{ENGINE_NAME} live paper run ({'MODELED fills, no broker orders' if args.modeled else 'Webull sandbox orders'}). Dashboard: http://127.0.0.1:{args.port}   Ctrl+C to stop.", flush=True)
     quote_wall: dict[str, datetime] = {}
     while True:
         try:

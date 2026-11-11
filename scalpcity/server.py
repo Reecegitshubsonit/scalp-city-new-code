@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+from .config import ENGINE_NAME
 from .events import EventLog, build_snapshot
 import re
 
@@ -43,7 +44,7 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
         hub.loop = asyncio.get_running_loop()
         yield
 
-    app = FastAPI(title="Scalp City", lifespan=lifespan)
+    app = FastAPI(title=ENGINE_NAME, lifespan=lifespan)
     log.listeners.append(hub.push)
 
     @app.get("/snapshot")
@@ -53,6 +54,7 @@ def create_app(log: EventLog, day_fn: Callable, set_paused: Callable[[str, bool,
             snap["bots"].setdefault(bot, {"bot": bot, "ticker": bot.split("-")[0], "state": "idle", "reason_code": "NO_DATA",
                                           "reason_text": "no events yet", "charge_pct": None, "inputs": {}, "time": None,
                                           "pnl_day": 0.0, "trades": 0, "paused": False})
+        snap["name"] = ENGINE_NAME
         return snap
 
     @app.get("/history")

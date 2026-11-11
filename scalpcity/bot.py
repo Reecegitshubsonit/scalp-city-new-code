@@ -31,6 +31,33 @@ class Position:
     opened_at: datetime | None = None
     entry_qty: int = 0
     realized_pnl: float = 0.0
+    # trailing stop (Settings.trail_enabled); entry_atr = 1-minute ATR on the signal bar, the arming yardstick
+    trail: bool = False
+    entry_atr: float | None = None
+    best_close: float | None = None
+    trail_armed: bool = False
+    trail_stop: float | None = None
+    signal_at: datetime | None = None   # signal bar end; trail state is rebuilt from bars ending after it on restart
+    exit_win: bool | None = None        # TRAIL_STOP only: close at/above entry -> clears breakout memory like a target
+
+
+def update_trail(p: "Position", close: float, atr: float | None, s: Settings) -> None:
+    """One bar close through the chandelier trail (same order as the backtest: best close, arm, then level)."""
+    sgn = 1 if p.right == "CALL" else -1
+    best = p.entry_und if p.best_close is None else p.best_close
+    p.best_close = max(best, close) if sgn > 0 else min(best, close)
+    if not p.trail_armed and sgn * (close - p.entry_und) >= s.trail_arm_atr * (p.entry_atr or 0.0):
+        p.trail_armed = True
+    if p.trail_armed and atr:
+        lvl = p.best_close - sgn * s.trail_atr * atr
+        p.trail_stop = lvl if p.trail_stop is None else (max(p.trail_stop, lvl) if sgn > 0 else min(p.trail_stop, lvl))
+
+
+def effective_stop(p: "Position") -> float:
+    """Initial stop, tightened by the trail once armed; never looser than the initial stop."""
+    if not p.trail or p.trail_stop is None:
+        return p.stop_und
+    return max(p.stop_und, p.trail_stop) if p.right == "CALL" else min(p.stop_und, p.trail_stop)
 
 
 @dataclass
@@ -149,7 +176,8 @@ class Bot:
         qty, sizing = self._qty(ind, view)
         self.position = Position(side, qty, bar.close,
                                  stop_und=bar.close - sgn * self.s.stop_atr * atr,
-                                 target_und=bar.close + sgn * self.s.target_atr * atr)
+                                 target_und=bar.close + sgn * self.s.target_atr * atr,
+                                 trail=self.s.trail_enabled, entry_atr=ind.atr.value or atr, signal_at=bar.end)
         self.pending = "entry"
         trig = f" ({view.signal} trigger, {self.spec.side} side)" if view is not None and view.signal else ""
         self._set(State.FIRED, "SIGNAL", f"{side} signal at {bar.close:.2f}{trig}{sizing}")
@@ -172,25 +200,40 @@ class Bot:
         p = self.position
         sgn = 1 if p.right == "CALL" else -1
         why = self.exit_reason
+        if p.trail and not why:
+            update_trail(p, bar.close, ind.atr.value, self.s)
+        stop = effective_stop(p)
         if why:
             pass
         elif now.astimezone(ET).time() >= self.s.flat_by:   # 15:55 ET end-of-day flatten
             why = "TIME"
-        elif sgn * (bar.close - p.stop_und) <= 0:
-            why = "STOP"
-            # Stops remain close-based. Wicks only affect entry memory in the trigger.
+        elif sgn * (bar.close - stop) <= 0:
+            why = "TRAIL_STOP" if stop != p.stop_und else "STOP"
+            p.exit_win = why == "TRAIL_STOP" and sgn * (bar.close - p.entry_und) >= 0
+            # Stops remain close-based. Wicks only affect entry memory in the trigger. A trail stop that closes at or past
+            # entry counts as a win (memory cleared after the fill, like a target); one below entry fails the side now.
             remember = getattr(self.trigger, "on_trade_exit", None)
-            if remember is not None:
+            if remember is not None and not p.exit_win:
                 remember(p.right, "STOP")
-        elif sgn * (bar.close - p.target_und) >= 0:
+        elif not p.trail and sgn * (bar.close - p.target_und) >= 0:
             why = "TARGET"
         if why:
             self.exit_reason = why
             self.pending = "exit"
             self._set(State.EXITING, f"EXIT_{why}", f"closing {p.right}: {why.lower()}")
             return [OrderIntent(self.bot_id, self.ticker, "SELL_CLOSE", p.right, p.qty, why, bar.close, contract=p.contract)]
-        self._set(State.MANAGING, "HOLDING", f"{p.right} held, stop {p.stop_und:.2f}, target {p.target_und:.2f}")
+        self._set(State.MANAGING, "HOLDING", self._holding_text(p))
         return []
+
+    def _holding_text(self, p: Position, verb: str = "held") -> str:
+        if not p.trail:
+            return f"{p.right} {verb}, stop {p.stop_und:.2f}, target {p.target_und:.2f}"
+        if p.trail_armed and p.trail_stop is not None:
+            return (f"{p.right} {verb}, stop {effective_stop(p):.2f} (trail {p.trail_stop:.2f} = best close "
+                    f"{p.best_close:.2f} {'-' if p.right == 'CALL' else '+'} {self.s.trail_atr:g} ATR), no target")
+        sgn = 1 if p.right == "CALL" else -1
+        arm = p.entry_und + sgn * self.s.trail_arm_atr * (p.entry_atr or 0.0)
+        return f"{p.right} {verb}, stop {p.stop_und:.2f}, trail arms on a close {'>=' if sgn > 0 else '<='} {arm:.2f}, no target"
 
     # ---- broker results ----
     def on_fill(self, fill: Fill, inputs: dict | None = None, terminal: bool = True, fee: float = 0.0) -> list:
@@ -227,7 +270,7 @@ class Bot:
                      "fee":fee, "remaining_qty":p.qty, "pnl_day":self.pnl_day}]
         pnl = p.realized_pnl
         # Clear a successful side only after the full target exit actually fills.
-        if self.exit_reason == "TARGET":
+        if self.exit_reason == "TARGET" or (self.exit_reason == "TRAIL_STOP" and p.exit_win):
             remember = getattr(self.trigger, "on_trade_exit", None)
             if remember is not None:
                 remember(p.right, "TARGET")
@@ -272,7 +315,14 @@ class Bot:
             stop, target = ev.get("stop_und"), ev.get("target_und")   # logged since the 5-minute EMA50; older logs: 1-minute ATR
             self.position = Position("CALL" if sgn == 1 else "PUT", ev["qty"], price,
                                      stop_und=stop if stop is not None else price - sgn * self.s.stop_atr * atr,
-                                     target_und=target if target is not None else price + sgn * self.s.target_atr * atr)
+                                     target_und=target if target is not None else price + sgn * self.s.target_atr * atr,
+                                     trail=bool(ev.get("trail", self.s.trail_enabled)),
+                                     entry_atr=ev.get("entry_atr") or atr or None, signal_at=when)
+        elif kind == "tick" and self.position is not None and self.position.trail and ev.get("best_close") is not None:
+            # fallback trail state from the last logged tick; Engine.recover then rebuilds it from today's bars
+            p = self.position
+            p.best_close, p.trail_stop = ev["best_close"], ev.get("trail_stop")
+            p.trail_armed = p.trail_stop is not None
         elif kind == "fill" and code == "ENTRY_FILL" and self.position is not None:
             self.position.contract, self.position.entry_price, self.position.opened_at = ev["contract"], ev["fill_price"], when
         elif kind == "state_change" and code == "ORDER_FAILED" and self.position is not None and self.position.entry_price is None:
@@ -288,7 +338,7 @@ class Bot:
             self.position = None   # entry order logged but never filled
         self.locked = "DAILY_GOAL" if self.pnl_day >= self.s.daily_goal else "DAILY_LOSS" if self.pnl_day <= -self.s.daily_loss and self.ticker not in self.s.loss_cap_exempt else None
         if self.position is not None:
-            self._set(State.MANAGING, "HOLDING", f"{self.position.right} recovered, stop {self.position.stop_und:.2f}, target {self.position.target_und:.2f}")
+            self._set(State.MANAGING, "HOLDING", self._holding_text(self.position, "recovered"))
         elif self.locked:
             self._set(State.LOCKED, self.locked, f"locked for the day, day P&L {self.pnl_day:+.0f}")
         self._last_emitted = None

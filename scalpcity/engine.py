@@ -1,7 +1,7 @@
 import threading
 from datetime import date
 
-from .bot import Bot, State
+from .bot import Bot, State, update_trail
 from .config import BOT_SPECS, TICKERS, Settings
 from .contracts import atm_strike, next_trading_day, occ_symbol
 from .events import EventLog
@@ -28,12 +28,14 @@ class Engine:
         self.stale: set[str] = set()
         self.halted = False
         self.day: date | None = None
+        self.today_bars: dict[str, list] = {}   # (bar, 1-minute ATR after it) from catch_up, to rebuild trail state on restart
         # Live: the bar loop, the stale checks and the pause endpoint all touch the engine from different threads.
         self.lock = threading.RLock()
 
     def start_session(self, day: date, warm_bars: dict) -> None:
         with self.lock:
             self.day = day
+            self.today_bars = {}
             for ticker in self.ind:
                 self.ind[ticker] = IndicatorSet(self.s.atr_period)
                 for bar in warm_bars.get(ticker, []):
@@ -50,6 +52,7 @@ class Engine:
             for bar in sorted(bars, key=lambda b: (b.ts, b.ticker)):
                 ind = self.ind[bar.ticker]
                 ind.update(bar)
+                self.today_bars.setdefault(bar.ticker, []).append((bar, ind.atr.value))
                 for bot in self.bots:
                     if bot.ticker == bar.ticker:
                         bot.trigger.update(bar, ind)
@@ -62,8 +65,22 @@ class Engine:
                 if bot is not None:
                     bot.restore(ev)
             for bot in self.bots:
+                self._rebuild_trail(bot)
                 bot.finish_restore()
             self.apply_engine_cap(None, write=False)
+
+    def _rebuild_trail(self, bot) -> None:
+        """Recompute best close / armed / trail level of a recovered trailing position from today's bars that closed
+        after its signal bar (the same bars the live engine managed it on). Keeps the logged state if no bars."""
+        p = bot.position
+        if p is None or not p.trail or p.signal_at is None:
+            return
+        bars = [(b, atr) for b, atr in self.today_bars.get(bot.ticker, []) if b.ts >= p.signal_at]
+        if not bars:
+            return
+        p.best_close, p.trail_armed, p.trail_stop = None, False, None
+        for b, atr in bars:
+            update_trail(p, b.close, atr, self.s)
 
     # ---- engine-wide daily loss cap: Settings.daily_loss is shared by every bot NOT in Settings.loss_cap_exempt (QQQ) ----
     def capped(self, bot) -> bool:
@@ -122,6 +139,9 @@ class Engine:
             return {}
         held = {"side": p.right, "contract": p.contract, "qty": p.qty, "entry_price": p.entry_price,
                 "entry_und": round(p.entry_und, 2), "stop_und": round(p.stop_und, 2), "target_und": round(p.target_und, 2)}
+        if p.trail:
+            held.update(trail=True, best_close=None if p.best_close is None else round(p.best_close, 4),
+                        trail_stop=None if p.trail_stop is None else round(p.trail_stop, 4))
         try:
             quote = self.quotes.get(p.contract, bar.end)
         except Exception:   # a quote error must not stop the bar: the tick goes out without open P&L
@@ -165,7 +185,8 @@ class Engine:
             return
         levels = {}
         if intent.kind == "BUY_OPEN" and bot.position is not None:   # so a restart rebuilds the same stop/target
-            levels = {"stop_und": round(bot.position.stop_und, 4), "target_und": round(bot.position.target_und, 4)}
+            levels = {"stop_und": round(bot.position.stop_und, 4), "target_und": round(bot.position.target_und, 4),
+                      "trail": bot.position.trail, "entry_atr": bot.position.entry_atr}
         self._write(bar.end, bot, [{"kind": "order_sent", "state": bot.state.value, "reason_code": intent.kind,
                                     "reason_text": f"{intent.kind} {intent.qty} {contract} bid/ask {quote.bid}/{quote.ask}",
                                     "inputs": inputs, "charge_pct": None, "contract": contract, "qty": intent.qty, **levels}])

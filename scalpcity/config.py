@@ -3,6 +3,9 @@ from datetime import time
 
 TICKERS = ("QQQ", "SPY", "IWM")
 
+# Display name of this engine (~/scalp-city, port 8010): dashboard, API and startup banner.
+ENGINE_NAME = "Scalp City V2"
+
 # Which way a bot trades when its trigger fires. Every BotSpec must name one; there is no global switch.
 #   "trend": require EMA9/EMA21 agreement with the trigger; otherwise skip (never flip/fade)
 #   "own":   the trigger's own direction (cross up = CALL, cross down = PUT), exempt from the trend filter
@@ -28,7 +31,14 @@ class Settings:
     flatten_after_stale_s: int = 300
     squeeze_atr: float = 0.15
     stop_atr: float = 1.0
-    target_atr: float = 2.0
+    target_atr: float = 2.0   # used only when trail_enabled is False
+    # Scalp City V2 exit (2026-11-11, Reece; backtest cell none_trail1.5_arm0.5 in /workspace/exit-grid on the box):
+    # keep the 1 ATR initial stop, NO fixed target. Once a bar close is trail_arm_atr x the 1-minute ATR at entry in the
+    # trade's favor (puts mirrored), the stop trails trail_atr x the CURRENT 1-minute ATR behind the best close since
+    # entry, ratchets only in the trade's favor and never sits looser than the initial stop. Checked on bar closes.
+    trail_enabled: bool = True
+    trail_atr: float = 1.5
+    trail_arm_atr: float = 0.5
     charge_range_atr: float = 1.0
     forming_min_charge: float = 30.0
     atr_period: int = 14

@@ -22,8 +22,8 @@ class Quotes:
         return self.quote
 
 
-def holding_engine(tmp_path, quote):
-    e = Engine(Settings(), EventLog(str(tmp_path), "live"), ModeledBroker(), Quotes(quote))
+def holding_engine(tmp_path, quote, **kw):
+    e = Engine(Settings(**kw), EventLog(str(tmp_path), "live"), ModeledBroker(), Quotes(quote))
     e.start_session(DAY, {})
     e.recover(OPEN)   # SPY-VWAP holds 10 puts bought at 1.96, entry 776.20, stop 776.60, target 775.40
     return e
@@ -66,7 +66,8 @@ def test_flat_bots_ask_no_quote_and_log_no_position_fields(tmp_path):
 
 
 def test_snapshot_carries_the_open_position_and_drops_it_after_the_trade(tmp_path):
-    e = holding_engine(tmp_path, Quote(CONTRACT, datetime(2026, 10, 9, 10, 1, tzinfo=ET), 2.00, 2.10))
+    # fixed-target exit mode (trail_enabled=False); the trailing exit's snapshot is covered in test_trailing_stop.py
+    e = holding_engine(tmp_path, Quote(CONTRACT, datetime(2026, 10, 9, 10, 1, tzinfo=ET), 2.00, 2.10), trail_enabled=False)
     e.on_bar(bar(776.00))
     row = build_snapshot(e.log.read(DAY))["bots"]["SPY-VWAP"]
     assert (row["side"], row["open_pnl"], row["option_mid"], row["stop_und"], row["target_und"], row["entry_und"]) == ("PUT", 90.0, 2.05, 776.6, 775.4, 776.2)

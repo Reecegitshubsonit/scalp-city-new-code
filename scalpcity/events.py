@@ -60,7 +60,7 @@ class EventLog:
 
 
 # open position fields the engine adds to a holding bot's tick (Engine._held)
-HELD_KEYS = ("side", "entry_und", "stop_und", "target_und", "entry_price", "option_mid", "open_pnl")
+HELD_KEYS = ("side", "entry_und", "stop_und", "target_und", "entry_price", "option_mid", "open_pnl", "trail", "best_close", "trail_stop")
 
 
 def build_snapshot(events: list[dict]) -> dict:

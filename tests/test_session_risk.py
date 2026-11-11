@@ -260,7 +260,7 @@ def test_held_position_still_exits_on_its_stop_after_1100(mk):
 
 
 def test_held_position_still_exits_on_its_target_after_1100(mk):
-    bot, ind = vwap_bot(), warmed(mk)
+    bot, ind = vwap_bot(trail_enabled=False), warmed(mk)   # fixed-target exit mode
     p = _enter_at_1059(bot, ind, mk)
     step(bot, ind, mk("QQQ", "10:59", p.entry_und + 0.1))
     out = step(bot, ind, mk("QQQ", "11:20", p.target_und + 0.01))

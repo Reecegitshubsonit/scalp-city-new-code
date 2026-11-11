@@ -13,7 +13,7 @@ import os
 import uuid
 
 from .engine import Engine
-from .bot import Position, State
+from .bot import Position, State, effective_stop
 from .contracts import atm_strike, next_trading_day, occ_symbol
 from .types import Bar, Fill, OrderIntent, ET
 
@@ -78,6 +78,7 @@ class SafeEngine(Engine):
             for bid,x in data['bots'].items():
                 b=self.by_id[bid];p=x.pop('position')
                 if p and p['opened_at']:p['opened_at']=datetime.fromisoformat(p['opened_at'])
+                if p and p.get('signal_at'):p['signal_at']=datetime.fromisoformat(p['signal_at'])
                 b.position=Position(**p) if p else None
                 x['cooldown_until']=datetime.fromisoformat(x['cooldown_until']) if x['cooldown_until'] else None
                 for key,value in x.items():setattr(b,key,value)
@@ -234,7 +235,8 @@ class SafeEngine(Engine):
                 p=b.position
                 if b.ticker!=ticker or not p or p.entry_price is None:continue
                 sign=1 if p.right=='CALL' else -1
-                why='TIME' if now.time()>=self.s.flat_by else 'STOP' if fresh and sign*(price-p.stop_und)<=0 else 'TARGET' if fresh and sign*(price-p.target_und)>=0 else None
+                stop=effective_stop(p)
+                why='TIME' if now.time()>=self.s.flat_by else ('TRAIL_STOP' if stop!=p.stop_und else 'STOP') if fresh and sign*(price-stop)<=0 else 'TARGET' if fresh and not p.trail and sign*(price-p.target_und)>=0 else None
                 if why and not b.exit_reason:
                     b.exit_reason=why
                     self._record('exit_latched',bot=b.bot_id,reason=why,market_at=observed_at.isoformat())

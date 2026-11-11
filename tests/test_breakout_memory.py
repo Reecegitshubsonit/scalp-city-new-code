@@ -154,7 +154,8 @@ def test_iwm_2026_11_06_skips_0801_loser_and_takes_held_breakout():
     No broker calls, simulated option returns or claims that the delayed entry earns $480.
     """
     rows = json.loads((Path(__file__).parent / "fixtures/iwm-2026-11-06-opening.json").read_text())
-    bot = Bot("IWM", BOT_SPECS["range"], RangeBreak(), Settings(daily_loss=800))
+    # exits as the live engine had them that day (1 ATR stop / 2 ATR target); V2 trailing is covered in test_trailing_stop.py
+    bot = Bot("IWM", BOT_SPECS["range"], RangeBreak(), Settings(daily_loss=800, trail_enabled=False))
     ind = fixed_ind(atr=.4736)
     entries, stops, reasons = [], [], {}
     mt = ZoneInfo("America/Denver")
