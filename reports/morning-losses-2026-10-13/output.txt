@@ -1,0 +1,22 @@
+2026-10-09
+  09:30-09:45: 1 trades, 0 wins, net -230, avg -230
+  09:45-10:30: 9 trades, 4 wins, net -70, avg -8
+  10:30+: 42 trades, 13 wins, net -1970, avg -47
+  09:43 IWM-VWAP   entry 1.22 atr 0.2769 pnl -230 held 10:20
+2026-10-12
+  09:30-09:45: 5 trades, 3 wins, net +890, avg +178
+  09:45-10:30: 12 trades, 7 wins, net +1260, avg +105
+  10:30+: 35 trades, 17 wins, net +1030, avg +29
+  09:31 QQQ-VWAP   entry 2.8 atr 0.3658 pnl +400 held 09:32
+  09:31 QQQ-EMA50  entry 2.8 atr 0.3658 pnl +390 held 09:32
+  09:31 SPY-EMA50  entry 2.01 atr 0.2244 pnl -20 held 09:32
+  09:43 IWM-VWAP   entry 1.09 atr 0.1873 pnl -30 held 09:44
+  09:44 IWM-EMA50  entry 1.08 atr 0.1965 pnl +150 held 09:48
+2026-10-13
+  09:30-09:45: 6 trades, 2 wins, net -590, avg -98
+  09:31 IWM-VWAP   entry 1.61 atr 0.1044 pnl -250 held 09:32
+  09:31 SPY-VWAP   entry 2.02 atr 0.2206 pnl +80 held 09:33
+  09:31 SPY-EMA50  entry 2.03 atr 0.2206 pnl +90 held 09:33
+  09:31 QQQ-VWAP   entry 3.63 atr 0.6535 pnl -180 held 09:34
+  09:31 QQQ-EMA50  entry 3.54 atr 0.6535 pnl -120 held 09:34
+  09:32 IWM-EMA50  entry 1.36 atr 0.1405 pnl -210 held 09:35

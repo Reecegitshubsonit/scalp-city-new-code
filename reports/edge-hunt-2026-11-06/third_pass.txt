@@ -1,0 +1,40 @@
+== 1. Logged first VWAP vs rebuild from prior session's last N bars + today's 09:30 bar
+example 2026-11-05 QQQ: logged 689.22, 09:30 bar alone 682.003, with prior last 2 bars 689.220; prior 15:59 volume 1754140, 09:30 volume 761582
+ticker-days tested 54; number of prior bars that reproduces logged VWAP within 2c: {2: 42, 1: 10, None: 1, 0: 1} (None = no match)
+
+== 2. Rules as designed, true session VWAP, stock only. 20 days. Early before 2026-10-23.
+ORB failed break, fade back in                 n=43    days=18  target%= 39.5 r15=+0.33 r30=+0.47 rEnd=+0.63 dayT=+0.74
+   early                                       n=24    days=9   target%= 50.0 r15=+1.06 r30=+1.23 rEnd=-0.32 dayT=+1.89
+   late                                        n=19    days=9   target%= 26.3 r15=-0.59 r30=-0.49 rEnd=+1.84 dayT=-0.34
+   open 09:31-09:59                            n=28    days=15  target%= 39.3 r15=+0.37 r30=+0.62 rEnd=+1.26 dayT=+0.31
+   morning 10:00-11:29                         n=14    days=13  target%= 42.9 r15=+0.16 r30=+0.22 rEnd=-0.82 dayT=+0.45
+   midday 11:30-13:59                          n=1     days=1   target%=  0.0 r15=+1.58 r30=-0.07 rEnd=+3.41 dayT=+nan
+   late 14:00+                                 n=0
+ORB first break only                           n=60    days=20  target%= 33.3 r15=-0.27 r30=+0.16 rEnd=-0.59 dayT=+0.28
+   early                                       n=30    days=10  target%= 23.3 r15=-0.90 r30=-0.67 rEnd=+0.14 dayT=-0.72
+   late                                        n=30    days=10  target%= 43.3 r15=+0.36 r30=+1.00 rEnd=-1.33 dayT=+1.48
+   open 09:31-09:59                            n=45    days=20  target%= 33.3 r15=-0.34 r30=+0.20 rEnd=-0.62 dayT=+0.28
+   morning 10:00-11:29                         n=14    days=11  target%= 35.7 r15=+0.07 r30=+0.07 rEnd=-0.20 dayT=+0.03
+   midday 11:30-13:59                          n=1     days=1   target%=  0.0 r15=-1.97 r30=+0.08 rEnd=-4.87 dayT=+nan
+   late 14:00+                                 n=0
+VWAP EMA9/21 side                              n=908   days=20  target%= 36.2 r15=+0.05 r30=+0.10 rEnd=+0.88 dayT=-0.30
+   early                                       n=411   days=10  target%= 39.4 r15=+0.05 r30=+0.00 rEnd=+0.26 dayT=-0.13
+   late                                        n=497   days=10  target%= 33.6 r15=+0.05 r30=+0.18 rEnd=+1.39 dayT=-0.27
+   open 09:31-09:59                            n=292   days=20  target%= 35.6 r15=-0.17 r30=+0.14 rEnd=+0.40 dayT=-0.82
+   morning 10:00-11:29                         n=241   days=20  target%= 32.8 r15=+0.00 r30=-0.24 rEnd=+1.49 dayT=-1.34
+   midday 11:30-13:59                          n=233   days=15  target%= 42.9 r15=+0.14 r30=+0.49 rEnd=+1.62 dayT=+0.77
+   late 14:00+                                 n=142   days=10  target%= 32.4 r15=+0.42 r30=-0.08 rEnd=-0.38 dayT=-0.88
+VWAP fade                                      n=908   days=20  target%= 37.0 r15=+0.02 r30=+0.09 rEnd=-0.01 dayT=+0.17
+   early                                       n=411   days=10  target%= 34.5 r15=-0.06 r30=+0.06 rEnd=+0.01 dayT=+0.70
+   late                                        n=497   days=10  target%= 39.0 r15=+0.08 r30=+0.12 rEnd=-0.03 dayT=-0.21
+   open 09:31-09:59                            n=292   days=20  target%= 38.0 r15=+0.10 r30=+0.13 rEnd=-0.03 dayT=-0.65
+   morning 10:00-11:29                         n=241   days=20  target%= 39.0 r15=-0.08 r30=-0.10 rEnd=-0.27 dayT=-0.75
+   midday 11:30-13:59                          n=233   days=15  target%= 33.5 r15=+0.09 r30=+0.07 rEnd=+0.11 dayT=-0.04
+   late 14:00+                                 n=142   days=10  target%= 37.3 r15=-0.10 r30=+0.39 rEnd=+0.27 dayT=+1.77
+VWAP with cross                                n=908   days=20  target%= 35.0 r15=-0.02 r30=-0.09 rEnd=+0.01 dayT=-0.17
+   early                                       n=411   days=10  target%= 36.7 r15=+0.06 r30=-0.06 rEnd=-0.01 dayT=-0.70
+   late                                        n=497   days=10  target%= 33.6 r15=-0.08 r30=-0.12 rEnd=+0.03 dayT=+0.21
+   open 09:31-09:59                            n=292   days=20  target%= 31.2 r15=-0.10 r30=-0.13 rEnd=+0.03 dayT=+0.65
+   morning 10:00-11:29                         n=241   days=20  target%= 38.6 r15=+0.08 r30=+0.10 rEnd=+0.27 dayT=+0.75
+   midday 11:30-13:59                          n=233   days=15  target%= 39.1 r15=-0.09 r30=-0.07 rEnd=-0.11 dayT=+0.04
+   late 14:00+                                 n=142   days=10  target%= 30.3 r15=+0.10 r30=-0.39 rEnd=-0.27 dayT=-1.77

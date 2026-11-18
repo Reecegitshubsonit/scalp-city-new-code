@@ -1,0 +1,16 @@
+setting,value in force,evidence from the log,status
+contracts per trade,10,every order_sent and fill has qty 10,confirmed
+option,"ATM strike, next trading day expiry (Mon 2026-10-12)",every contract symbol,confirmed
+stop / target,"1 ATR / 2 ATR from the signal close, checked on bar close",stop/target text in HOLDING ticks matches signal close +/- ATR,confirmed
+side rule,raw cross / break direction (trend_side NOT active),"all 42 VWAP and EMA50 trades took the cross direction; trend_side was added to config.py at 15:16 ET, after start",confirmed
+chop (squeeze) filter,"VWAP bots only, |EMA9-EMA21| < 0.15 ATR",CHOP_SQUEEZE events only on IWM/SPY/QQQ-VWAP,"confirmed (threshold from code, not visible in log)"
+cooldown,2 minutes,'cooldown until 09:55:00' at 09:53,confirmed
+last entry / flat,15:30 / 15:55,OUTSIDE_WINDOW 'after last entry 15:30'; flat time from code (no position open at 15:55),15:30 confirmed; 15:55 from code
+range window,"9:30-9:44 bars, signals from 9:45","RANGE_FORMING 'armed, range forming until 09:45'",confirmed
+"daily loss lock, before restart",between $130 and $250 (inferred),"locked: [('09:52', 'IWM-RANGE', -250.0), ('09:55', 'IWM-EMA50', -260.0)]; not locked at: []",uncertain: exact value not logged
+"daily loss lock, after restart",between $720 and $960 (inferred),"locked: [('12:01', 'QQQ-VWAP', -1090.0), ('12:05', 'SPY-EMA50', -960.0)]; deepest not locked: ('11:46', 'QQQ-VWAP', -780.0)",uncertain: exact value not logged; differs from config default $100
+daily goal lock,above $310 (no goal lock fired),"highest pnl_day without a lock: ('11:51', 'SPY-RANGE', 490.0)",uncertain: config default $600
+day P&L reset at restart,"yes for QQQ-EMA50, QQQ-RANGE, IWM-RANGE",first trade after restart shows trades=1 and pnl_day equal to that trade,confirmed
+off-market fill check,active after the restart only,broker_offmarket fills only from 10:02; off-market prices booked as-is before 10:00,confirmed
+code version,uncommitted working tree; exact version at start not recorded,config.py and bot.py modified 15:16 ET,uncertain
+probable second restart 11:09-11:16,different code before and after the 11:09-11:16 gap,no events for 7 minutes; fill records carry quote_bid/quote_ask only from 11:27 (exit) / 11:32 (entry); day P&L carried over correctly,"uncertain: inferred, not logged"

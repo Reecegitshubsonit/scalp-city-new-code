@@ -1,0 +1,18 @@
+{
+  "scope": "Offline Friday observed-indicator replay and synthetic control verification, not a broker-account or executable-option-PnL backtest.",
+  "registered_before_run": true,
+  "data_already_seen": true,
+  "baseline": "Raw cross direction, VWAP-only squeeze filter, 1/2 ATR stop/target, 2 minute cooldown, existing entry/flat schedule.",
+  "direction_modes": ["raw_cross", "ema_direction"],
+  "control_stages": ["legacy_exit_no_coordination", "latched_exit_no_coordination", "latched_exit_no_opposing"],
+  "entry_variants_after_controls": ["unchanged", "all_bot_squeeze_filter", "persistent_vwap_veto", "squeeze_and_vwap_veto", "atr_floor_3bp"],
+  "vwap_veto": "Veto CALL if <=20% of available closes in trailing 30 clock minutes are above VWAP, veto PUT if >=80%. Require >=25 observations, otherwise do not veto. Include current snapshot.",
+  "stress": "Each retained control+entry variant also runs with 1 and 2 clock minutes of additional hypothetical exit delay; reverse within-ticker entry priority at zero delay.",
+  "execution": "Immediate hypothetical entry at observed underlying close; exit at first available close after trigger/delay, except specified logged failure scenarios. No interpolated missing bars, no fabricated option quotes.",
+  "failure_injection": "Six logged exit retry bot/minute/side observations applied if a simulated position matches. Successful next attempt is hypothetical; logged entry failures/unknown orders are not asserted filled in factual replay.",
+  "exclusions": ["SPY-VWAP at 09:43", "QQQ-EMA50 at 09:55", "QQQ-RANGE at 09:55"],
+  "range": "Fixed opening range bounds reconstructed in existing source table; no original opening OHLC available. Sensitivity +/-0.01 on each boundary is required. This is retrospective initialization, not an independently reconstructed opening range.",
+  "monetary_limits": "Not evaluable from underlying-only alternative trades. No option cash ledger, daily dollar-loss limit, fee accounting, risk reservations in dollars or broker PnL claim. Production safeguards are untouched.",
+  "evaluation": "Show all trials, gross underlying signal-ATR averages, counts, total normalized movement, worst trade, open positions and vetoes. Positive single-session results do not establish an edge. No significance claim or fresh holdout.",
+  "control_acceptance": "No opposing ticker reservation/position in coordinated mode; pending/unknown orders retain ownership until reconciled; late/duplicate/partial fills do not allow premature reversal or excess exits. Synthetic tests separately exercise these cases."
+}

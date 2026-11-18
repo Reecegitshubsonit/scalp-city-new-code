@@ -1,0 +1,12 @@
+{
+  "session": "2026-10-09",
+  "timezone": "America/New_York",
+  "python": "3.14.4",
+  "input": "data/friday_2026-10-09.tsv",
+  "sha256": "faffcdc8f7f803d4bfa71d9d19332f836e9ceea0090e6511dcb31c2a98a0ece9",
+  "script_sha256": "f6df7d42caeb97f31c16699cf780b47acbdbb687110b0b6e464ee4737943cdff",
+  "experiments_sha256": "c565bad0356304773c18b58f1f842deba22fb8a9ec776346730a53b60cc2e9f1",
+  "rows": 52,
+  "excluded": "Restart positions not present in supplied table; no additional filtering of primary sample",
+  "validation": "Unique ordered IDs, domains, excursion signs, partition counts/P&L and screen complements passed"
+}

@@ -1,0 +1,819 @@
+{
+  "snapshot_checks": 52,
+  "real_cross_trigger_checks": 42,
+  "changed_vs_friday": 27,
+  "order_route_cases": 36,
+  "scope": "Snapshot and routing audit, not stateful session replay or counterfactual profitability",
+  "rows": [
+    {
+      "n": 1,
+      "bot": "IWM-VWAP",
+      "friday_side": "PUT",
+      "ema9": 278.2418,
+      "ema21": 278.0604,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 2,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.0516,
+      "ema21": 278.0128,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 3,
+      "bot": "IWM-RANGE",
+      "friday_side": "PUT",
+      "ema9": 277.9553,
+      "ema21": 277.9725,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 4,
+      "bot": "QQQ-RANGE",
+      "friday_side": "PUT",
+      "ema9": 749.8587,
+      "ema21": 749.7383,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": true
+    },
+    {
+      "n": 5,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 749.2689,
+      "ema21": 749.4668,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 6,
+      "bot": "IWM-RANGE",
+      "friday_side": "CALL",
+      "ema9": 278.4123,
+      "ema21": 278.1969,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 7,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 749.2505,
+      "ema21": 749.3393,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 8,
+      "bot": "QQQ-RANGE",
+      "friday_side": "PUT",
+      "ema9": 749.2505,
+      "ema21": 749.3393,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 9,
+      "bot": "SPY-VWAP",
+      "friday_side": "CALL",
+      "ema9": 775.8778,
+      "ema21": 775.8211,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 10,
+      "bot": "QQQ-EMA50",
+      "friday_side": "CALL",
+      "ema9": 749.3316,
+      "ema21": 749.3407,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 11,
+      "bot": "QQQ-VWAP",
+      "friday_side": "CALL",
+      "ema9": 749.8374,
+      "ema21": 749.6233,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 12,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.5291,
+      "ema21": 278.5646,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 13,
+      "bot": "IWM-VWAP",
+      "friday_side": "PUT",
+      "ema9": 278.5291,
+      "ema21": 278.5646,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 14,
+      "bot": "SPY-EMA50",
+      "friday_side": "PUT",
+      "ema9": 776.2968,
+      "ema21": 776.3419,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 15,
+      "bot": "IWM-EMA50",
+      "friday_side": "CALL",
+      "ema9": 278.1435,
+      "ema21": 278.2138,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 16,
+      "bot": "IWM-VWAP",
+      "friday_side": "CALL",
+      "ema9": 278.1435,
+      "ema21": 278.2138,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 17,
+      "bot": "SPY-RANGE",
+      "friday_side": "CALL",
+      "ema9": 776.5705,
+      "ema21": 776.4509,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 18,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.4115,
+      "ema21": 278.3582,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 19,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.3807,
+      "ema21": 750.2964,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 20,
+      "bot": "QQQ-VWAP",
+      "friday_side": "PUT",
+      "ema9": 750.3807,
+      "ema21": 750.2964,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 21,
+      "bot": "SPY-EMA50",
+      "friday_side": "PUT",
+      "ema9": 776.9919,
+      "ema21": 776.9706,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 22,
+      "bot": "IWM-RANGE",
+      "friday_side": "CALL",
+      "ema9": 278.7974,
+      "ema21": 278.7266,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 23,
+      "bot": "SPY-EMA50",
+      "friday_side": "PUT",
+      "ema9": 777.1978,
+      "ema21": 777.2446,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 24,
+      "bot": "SPY-RANGE",
+      "friday_side": "CALL",
+      "ema9": 777.0748,
+      "ema21": 777.1768,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": false,
+      "changed": true
+    },
+    {
+      "n": 25,
+      "bot": "QQQ-EMA50",
+      "friday_side": "CALL",
+      "ema9": 749.6781,
+      "ema21": 749.7531,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 26,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.7272,
+      "ema21": 278.7309,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 27,
+      "bot": "QQQ-VWAP",
+      "friday_side": "CALL",
+      "ema9": 749.9701,
+      "ema21": 749.8862,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 28,
+      "bot": "SPY-EMA50",
+      "friday_side": "PUT",
+      "ema9": 777.0884,
+      "ema21": 777.1137,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 29,
+      "bot": "QQQ-VWAP",
+      "friday_side": "CALL",
+      "ema9": 750.0119,
+      "ema21": 749.9407,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 30,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.4084,
+      "ema21": 750.2901,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 31,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.6428,
+      "ema21": 278.6496,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 32,
+      "bot": "SPY-EMA50",
+      "friday_side": "PUT",
+      "ema9": 777.2995,
+      "ema21": 777.2825,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 33,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.6201,
+      "ema21": 278.6301,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 34,
+      "bot": "IWM-EMA50",
+      "friday_side": "CALL",
+      "ema9": 278.6271,
+      "ema21": 278.6336,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 35,
+      "bot": "IWM-RANGE",
+      "friday_side": "CALL",
+      "ema9": 278.7291,
+      "ema21": 278.6829,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 36,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.7202,
+      "ema21": 750.6691,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 37,
+      "bot": "IWM-RANGE",
+      "friday_side": "CALL",
+      "ema9": 278.8617,
+      "ema21": 278.8265,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": false,
+      "changed": false
+    },
+    {
+      "n": 38,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.8467,
+      "ema21": 750.7973,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 39,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.9543,
+      "ema21": 278.9533,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 40,
+      "bot": "IWM-RANGE",
+      "friday_side": "CALL",
+      "ema9": 278.873,
+      "ema21": 278.9039,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": false,
+      "changed": true
+    },
+    {
+      "n": 41,
+      "bot": "QQQ-EMA50",
+      "friday_side": "CALL",
+      "ema9": 750.4103,
+      "ema21": 750.4687,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 42,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.9145,
+      "ema21": 278.917,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 43,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.4192,
+      "ema21": 750.4576,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 44,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.5591,
+      "ema21": 750.5304,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 45,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 278.9058,
+      "ema21": 278.904,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 46,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.5769,
+      "ema21": 750.5601,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 47,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 750.7575,
+      "ema21": 750.7402,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 48,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 279.241,
+      "ema21": 279.2514,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 49,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 751.2066,
+      "ema21": 751.1905,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 50,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 751.3359,
+      "ema21": 751.2819,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    },
+    {
+      "n": 51,
+      "bot": "IWM-EMA50",
+      "friday_side": "PUT",
+      "ema9": 279.4325,
+      "ema21": 279.4432,
+      "current_selected_side": "PUT",
+      "actual_trigger_checked": true,
+      "changed": false
+    },
+    {
+      "n": 52,
+      "bot": "QQQ-EMA50",
+      "friday_side": "PUT",
+      "ema9": 751.5791,
+      "ema21": 751.5333,
+      "current_selected_side": "CALL",
+      "actual_trigger_checked": true,
+      "changed": true
+    }
+  ],
+  "matrix": [
+    {
+      "bot": "QQQ-VWAP",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "QQQ-RANGE",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "SPY-VWAP",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "SPY-EMA50",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "SPY-RANGE",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "IWM-VWAP",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    },
+    {
+      "bot": "IWM-EMA50",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    },
+    {
+      "bot": "IWM-RANGE",
+      "trend_side": true,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "QQQ-RANGE",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "SPY-VWAP",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "SPY-EMA50",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "SPY-RANGE",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "IWM-VWAP",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "IWM-EMA50",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "IWM-RANGE",
+      "trend_side": true,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "QQQ-RANGE",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "QQQ261012P00100000"
+    },
+    {
+      "bot": "SPY-VWAP",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "SPY-EMA50",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "SPY-RANGE",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "SPY261012P00100000"
+    },
+    {
+      "bot": "IWM-VWAP",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "IWM-EMA50",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "IWM-RANGE",
+      "trend_side": false,
+      "ema_side": "CALL",
+      "cross": "PUT",
+      "order_side": "PUT",
+      "contract": "IWM261012P00100000"
+    },
+    {
+      "bot": "QQQ-VWAP",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "QQQ-EMA50",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "QQQ-RANGE",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "QQQ261012C00100000"
+    },
+    {
+      "bot": "SPY-VWAP",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "SPY-EMA50",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "SPY-RANGE",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "SPY261012C00100000"
+    },
+    {
+      "bot": "IWM-VWAP",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    },
+    {
+      "bot": "IWM-EMA50",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    },
+    {
+      "bot": "IWM-RANGE",
+      "trend_side": false,
+      "ema_side": "PUT",
+      "cross": "CALL",
+      "order_side": "CALL",
+      "contract": "IWM261012C00100000"
+    }
+  ]
+}

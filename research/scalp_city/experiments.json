@@ -1,0 +1,15 @@
+{
+  "status": "Exploratory hypotheses registered after viewing the session; not preregistered or out-of-sample evidence.",
+  "baseline": "All 52 supplied trades, reported dollar P&L; fees unspecified.",
+  "method": "Retain historical rows meeting each entry condition. Preserve their actual reported outcomes; do not change side, exits or size. No portfolio replay or claim of achievable filtered returns.",
+  "experiments": [
+    {"id":"E01", "name":"EMA9/21 direction agrees", "rationale":"Check intended momentum direction", "rule":"CALL with 9>21 or PUT with 9<21"},
+    {"id":"E02", "name":"Skip labeled squeezes", "rationale":"Inspect weak separation of fast EMAs", "rule":"No SQUEEZE label in supplied data"},
+    {"id":"E03", "name":"Skip trades against persistent VWAP side", "rationale":"Inspect broader trend conflict", "rule":"Exclude PUT when above-VWAP share >=80%; exclude CALL when share <=20%"},
+    {"id":"E04", "name":"EMA agreement and no squeeze", "rationale":"Combine intended side with separation", "rule":"E01 AND E02"},
+    {"id":"E05", "name":"No squeeze and no persistent VWAP conflict", "rationale":"Separate local chop and broader direction", "rule":"E02 AND E03"},
+    {"id":"E06", "name":"ATR at least 3 basis points", "rationale":"Inspect small underlying moves relative to execution frictions", "rule":"ATR bp >=3; exploratory threshold from existing research"}
+  ],
+  "failure_criteria": "A nonpositive retained average reported P&L fails this session's descriptive screen. Positive results remain unvalidated; a tiny or concentrated retained sample is insufficient. Actual promotion requires new chronological evidence, realistic option costs, and portfolio replay.",
+  "missing_for_execution_tests": ["entry and exit timestamps", "option symbols/expiries", "quantities and entry/exit premiums", "bid/ask quotes and order events", "complete ordered underlying paths", "rejected/skipped signals and Friday configuration"]
+}

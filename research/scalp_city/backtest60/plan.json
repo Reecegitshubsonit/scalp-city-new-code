@@ -1,0 +1,15 @@
+{
+  "sessions": 60,
+  "selection": "Latest 60 common complete regular sessions in local underlying cache; repair a short primary day only from an existing complete local daily cache.",
+  "period": "2026-07-15 through 2026-10-07, subject to validation",
+  "previously_examined": true,
+  "variants_frozen_before_run": ["cross baseline", "EMA baseline", "latched coordinated cross", "latched coordinated EMA", "each coordinated mode with squeeze, VWAP persistence, squeeze+VWAP, or ATR>=3bp"],
+  "stress": "One- and two-minute minimum delays on every exit for legacy and latched baselines and the cross-combined and EMA-ATR3 candidates; all variants retained.",
+  "warmup": "Last 200 prior regular-session bars, matching production ReplayFeed; daily VWAP resets. Use real OHLC for opening range.",
+  "signal_track": "Full-coverage underlying-close stateful replay. No monetary account/PnL claims. Exit movement / entry ATR, plus arbitrary 0.1 and 0.2 ATR burden sensitivity.",
+  "option_track": "Parallel independent-session modeled option execution using cached completed trade bars, last <=5 minutes old, modeled half-spread plus 0.01 premium slippage per side and assumed 0.65 dollars/contract/side fee. No guaranteed historical bid/ask fills.",
+  "option_risk": "At most 10 long contracts, conservative full-premium-at-risk plus entry and reserved exit fee <=800 dollars per trade. Reserve the full remaining premium exposure and exit fees within 1500 dollars plus realized day PnL, and mark account realized+unrealized at available bid to enforce daily loss. Existing per-bot -100/+600 locks remain. Four consecutive negative net completed trades pause new entries for the rest of each independent session; flat outcomes leave streak unchanged. Reset next session only for historical comparison, not permission to resume a connected account.",
+  "missing_data": "Reject entries without usable option marks; keep exits pending when unpriced. Never price from future bars or silently liquidate at stale/fabricated prices. Unclosed or stale-mark sessions are incomplete for dollar-performance conclusions; report coverage and do not treat residual exposure as zero.",
+  "uncertainty": "Fixed-seed resampling of whole trading days; paired candidate/baseline differences. First/last 30 and six 10-day blocks are stability checks, not a newly untouched holdout.",
+  "promotion": "No commit, deploy or production changes. Any positive signal result needs executable option evidence and risk validation."
+}

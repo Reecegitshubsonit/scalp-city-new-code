@@ -1,0 +1,21 @@
+{
+  "inputs": {
+    "research/scalp_city/data/expanded/README.md": "13e87b91eb18501bf613eabd6ea18c7272f3b6038e31cadb1bceacf25c903c82",
+    "research/scalp_city/data/expanded/orders_issues.csv": "2769801e225a73511a749e91fc048f6e846e2175412c9ff79b9aabd014adccc8",
+    "research/scalp_city/data/expanded/price_paths.csv": "9149af834b2067d8b5666bd7413c4ca0a5e452e6d0164bc6c68036e1188d0a2c",
+    "research/scalp_city/data/expanded/settings_used.csv": "8c2f264fda44ceb26a10dbc91007a5eeb53ead5b7b6ea508c7cc60af3e0ba8ef",
+    "research/scalp_city/data/expanded/trades_expanded.csv": "2f4f1422d682052afbc5a3a875caf8e5169642220e8ea473f916f572ecdddb9b",
+    "logs/2026-10-09-live.jsonl": "27c71cfbc75d2d20a40b05d153a7390d16421c99984bebf05fdc67b551623e21",
+    "research/scalp_city/analyze_expanded.py": "36c80e3053b6756177e69d374ade8d889c1221c55c95fac3fd0075645da0028d",
+    "research/scalp_city/analyze.py": "f6df7d42caeb97f31c16699cf780b47acbdbb687110b0b6e464ee4737943cdff",
+    "research/scalp_city/data/friday_2026-10-09.tsv": "faffcdc8f7f803d4bfa71d9d19332f836e9ceea0090e6511dcb31c2a98a0ece9",
+    "research/scalp_city/experiments.json": "c565bad0356304773c18b58f1f842deba22fb8a9ec776346730a53b60cc2e9f1"
+  },
+  "verified": {
+    "trades": 52,
+    "fill_records": 104,
+    "path_rows": 622,
+    "order_issues": 11
+  },
+  "scope": "52 supplied closed trades; excluded restart positions remain out of scope"
+}

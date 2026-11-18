@@ -1,0 +1,5950 @@
+{
+ "generated": "2026-11-17T16:39:21",
+ "days": [
+  "2025-11-17",
+  "2026-11-13"
+ ],
+ "n_days": 250,
+ "n_months": 13,
+ "six_month_cut": "2026-05-18",
+ "last_entry": "10:59:00",
+ "tickers": [
+  "SPY",
+  "QQQ",
+  "IWM"
+ ],
+ "cost_R": 0.2,
+ "cost_by_ticker": {
+  "QQQ": 0.094,
+  "SPY": 0.079,
+  "IWM": 0.313
+ },
+ "rows": [
+  {
+   "trades": 5859,
+   "win": 33.247994538317116,
+   "avgR": -0.002560163850485943,
+   "totR": -14.99999999999697,
+   "t": -0.13864566775004003,
+   "after": -0.20256016385048595,
+   "afterTkr": -0.16297542242703483,
+   "totR_afterTkr": -954.8729999999871,
+   "t_afterTkr": -8.80300092216262,
+   "win_afterTkr": 33.247994538317116,
+   "avgwin": 2.0,
+   "avgloss": -0.9999999999999992,
+   "maxwin": 2.0,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 4,
+   "meanheld": 6.541047960402799,
+   "entries": "baseline entries",
+   "exit": "stop_target 1.0/2.0 (V1)",
+   "stop": 1.0,
+   "tgt": 2.0,
+   "kind": "stop_target",
+   "months_pos": "8/13",
+   "avgR_6mo": -0.0031282586027110413,
+   "trades_6mo": 2877,
+   "t_6mo": -0.11871977558873831,
+   "by_bot": {
+    "vwap": {
+     "trades": 2046,
+     "avgR": -0.0073,
+     "win": 33.1
+    },
+    "ema50": {
+     "trades": 1980,
+     "avgR": -0.0106,
+     "win": 33.0
+    },
+    "range": {
+     "trades": 1833,
+     "avgR": 0.0115,
+     "win": 33.7
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1988,
+     "avgR": -0.004,
+     "afterTkr": -0.083,
+     "t_afterTkr": -2.62
+    },
+    "QQQ": {
+     "trades": 1958,
+     "avgR": -0.0072,
+     "afterTkr": -0.1012,
+     "t_afterTkr": -3.17
+    },
+    "IWM": {
+     "trades": 1913,
+     "avgR": 0.0037,
+     "afterTkr": -0.3093,
+     "t_afterTkr": -9.556
+    }
+   },
+   "ex_IWM": {
+    "trades": 3946,
+    "afterTkr": -0.092,
+    "t_afterTkr": -4.092
+   },
+   "qqq_only": {
+    "trades": 1958,
+    "avgR": -0.0072,
+    "afterTkr": -0.1012,
+    "t_afterTkr": -3.17,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 6150,
+   "win": 32.32520325203252,
+   "avgR": 0.007951053631631557,
+   "totR": 48.8989798345343,
+   "t": 0.38530313155142015,
+   "after": -0.19204894636836845,
+   "afterTkr": -0.15282894636836844,
+   "totR_afterTkr": -939.8980201654693,
+   "t_afterTkr": -7.394524406674256,
+   "win_afterTkr": 29.788617886178862,
+   "avgwin": 1.8017627958715956,
+   "avgloss": -0.8488720466982695,
+   "maxwin": 13.188198464542236,
+   "maxloss": -1.0000000000002487,
+   "blocks": 7,
+   "medheld": 5.0,
+   "meanheld": 7.65089430894309,
+   "entries": "baseline entries",
+   "exit": "live_v2 stop1.0 arm0.5 trail1.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "trail_atr": 1.5,
+   "kind": "live_v2",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.02960634277347318,
+   "trades_6mo": 3044,
+   "t_6mo": 0.989642958899297,
+   "by_bot": {
+    "vwap": {
+     "trades": 2129,
+     "avgR": 0.041,
+     "win": 31.8
+    },
+    "ema50": {
+     "trades": 2088,
+     "avgR": -0.0188,
+     "win": 31.3
+    },
+    "range": {
+     "trades": 1933,
+     "avgR": 0.0004,
+     "win": 34.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2083,
+     "avgR": 0.0187,
+     "afterTkr": -0.0603,
+     "t_afterTkr": -1.708
+    },
+    "QQQ": {
+     "trades": 2049,
+     "avgR": -0.0258,
+     "afterTkr": -0.1198,
+     "t_afterTkr": -3.433
+    },
+    "IWM": {
+     "trades": 2018,
+     "avgR": 0.0311,
+     "afterTkr": -0.2819,
+     "t_afterTkr": -7.614
+    }
+   },
+   "ex_IWM": {
+    "trades": 4132,
+    "afterTkr": -0.0898,
+    "t_afterTkr": -3.617
+   },
+   "qqq_only": {
+    "trades": 2049,
+    "avgR": -0.0258,
+    "afterTkr": -0.1198,
+    "t_afterTkr": -3.433,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 6677,
+   "win": 53.467125954770104,
+   "avgR": 0.010148811393665306,
+   "totR": 67.7636136755031,
+   "t": 0.7443428566752311,
+   "after": -0.1898511886063347,
+   "afterTkr": -0.15031711641822626,
+   "totR_afterTkr": -1003.6673863245013,
+   "t_afterTkr": -10.997070002877482,
+   "win_afterTkr": 53.467125954770104,
+   "avgwin": 0.8892895276401971,
+   "avgloss": -1.0000000000000002,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000002487,
+   "blocks": 7,
+   "medheld": 3,
+   "meanheld": 3.779391942489142,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.25",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.008028329617481527,
+   "trades_6mo": 3303,
+   "t_6mo": 0.4335619747330856,
+   "by_bot": {
+    "vwap": {
+     "trades": 2349,
+     "avgR": 0.0374,
+     "win": 53.3
+    },
+    "ema50": {
+     "trades": 2327,
+     "avgR": -0.0165,
+     "win": 52.5
+    },
+    "range": {
+     "trades": 2001,
+     "avgR": 0.0091,
+     "win": 54.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2271,
+     "avgR": 0.0014,
+     "afterTkr": -0.0776,
+     "t_afterTkr": -3.476
+    },
+    "QQQ": {
+     "trades": 2224,
+     "avgR": -0.0152,
+     "afterTkr": -0.1092,
+     "t_afterTkr": -4.783
+    },
+    "IWM": {
+     "trades": 2182,
+     "avgR": 0.0451,
+     "afterTkr": -0.2679,
+     "t_afterTkr": -10.437
+    }
+   },
+   "ex_IWM": {
+    "trades": 4495,
+    "afterTkr": -0.0932,
+    "t_afterTkr": -5.841
+   },
+   "qqq_only": {
+    "trades": 2224,
+    "avgR": -0.0152,
+    "afterTkr": -0.1092,
+    "t_afterTkr": -4.783,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 6585,
+   "win": 53.5459377372817,
+   "avgR": 0.0410651545074168,
+   "totR": 270.41404243133974,
+   "t": 1.8902477527485468,
+   "after": -0.15893484549258322,
+   "afterTkr": -0.11921411656319823,
+   "totR_afterTkr": -785.0249575686623,
+   "t_afterTkr": -5.486367108484285,
+   "win_afterTkr": 50.58466211085801,
+   "avgwin": 0.9442467505477427,
+   "avgloss": -1.0000000000000002,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 3,
+   "meanheld": 7.740167046317388,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.05634593737602842,
+   "trades_6mo": 3266,
+   "t_6mo": 1.7950083778703323,
+   "by_bot": {
+    "vwap": {
+     "trades": 2306,
+     "avgR": 0.0854,
+     "win": 53.3
+    },
+    "ema50": {
+     "trades": 2284,
+     "avgR": 0.0245,
+     "win": 52.7
+    },
+    "range": {
+     "trades": 1995,
+     "avgR": 0.0088,
+     "win": 54.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2235,
+     "avgR": 0.0081,
+     "afterTkr": -0.0709,
+     "t_afterTkr": -2.583
+    },
+    "QQQ": {
+     "trades": 2204,
+     "avgR": 0.0082,
+     "afterTkr": -0.0858,
+     "t_afterTkr": -2.58
+    },
+    "IWM": {
+     "trades": 2146,
+     "avgR": 0.1091,
+     "afterTkr": -0.2039,
+     "t_afterTkr": -4.111
+    }
+   },
+   "ex_IWM": {
+    "trades": 4439,
+    "afterTkr": -0.0783,
+    "t_afterTkr": -3.637
+   },
+   "qqq_only": {
+    "trades": 2204,
+    "avgR": 0.0082,
+    "afterTkr": -0.0858,
+    "t_afterTkr": -2.58,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 6297,
+   "win": 53.295219946006036,
+   "avgR": 0.10641443647887966,
+   "totR": 670.0917065075025,
+   "t": 3.2011756198999435,
+   "after": -0.09358556352112035,
+   "afterTkr": -0.053835206208114154,
+   "totR_afterTkr": -339.0002934924958,
+   "t_afterTkr": -1.6186148618055625,
+   "win_afterTkr": 44.195648721613466,
+   "avgwin": 1.076010639602951,
+   "avgloss": -0.9999999999999993,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.000000000000236,
+   "blocks": 8,
+   "medheld": 4,
+   "meanheld": 19.052405907575036,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.75",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.09423335809498835,
+   "trades_6mo": 3120,
+   "t_6mo": 2.1939460718101635,
+   "by_bot": {
+    "vwap": {
+     "trades": 2165,
+     "avgR": 0.1758,
+     "win": 53.0
+    },
+    "ema50": {
+     "trades": 2146,
+     "avgR": 0.0929,
+     "win": 52.1
+    },
+    "range": {
+     "trades": 1986,
+     "avgR": 0.0454,
+     "win": 54.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2133,
+     "avgR": 0.14,
+     "afterTkr": 0.061,
+     "t_afterTkr": 1.051
+    },
+    "QQQ": {
+     "trades": 2113,
+     "avgR": 0.0438,
+     "afterTkr": -0.0502,
+     "t_afterTkr": -0.917
+    },
+    "IWM": {
+     "trades": 2051,
+     "avgR": 0.136,
+     "afterTkr": -0.177,
+     "t_afterTkr": -2.955
+    }
+   },
+   "ex_IWM": {
+    "trades": 4246,
+    "afterTkr": 0.0057,
+    "t_afterTkr": 0.142
+   },
+   "qqq_only": {
+    "trades": 2113,
+    "avgR": 0.0438,
+    "afterTkr": -0.0502,
+    "t_afterTkr": -0.917,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 6260,
+   "win": 42.50798722044728,
+   "avgR": -0.0008987805386321782,
+   "totR": -5.626366171836985,
+   "t": -0.054429394499731984,
+   "after": -0.2008987805386322,
+   "afterTkr": -0.16162433964406347,
+   "totR_afterTkr": -1011.7683661718385,
+   "t_afterTkr": -9.776176795104993,
+   "win_afterTkr": 42.50798722044728,
+   "avgwin": 1.3503846801308388,
+   "avgloss": -0.9999999999999999,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000002487,
+   "blocks": 7,
+   "medheld": 4.0,
+   "meanheld": 5.197284345047923,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.25",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.0033121703160998257,
+   "trades_6mo": 3078,
+   "t_6mo": -0.14685647602964036,
+   "by_bot": {
+    "vwap": {
+     "trades": 2185,
+     "avgR": 0.0367,
+     "win": 43.1
+    },
+    "ema50": {
+     "trades": 2152,
+     "avgR": -0.0324,
+     "win": 41.0
+    },
+    "range": {
+     "trades": 1923,
+     "avgR": -0.0084,
+     "win": 43.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2127,
+     "avgR": 0.0049,
+     "afterTkr": -0.0741,
+     "t_afterTkr": -2.714
+    },
+    "QQQ": {
+     "trades": 2080,
+     "avgR": -0.0572,
+     "afterTkr": -0.1512,
+     "t_afterTkr": -5.599
+    },
+    "IWM": {
+     "trades": 2053,
+     "avgR": 0.0502,
+     "afterTkr": -0.2628,
+     "t_afterTkr": -8.38
+    }
+   },
+   "ex_IWM": {
+    "trades": 4207,
+    "afterTkr": -0.1122,
+    "t_afterTkr": -5.841
+   },
+   "qqq_only": {
+    "trades": 2080,
+    "avgR": -0.0572,
+    "afterTkr": -0.1512,
+    "t_afterTkr": -5.599,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 6179,
+   "win": 42.336947726169285,
+   "avgR": 0.025994315349140533,
+   "totR": 160.6188745423392,
+   "t": 1.0436179353581907,
+   "after": -0.17400568465085947,
+   "afterTkr": -0.13469123247413184,
+   "totR_afterTkr": -832.2571254576626,
+   "t_afterTkr": -5.410822817025121,
+   "win_afterTkr": 42.336947726169285,
+   "avgwin": 1.4234017104519645,
+   "avgloss": -1.0,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000002487,
+   "blocks": 10,
+   "medheld": 4,
+   "meanheld": 10.579867292442144,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.5",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "10/13",
+   "avgR_6mo": 0.04711563737140758,
+   "trades_6mo": 3049,
+   "t_6mo": 1.3062506211073104,
+   "by_bot": {
+    "vwap": {
+     "trades": 2147,
+     "avgR": 0.0808,
+     "win": 42.6
+    },
+    "ema50": {
+     "trades": 2112,
+     "avgR": 0.0045,
+     "win": 41.0
+    },
+    "range": {
+     "trades": 1920,
+     "avgR": -0.0116,
+     "win": 43.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2095,
+     "avgR": -0.0195,
+     "afterTkr": -0.0985,
+     "t_afterTkr": -3.111
+    },
+    "QQQ": {
+     "trades": 2059,
+     "avgR": -0.0338,
+     "afterTkr": -0.1278,
+     "t_afterTkr": -3.372
+    },
+    "IWM": {
+     "trades": 2025,
+     "avgR": 0.1339,
+     "afterTkr": -0.1791,
+     "t_afterTkr": -3.161
+    }
+   },
+   "ex_IWM": {
+    "trades": 4154,
+    "afterTkr": -0.113,
+    "t_afterTkr": -4.584
+   },
+   "qqq_only": {
+    "trades": 2059,
+    "avgR": -0.0338,
+    "afterTkr": -0.1278,
+    "t_afterTkr": -3.372,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 5929,
+   "win": 42.13189407994603,
+   "avgR": 0.08204618380537781,
+   "totR": 486.45182378208483,
+   "t": 2.2450625738184353,
+   "after": -0.1179538161946222,
+   "afterTkr": -0.07853418387888599,
+   "totR_afterTkr": -465.62917621791615,
+   "t_afterTkr": -2.148948339876578,
+   "win_afterTkr": 39.332096474953616,
+   "avgwin": 1.5682353177670476,
+   "avgloss": -1.0,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 5,
+   "meanheld": 24.236633496373756,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.75",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.06701922298776135,
+   "trades_6mo": 2916,
+   "t_6mo": 1.4115945942362975,
+   "by_bot": {
+    "vwap": {
+     "trades": 2020,
+     "avgR": 0.1449,
+     "win": 42.3
+    },
+    "ema50": {
+     "trades": 1994,
+     "avgR": 0.0743,
+     "win": 40.6
+    },
+    "range": {
+     "trades": 1915,
+     "avgR": 0.0238,
+     "win": 43.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 2007,
+     "avgR": 0.0768,
+     "afterTkr": -0.0022,
+     "t_afterTkr": -0.036
+    },
+    "QQQ": {
+     "trades": 1982,
+     "avgR": 0.011,
+     "afterTkr": -0.083,
+     "t_afterTkr": -1.38
+    },
+    "IWM": {
+     "trades": 1940,
+     "avgR": 0.1601,
+     "afterTkr": -0.1529,
+     "t_afterTkr": -2.264
+    }
+   },
+   "ex_IWM": {
+    "trades": 3989,
+    "afterTkr": -0.0423,
+    "t_afterTkr": -0.979
+   },
+   "qqq_only": {
+    "trades": 1982,
+    "avgR": 0.011,
+    "afterTkr": -0.083,
+    "t_afterTkr": -1.38,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 5720,
+   "win": 30.174825174825173,
+   "avgR": 0.006678473899573552,
+   "totR": 38.20087070556087,
+   "t": 0.3039582449943425,
+   "after": -0.19332152610042647,
+   "afterTkr": -0.1543211764500768,
+   "totR_afterTkr": -882.7171292944396,
+   "t_afterTkr": -7.013652734316065,
+   "win_afterTkr": 30.174825174825173,
+   "avgwin": 2.336153459273208,
+   "avgloss": -0.9999999999999989,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 5.0,
+   "meanheld": 8.83986013986014,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.25",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.038178707556236174,
+   "trades_6mo": 2815,
+   "t_6mo": 1.2278467093784793,
+   "by_bot": {
+    "vwap": {
+     "trades": 1982,
+     "avgR": 0.0015,
+     "win": 29.3
+    },
+    "ema50": {
+     "trades": 1926,
+     "avgR": 0.0169,
+     "win": 30.4
+    },
+    "range": {
+     "trades": 1812,
+     "avgR": 0.0016,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1928,
+     "avgR": 0.0139,
+     "afterTkr": -0.0651,
+     "t_afterTkr": -1.718
+    },
+    "QQQ": {
+     "trades": 1910,
+     "avgR": -0.0251,
+     "afterTkr": -0.1191,
+     "t_afterTkr": -3.212
+    },
+    "IWM": {
+     "trades": 1882,
+     "avgR": 0.0315,
+     "afterTkr": -0.2815,
+     "t_afterTkr": -7.176
+    }
+   },
+   "ex_IWM": {
+    "trades": 3838,
+    "afterTkr": -0.0919,
+    "t_afterTkr": -3.469
+   },
+   "qqq_only": {
+    "trades": 1910,
+    "avgR": -0.0251,
+    "afterTkr": -0.1191,
+    "t_afterTkr": -3.212,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 5648,
+   "win": 29.86898016997167,
+   "avgR": 0.01931156677246466,
+   "totR": 109.07172913088036,
+   "t": 0.6341277168655064,
+   "after": -0.18068843322753536,
+   "afterTkr": -0.14160840489892346,
+   "totR_afterTkr": -799.8042708691202,
+   "t_afterTkr": -4.6506025437744585,
+   "win_afterTkr": 29.86898016997167,
+   "avgwin": 2.412609205175386,
+   "avgloss": -0.9999999999999989,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000002487,
+   "blocks": 6,
+   "medheld": 6.0,
+   "meanheld": 16.891466005665723,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.5",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.07604712586656048,
+   "trades_6mo": 2785,
+   "t_6mo": 1.6859549128007314,
+   "by_bot": {
+    "vwap": {
+     "trades": 1951,
+     "avgR": 0.0388,
+     "win": 29.0
+    },
+    "ema50": {
+     "trades": 1886,
+     "avgR": 0.023,
+     "win": 29.9
+    },
+    "range": {
+     "trades": 1811,
+     "avgR": -0.0055,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1900,
+     "avgR": 0.018,
+     "afterTkr": -0.061,
+     "t_afterTkr": -1.259
+    },
+    "QQQ": {
+     "trades": 1892,
+     "avgR": -0.0667,
+     "afterTkr": -0.1607,
+     "t_afterTkr": -3.753
+    },
+    "IWM": {
+     "trades": 1856,
+     "avgR": 0.1083,
+     "afterTkr": -0.2047,
+     "t_afterTkr": -3.151
+    }
+   },
+   "ex_IWM": {
+    "trades": 3792,
+    "afterTkr": -0.1108,
+    "t_afterTkr": -3.424
+   },
+   "qqq_only": {
+    "trades": 1892,
+    "avgR": -0.0667,
+    "afterTkr": -0.1607,
+    "t_afterTkr": -3.753,
+    "months_pos": "3/13"
+   }
+  },
+  {
+   "trades": 5444,
+   "win": 29.977957384276266,
+   "avgR": 0.08682652028063324,
+   "totR": 472.6835764077673,
+   "t": 2.033680279816195,
+   "after": -0.11317347971936677,
+   "afterTkr": -0.0738545965452301,
+   "totR_afterTkr": -402.0644235922324,
+   "t_afterTkr": -1.7296319365714148,
+   "win_afterTkr": 29.977957384276266,
+   "avgwin": 2.625418858092992,
+   "avgloss": -0.9999999999999989,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000002487,
+   "blocks": 6,
+   "medheld": 6.0,
+   "meanheld": 32.941036002939015,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.75",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.0699539208821817,
+   "trades_6mo": 2667,
+   "t_6mo": 1.2512341638273807,
+   "by_bot": {
+    "vwap": {
+     "trades": 1862,
+     "avgR": 0.126,
+     "win": 28.9
+    },
+    "ema50": {
+     "trades": 1774,
+     "avgR": 0.114,
+     "win": 30.2
+    },
+    "range": {
+     "trades": 1808,
+     "avgR": 0.0198,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1831,
+     "avgR": 0.077,
+     "afterTkr": -0.002,
+     "t_afterTkr": -0.027
+    },
+    "QQQ": {
+     "trades": 1830,
+     "avgR": 0.0371,
+     "afterTkr": -0.0569,
+     "t_afterTkr": -0.805
+    },
+    "IWM": {
+     "trades": 1783,
+     "avgR": 0.1479,
+     "afterTkr": -0.1651,
+     "t_afterTkr": -2.118
+    }
+   },
+   "ex_IWM": {
+    "trades": 3661,
+    "afterTkr": -0.0294,
+    "t_afterTkr": -0.578
+   },
+   "qqq_only": {
+    "trades": 1830,
+    "avgR": 0.0371,
+    "afterTkr": -0.0569,
+    "t_afterTkr": -0.805,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 5217,
+   "win": 18.803910293271997,
+   "avgR": 0.04178046295867947,
+   "totR": 217.96867525543055,
+   "t": 1.1890398757598093,
+   "after": -0.15821953704132052,
+   "afterTkr": -0.1191125790194689,
+   "totR_afterTkr": -621.4103247445706,
+   "t_afterTkr": -3.388867658970074,
+   "win_afterTkr": 18.78474218899751,
+   "avgwin": 4.539983081873485,
+   "avgloss": -0.9999420982205992,
+   "maxwin": 40.47825973500737,
+   "maxloss": -1.0000000000002487,
+   "blocks": 9,
+   "medheld": 6,
+   "meanheld": 19.41192256085873,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.25",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.083657482645355,
+   "trades_6mo": 2559,
+   "t_6mo": 1.6397891103560513,
+   "by_bot": {
+    "vwap": {
+     "trades": 1788,
+     "avgR": 0.087,
+     "win": 19.4
+    },
+    "ema50": {
+     "trades": 1683,
+     "avgR": 0.0312,
+     "win": 18.1
+    },
+    "range": {
+     "trades": 1746,
+     "avgR": 0.0057,
+     "win": 19.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1759,
+     "avgR": 0.0367,
+     "afterTkr": -0.0423,
+     "t_afterTkr": -0.72
+    },
+    "QQQ": {
+     "trades": 1744,
+     "avgR": -0.0047,
+     "afterTkr": -0.0987,
+     "t_afterTkr": -1.762
+    },
+    "IWM": {
+     "trades": 1714,
+     "avgR": 0.0943,
+     "afterTkr": -0.2187,
+     "t_afterTkr": -3.244
+    }
+   },
+   "ex_IWM": {
+    "trades": 3503,
+    "afterTkr": -0.0704,
+    "t_afterTkr": -1.733
+   },
+   "qqq_only": {
+    "trades": 1744,
+    "avgR": -0.0047,
+    "afterTkr": -0.0987,
+    "t_afterTkr": -1.762,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 5173,
+   "win": 18.809201623815966,
+   "avgR": 0.08015716706732799,
+   "totR": 414.65302523928796,
+   "t": 1.8146872345934935,
+   "after": -0.11984283293267202,
+   "afterTkr": -0.08050163826806735,
+   "totR_afterTkr": -416.4349747607125,
+   "t_afterTkr": -1.822195776369851,
+   "win_afterTkr": 18.789870481345446,
+   "avgwin": 4.742454011615361,
+   "avgloss": -0.9999416019196329,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 6,
+   "meanheld": 31.41156002319737,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.5",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.11063229243387243,
+   "trades_6mo": 2540,
+   "t_6mo": 1.8269616854238573,
+   "by_bot": {
+    "vwap": {
+     "trades": 1778,
+     "avgR": 0.1528,
+     "win": 19.2
+    },
+    "ema50": {
+     "trades": 1649,
+     "avgR": 0.0695,
+     "win": 18.3
+    },
+    "range": {
+     "trades": 1746,
+     "avgR": 0.0162,
+     "win": 19.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1744,
+     "avgR": 0.0893,
+     "afterTkr": 0.0103,
+     "t_afterTkr": 0.135
+    },
+    "QQQ": {
+     "trades": 1735,
+     "avgR": 0.0151,
+     "afterTkr": -0.0789,
+     "t_afterTkr": -1.096
+    },
+    "IWM": {
+     "trades": 1694,
+     "avgR": 0.1375,
+     "afterTkr": -0.1755,
+     "t_afterTkr": -2.154
+    }
+   },
+   "ex_IWM": {
+    "trades": 3479,
+    "afterTkr": -0.0342,
+    "t_afterTkr": -0.654
+   },
+   "qqq_only": {
+    "trades": 1735,
+    "avgR": 0.0151,
+    "afterTkr": -0.0789,
+    "t_afterTkr": -1.096,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 5063,
+   "win": 18.704325498716177,
+   "avgR": 0.10654020645678772,
+   "totR": 539.4130652907161,
+   "t": 2.1254929462197105,
+   "after": -0.0934597935432123,
+   "afterTkr": -0.05366895807017259,
+   "totR_afterTkr": -271.7259347092837,
+   "t_afterTkr": -1.070544812801951,
+   "win_afterTkr": 18.684574363025874,
+   "avgwin": 4.915699887384556,
+   "avgloss": -0.9999404101220746,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000002487,
+   "blocks": 8,
+   "medheld": 6,
+   "meanheld": 45.44854829152676,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.75",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.11162183207247747,
+   "trades_6mo": 2485,
+   "t_6mo": 1.622257598191246,
+   "by_bot": {
+    "vwap": {
+     "trades": 1721,
+     "avgR": 0.2073,
+     "win": 19.2
+    },
+    "ema50": {
+     "trades": 1597,
+     "avgR": 0.1023,
+     "win": 17.9
+    },
+    "range": {
+     "trades": 1745,
+     "avgR": 0.011,
+     "win": 19.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1713,
+     "avgR": 0.1307,
+     "afterTkr": 0.0517,
+     "t_afterTkr": 0.578
+    },
+    "QQQ": {
+     "trades": 1702,
+     "avgR": 0.0294,
+     "afterTkr": -0.0646,
+     "t_afterTkr": -0.8
+    },
+    "IWM": {
+     "trades": 1648,
+     "avgR": 0.1611,
+     "afterTkr": -0.1519,
+     "t_afterTkr": -1.684
+    }
+   },
+   "ex_IWM": {
+    "trades": 3415,
+    "afterTkr": -0.0062,
+    "t_afterTkr": -0.104
+   },
+   "qqq_only": {
+    "trades": 1702,
+    "avgR": 0.0294,
+    "afterTkr": -0.0646,
+    "t_afterTkr": -0.8,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 5661,
+   "win": 68.592121533298,
+   "avgR": -0.017763233698870035,
+   "totR": -100.55766596930326,
+   "t": -0.8899210280877704,
+   "after": -0.21776323369887005,
+   "afterTkr": -0.17952105033903962,
+   "totR_afterTkr": -1016.2686659693022,
+   "t_afterTkr": -8.980438419084624,
+   "win_afterTkr": 68.592121533298,
+   "avgwin": 0.8898898619703056,
+   "avgloss": -2.0,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000000244,
+   "blocks": 5,
+   "medheld": 5,
+   "meanheld": 6.374315491962551,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.25",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.023046987737789657,
+   "trades_6mo": 2783,
+   "t_6mo": -0.8347597921909479,
+   "by_bot": {
+    "vwap": {
+     "trades": 2024,
+     "avgR": 0.0239,
+     "win": 68.9
+    },
+    "ema50": {
+     "trades": 1927,
+     "avgR": -0.073,
+     "win": 67.0
+    },
+    "range": {
+     "trades": 1710,
+     "avgR": -0.0049,
+     "win": 70.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1920,
+     "avgR": -0.0294,
+     "afterTkr": -0.1084,
+     "t_afterTkr": -3.27
+    },
+    "QQQ": {
+     "trades": 1858,
+     "avgR": -0.0377,
+     "afterTkr": -0.1317,
+     "t_afterTkr": -3.855
+    },
+    "IWM": {
+     "trades": 1883,
+     "avgR": 0.0137,
+     "afterTkr": -0.2993,
+     "t_afterTkr": -8.228
+    }
+   },
+   "ex_IWM": {
+    "trades": 3778,
+    "afterTkr": -0.1198,
+    "t_afterTkr": -5.038
+   },
+   "qqq_only": {
+    "trades": 1858,
+    "avgR": -0.0377,
+    "afterTkr": -0.1317,
+    "t_afterTkr": -3.855,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 5588,
+   "win": 68.80816034359341,
+   "avgR": 0.01786231047045813,
+   "totR": 99.81459090891988,
+   "t": 0.6269996161870379,
+   "after": -0.18213768952954187,
+   "afterTkr": -0.14352333734629208,
+   "totR_afterTkr": -802.0084090910796,
+   "t_afterTkr": -5.03870191710423,
+   "win_afterTkr": 64.8890479599141,
+   "avgwin": 0.9325915711076516,
+   "avgloss": -2.0,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000000244,
+   "blocks": 7,
+   "medheld": 5.0,
+   "meanheld": 11.235146743020758,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.5",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.03177271362612122,
+   "trades_6mo": 2763,
+   "t_6mo": 0.777224950110939,
+   "by_bot": {
+    "vwap": {
+     "trades": 1985,
+     "avgR": 0.0656,
+     "win": 68.7
+    },
+    "ema50": {
+     "trades": 1899,
+     "avgR": -0.0019,
+     "win": 67.8
+    },
+    "range": {
+     "trades": 1704,
+     "avgR": -0.0157,
+     "win": 70.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1892,
+     "avgR": -0.0196,
+     "afterTkr": -0.0986,
+     "t_afterTkr": -2.582
+    },
+    "QQQ": {
+     "trades": 1847,
+     "avgR": -0.0295,
+     "afterTkr": -0.1235,
+     "t_afterTkr": -2.816
+    },
+    "IWM": {
+     "trades": 1849,
+     "avgR": 0.1035,
+     "afterTkr": -0.2095,
+     "t_afterTkr": -3.328
+    }
+   },
+   "ex_IWM": {
+    "trades": 3739,
+    "afterTkr": -0.1109,
+    "t_afterTkr": -3.82
+   },
+   "qqq_only": {
+    "trades": 1847,
+    "avgR": -0.0295,
+    "afterTkr": -0.1235,
+    "t_afterTkr": -2.816,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 5318,
+   "win": 68.69123730725836,
+   "avgR": 0.08700165464574629,
+   "totR": 462.674799406079,
+   "t": 2.1045992096204658,
+   "after": -0.11299834535425372,
+   "afterTkr": -0.07462527277057567,
+   "totR_afterTkr": -396.85720059392196,
+   "t_afterTkr": -1.8042455926439096,
+   "win_afterTkr": 56.731854080481384,
+   "avgwin": 1.0382356417755487,
+   "avgloss": -2.0000000000000004,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000002136,
+   "blocks": 8,
+   "medheld": 7.0,
+   "meanheld": 25.38379089883415,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.75",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.05811248353408506,
+   "trades_6mo": 2624,
+   "t_6mo": 1.0816139936986346,
+   "by_bot": {
+    "vwap": {
+     "trades": 1859,
+     "avgR": 0.1731,
+     "win": 68.5
+    },
+    "ema50": {
+     "trades": 1764,
+     "avgR": 0.065,
+     "win": 67.5
+    },
+    "range": {
+     "trades": 1695,
+     "avgR": 0.0155,
+     "win": 70.2
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1793,
+     "avgR": 0.1235,
+     "afterTkr": 0.0445,
+     "t_afterTkr": 0.621
+    },
+    "QQQ": {
+     "trades": 1760,
+     "avgR": 0.0356,
+     "afterTkr": -0.0584,
+     "t_afterTkr": -0.845
+    },
+    "IWM": {
+     "trades": 1765,
+     "avgR": 0.1012,
+     "afterTkr": -0.2118,
+     "t_afterTkr": -2.864
+    }
+   },
+   "ex_IWM": {
+    "trades": 3553,
+    "afterTkr": -0.0065,
+    "t_afterTkr": -0.131
+   },
+   "qqq_only": {
+    "trades": 1760,
+    "avgR": 0.0356,
+    "afterTkr": -0.0584,
+    "t_afterTkr": -0.845,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 5051,
+   "win": 58.701247277766775,
+   "avgR": -0.02549946950783263,
+   "totR": -128.79782048406284,
+   "t": -1.0014279772650483,
+   "after": -0.22549946950783264,
+   "afterTkr": -0.1875764839604163,
+   "totR_afterTkr": -947.4488204840602,
+   "t_afterTkr": -7.363939268567293,
+   "win_afterTkr": 58.701247277766775,
+   "avgwin": 1.3636432308654087,
+   "avgloss": -1.9999999999999996,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000000244,
+   "blocks": 6,
+   "medheld": 7,
+   "meanheld": 9.421698673529994,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.25",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.05588388657408173,
+   "trades_6mo": 2475,
+   "t_6mo": -1.5910760703514528,
+   "by_bot": {
+    "vwap": {
+     "trades": 1817,
+     "avgR": 0.0408,
+     "win": 60.0
+    },
+    "ema50": {
+     "trades": 1686,
+     "avgR": -0.0629,
+     "win": 57.1
+    },
+    "range": {
+     "trades": 1548,
+     "avgR": -0.0627,
+     "win": 58.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1721,
+     "avgR": -0.0047,
+     "afterTkr": -0.0837,
+     "t_afterTkr": -1.97
+    },
+    "QQQ": {
+     "trades": 1642,
+     "avgR": -0.1127,
+     "afterTkr": -0.2067,
+     "t_afterTkr": -4.831
+    },
+    "IWM": {
+     "trades": 1688,
+     "avgR": 0.0382,
+     "afterTkr": -0.2748,
+     "t_afterTkr": -5.871
+    }
+   },
+   "ex_IWM": {
+    "trades": 3363,
+    "afterTkr": -0.1438,
+    "t_afterTkr": -4.766
+   },
+   "qqq_only": {
+    "trades": 1642,
+    "avgR": -0.1127,
+    "afterTkr": -0.2067,
+    "t_afterTkr": -4.831,
+    "months_pos": "2/13"
+   }
+  },
+  {
+   "trades": 4981,
+   "win": 58.44207990363381,
+   "avgR": -0.0004554862790614189,
+   "totR": -2.26877715600451,
+   "t": -0.012979127169228256,
+   "after": -0.20045548627906143,
+   "afterTkr": -0.1623834123983146,
+   "totR_afterTkr": -808.8317771560033,
+   "t_afterTkr": -4.631502305107393,
+   "win_afterTkr": 58.44207990363381,
+   "avgwin": 1.4214123060267927,
+   "avgloss": -1.9999999999999993,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000000244,
+   "blocks": 8,
+   "medheld": 8,
+   "meanheld": 16.935354346516764,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.5",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": -0.003619489826735438,
+   "trades_6mo": 2451,
+   "t_6mo": -0.07221867722264355,
+   "by_bot": {
+    "vwap": {
+     "trades": 1779,
+     "avgR": 0.0917,
+     "win": 59.2
+    },
+    "ema50": {
+     "trades": 1656,
+     "avgR": -0.0258,
+     "win": 57.2
+    },
+    "range": {
+     "trades": 1546,
+     "avgR": -0.0793,
+     "win": 58.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1694,
+     "avgR": -0.0399,
+     "afterTkr": -0.1189,
+     "t_afterTkr": -2.468
+    },
+    "QQQ": {
+     "trades": 1626,
+     "avgR": -0.1176,
+     "afterTkr": -0.2116,
+     "t_afterTkr": -3.923
+    },
+    "IWM": {
+     "trades": 1661,
+     "avgR": 0.1544,
+     "afterTkr": -0.1586,
+     "t_afterTkr": -2.072
+    }
+   },
+   "ex_IWM": {
+    "trades": 3320,
+    "afterTkr": -0.1643,
+    "t_afterTkr": -4.553
+   },
+   "qqq_only": {
+    "trades": 1626,
+    "avgR": -0.1176,
+    "afterTkr": -0.2116,
+    "t_afterTkr": -3.923,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 4746,
+   "win": 58.11209439528024,
+   "avgR": 0.06949693069311488,
+   "totR": 329.8324330695245,
+   "t": 1.4131722466969647,
+   "after": -0.13050306930688513,
+   "afterTkr": -0.0923317671577069,
+   "totR_afterTkr": -438.20656693047727,
+   "t_afterTkr": -1.877251219663935,
+   "win_afterTkr": 54.50906026127265,
+   "avgwin": 1.5612155304820605,
+   "avgloss": -1.9999999999999998,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000244,
+   "blocks": 7,
+   "medheld": 10.0,
+   "meanheld": 35.66055625790139,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.75",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.01761730987075324,
+   "trades_6mo": 2328,
+   "t_6mo": 0.27384800064301273,
+   "by_bot": {
+    "vwap": {
+     "trades": 1663,
+     "avgR": 0.1514,
+     "win": 58.7
+    },
+    "ema50": {
+     "trades": 1542,
+     "avgR": 0.0808,
+     "win": 56.7
+    },
+    "range": {
+     "trades": 1541,
+     "avgR": -0.0302,
+     "win": 58.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1607,
+     "avgR": 0.0976,
+     "afterTkr": 0.0186,
+     "t_afterTkr": 0.223
+    },
+    "QQQ": {
+     "trades": 1559,
+     "avgR": -0.0196,
+     "afterTkr": -0.1136,
+     "t_afterTkr": -1.369
+    },
+    "IWM": {
+     "trades": 1580,
+     "avgR": 0.1288,
+     "afterTkr": -0.1842,
+     "t_afterTkr": -2.068
+    }
+   },
+   "ex_IWM": {
+    "trades": 3166,
+    "afterTkr": -0.0465,
+    "t_afterTkr": -0.791
+   },
+   "qqq_only": {
+    "trades": 1559,
+    "avgR": -0.0196,
+    "afterTkr": -0.1136,
+    "t_afterTkr": -1.369,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 4328,
+   "win": 45.609981515711645,
+   "avgR": -0.0068840826460321285,
+   "totR": -29.79430969202702,
+   "t": -0.19468933717322098,
+   "after": -0.20688408264603214,
+   "afterTkr": -0.16971495140758486,
+   "totR_afterTkr": -734.5263096920264,
+   "t_afterTkr": -4.796543271646335,
+   "win_afterTkr": 45.609981515711645,
+   "avgwin": 2.369911697217819,
+   "avgloss": -2.000000000000001,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000000244,
+   "blocks": 8,
+   "medheld": 11.0,
+   "meanheld": 17.402033271719038,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.25",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": -0.022697439987100203,
+   "trades_6mo": 2140,
+   "t_6mo": -0.4599499943964184,
+   "by_bot": {
+    "vwap": {
+     "trades": 1534,
+     "avgR": 0.009,
+     "win": 45.2
+    },
+    "ema50": {
+     "trades": 1413,
+     "avgR": 0.0173,
+     "win": 46.0
+    },
+    "range": {
+     "trades": 1381,
+     "avgR": -0.0493,
+     "win": 45.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1456,
+     "avgR": 0.0158,
+     "afterTkr": -0.0632,
+     "t_afterTkr": -1.031
+    },
+    "QQQ": {
+     "trades": 1412,
+     "avgR": -0.0623,
+     "afterTkr": -0.1563,
+     "t_afterTkr": -2.593
+    },
+    "IWM": {
+     "trades": 1460,
+     "avgR": 0.024,
+     "afterTkr": -0.289,
+     "t_afterTkr": -4.654
+    }
+   },
+   "ex_IWM": {
+    "trades": 2868,
+    "afterTkr": -0.109,
+    "t_afterTkr": -2.535
+   },
+   "qqq_only": {
+    "trades": 1412,
+    "avgR": -0.0623,
+    "afterTkr": -0.1563,
+    "t_afterTkr": -2.593,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 4267,
+   "win": 45.04335598781345,
+   "avgR": -0.018670425804579893,
+   "totR": -79.66670690814229,
+   "t": -0.4135721960095695,
+   "after": -0.2186704258045799,
+   "afterTkr": -0.18149536135648994,
+   "totR_afterTkr": -774.4407069081417,
+   "t_afterTkr": -4.02134639474688,
+   "win_afterTkr": 45.04335598781345,
+   "avgwin": 2.3987165937002386,
+   "avgloss": -2.0000000000000004,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000000244,
+   "blocks": 6,
+   "medheld": 14,
+   "meanheld": 29.775720646824468,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.5",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.02240511485068463,
+   "trades_6mo": 2111,
+   "t_6mo": -0.3468539718553347,
+   "by_bot": {
+    "vwap": {
+     "trades": 1508,
+     "avgR": 0.037,
+     "win": 44.7
+    },
+    "ema50": {
+     "trades": 1379,
+     "avgR": -0.0093,
+     "win": 44.9
+    },
+    "range": {
+     "trades": 1380,
+     "avgR": -0.089,
+     "win": 45.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1431,
+     "avgR": 0.0038,
+     "afterTkr": -0.0752,
+     "t_afterTkr": -1.032
+    },
+    "QQQ": {
+     "trades": 1397,
+     "avgR": -0.1539,
+     "afterTkr": -0.2479,
+     "t_afterTkr": -3.759
+    },
+    "IWM": {
+     "trades": 1439,
+     "avgR": 0.0903,
+     "afterTkr": -0.2227,
+     "t_afterTkr": -2.407
+    }
+   },
+   "ex_IWM": {
+    "trades": 2828,
+    "afterTkr": -0.1605,
+    "t_afterTkr": -3.262
+   },
+   "qqq_only": {
+    "trades": 1397,
+    "avgR": -0.1539,
+    "afterTkr": -0.2479,
+    "t_afterTkr": -3.759,
+    "months_pos": "2/13"
+   }
+  },
+  {
+   "trades": 4083,
+   "win": 44.771001714425665,
+   "avgR": 0.06129755945960286,
+   "totR": 250.27793527355865,
+   "t": 1.0129506849359735,
+   "after": -0.13870244054039715,
+   "afterTkr": -0.1016532120319475,
+   "totR_afterTkr": -415.05006472644203,
+   "t_afterTkr": -1.6789577313747803,
+   "win_afterTkr": 44.771001714425665,
+   "avgwin": 2.6040907742196717,
+   "avgloss": -2.0000000000000004,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000244,
+   "blocks": 6,
+   "medheld": 17,
+   "meanheld": 53.68968895420034,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.75",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.012583153246559876,
+   "trades_6mo": 2010,
+   "t_6mo": -0.15424856989004915,
+   "by_bot": {
+    "vwap": {
+     "trades": 1419,
+     "avgR": 0.1176,
+     "win": 44.5
+    },
+    "ema50": {
+     "trades": 1286,
+     "avgR": 0.1165,
+     "win": 44.2
+    },
+    "range": {
+     "trades": 1378,
+     "avgR": -0.0482,
+     "win": 45.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1365,
+     "avgR": 0.1559,
+     "afterTkr": 0.0769,
+     "t_afterTkr": 0.695
+    },
+    "QQQ": {
+     "trades": 1339,
+     "avgR": -0.0133,
+     "afterTkr": -0.1073,
+     "t_afterTkr": -1.09
+    },
+    "IWM": {
+     "trades": 1379,
+     "avgR": 0.0401,
+     "afterTkr": -0.2729,
+     "t_afterTkr": -2.603
+    }
+   },
+   "ex_IWM": {
+    "trades": 2704,
+    "afterTkr": -0.0143,
+    "t_afterTkr": -0.194
+   },
+   "qqq_only": {
+    "trades": 1339,
+    "avgR": -0.0133,
+    "afterTkr": -0.1073,
+    "t_afterTkr": -1.09,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 3802,
+   "win": 31.53603366649132,
+   "avgR": 0.02149878267281384,
+   "totR": 81.738371722038,
+   "t": 0.3959789225667024,
+   "after": -0.17850121732718616,
+   "afterTkr": -0.14150042826879589,
+   "totR_afterTkr": -537.9846282779632,
+   "t_afterTkr": -2.6062512728557463,
+   "win_afterTkr": 31.50973172014729,
+   "avgwin": 4.400521543335487,
+   "avgloss": -1.9955770106558628,
+   "maxwin": 40.47825973500737,
+   "maxloss": -2.000000000000244,
+   "blocks": 7,
+   "medheld": 19.0,
+   "meanheld": 39.592056812204106,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.25",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.002654858858691726,
+   "trades_6mo": 1880,
+   "t_6mo": -0.03470833778502933,
+   "by_bot": {
+    "vwap": {
+     "trades": 1328,
+     "avgR": 0.0742,
+     "win": 32.4
+    },
+    "ema50": {
+     "trades": 1194,
+     "avgR": 0.0028,
+     "win": 30.5
+    },
+    "range": {
+     "trades": 1280,
+     "avgR": -0.0157,
+     "win": 31.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1272,
+     "avgR": 0.1261,
+     "afterTkr": 0.0471,
+     "t_afterTkr": 0.497
+    },
+    "QQQ": {
+     "trades": 1245,
+     "avgR": -0.1731,
+     "afterTkr": -0.2671,
+     "t_afterTkr": -3.112
+    },
+    "IWM": {
+     "trades": 1285,
+     "avgR": 0.1066,
+     "afterTkr": -0.2064,
+     "t_afterTkr": -2.059
+    }
+   },
+   "ex_IWM": {
+    "trades": 2517,
+    "afterTkr": -0.1083,
+    "t_afterTkr": -1.691
+   },
+   "qqq_only": {
+    "trades": 1245,
+    "avgR": -0.1731,
+    "afterTkr": -0.2671,
+    "t_afterTkr": -3.112,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 3751,
+   "win": 31.56491602239403,
+   "avgR": 0.06465568818947658,
+   "totR": 242.52348639872645,
+   "t": 0.9800952917520415,
+   "after": -0.13534431181052342,
+   "afterTkr": -0.09799880394595403,
+   "totR_afterTkr": -367.5935136012735,
+   "t_afterTkr": -1.4852888632984254,
+   "win_afterTkr": 31.53825646494268,
+   "avgwin": 4.531258821905352,
+   "avgloss": -1.995514981977877,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000244,
+   "blocks": 7,
+   "medheld": 21,
+   "meanheld": 58.72034124233538,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.5",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.019753206539603746,
+   "trades_6mo": 1859,
+   "t_6mo": 0.22191976615171718,
+   "by_bot": {
+    "vwap": {
+     "trades": 1318,
+     "avgR": 0.1149,
+     "win": 32.2
+    },
+    "ema50": {
+     "trades": 1153,
+     "avgR": 0.077,
+     "win": 30.7
+    },
+    "range": {
+     "trades": 1280,
+     "avgR": 0.0018,
+     "win": 31.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1257,
+     "avgR": 0.2156,
+     "afterTkr": 0.1366,
+     "t_afterTkr": 1.14
+    },
+    "QQQ": {
+     "trades": 1232,
+     "avgR": -0.1425,
+     "afterTkr": -0.2365,
+     "t_afterTkr": -2.282
+    },
+    "IWM": {
+     "trades": 1262,
+     "avgR": 0.1166,
+     "afterTkr": -0.1964,
+     "t_afterTkr": -1.665
+    }
+   },
+   "ex_IWM": {
+    "trades": 2489,
+    "afterTkr": -0.0481,
+    "t_afterTkr": -0.605
+   },
+   "qqq_only": {
+    "trades": 1232,
+    "avgR": -0.1425,
+    "afterTkr": -0.2365,
+    "t_afterTkr": -2.282,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 3644,
+   "win": 31.092206366630077,
+   "avgR": 0.06794928481077853,
+   "totR": 247.6071938504757,
+   "t": 0.9135943089012011,
+   "after": -0.13205071518922148,
+   "afterTkr": -0.09439703791150474,
+   "totR_afterTkr": -343.9828061495228,
+   "t_afterTkr": -1.26869765745436,
+   "win_afterTkr": 31.06476399560922,
+   "avgwin": 4.639425721257028,
+   "avgloss": -1.9947678806585964,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000244,
+   "blocks": 5,
+   "medheld": 23.0,
+   "meanheld": 80.03540065861691,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.75",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.0011400212854493295,
+   "trades_6mo": 1808,
+   "t_6mo": -0.01124510094536678,
+   "by_bot": {
+    "vwap": {
+     "trades": 1261,
+     "avgR": 0.1594,
+     "win": 32.0
+    },
+    "ema50": {
+     "trades": 1104,
+     "avgR": 0.0631,
+     "win": 29.4
+    },
+    "range": {
+     "trades": 1279,
+     "avgR": -0.0181,
+     "win": 31.7
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1223,
+     "avgR": 0.2863,
+     "afterTkr": 0.2073,
+     "t_afterTkr": 1.476
+    },
+    "QQQ": {
+     "trades": 1200,
+     "avgR": -0.1408,
+     "afterTkr": -0.2348,
+     "t_afterTkr": -2.016
+    },
+    "IWM": {
+     "trades": 1221,
+     "avgR": 0.0544,
+     "afterTkr": -0.2586,
+     "t_afterTkr": -2.024
+    }
+   },
+   "ex_IWM": {
+    "trades": 2423,
+    "afterTkr": -0.0116,
+    "t_afterTkr": -0.127
+   },
+   "qqq_only": {
+    "trades": 1200,
+    "avgR": -0.1408,
+    "afterTkr": -0.2348,
+    "t_afterTkr": -2.016,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 4378,
+   "win": 89.19597989949749,
+   "avgR": -0.017774386778753502,
+   "totR": -77.81626531738246,
+   "t": -0.40529813362023787,
+   "after": -0.21777438677875352,
+   "afterTkr": -0.18130956265815049,
+   "totR_afterTkr": -793.7732653173854,
+   "t_afterTkr": -4.133604129088543,
+   "win_afterTkr": 89.15029693924166,
+   "avgwin": 0.8874250657388089,
+   "avgloss": -7.49093265756328,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000218,
+   "blocks": 6,
+   "medheld": 6.0,
+   "meanheld": 41.834856098675196,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.25",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.05479340825689564,
+   "trades_6mo": 2152,
+   "t_6mo": 0.9288096830330717,
+   "by_bot": {
+    "vwap": {
+     "trades": 1610,
+     "avgR": 0.0239,
+     "win": 89.3
+    },
+    "ema50": {
+     "trades": 1481,
+     "avgR": -0.1265,
+     "win": 88.0
+    },
+    "range": {
+     "trades": 1287,
+     "avgR": 0.0552,
+     "win": 90.4
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1459,
+     "avgR": -0.0267,
+     "afterTkr": -0.1057,
+     "t_afterTkr": -1.36
+    },
+    "QQQ": {
+     "trades": 1429,
+     "avgR": -0.0694,
+     "afterTkr": -0.1634,
+     "t_afterTkr": -2.174
+    },
+    "IWM": {
+     "trades": 1490,
+     "avgR": 0.0405,
+     "afterTkr": -0.2725,
+     "t_afterTkr": -3.635
+    }
+   },
+   "ex_IWM": {
+    "trades": 2888,
+    "afterTkr": -0.1343,
+    "t_afterTkr": -2.483
+   },
+   "qqq_only": {
+    "trades": 1429,
+    "avgR": -0.0694,
+    "afterTkr": -0.1634,
+    "t_afterTkr": -2.174,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 4337,
+   "win": 89.11690108369841,
+   "avgR": 0.007860252267138337,
+   "totR": 34.089914082578694,
+   "t": 0.1559654734647829,
+   "after": -0.1921397477328617,
+   "afterTkr": -0.15515842423735787,
+   "totR_afterTkr": -672.9220859174216,
+   "t_afterTkr": -3.079321697701303,
+   "win_afterTkr": 83.85981092921374,
+   "avgwin": 0.9255808441577504,
+   "avgloss": -7.5069492554812,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 9,
+   "meanheld": 48.17062485589117,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.5",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.11249902922103665,
+   "trades_6mo": 2137,
+   "t_6mo": 1.6024665023405422,
+   "by_bot": {
+    "vwap": {
+     "trades": 1584,
+     "avgR": 0.0372,
+     "win": 89.1
+    },
+    "ema50": {
+     "trades": 1467,
+     "avgR": -0.0682,
+     "win": 88.0
+    },
+    "range": {
+     "trades": 1286,
+     "avgR": 0.0585,
+     "win": 90.4
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1448,
+     "avgR": -0.0296,
+     "afterTkr": -0.1086,
+     "t_afterTkr": -1.298
+    },
+    "QQQ": {
+     "trades": 1423,
+     "avgR": -0.0625,
+     "afterTkr": -0.1565,
+     "t_afterTkr": -1.946
+    },
+    "IWM": {
+     "trades": 1466,
+     "avgR": 0.1132,
+     "afterTkr": -0.1998,
+     "t_afterTkr": -2.072
+    }
+   },
+   "ex_IWM": {
+    "trades": 2871,
+    "afterTkr": -0.1324,
+    "t_afterTkr": -2.28
+   },
+   "qqq_only": {
+    "trades": 1423,
+    "avgR": -0.0625,
+    "afterTkr": -0.1565,
+    "t_afterTkr": -1.946,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 4130,
+   "win": 89.00726392251816,
+   "avgR": 0.10152889725517787,
+   "totR": 419.3143456638855,
+   "t": 1.5822242794103694,
+   "after": -0.09847110274482214,
+   "afterTkr": -0.06122994051721925,
+   "totR_afterTkr": -252.87965433611515,
+   "t_afterTkr": -0.9540288509780895,
+   "win_afterTkr": 72.83292978208233,
+   "avgwin": 1.0386562306371796,
+   "avgloss": -7.486312683168254,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000218,
+   "blocks": 10,
+   "medheld": 13.0,
+   "meanheld": 67.27699757869249,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.75",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "10/13",
+   "avgR_6mo": 0.18508085278145492,
+   "trades_6mo": 2033,
+   "t_6mo": 2.131738678617023,
+   "by_bot": {
+    "vwap": {
+     "trades": 1477,
+     "avgR": 0.197,
+     "win": 88.7
+    },
+    "ema50": {
+     "trades": 1372,
+     "avgR": 0.0289,
+     "win": 87.9
+    },
+    "range": {
+     "trades": 1281,
+     "avgR": 0.0692,
+     "win": 90.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1377,
+     "avgR": 0.0988,
+     "afterTkr": 0.0198,
+     "t_afterTkr": 0.177
+    },
+    "QQQ": {
+     "trades": 1362,
+     "avgR": 0.0686,
+     "afterTkr": -0.0254,
+     "t_afterTkr": -0.234
+    },
+    "IWM": {
+     "trades": 1391,
+     "avgR": 0.1365,
+     "afterTkr": -0.1765,
+     "t_afterTkr": -1.562
+    }
+   },
+   "ex_IWM": {
+    "trades": 2739,
+    "afterTkr": -0.0027,
+    "t_afterTkr": -0.034
+   },
+   "qqq_only": {
+    "trades": 1362,
+    "avgR": 0.0686,
+    "afterTkr": -0.0254,
+    "t_afterTkr": -0.234,
+    "months_pos": "9/13"
+   }
+  },
+  {
+   "trades": 3666,
+   "win": 84.12438625204582,
+   "avgR": -0.003443774724202267,
+   "totR": -12.62487813892548,
+   "t": -0.059400770815581816,
+   "after": -0.20344377472420228,
+   "afterTkr": -0.16675228536250014,
+   "totR_afterTkr": -611.313878138925,
+   "t_afterTkr": -2.8755337101169225,
+   "win_afterTkr": 84.04255319148936,
+   "avgwin": 1.3632126298351408,
+   "avgloss": -7.245313794760309,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 13.0,
+   "meanheld": 63.250954719039825,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.25",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.07078259429210434,
+   "trades_6mo": 1815,
+   "t_6mo": 0.9000217205043977,
+   "by_bot": {
+    "vwap": {
+     "trades": 1363,
+     "avgR": 0.0871,
+     "win": 84.4
+    },
+    "ema50": {
+     "trades": 1243,
+     "avgR": -0.1161,
+     "win": 82.8
+    },
+    "range": {
+     "trades": 1060,
+     "avgR": 0.0123,
+     "win": 85.3
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1238,
+     "avgR": 0.0443,
+     "afterTkr": -0.0347,
+     "t_afterTkr": -0.351
+    },
+    "QQQ": {
+     "trades": 1183,
+     "avgR": -0.0942,
+     "afterTkr": -0.1882,
+     "t_afterTkr": -1.864
+    },
+    "IWM": {
+     "trades": 1245,
+     "avgR": 0.0353,
+     "afterTkr": -0.2777,
+     "t_afterTkr": -2.741
+    }
+   },
+   "ex_IWM": {
+    "trades": 2421,
+    "afterTkr": -0.1097,
+    "t_afterTkr": -1.552
+   },
+   "qqq_only": {
+    "trades": 1183,
+    "avgR": -0.0942,
+    "afterTkr": -0.1882,
+    "t_afterTkr": -1.864,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 3615,
+   "win": 83.84508990318119,
+   "avgR": -0.00217428315788354,
+   "totR": -7.860033615748755,
+   "t": -0.032770336299769526,
+   "after": -0.20217428315788355,
+   "afterTkr": -0.16500830805414912,
+   "totR_afterTkr": -596.5050336157508,
+   "t_afterTkr": -2.4874478345148816,
+   "win_afterTkr": 83.76210235131397,
+   "avgwin": 1.3965840305185846,
+   "avgloss": -7.261825736502704,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000218,
+   "blocks": 6,
+   "medheld": 20,
+   "meanheld": 74.05338865836791,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.5",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.09689111789061816,
+   "trades_6mo": 1793,
+   "t_6mo": 1.0457620147728521,
+   "by_bot": {
+    "vwap": {
+     "trades": 1331,
+     "avgR": 0.0989,
+     "win": 83.8
+    },
+    "ema50": {
+     "trades": 1224,
+     "avgR": -0.1335,
+     "win": 82.6
+    },
+    "range": {
+     "trades": 1060,
+     "avgR": 0.0226,
+     "win": 85.3
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1223,
+     "avgR": 0.01,
+     "afterTkr": -0.069,
+     "t_afterTkr": -0.642
+    },
+    "QQQ": {
+     "trades": 1172,
+     "avgR": -0.1399,
+     "afterTkr": -0.2339,
+     "t_afterTkr": -2.15
+    },
+    "IWM": {
+     "trades": 1220,
+     "avgR": 0.1179,
+     "afterTkr": -0.1951,
+     "t_afterTkr": -1.537
+    }
+   },
+   "ex_IWM": {
+    "trades": 2395,
+    "afterTkr": -0.1497,
+    "t_afterTkr": -1.958
+   },
+   "qqq_only": {
+    "trades": 1172,
+    "avgR": -0.1399,
+    "afterTkr": -0.2339,
+    "t_afterTkr": -2.15,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 3431,
+   "win": 83.47420577091228,
+   "avgR": 0.035155577511655316,
+   "totR": 120.6187864424893,
+   "t": 0.4296349526149362,
+   "after": -0.1648444224883447,
+   "afterTkr": -0.12769665215899467,
+   "totR_afterTkr": -438.1272135575114,
+   "t_afterTkr": -1.5603552391280404,
+   "win_afterTkr": 77.81987758670941,
+   "avgwin": 1.4825003208516871,
+   "avgloss": -7.275594589906071,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000218,
+   "blocks": 6,
+   "medheld": 33,
+   "meanheld": 101.28417371028854,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.75",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.0849280665400105,
+   "trades_6mo": 1697,
+   "t_6mo": 0.7672504622336801,
+   "by_bot": {
+    "vwap": {
+     "trades": 1227,
+     "avgR": 0.1561,
+     "win": 83.2
+    },
+    "ema50": {
+     "trades": 1145,
+     "avgR": -0.0627,
+     "win": 82.1
+    },
+    "range": {
+     "trades": 1059,
+     "avgR": 0.0008,
+     "win": 85.3
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1158,
+     "avgR": 0.0544,
+     "afterTkr": -0.0246,
+     "t_afterTkr": -0.178
+    },
+    "QQQ": {
+     "trades": 1115,
+     "avgR": -0.0216,
+     "afterTkr": -0.1156,
+     "t_afterTkr": -0.817
+    },
+    "IWM": {
+     "trades": 1158,
+     "avgR": 0.0705,
+     "afterTkr": -0.2425,
+     "t_afterTkr": -1.662
+    }
+   },
+   "ex_IWM": {
+    "trades": 2273,
+    "afterTkr": -0.0692,
+    "t_afterTkr": -0.702
+   },
+   "qqq_only": {
+    "trades": 1115,
+    "avgR": -0.0216,
+    "afterTkr": -0.1156,
+    "t_afterTkr": -0.817,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2912,
+   "win": 74.86263736263736,
+   "avgR": 0.01028140953920604,
+   "totR": 29.93946457816837,
+   "t": 0.12463370036124495,
+   "after": -0.18971859046079398,
+   "afterTkr": -0.15274022507617863,
+   "totR_afterTkr": -444.7795354218336,
+   "t_afterTkr": -1.8508112193699557,
+   "win_afterTkr": 74.55357142857143,
+   "avgwin": 2.3170794457544384,
+   "avgloss": -6.859690884107251,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000218,
+   "blocks": 9,
+   "medheld": 40.0,
+   "meanheld": 105.14766483516483,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.25",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.12874323772981525,
+   "trades_6mo": 1448,
+   "t_6mo": 1.1499378401147702,
+   "by_bot": {
+    "vwap": {
+     "trades": 1062,
+     "avgR": -0.0314,
+     "win": 74.5
+    },
+    "ema50": {
+     "trades": 988,
+     "avgR": -0.019,
+     "win": 74.5
+    },
+    "range": {
+     "trades": 862,
+     "avgR": 0.0951,
+     "win": 75.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 967,
+     "avgR": 0.1717,
+     "afterTkr": 0.0927,
+     "t_afterTkr": 0.649
+    },
+    "QQQ": {
+     "trades": 961,
+     "avgR": -0.133,
+     "afterTkr": -0.227,
+     "t_afterTkr": -1.598
+    },
+    "IWM": {
+     "trades": 984,
+     "avgR": -0.0084,
+     "afterTkr": -0.3214,
+     "t_afterTkr": -2.236
+    }
+   },
+   "ex_IWM": {
+    "trades": 1928,
+    "afterTkr": -0.0667,
+    "t_afterTkr": -0.662
+   },
+   "qqq_only": {
+    "trades": 961,
+    "avgR": -0.133,
+    "afterTkr": -0.227,
+    "t_afterTkr": -1.598,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2855,
+   "win": 74.67600700525394,
+   "avgR": -0.0010780266701560198,
+   "totR": -3.07776614329529,
+   "t": -0.011743507744389797,
+   "after": -0.20107802667015603,
+   "afterTkr": -0.1640538585440615,
+   "totR_afterTkr": -468.37376614329787,
+   "t_afterTkr": -1.7871940082257827,
+   "win_afterTkr": 74.36077057793345,
+   "avgwin": 2.3221284891022727,
+   "avgloss": -6.8518059542314536,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 61,
+   "meanheld": 125.82276707530647,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.5",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.14471181664740218,
+   "trades_6mo": 1420,
+   "t_6mo": 1.1291684992629576,
+   "by_bot": {
+    "vwap": {
+     "trades": 1034,
+     "avgR": 0.0183,
+     "win": 74.5
+    },
+    "ema50": {
+     "trades": 959,
+     "avgR": -0.0931,
+     "win": 73.9
+    },
+    "range": {
+     "trades": 862,
+     "avgR": 0.0781,
+     "win": 75.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 946,
+     "avgR": 0.1848,
+     "afterTkr": 0.1058,
+     "t_afterTkr": 0.674
+    },
+    "QQQ": {
+     "trades": 945,
+     "avgR": -0.2922,
+     "afterTkr": -0.3862,
+     "t_afterTkr": -2.636
+    },
+    "IWM": {
+     "trades": 964,
+     "avgR": 0.1019,
+     "afterTkr": -0.2111,
+     "t_afterTkr": -1.229
+    }
+   },
+   "ex_IWM": {
+    "trades": 1891,
+    "afterTkr": -0.1401,
+    "t_afterTkr": -1.303
+   },
+   "qqq_only": {
+    "trades": 945,
+    "avgR": -0.2922,
+    "afterTkr": -0.3862,
+    "t_afterTkr": -2.636,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2717,
+   "win": 73.6842105263158,
+   "avgR": 0.004044426893475035,
+   "totR": 10.988707869572469,
+   "t": 0.03686766653503664,
+   "after": -0.19595557310652498,
+   "afterTkr": -0.1587667619177138,
+   "totR_afterTkr": -431.3692921304297,
+   "t_afterTkr": -1.4468121128328406,
+   "win_afterTkr": 73.35296282664704,
+   "avgwin": 2.4412603108616096,
+   "avgloss": -6.820160048217302,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000218,
+   "blocks": 6,
+   "medheld": 104,
+   "meanheld": 164.94331983805668,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.75",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.006816788938194014,
+   "trades_6mo": 1341,
+   "t_6mo": 0.04530567427445499,
+   "by_bot": {
+    "vwap": {
+     "trades": 967,
+     "avgR": -0.048,
+     "win": 72.7
+    },
+    "ema50": {
+     "trades": 889,
+     "avgR": -0.0123,
+     "win": 72.8
+    },
+    "range": {
+     "trades": 861,
+     "avgR": 0.0793,
+     "win": 75.7
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 895,
+     "avgR": 0.2737,
+     "afterTkr": 0.1947,
+     "t_afterTkr": 0.984
+    },
+    "QQQ": {
+     "trades": 907,
+     "avgR": -0.2187,
+     "afterTkr": -0.3127,
+     "t_afterTkr": -1.726
+    },
+    "IWM": {
+     "trades": 915,
+     "avgR": -0.0389,
+     "afterTkr": -0.3519,
+     "t_afterTkr": -1.845
+    }
+   },
+   "ex_IWM": {
+    "trades": 1802,
+    "afterTkr": -0.0607,
+    "t_afterTkr": -0.452
+   },
+   "qqq_only": {
+    "trades": 907,
+    "avgR": -0.2187,
+    "afterTkr": -0.3127,
+    "t_afterTkr": -1.726,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2407,
+   "win": 61.73660157872871,
+   "avgR": 0.1148055411854508,
+   "totR": 276.3369376333801,
+   "t": 0.964525484782486,
+   "after": -0.0851944588145492,
+   "afterTkr": -0.04877900389140842,
+   "totR_afterTkr": -117.41106236662027,
+   "t_afterTkr": -0.4097495717982019,
+   "win_afterTkr": 61.2380556709597,
+   "avgwin": 4.059819278178873,
+   "avgloss": -6.250330629468431,
+   "maxwin": 40.47825973500737,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 144,
+   "meanheld": 184.62609056917324,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.25",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.2546955600359489,
+   "trades_6mo": 1208,
+   "t_6mo": 1.5728090669232502,
+   "by_bot": {
+    "vwap": {
+     "trades": 859,
+     "avgR": 0.131,
+     "win": 62.7
+    },
+    "ema50": {
+     "trades": 794,
+     "avgR": -0.0639,
+     "win": 58.9
+    },
+    "range": {
+     "trades": 754,
+     "avgR": 0.2845,
+     "win": 63.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 806,
+     "avgR": 0.3517,
+     "afterTkr": 0.2727,
+     "t_afterTkr": 1.346
+    },
+    "QQQ": {
+     "trades": 781,
+     "avgR": -0.1557,
+     "afterTkr": -0.2497,
+     "t_afterTkr": -1.246
+    },
+    "IWM": {
+     "trades": 820,
+     "avgR": 0.1396,
+     "afterTkr": -0.1734,
+     "t_afterTkr": -0.808
+    }
+   },
+   "ex_IWM": {
+    "trades": 1587,
+    "afterTkr": 0.0156,
+    "t_afterTkr": 0.109
+   },
+   "qqq_only": {
+    "trades": 781,
+    "avgR": -0.1557,
+    "afterTkr": -0.2497,
+    "t_afterTkr": -1.246,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2368,
+   "win": 61.866554054054056,
+   "avgR": 0.12799974447032952,
+   "totR": 303.1033949057388,
+   "t": 0.9765336838667511,
+   "after": -0.07200025552967049,
+   "afterTkr": -0.03534611701615703,
+   "totR_afterTkr": -83.69960509426107,
+   "t_afterTkr": -0.2696096664685901,
+   "win_afterTkr": 61.317567567567565,
+   "avgwin": 4.095139899231343,
+   "avgloss": -6.308168945147483,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000218,
+   "blocks": 9,
+   "medheld": 231.5,
+   "meanheld": 216.5346283783784,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.5",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.2762765176029135,
+   "trades_6mo": 1189,
+   "t_6mo": 1.5555914164385047,
+   "by_bot": {
+    "vwap": {
+     "trades": 848,
+     "avgR": 0.1291,
+     "win": 63.1
+    },
+    "ema50": {
+     "trades": 766,
+     "avgR": -0.096,
+     "win": 58.9
+    },
+    "range": {
+     "trades": 754,
+     "avgR": 0.3543,
+     "win": 63.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 791,
+     "avgR": 0.4548,
+     "afterTkr": 0.3758,
+     "t_afterTkr": 1.632
+    },
+    "QQQ": {
+     "trades": 773,
+     "avgR": -0.1996,
+     "afterTkr": -0.2936,
+     "t_afterTkr": -1.357
+    },
+    "IWM": {
+     "trades": 804,
+     "avgR": 0.1214,
+     "afterTkr": -0.1916,
+     "t_afterTkr": -0.822
+    }
+   },
+   "ex_IWM": {
+    "trades": 1564,
+    "afterTkr": 0.045,
+    "t_afterTkr": 0.284
+   },
+   "qqq_only": {
+    "trades": 773,
+    "avgR": -0.1996,
+    "afterTkr": -0.2936,
+    "t_afterTkr": -1.357,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2283,
+   "win": 61.49802890932983,
+   "avgR": 0.08289456339190865,
+   "totR": 189.2482882237268,
+   "t": 0.5820042259645397,
+   "after": -0.11710543660809136,
+   "afterTkr": -0.07966128417707957,
+   "totR_afterTkr": -181.86671177627287,
+   "t_afterTkr": -0.5591705953102523,
+   "win_afterTkr": 60.92860271572492,
+   "avgwin": 4.081557007546998,
+   "avgloss": -6.30404749757936,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 318,
+   "meanheld": 252.31537450722735,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.75",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.08359511692822712,
+   "trades_6mo": 1146,
+   "t_6mo": 0.43398914289224594,
+   "by_bot": {
+    "vwap": {
+     "trades": 805,
+     "avgR": 0.0962,
+     "win": 62.4
+    },
+    "ema50": {
+     "trades": 724,
+     "avgR": -0.0979,
+     "win": 58.4
+    },
+    "range": {
+     "trades": 754,
+     "avgR": 0.2422,
+     "win": 63.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 764,
+     "avgR": 0.4212,
+     "afterTkr": 0.3422,
+     "t_afterTkr": 1.329
+    },
+    "QQQ": {
+     "trades": 752,
+     "avgR": -0.2116,
+     "afterTkr": -0.3056,
+     "t_afterTkr": -1.296
+    },
+    "IWM": {
+     "trades": 767,
+     "avgR": 0.0347,
+     "afterTkr": -0.2783,
+     "t_afterTkr": -1.132
+    }
+   },
+   "ex_IWM": {
+    "trades": 1516,
+    "afterTkr": 0.0208,
+    "t_afterTkr": 0.119
+   },
+   "qqq_only": {
+    "trades": 752,
+    "avgR": -0.2116,
+    "afterTkr": -0.3056,
+    "t_afterTkr": -1.296,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2862,
+   "win": 33.08874912648498,
+   "avgR": -0.00733752620545032,
+   "totR": -20.999999999998735,
+   "t": -0.2780337966992296,
+   "after": -0.20733752620545032,
+   "afterTkr": -0.16618763102725326,
+   "totR_afterTkr": -475.6289999999928,
+   "t_afterTkr": -6.289580569877198,
+   "win_afterTkr": 33.08874912648498,
+   "avgwin": 2.0,
+   "avgloss": -0.9999999999999993,
+   "maxwin": 2.0,
+   "maxloss": -1.0000000000003157,
+   "blocks": 5,
+   "medheld": 4.0,
+   "meanheld": 6.40461215932914,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "stop_target 1.0/2.0 (V1)",
+   "stop": 1.0,
+   "tgt": 2.0,
+   "kind": "stop_target",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.03870076019350488,
+   "trades_6mo": 1447,
+   "t_6mo": 1.031066051401962,
+   "by_bot": {
+    "vwap": {
+     "trades": 1192,
+     "avgR": -0.026,
+     "win": 32.5
+    },
+    "ema50": {
+     "trades": 695,
+     "avgR": 0.023,
+     "win": 34.1
+    },
+    "range": {
+     "trades": 975,
+     "avgR": -0.0062,
+     "win": 33.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 971,
+     "avgR": -0.0206,
+     "afterTkr": -0.0996,
+     "t_afterTkr": -2.205
+    },
+    "QQQ": {
+     "trades": 977,
+     "avgR": -0.0358,
+     "afterTkr": -0.1298,
+     "t_afterTkr": -2.895
+    },
+    "IWM": {
+     "trades": 914,
+     "avgR": 0.0372,
+     "afterTkr": -0.2758,
+     "t_afterTkr": -5.841
+    }
+   },
+   "ex_IWM": {
+    "trades": 1948,
+    "afterTkr": -0.1148,
+    "t_afterTkr": -3.607
+   },
+   "qqq_only": {
+    "trades": 977,
+    "avgR": -0.0358,
+    "afterTkr": -0.1298,
+    "t_afterTkr": -2.895,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2942,
+   "win": 32.732834806254246,
+   "avgR": 0.02917076489833739,
+   "totR": 85.82039033090855,
+   "t": 0.9455132382877446,
+   "after": -0.17082923510166262,
+   "afterTkr": -0.12949544856189377,
+   "totR_afterTkr": -380.97560966909185,
+   "t_afterTkr": -4.196097942597934,
+   "win_afterTkr": 30.285520054384772,
+   "avgwin": 1.850092407379119,
+   "avgloss": -0.8569068206039328,
+   "maxwin": 14.021681266106752,
+   "maxloss": -1.0000000000003157,
+   "blocks": 7,
+   "medheld": 5.0,
+   "meanheld": 7.618966689326989,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "live_v2 stop1.0 arm0.5 trail1.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "trail_atr": 1.5,
+   "kind": "live_v2",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.06644985727115155,
+   "trades_6mo": 1490,
+   "t_6mo": 1.5251885804210852,
+   "by_bot": {
+    "vwap": {
+     "trades": 1234,
+     "avgR": 0.0374,
+     "win": 31.7
+    },
+    "ema50": {
+     "trades": 711,
+     "avgR": 0.1049,
+     "win": 33.1
+    },
+    "range": {
+     "trades": 997,
+     "avgR": -0.035,
+     "win": 33.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 997,
+     "avgR": 0.0388,
+     "afterTkr": -0.0402,
+     "t_afterTkr": -0.748
+    },
+    "QQQ": {
+     "trades": 1008,
+     "avgR": -0.0444,
+     "afterTkr": -0.1384,
+     "t_afterTkr": -2.804
+    },
+    "IWM": {
+     "trades": 937,
+     "avgR": 0.098,
+     "afterTkr": -0.215,
+     "t_afterTkr": -3.748
+    }
+   },
+   "ex_IWM": {
+    "trades": 2005,
+    "afterTkr": -0.0896,
+    "t_afterTkr": -2.455
+   },
+   "qqq_only": {
+    "trades": 1008,
+    "avgR": -0.0444,
+    "afterTkr": -0.1384,
+    "t_afterTkr": -2.804,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 3003,
+   "win": 52.014652014652015,
+   "avgR": 0.0026650330213956147,
+   "totR": 8.003094163251088,
+   "t": 0.12580366036546853,
+   "after": -0.1973349669786044,
+   "afterTkr": -0.15608921273285015,
+   "totR_afterTkr": -468.7359058367496,
+   "t_afterTkr": -7.367690703856034,
+   "win_afterTkr": 52.014652014652015,
+   "avgwin": 0.927658831090429,
+   "avgloss": -0.9999999999999993,
+   "maxwin": 16.74145255351538,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 3,
+   "meanheld": 3.8604728604728606,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.25",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.02722676236785996,
+   "trades_6mo": 1521,
+   "t_6mo": 0.8807015054369292,
+   "by_bot": {
+    "vwap": {
+     "trades": 1261,
+     "avgR": 0.0216,
+     "win": 51.1
+    },
+    "ema50": {
+     "trades": 727,
+     "avgR": -0.0138,
+     "win": 52.0
+    },
+    "range": {
+     "trades": 1015,
+     "avgR": -0.0091,
+     "win": 53.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1023,
+     "avgR": -0.0288,
+     "afterTkr": -0.1078,
+     "t_afterTkr": -3.217
+    },
+    "QQQ": {
+     "trades": 1022,
+     "avgR": -0.0374,
+     "afterTkr": -0.1314,
+     "t_afterTkr": -3.398
+    },
+    "IWM": {
+     "trades": 958,
+     "avgR": 0.079,
+     "afterTkr": -0.234,
+     "t_afterTkr": -6.207
+    }
+   },
+   "ex_IWM": {
+    "trades": 2045,
+    "afterTkr": -0.1196,
+    "t_afterTkr": -4.675
+   },
+   "qqq_only": {
+    "trades": 1022,
+    "avgR": -0.0374,
+    "afterTkr": -0.1314,
+    "t_afterTkr": -3.398,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2989,
+   "win": 51.89026430244229,
+   "avgR": 0.005371032632259372,
+   "totR": 16.054016537823493,
+   "t": 0.18279378764157292,
+   "after": -0.19462896736774063,
+   "afterTkr": -0.15326195498901865,
+   "totR_afterTkr": -458.0999834621777,
+   "t_afterTkr": -5.2192524944312995,
+   "win_afterTkr": 49.28069588491134,
+   "avgwin": 0.937494530327416,
+   "avgloss": -0.9999999999999993,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000003157,
+   "blocks": 7,
+   "medheld": 3,
+   "meanheld": 7.17129474740716,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.010882453247906699,
+   "trades_6mo": 1510,
+   "t_6mo": 0.30501867040262387,
+   "by_bot": {
+    "vwap": {
+     "trades": 1253,
+     "avgR": 0.0482,
+     "win": 50.9
+    },
+    "ema50": {
+     "trades": 722,
+     "avgR": -0.0011,
+     "win": 51.8
+    },
+    "range": {
+     "trades": 1014,
+     "avgR": -0.043,
+     "win": 53.2
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1020,
+     "avgR": -0.0374,
+     "afterTkr": -0.1164,
+     "t_afterTkr": -2.961
+    },
+    "QQQ": {
+     "trades": 1017,
+     "avgR": -0.0453,
+     "afterTkr": -0.1393,
+     "t_afterTkr": -3.086
+    },
+    "IWM": {
+     "trades": 952,
+     "avgR": 0.1053,
+     "afterTkr": -0.2077,
+     "t_afterTkr": -3.13
+    }
+   },
+   "ex_IWM": {
+    "trades": 2037,
+    "afterTkr": -0.1278,
+    "t_afterTkr": -4.273
+   },
+   "qqq_only": {
+    "trades": 1017,
+    "avgR": -0.0453,
+    "afterTkr": -0.1393,
+    "t_afterTkr": -3.086,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2954,
+   "win": 51.726472579553146,
+   "avgR": 0.07745832701428,
+   "totR": 228.8118980001824,
+   "t": 1.5229827558068603,
+   "after": -0.12254167298572001,
+   "afterTkr": -0.08105284427888183,
+   "totR_afterTkr": -239.43010199981697,
+   "t_afterTkr": -1.5924082801330834,
+   "win_afterTkr": 43.36492890995261,
+   "avgwin": 1.082992079843051,
+   "avgloss": -0.9999999999999992,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 4.0,
+   "meanheld": 17.974272173324305,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.75",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.024254668053618457,
+   "trades_6mo": 1493,
+   "t_6mo": 0.4625449567951404,
+   "by_bot": {
+    "vwap": {
+     "trades": 1229,
+     "avgR": 0.1177,
+     "win": 50.7
+    },
+    "ema50": {
+     "trades": 714,
+     "avgR": 0.1643,
+     "win": 51.7
+    },
+    "range": {
+     "trades": 1011,
+     "avgR": -0.0328,
+     "win": 53.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 1005,
+     "avgR": 0.0977,
+     "afterTkr": 0.0187,
+     "t_afterTkr": 0.198
+    },
+    "QQQ": {
+     "trades": 1010,
+     "avgR": 0.0615,
+     "afterTkr": -0.0325,
+     "t_afterTkr": -0.357
+    },
+    "IWM": {
+     "trades": 939,
+     "avgR": 0.073,
+     "afterTkr": -0.24,
+     "t_afterTkr": -3.174
+    }
+   },
+   "ex_IWM": {
+    "trades": 2015,
+    "afterTkr": -0.007,
+    "t_afterTkr": -0.106
+   },
+   "qqq_only": {
+    "trades": 1010,
+    "avgR": 0.0615,
+    "afterTkr": -0.0325,
+    "t_afterTkr": -0.357,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2930,
+   "win": 41.6382252559727,
+   "avgR": -0.00016288570833347554,
+   "totR": -0.4772551254170274,
+   "t": -0.006537883088180518,
+   "after": -0.2001628857083335,
+   "afterTkr": -0.15918404611788978,
+   "totR_afterTkr": -466.4092551254182,
+   "t_afterTkr": -6.383893839432515,
+   "win_afterTkr": 41.6382252559727,
+   "avgwin": 1.401248151536542,
+   "avgloss": -0.9999999999999991,
+   "maxwin": 16.74145255351538,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 4.0,
+   "meanheld": 5.3283276450511945,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.25",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.051920388505478185,
+   "trades_6mo": 1484,
+   "t_6mo": 1.428324434534557,
+   "by_bot": {
+    "vwap": {
+     "trades": 1228,
+     "avgR": 0.0314,
+     "win": 41.5
+    },
+    "ema50": {
+     "trades": 708,
+     "avgR": 0.0021,
+     "win": 42.1
+    },
+    "range": {
+     "trades": 994,
+     "avgR": -0.0407,
+     "win": 41.4
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 994,
+     "avgR": -0.0002,
+     "afterTkr": -0.0792,
+     "t_afterTkr": -1.92
+    },
+    "QQQ": {
+     "trades": 998,
+     "avgR": -0.0545,
+     "afterTkr": -0.1485,
+     "t_afterTkr": -3.365
+    },
+    "IWM": {
+     "trades": 938,
+     "avgR": 0.0577,
+     "afterTkr": -0.2553,
+     "t_afterTkr": -5.803
+    }
+   },
+   "ex_IWM": {
+    "trades": 1992,
+    "afterTkr": -0.1139,
+    "t_afterTkr": -3.77
+   },
+   "qqq_only": {
+    "trades": 998,
+    "avgR": -0.0545,
+    "afterTkr": -0.1485,
+    "t_afterTkr": -3.365,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2917,
+   "win": 41.51525539938293,
+   "avgR": 0.006430058219197789,
+   "totR": 18.756479825399982,
+   "t": 0.189334720878676,
+   "after": -0.19356994178080222,
+   "afterTkr": -0.1526062804849503,
+   "totR_afterTkr": -445.15252017460125,
+   "t_afterTkr": -4.495165407804004,
+   "win_afterTkr": 41.51525539938293,
+   "avgwin": 1.4242415192612705,
+   "avgloss": -0.9999999999999991,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 4,
+   "meanheld": 10.106959204662324,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.5",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.029979936201539152,
+   "trades_6mo": 1474,
+   "t_6mo": 0.7120066291099273,
+   "by_bot": {
+    "vwap": {
+     "trades": 1219,
+     "avgR": 0.0766,
+     "win": 41.3
+    },
+    "ema50": {
+     "trades": 704,
+     "avgR": 0.0193,
+     "win": 41.9
+    },
+    "range": {
+     "trades": 994,
+     "avgR": -0.0887,
+     "win": 41.4
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 989,
+     "avgR": -0.0278,
+     "afterTkr": -0.1068,
+     "t_afterTkr": -2.303
+    },
+    "QQQ": {
+     "trades": 994,
+     "avgR": -0.0486,
+     "afterTkr": -0.1426,
+     "t_afterTkr": -2.679
+    },
+    "IWM": {
+     "trades": 934,
+     "avgR": 0.1013,
+     "afterTkr": -0.2117,
+     "t_afterTkr": -2.824
+    }
+   },
+   "ex_IWM": {
+    "trades": 1983,
+    "afterTkr": -0.1248,
+    "t_afterTkr": -3.534
+   },
+   "qqq_only": {
+    "trades": 994,
+    "avgR": -0.0486,
+    "afterTkr": -0.1426,
+    "t_afterTkr": -2.679,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2881,
+   "win": 41.40923290524123,
+   "avgR": 0.08494965325319598,
+   "totR": 244.73995102245752,
+   "t": 1.5316549052622923,
+   "after": -0.11505034674680403,
+   "afterTkr": -0.0738268132514899,
+   "totR_afterTkr": -212.69504897754223,
+   "t_afterTkr": -1.3302343728176556,
+   "win_afterTkr": 39.153071850052065,
+   "avgwin": 1.620067016783282,
+   "avgloss": -0.9999999999999987,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.000000000000236,
+   "blocks": 8,
+   "medheld": 5,
+   "meanheld": 24.227698715723708,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.75",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.05407307992820552,
+   "trades_6mo": 1455,
+   "t_6mo": 0.8847505920715139,
+   "by_bot": {
+    "vwap": {
+     "trades": 1194,
+     "avgR": 0.1511,
+     "win": 41.1
+    },
+    "ema50": {
+     "trades": 694,
+     "avgR": 0.2076,
+     "win": 41.8
+    },
+    "range": {
+     "trades": 993,
+     "avgR": -0.0804,
+     "win": 41.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 976,
+     "avgR": 0.1249,
+     "afterTkr": 0.0459,
+     "t_afterTkr": 0.447
+    },
+    "QQQ": {
+     "trades": 986,
+     "avgR": 0.0458,
+     "afterTkr": -0.0482,
+     "t_afterTkr": -0.493
+    },
+    "IWM": {
+     "trades": 919,
+     "avgR": 0.0845,
+     "afterTkr": -0.2285,
+     "t_afterTkr": -2.667
+    }
+   },
+   "ex_IWM": {
+    "trades": 1962,
+    "afterTkr": -0.0014,
+    "t_afterTkr": -0.02
+   },
+   "qqq_only": {
+    "trades": 986,
+    "avgR": 0.0458,
+    "afterTkr": -0.0482,
+    "t_afterTkr": -0.493,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2842,
+   "win": 29.978888106966924,
+   "avgR": 0.016984666723991255,
+   "totR": 48.270422829583296,
+   "t": 0.533444123107667,
+   "after": -0.18301533327600875,
+   "afterTkr": -0.14196818338156822,
+   "totR_afterTkr": -403.47357717041734,
+   "t_afterTkr": -4.452752787842018,
+   "win_afterTkr": 29.978888106966924,
+   "avgwin": 2.392336177030025,
+   "avgloss": -0.9999999999999992,
+   "maxwin": 16.74145255351538,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 5.0,
+   "meanheld": 8.840253342716396,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.25",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.09357767570670732,
+   "trades_6mo": 1436,
+   "t_6mo": 1.993695654184322,
+   "by_bot": {
+    "vwap": {
+     "trades": 1178,
+     "avgR": 0.0378,
+     "win": 29.7
+    },
+    "ema50": {
+     "trades": 691,
+     "avgR": 0.0341,
+     "win": 30.4
+    },
+    "range": {
+     "trades": 973,
+     "avgR": -0.0204,
+     "win": 30.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 965,
+     "avgR": 0.0564,
+     "afterTkr": -0.0226,
+     "t_afterTkr": -0.401
+    },
+    "QQQ": {
+     "trades": 968,
+     "avgR": -0.0472,
+     "afterTkr": -0.1412,
+     "t_afterTkr": -2.624
+    },
+    "IWM": {
+     "trades": 909,
+     "avgR": 0.0434,
+     "afterTkr": -0.2696,
+     "t_afterTkr": -4.879
+    }
+   },
+   "ex_IWM": {
+    "trades": 1933,
+    "afterTkr": -0.082,
+    "t_afterTkr": -2.104
+   },
+   "qqq_only": {
+    "trades": 968,
+    "avgR": -0.0472,
+    "afterTkr": -0.1412,
+    "t_afterTkr": -2.624,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2827,
+   "win": 29.854969932790944,
+   "avgR": 0.011127234300609704,
+   "totR": 31.4566913678238,
+   "t": 0.2745085273827963,
+   "after": -0.18887276569939032,
+   "afterTkr": -0.14797499421017912,
+   "totR_afterTkr": -418.3253086321776,
+   "t_afterTkr": -3.650901659108848,
+   "win_afterTkr": 29.854969932790944,
+   "avgwin": 2.3867970276869928,
+   "avgloss": -0.9999999999999992,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000003157,
+   "blocks": 6,
+   "medheld": 6,
+   "meanheld": 16.540502299257163,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.5",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.05266590714395716,
+   "trades_6mo": 1427,
+   "t_6mo": 1.0001630909124508,
+   "by_bot": {
+    "vwap": {
+     "trades": 1168,
+     "avgR": 0.0237,
+     "win": 29.5
+    },
+    "ema50": {
+     "trades": 686,
+     "avgR": 0.0641,
+     "win": 30.3
+    },
+    "range": {
+     "trades": 973,
+     "avgR": -0.0413,
+     "win": 30.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 958,
+     "avgR": 0.0064,
+     "afterTkr": -0.0726,
+     "t_afterTkr": -1.171
+    },
+    "QQQ": {
+     "trades": 963,
+     "avgR": -0.0652,
+     "afterTkr": -0.1592,
+     "t_afterTkr": -2.571
+    },
+    "IWM": {
+     "trades": 906,
+     "avgR": 0.0972,
+     "afterTkr": -0.2158,
+     "t_afterTkr": -2.514
+    }
+   },
+   "ex_IWM": {
+    "trades": 1921,
+    "afterTkr": -0.116,
+    "t_afterTkr": -2.648
+   },
+   "qqq_only": {
+    "trades": 963,
+    "avgR": -0.0652,
+    "afterTkr": -0.1592,
+    "t_afterTkr": -2.571,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2793,
+   "win": 29.752953813104188,
+   "avgR": 0.09684906434887186,
+   "totR": 270.49943672639864,
+   "t": 1.5423711499341297,
+   "after": -0.10315093565112815,
+   "afterTkr": -0.062347498486788736,
+   "totR_afterTkr": -174.13656327360087,
+   "t_afterTkr": -0.9924068926000578,
+   "win_afterTkr": 29.752953813104188,
+   "avgwin": 2.6865215845083,
+   "avgloss": -0.9999999999999991,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.000000000000236,
+   "blocks": 6,
+   "medheld": 6,
+   "meanheld": 32.71607590404583,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.75",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.09779267778881154,
+   "trades_6mo": 1409,
+   "t_6mo": 1.280383638263131,
+   "by_bot": {
+    "vwap": {
+     "trades": 1143,
+     "avgR": 0.1279,
+     "win": 29.3
+    },
+    "ema50": {
+     "trades": 677,
+     "avgR": 0.2112,
+     "win": 30.1
+    },
+    "range": {
+     "trades": 973,
+     "avgR": -0.0192,
+     "win": 30.0
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 942,
+     "avgR": 0.149,
+     "afterTkr": 0.07,
+     "t_afterTkr": 0.605
+    },
+    "QQQ": {
+     "trades": 955,
+     "avgR": 0.0425,
+     "afterTkr": -0.0515,
+     "t_afterTkr": -0.474
+    },
+    "IWM": {
+     "trades": 896,
+     "avgR": 0.1,
+     "afterTkr": -0.213,
+     "t_afterTkr": -2.121
+    }
+   },
+   "ex_IWM": {
+    "trades": 1897,
+    "afterTkr": 0.0088,
+    "t_afterTkr": 0.111
+   },
+   "qqq_only": {
+    "trades": 955,
+    "avgR": 0.0425,
+    "afterTkr": -0.0515,
+    "t_afterTkr": -0.474,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2763,
+   "win": 19.32681867535288,
+   "avgR": 0.08915447390796936,
+   "totR": 246.33381140771922,
+   "t": 1.8092803147562595,
+   "after": -0.11084552609203065,
+   "afterTkr": -0.06950893542970708,
+   "totR_afterTkr": -192.0531885922806,
+   "t_afterTkr": -1.4088040856196582,
+   "win_afterTkr": 19.32681867535288,
+   "avgwin": 4.634322326916409,
+   "avgloss": -0.999728268804685,
+   "maxwin": 31.769414879363985,
+   "maxloss": -1.0000000000003157,
+   "blocks": 8,
+   "medheld": 6,
+   "meanheld": 19.39087947882736,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.25",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.1325303723289612,
+   "trades_6mo": 1384,
+   "t_6mo": 2.028789712152546,
+   "by_bot": {
+    "vwap": {
+     "trades": 1121,
+     "avgR": 0.0669,
+     "win": 19.1
+    },
+    "ema50": {
+     "trades": 672,
+     "avgR": 0.2671,
+     "win": 20.4
+    },
+    "range": {
+     "trades": 970,
+     "avgR": -0.0085,
+     "win": 18.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 937,
+     "avgR": 0.1568,
+     "afterTkr": 0.0778,
+     "t_afterTkr": 0.858
+    },
+    "QQQ": {
+     "trades": 946,
+     "avgR": 0.0571,
+     "afterTkr": -0.0369,
+     "t_afterTkr": -0.435
+    },
+    "IWM": {
+     "trades": 880,
+     "avgR": 0.0516,
+     "afterTkr": -0.2614,
+     "t_afterTkr": -3.29
+    }
+   },
+   "ex_IWM": {
+    "trades": 1883,
+    "afterTkr": 0.0202,
+    "t_afterTkr": 0.325
+   },
+   "qqq_only": {
+    "trades": 946,
+    "avgR": 0.0571,
+    "afterTkr": -0.0369,
+    "t_afterTkr": -0.435,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2746,
+   "win": 19.19155134741442,
+   "avgR": 0.10365896765127523,
+   "totR": 284.6475251704018,
+   "t": 1.6766361542125876,
+   "after": -0.09634103234872478,
+   "afterTkr": -0.05519827925331327,
+   "totR_afterTkr": -151.5744748295982,
+   "t_afterTkr": -0.8921103830178115,
+   "win_afterTkr": 19.19155134741442,
+   "avgwin": 4.749605002535189,
+   "avgloss": -0.9997270442386854,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000003157,
+   "blocks": 8,
+   "medheld": 6.0,
+   "meanheld": 31.399126001456665,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.5",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.13816707968850597,
+   "trades_6mo": 1375,
+   "t_6mo": 1.801049641431546,
+   "by_bot": {
+    "vwap": {
+     "trades": 1110,
+     "avgR": 0.0813,
+     "win": 18.8
+    },
+    "ema50": {
+     "trades": 666,
+     "avgR": 0.3359,
+     "win": 20.3
+    },
+    "range": {
+     "trades": 970,
+     "avgR": -0.0302,
+     "win": 18.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 931,
+     "avgR": 0.1508,
+     "afterTkr": 0.0718,
+     "t_afterTkr": 0.643
+    },
+    "QQQ": {
+     "trades": 938,
+     "avgR": 0.0884,
+     "afterTkr": -0.0056,
+     "t_afterTkr": -0.05
+    },
+    "IWM": {
+     "trades": 877,
+     "avgR": 0.0699,
+     "afterTkr": -0.2431,
+     "t_afterTkr": -2.551
+    }
+   },
+   "ex_IWM": {
+    "trades": 1869,
+    "afterTkr": 0.033,
+    "t_afterTkr": 0.417
+   },
+   "qqq_only": {
+    "trades": 938,
+    "avgR": 0.0884,
+    "afterTkr": -0.0056,
+    "t_afterTkr": -0.05,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2725,
+   "win": 19.119266055045873,
+   "avgR": 0.10379342069491217,
+   "totR": 282.8370713936357,
+   "t": 1.512725937559906,
+   "after": -0.09620657930508784,
+   "afterTkr": -0.05514199214912454,
+   "totR_afterTkr": -150.26192860636448,
+   "t_afterTkr": -0.8030846300278827,
+   "win_afterTkr": 19.119266055045873,
+   "avgwin": 4.77203720260898,
+   "avgloss": -0.9997251865542846,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000002427,
+   "blocks": 7,
+   "medheld": 6,
+   "meanheld": 45.202935779816514,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.75",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.15390857143787237,
+   "trades_6mo": 1364,
+   "t_6mo": 1.6892076653541215,
+   "by_bot": {
+    "vwap": {
+     "trades": 1096,
+     "avgR": 0.0846,
+     "win": 18.7
+    },
+    "ema50": {
+     "trades": 659,
+     "avgR": 0.3366,
+     "win": 20.2
+    },
+    "range": {
+     "trades": 970,
+     "avgR": -0.0327,
+     "win": 18.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 920,
+     "avgR": 0.182,
+     "afterTkr": 0.103,
+     "t_afterTkr": 0.802
+    },
+    "QQQ": {
+     "trades": 934,
+     "avgR": 0.0696,
+     "afterTkr": -0.0244,
+     "t_afterTkr": -0.201
+    },
+    "IWM": {
+     "trades": 871,
+     "avgR": 0.0579,
+     "afterTkr": -0.2551,
+     "t_afterTkr": -2.466
+    }
+   },
+   "ex_IWM": {
+    "trades": 1854,
+    "afterTkr": 0.0388,
+    "t_afterTkr": 0.439
+   },
+   "qqq_only": {
+    "trades": 934,
+    "avgR": 0.0696,
+    "afterTkr": -0.0244,
+    "t_afterTkr": -0.201,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2700,
+   "win": 68.81481481481481,
+   "avgR": 0.008089009124790438,
+   "totR": 21.840324636934135,
+   "t": 0.27412386943528083,
+   "after": -0.19191099087520958,
+   "afterTkr": -0.15161543531965402,
+   "totR_afterTkr": -409.36167536306596,
+   "t_afterTkr": -5.14389490410637,
+   "win_afterTkr": 68.81481481481481,
+   "avgwin": 0.9181056644978098,
+   "avgloss": -1.9999999999999958,
+   "maxwin": 16.74145255351538,
+   "maxloss": -2.0000000000003,
+   "blocks": 7,
+   "medheld": 5.0,
+   "meanheld": 6.735925925925926,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.25",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.029334462234803453,
+   "trades_6mo": 1355,
+   "t_6mo": 0.6903475927684526,
+   "by_bot": {
+    "vwap": {
+     "trades": 1122,
+     "avgR": 0.0598,
+     "win": 69.5
+    },
+    "ema50": {
+     "trades": 674,
+     "avgR": -0.0321,
+     "win": 67.7
+    },
+    "range": {
+     "trades": 904,
+     "avgR": -0.0261,
+     "win": 68.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 919,
+     "avgR": -0.0454,
+     "afterTkr": -0.1244,
+     "t_afterTkr": -2.575
+    },
+    "QQQ": {
+     "trades": 908,
+     "avgR": -0.047,
+     "afterTkr": -0.141,
+     "t_afterTkr": -2.6
+    },
+    "IWM": {
+     "trades": 873,
+     "avgR": 0.1217,
+     "afterTkr": -0.1913,
+     "t_afterTkr": -3.791
+    }
+   },
+   "ex_IWM": {
+    "trades": 1827,
+    "afterTkr": -0.1327,
+    "t_afterTkr": -3.657
+   },
+   "qqq_only": {
+    "trades": 908,
+    "avgR": -0.047,
+    "afterTkr": -0.141,
+    "t_afterTkr": -2.6,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2684,
+   "win": 68.70342771982116,
+   "avgR": -0.010572334097252228,
+   "totR": -28.37614471702479,
+   "t": -0.28477137822627285,
+   "after": -0.21057233409725223,
+   "afterTkr": -0.1701956574951658,
+   "totR_afterTkr": -456.8051447170257,
+   "t_afterTkr": -4.5915447915172285,
+   "win_afterTkr": 64.82861400894188,
+   "avgwin": 0.8956745419105052,
+   "avgloss": -1.9999999999999958,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.0000000000003,
+   "blocks": 5,
+   "medheld": 6.0,
+   "meanheld": 10.61177347242921,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.5",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.012435509429361358,
+   "trades_6mo": 1343,
+   "t_6mo": -0.2670920387606739,
+   "by_bot": {
+    "vwap": {
+     "trades": 1112,
+     "avgR": 0.0666,
+     "win": 69.3
+    },
+    "ema50": {
+     "trades": 669,
+     "avgR": -0.0487,
+     "win": 67.4
+    },
+    "range": {
+     "trades": 903,
+     "avgR": -0.0773,
+     "win": 68.9
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 916,
+     "avgR": -0.0771,
+     "afterTkr": -0.1561,
+     "t_afterTkr": -2.947
+    },
+    "QQQ": {
+     "trades": 901,
+     "avgR": -0.0941,
+     "afterTkr": -0.1881,
+     "t_afterTkr": -3.224
+    },
+    "IWM": {
+     "trades": 867,
+     "avgR": 0.1465,
+     "afterTkr": -0.1665,
+     "t_afterTkr": -2.086
+    }
+   },
+   "ex_IWM": {
+    "trades": 1817,
+    "afterTkr": -0.172,
+    "t_afterTkr": -4.369
+   },
+   "qqq_only": {
+    "trades": 901,
+    "avgR": -0.0941,
+    "afterTkr": -0.1881,
+    "t_afterTkr": -3.224,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2647,
+   "win": 68.71930487344163,
+   "avgR": 0.09577079342976662,
+   "totR": 253.50529020859202,
+   "t": 1.5594880263450868,
+   "after": -0.1042292065702334,
+   "afterTkr": -0.06378493003075475,
+   "totR_afterTkr": -168.8387097914079,
+   "t_afterTkr": -1.038133460985017,
+   "win_afterTkr": 57.08349074423876,
+   "avgwin": 1.04975551963089,
+   "avgloss": -1.999999999999996,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000003,
+   "blocks": 6,
+   "medheld": 7,
+   "meanheld": 25.067623724971668,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.75",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.03508392692023255,
+   "trades_6mo": 1323,
+   "t_6mo": 0.5218838517152794,
+   "by_bot": {
+    "vwap": {
+     "trades": 1085,
+     "avgR": 0.2098,
+     "win": 69.4
+    },
+    "ema50": {
+     "trades": 662,
+     "avgR": 0.1351,
+     "win": 67.5
+    },
+    "range": {
+     "trades": 900,
+     "avgR": -0.0705,
+     "win": 68.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 900,
+     "avgR": 0.1209,
+     "afterTkr": 0.0419,
+     "t_afterTkr": 0.363
+    },
+    "QQQ": {
+     "trades": 893,
+     "avgR": 0.0591,
+     "afterTkr": -0.0349,
+     "t_afterTkr": -0.318
+    },
+    "IWM": {
+     "trades": 854,
+     "avgR": 0.1076,
+     "afterTkr": -0.2054,
+     "t_afterTkr": -2.268
+    }
+   },
+   "ex_IWM": {
+    "trades": 1793,
+    "afterTkr": 0.0036,
+    "t_afterTkr": 0.046
+   },
+   "qqq_only": {
+    "trades": 893,
+    "avgR": 0.0591,
+    "afterTkr": -0.0349,
+    "t_afterTkr": -0.318,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2565,
+   "win": 58.86939571150098,
+   "avgR": -0.0025099713248091875,
+   "totR": -6.438076448135311,
+   "t": -0.06954972147341698,
+   "after": -0.2025099713248092,
+   "afterTkr": -0.16176377249439985,
+   "totR_afterTkr": -414.9240764481357,
+   "t_afterTkr": -4.482780678145596,
+   "win_afterTkr": 58.86939571150098,
+   "avgwin": 1.3930873665906371,
+   "avgloss": -1.999999999999998,
+   "maxwin": 16.74145255351538,
+   "maxloss": -2.000000000000309,
+   "blocks": 6,
+   "medheld": 7,
+   "meanheld": 9.909551656920078,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.25",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.05796309833745603,
+   "trades_6mo": 1286,
+   "t_6mo": 1.1167526522027995,
+   "by_bot": {
+    "vwap": {
+     "trades": 1063,
+     "avgR": 0.07,
+     "win": 60.3
+    },
+    "ema50": {
+     "trades": 637,
+     "avgR": 0.0417,
+     "win": 59.7
+    },
+    "range": {
+     "trades": 865,
+     "avgR": -0.1241,
+     "win": 56.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 872,
+     "avgR": -0.0018,
+     "afterTkr": -0.0808,
+     "t_afterTkr": -1.329
+    },
+    "QQQ": {
+     "trades": 869,
+     "avgR": -0.083,
+     "afterTkr": -0.177,
+     "t_afterTkr": -2.763
+    },
+    "IWM": {
+     "trades": 824,
+     "avgR": 0.0817,
+     "afterTkr": -0.2313,
+     "t_afterTkr": -3.701
+    }
+   },
+   "ex_IWM": {
+    "trades": 1741,
+    "afterTkr": -0.1288,
+    "t_afterTkr": -2.917
+   },
+   "qqq_only": {
+    "trades": 869,
+    "avgR": -0.083,
+    "afterTkr": -0.177,
+    "t_afterTkr": -2.763,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2550,
+   "win": 58.745098039215684,
+   "avgR": -0.017563988043437048,
+   "totR": -44.78816951076435,
+   "t": -0.39132567761954895,
+   "after": -0.21756398804343707,
+   "afterTkr": -0.1768816351022606,
+   "totR_afterTkr": -451.0481695107645,
+   "t_afterTkr": -3.944196161404308,
+   "win_afterTkr": 58.745098039215684,
+   "avgwin": 1.374640741314575,
+   "avgloss": -1.9999999999999978,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000000309,
+   "blocks": 6,
+   "medheld": 9.0,
+   "meanheld": 16.35058823529412,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.5",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.010730926808264624,
+   "trades_6mo": 1276,
+   "t_6mo": 0.1864766581546109,
+   "by_bot": {
+    "vwap": {
+     "trades": 1052,
+     "avgR": 0.1093,
+     "win": 60.2
+    },
+    "ema50": {
+     "trades": 633,
+     "avgR": 0.0252,
+     "win": 59.4
+    },
+    "range": {
+     "trades": 865,
+     "avgR": -0.2031,
+     "win": 56.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 868,
+     "avgR": -0.063,
+     "afterTkr": -0.142,
+     "t_afterTkr": -2.175
+    },
+    "QQQ": {
+     "trades": 862,
+     "avgR": -0.102,
+     "afterTkr": -0.196,
+     "t_afterTkr": -2.71
+    },
+    "IWM": {
+     "trades": 820,
+     "avgR": 0.1194,
+     "afterTkr": -0.1936,
+     "t_afterTkr": -2.053
+    }
+   },
+   "ex_IWM": {
+    "trades": 1730,
+    "afterTkr": -0.1689,
+    "t_afterTkr": -3.469
+   },
+   "qqq_only": {
+    "trades": 862,
+    "avgR": -0.102,
+    "afterTkr": -0.196,
+    "t_afterTkr": -2.71,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2513,
+   "win": 58.77437325905292,
+   "avgR": 0.10539125731096456,
+   "totR": 264.84822962245283,
+   "t": 1.5023708599794403,
+   "after": -0.09460874268903545,
+   "afterTkr": -0.05384471562974377,
+   "totR_afterTkr": -135.3117703775462,
+   "t_afterTkr": -0.7671478689464937,
+   "win_afterTkr": 55.55113410266613,
+   "avgwin": 1.5821585847139146,
+   "avgloss": -1.999999999999998,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000309,
+   "blocks": 5,
+   "medheld": 10,
+   "meanheld": 36.58615200955034,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.75",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.06860816541523056,
+   "trades_6mo": 1255,
+   "t_6mo": 0.8494178758938349,
+   "by_bot": {
+    "vwap": {
+     "trades": 1023,
+     "avgR": 0.2585,
+     "win": 60.2
+    },
+    "ema50": {
+     "trades": 626,
+     "avgR": 0.2471,
+     "win": 59.4
+    },
+    "range": {
+     "trades": 864,
+     "avgR": -0.1786,
+     "win": 56.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 853,
+     "avgR": 0.1544,
+     "afterTkr": 0.0754,
+     "t_afterTkr": 0.581
+    },
+    "QQQ": {
+     "trades": 853,
+     "avgR": 0.0681,
+     "afterTkr": -0.0259,
+     "t_afterTkr": -0.208
+    },
+    "IWM": {
+     "trades": 807,
+     "avgR": 0.0929,
+     "afterTkr": -0.2201,
+     "t_afterTkr": -2.042
+    }
+   },
+   "ex_IWM": {
+    "trades": 1706,
+    "afterTkr": 0.0248,
+    "t_afterTkr": 0.276
+   },
+   "qqq_only": {
+    "trades": 853,
+    "avgR": 0.0681,
+    "afterTkr": -0.0259,
+    "t_afterTkr": -0.208,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2427,
+   "win": 45.69427276473012,
+   "avgR": 0.0010692259270224124,
+   "totR": 2.595011324883448,
+   "t": 0.02270362453095606,
+   "after": -0.1989307740729776,
+   "afterTkr": -0.15786649718793436,
+   "totR_afterTkr": -383.14198867511584,
+   "t_afterTkr": -3.3530314151280844,
+   "win_afterTkr": 45.69427276473012,
+   "avgwin": 2.379256096776269,
+   "avgloss": -1.9999999999999993,
+   "maxwin": 16.74145255351538,
+   "maxloss": -2.000000000000309,
+   "blocks": 6,
+   "medheld": 12,
+   "meanheld": 17.821590440873507,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.25",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.08270963685106726,
+   "trades_6mo": 1210,
+   "t_6mo": 1.2116786051252524,
+   "by_bot": {
+    "vwap": {
+     "trades": 981,
+     "avgR": 0.0458,
+     "win": 46.1
+    },
+    "ema50": {
+     "trades": 612,
+     "avgR": 0.0832,
+     "win": 47.2
+    },
+    "range": {
+     "trades": 834,
+     "avgR": -0.1118,
+     "win": 44.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 823,
+     "avgR": 0.0103,
+     "afterTkr": -0.0687,
+     "t_afterTkr": -0.841
+    },
+    "QQQ": {
+     "trades": 828,
+     "avgR": -0.1039,
+     "afterTkr": -0.1979,
+     "t_afterTkr": -2.467
+    },
+    "IWM": {
+     "trades": 776,
+     "avgR": 0.1032,
+     "afterTkr": -0.2098,
+     "t_afterTkr": -2.532
+    }
+   },
+   "ex_IWM": {
+    "trades": 1651,
+    "afterTkr": -0.1335,
+    "t_afterTkr": -2.333
+   },
+   "qqq_only": {
+    "trades": 828,
+    "avgR": -0.1039,
+    "afterTkr": -0.1979,
+    "t_afterTkr": -2.467,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2411,
+   "win": 45.62422231439237,
+   "avgR": -0.02233450429135159,
+   "totR": -53.84848984644874,
+   "t": -0.39742639371645405,
+   "after": -0.2223345042913516,
+   "afterTkr": -0.18146598500474856,
+   "totR_afterTkr": -437.51448984644867,
+   "t_afterTkr": -3.231806564916611,
+   "win_afterTkr": 45.62422231439237,
+   "avgwin": 2.334683191048682,
+   "avgloss": -1.9999999999999991,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000000309,
+   "blocks": 5,
+   "medheld": 14,
+   "meanheld": 29.852758191621735,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.5",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.006416879863183717,
+   "trades_6mo": 1202,
+   "t_6mo": 0.08645891161714797,
+   "by_bot": {
+    "vwap": {
+     "trades": 970,
+     "avgR": 0.0267,
+     "win": 46.0
+    },
+    "ema50": {
+     "trades": 607,
+     "avgR": 0.0684,
+     "win": 47.1
+    },
+    "range": {
+     "trades": 834,
+     "avgR": -0.1454,
+     "win": 44.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 817,
+     "avgR": -0.0635,
+     "afterTkr": -0.1425,
+     "t_afterTkr": -1.61
+    },
+    "QQQ": {
+     "trades": 821,
+     "avgR": -0.1405,
+     "afterTkr": -0.2345,
+     "t_afterTkr": -2.637
+    },
+    "IWM": {
+     "trades": 773,
+     "avgR": 0.1467,
+     "afterTkr": -0.1663,
+     "t_afterTkr": -1.458
+    }
+   },
+   "ex_IWM": {
+    "trades": 1638,
+    "afterTkr": -0.1886,
+    "t_afterTkr": -3.007
+   },
+   "qqq_only": {
+    "trades": 821,
+    "avgR": -0.1405,
+    "afterTkr": -0.2345,
+    "t_afterTkr": -2.637,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2372,
+   "win": 45.48903878583474,
+   "avgR": 0.05891439392438832,
+   "totR": 139.74494238864952,
+   "t": 0.7656378405290989,
+   "after": -0.14108560607561169,
+   "afterTkr": -0.09991191298960833,
+   "totR_afterTkr": -236.9910576113508,
+   "t_afterTkr": -1.2982705716096408,
+   "win_afterTkr": 45.48903878583474,
+   "avgwin": 2.5261769623620465,
+   "avgloss": -1.9999999999999993,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000309,
+   "blocks": 7,
+   "medheld": 17.0,
+   "meanheld": 54.88279932546374,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.75",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.08856508189666694,
+   "trades_6mo": 1181,
+   "t_6mo": 0.8600383117432712,
+   "by_bot": {
+    "vwap": {
+     "trades": 942,
+     "avgR": 0.1187,
+     "win": 45.9
+    },
+    "ema50": {
+     "trades": 596,
+     "avgR": 0.1978,
+     "win": 46.8
+    },
+    "range": {
+     "trades": 834,
+     "avgR": -0.1078,
+     "win": 44.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 801,
+     "avgR": 0.071,
+     "afterTkr": -0.008,
+     "t_afterTkr": -0.058
+    },
+    "QQQ": {
+     "trades": 814,
+     "avgR": -0.0049,
+     "afterTkr": -0.0989,
+     "t_afterTkr": -0.756
+    },
+    "IWM": {
+     "trades": 757,
+     "avgR": 0.1148,
+     "afterTkr": -0.1982,
+     "t_afterTkr": -1.518
+    }
+   },
+   "ex_IWM": {
+    "trades": 1615,
+    "afterTkr": -0.0538,
+    "t_afterTkr": -0.566
+   },
+   "qqq_only": {
+    "trades": 814,
+    "avgR": -0.0049,
+    "afterTkr": -0.0989,
+    "t_afterTkr": -0.756,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 2318,
+   "win": 32.65746333045729,
+   "avgR": 0.08453197515267401,
+   "totR": 195.94511840389845,
+   "t": 1.2458300169172238,
+   "after": -0.115468024847326,
+   "afterTkr": -0.07420745539089808,
+   "totR_afterTkr": -172.01288159610198,
+   "t_afterTkr": -1.093273431142276,
+   "win_afterTkr": 32.65746333045729,
+   "avgwin": 4.37588278423387,
+   "avgloss": -1.9965394934408334,
+   "maxwin": 31.769414879363985,
+   "maxloss": -2.000000000000309,
+   "blocks": 7,
+   "medheld": 19.0,
+   "meanheld": 41.351164797239,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.25",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.1355068615680133,
+   "trades_6mo": 1146,
+   "t_6mo": 1.435929629306685,
+   "by_bot": {
+    "vwap": {
+     "trades": 906,
+     "avgR": 0.1191,
+     "win": 33.8
+    },
+    "ema50": {
+     "trades": 584,
+     "avgR": 0.2834,
+     "win": 33.6
+    },
+    "range": {
+     "trades": 828,
+     "avgR": -0.0936,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 785,
+     "avgR": 0.1747,
+     "afterTkr": 0.0957,
+     "t_afterTkr": 0.799
+    },
+    "QQQ": {
+     "trades": 794,
+     "avgR": -0.0339,
+     "afterTkr": -0.1279,
+     "t_afterTkr": -1.123
+    },
+    "IWM": {
+     "trades": 739,
+     "avgR": 0.116,
+     "afterTkr": -0.197,
+     "t_afterTkr": -1.655
+    }
+   },
+   "ex_IWM": {
+    "trades": 1579,
+    "afterTkr": -0.0168,
+    "t_afterTkr": -0.203
+   },
+   "qqq_only": {
+    "trades": 794,
+    "avgR": -0.0339,
+    "afterTkr": -0.1279,
+    "t_afterTkr": -1.123,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2302,
+   "win": 32.53692441355343,
+   "avgR": 0.0907583003731065,
+   "totR": 208.9256074588916,
+   "t": 1.133600157110811,
+   "after": -0.10924169962689351,
+   "afterTkr": -0.06817176044357469,
+   "totR_afterTkr": -156.93139254110918,
+   "t_afterTkr": -0.8513037816842075,
+   "win_afterTkr": 32.53692441355343,
+   "avgwin": 4.4185897953538475,
+   "avgloss": -1.9965216672640957,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000309,
+   "blocks": 9,
+   "medheld": 22.0,
+   "meanheld": 60.76672458731538,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.5",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.16105687003902297,
+   "trades_6mo": 1138,
+   "t_6mo": 1.45013245846802,
+   "by_bot": {
+    "vwap": {
+     "trades": 896,
+     "avgR": 0.086,
+     "win": 33.6
+    },
+    "ema50": {
+     "trades": 578,
+     "avgR": 0.3246,
+     "win": 33.4
+    },
+    "range": {
+     "trades": 828,
+     "avgR": -0.0674,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 781,
+     "avgR": 0.1724,
+     "afterTkr": 0.0934,
+     "t_afterTkr": 0.659
+    },
+    "QQQ": {
+     "trades": 785,
+     "avgR": -0.0284,
+     "afterTkr": -0.1224,
+     "t_afterTkr": -0.896
+    },
+    "IWM": {
+     "trades": 736,
+     "avgR": 0.1313,
+     "afterTkr": -0.1817,
+     "t_afterTkr": -1.322
+    }
+   },
+   "ex_IWM": {
+    "trades": 1566,
+    "afterTkr": -0.0148,
+    "t_afterTkr": -0.15
+   },
+   "qqq_only": {
+    "trades": 785,
+    "avgR": -0.0284,
+    "afterTkr": -0.1224,
+    "t_afterTkr": -0.896,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2276,
+   "win": 32.33743409490334,
+   "avgR": 0.08762617582937049,
+   "totR": 199.4371761876472,
+   "t": 0.9873589241768,
+   "after": -0.11237382417062952,
+   "afterTkr": -0.07116907900366998,
+   "totR_afterTkr": -161.98082381235267,
+   "t_afterTkr": -0.8015812124401811,
+   "win_afterTkr": 32.33743409490334,
+   "avgwin": 4.448417561751071,
+   "avgloss": -1.9964923047150265,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000000309,
+   "blocks": 8,
+   "medheld": 25.0,
+   "meanheld": 84.24956063268893,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.75",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.13806343947437982,
+   "trades_6mo": 1125,
+   "t_6mo": 1.1032240810361353,
+   "by_bot": {
+    "vwap": {
+     "trades": 879,
+     "avgR": 0.1001,
+     "win": 33.3
+    },
+    "ema50": {
+     "trades": 569,
+     "avgR": 0.3128,
+     "win": 33.0
+    },
+    "range": {
+     "trades": 828,
+     "avgR": -0.0804,
+     "win": 30.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 768,
+     "avgR": 0.2408,
+     "afterTkr": 0.1618,
+     "t_afterTkr": 0.969
+    },
+    "QQQ": {
+     "trades": 782,
+     "avgR": -0.0459,
+     "afterTkr": -0.1399,
+     "t_afterTkr": -0.951
+    },
+    "IWM": {
+     "trades": 726,
+     "avgR": 0.0694,
+     "afterTkr": -0.2436,
+     "t_afterTkr": -1.677
+    }
+   },
+   "ex_IWM": {
+    "trades": 1550,
+    "afterTkr": 0.0096,
+    "t_afterTkr": 0.086
+   },
+   "qqq_only": {
+    "trades": 782,
+    "avgR": -0.0459,
+    "afterTkr": -0.1399,
+    "t_afterTkr": -0.951,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2311,
+   "win": 88.96581566421463,
+   "avgR": -0.010901357253522844,
+   "totR": -25.193036612891262,
+   "t": -0.17749630462304195,
+   "after": -0.21090135725352285,
+   "afterTkr": -0.1729991504166557,
+   "totR_afterTkr": -399.80103661289087,
+   "t_afterTkr": -2.8132092440587066,
+   "win_afterTkr": 88.9225443530939,
+   "avgwin": 0.9157567825687518,
+   "avgloss": -7.4823097316637055,
+   "maxwin": 16.74145255351538,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 7,
+   "meanheld": 42.51363046300303,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.25",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.08076039914823967,
+   "trades_6mo": 1165,
+   "t_6mo": 0.9648977367058359,
+   "by_bot": {
+    "vwap": {
+     "trades": 961,
+     "avgR": 0.0592,
+     "win": 89.0
+    },
+    "ema50": {
+     "trades": 617,
+     "avgR": -0.2562,
+     "win": 86.4
+    },
+    "range": {
+     "trades": 733,
+     "avgR": 0.1037,
+     "win": 91.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 765,
+     "avgR": -0.0319,
+     "afterTkr": -0.1109,
+     "t_afterTkr": -1.04
+    },
+    "QQQ": {
+     "trades": 775,
+     "avgR": 0.084,
+     "afterTkr": -0.01,
+     "t_afterTkr": -0.097
+    },
+    "IWM": {
+     "trades": 771,
+     "avgR": -0.0855,
+     "afterTkr": -0.3985,
+     "t_afterTkr": -3.641
+    }
+   },
+   "ex_IWM": {
+    "trades": 1540,
+    "afterTkr": -0.0601,
+    "t_afterTkr": -0.811
+   },
+   "qqq_only": {
+    "trades": 775,
+    "avgR": 0.084,
+    "afterTkr": -0.01,
+    "t_afterTkr": -0.097,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 2297,
+   "win": 88.89856334349152,
+   "avgR": -0.01624126039659641,
+   "totR": -37.306175130982,
+   "t": -0.2379822456919485,
+   "after": -0.2162412603965964,
+   "afterTkr": -0.17829698525510754,
+   "totR_afterTkr": -409.5481751309813,
+   "t_afterTkr": -2.6108166992932293,
+   "win_afterTkr": 84.02263822377013,
+   "avgwin": 0.916103235280736,
+   "avgloss": -7.4823097316637055,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 9,
+   "meanheld": 48.35524597300827,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.5",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.05704215731105863,
+   "trades_6mo": 1155,
+   "t_6mo": 0.6355987122414228,
+   "by_bot": {
+    "vwap": {
+     "trades": 953,
+     "avgR": 0.0801,
+     "win": 88.9
+    },
+    "ema50": {
+     "trades": 611,
+     "avgR": -0.2723,
+     "win": 86.3
+    },
+    "range": {
+     "trades": 733,
+     "avgR": 0.072,
+     "win": 91.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 762,
+     "avgR": -0.036,
+     "afterTkr": -0.115,
+     "t_afterTkr": -1.008
+    },
+    "QQQ": {
+     "trades": 769,
+     "avgR": 0.025,
+     "afterTkr": -0.069,
+     "t_afterTkr": -0.642
+    },
+    "IWM": {
+     "trades": 766,
+     "avgR": -0.038,
+     "afterTkr": -0.351,
+     "t_afterTkr": -2.66
+    }
+   },
+   "ex_IWM": {
+    "trades": 1531,
+    "afterTkr": -0.0919,
+    "t_afterTkr": -1.174
+   },
+   "qqq_only": {
+    "trades": 769,
+    "avgR": 0.025,
+    "afterTkr": -0.069,
+    "t_afterTkr": -0.642,
+    "months_pos": "4/13"
+   }
+  },
+  {
+   "trades": 2264,
+   "win": 88.95759717314488,
+   "avgR": 0.1276679688216506,
+   "totR": 289.04028141221767,
+   "t": 1.4193902881336458,
+   "after": -0.07233203117834941,
+   "afterTkr": -0.034195105383296426,
+   "totR_afterTkr": -77.41771858778282,
+   "t_afterTkr": -0.37971398856412225,
+   "win_afterTkr": 73.71908127208481,
+   "avgwin": 1.0711897938620913,
+   "avgloss": -7.47334385370414,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 13.0,
+   "meanheld": 67.87588339222614,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.75",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.14163421369938708,
+   "trades_6mo": 1136,
+   "t_6mo": 1.3094767793015372,
+   "by_bot": {
+    "vwap": {
+     "trades": 928,
+     "avgR": 0.2798,
+     "win": 89.0
+    },
+    "ema50": {
+     "trades": 605,
+     "avgR": -0.0583,
+     "win": 86.3
+    },
+    "range": {
+     "trades": 731,
+     "avgR": 0.0884,
+     "win": 91.1
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 751,
+     "avgR": 0.2239,
+     "afterTkr": 0.1449,
+     "t_afterTkr": 0.861
+    },
+    "QQQ": {
+     "trades": 760,
+     "avgR": 0.2511,
+     "afterTkr": 0.1571,
+     "t_afterTkr": 1.012
+    },
+    "IWM": {
+     "trades": 753,
+     "avgR": -0.0929,
+     "afterTkr": -0.4059,
+     "t_afterTkr": -2.844
+    }
+   },
+   "ex_IWM": {
+    "trades": 1511,
+    "afterTkr": 0.151,
+    "t_afterTkr": 1.32
+   },
+   "qqq_only": {
+    "trades": 760,
+    "avgR": 0.2511,
+    "afterTkr": 0.1571,
+    "t_afterTkr": 1.012,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 2105,
+   "win": 84.94061757719714,
+   "avgR": 0.08844543673579452,
+   "totR": 186.17764432884744,
+   "t": 1.1816096251904806,
+   "after": -0.11155456326420549,
+   "afterTkr": -0.07306667727845727,
+   "totR_afterTkr": -153.8053556711526,
+   "t_afterTkr": -0.9750766616007472,
+   "win_afterTkr": 84.89311163895486,
+   "avgwin": 1.3778845670348834,
+   "avgloss": -7.18447937391017,
+   "maxwin": 16.74145255351538,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 14,
+   "meanheld": 62.097387173396676,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.25",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.21009267689748146,
+   "trades_6mo": 1070,
+   "t_6mo": 2.062275833753488,
+   "by_bot": {
+    "vwap": {
+     "trades": 883,
+     "avgR": 0.1729,
+     "win": 85.2
+    },
+    "ema50": {
+     "trades": 570,
+     "avgR": -0.1069,
+     "win": 82.6
+    },
+    "range": {
+     "trades": 652,
+     "avgR": 0.1449,
+     "win": 86.7
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 702,
+     "avgR": 0.171,
+     "afterTkr": 0.092,
+     "t_afterTkr": 0.716
+    },
+    "QQQ": {
+     "trades": 706,
+     "avgR": 0.1004,
+     "afterTkr": 0.0064,
+     "t_afterTkr": 0.05
+    },
+    "IWM": {
+     "trades": 697,
+     "avgR": -0.0068,
+     "afterTkr": -0.3198,
+     "t_afterTkr": -2.408
+    }
+   },
+   "ex_IWM": {
+    "trades": 1408,
+    "afterTkr": 0.0491,
+    "t_afterTkr": 0.542
+   },
+   "qqq_only": {
+    "trades": 706,
+    "avgR": 0.1004,
+    "afterTkr": 0.0064,
+    "t_afterTkr": 0.05,
+    "months_pos": "9/13"
+   }
+  },
+  {
+   "trades": 2089,
+   "win": 84.8731450454763,
+   "avgR": 0.0834981056568976,
+   "totR": 174.42754271725957,
+   "t": 1.0048963449077175,
+   "after": -0.11650189434310242,
+   "afterTkr": -0.07803564254798513,
+   "totR_afterTkr": -163.01645728274107,
+   "t_afterTkr": -0.9385930856836684,
+   "win_afterTkr": 84.82527525131641,
+   "avgwin": 1.3772743960782758,
+   "avgloss": -7.175569498511152,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 21,
+   "meanheld": 72.3370033508856,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.5",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.17277035188143422,
+   "trades_6mo": 1060,
+   "t_6mo": 1.5915693716009145,
+   "by_bot": {
+    "vwap": {
+     "trades": 873,
+     "avgR": 0.2149,
+     "win": 85.1
+    },
+    "ema50": {
+     "trades": 565,
+     "avgR": -0.1135,
+     "win": 82.5
+    },
+    "range": {
+     "trades": 651,
+     "avgR": 0.0783,
+     "win": 86.6
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 698,
+     "avgR": 0.15,
+     "afterTkr": 0.071,
+     "t_afterTkr": 0.521
+    },
+    "QQQ": {
+     "trades": 699,
+     "avgR": 0.0527,
+     "afterTkr": -0.0413,
+     "t_afterTkr": -0.306
+    },
+    "IWM": {
+     "trades": 692,
+     "avgR": 0.0475,
+     "afterTkr": -0.2655,
+     "t_afterTkr": -1.667
+    }
+   },
+   "ex_IWM": {
+    "trades": 1397,
+    "afterTkr": 0.0148,
+    "t_afterTkr": 0.154
+   },
+   "qqq_only": {
+    "trades": 699,
+    "avgR": 0.0527,
+    "afterTkr": -0.0413,
+    "t_afterTkr": -0.306,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 2055,
+   "win": 85.01216545012166,
+   "avgR": 0.23575738510153854,
+   "totR": 484.481426383661,
+   "t": 2.211439868933729,
+   "after": 0.03575738510153853,
+   "afterTkr": 0.0740770931307356,
+   "totR_afterTkr": 152.22842638366103,
+   "t_afterTkr": 0.6941751680458425,
+   "win_afterTkr": 80.0,
+   "avgwin": 1.5361191503622371,
+   "avgloss": -7.139995874347943,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 34,
+   "meanheld": 100.48077858880778,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.75",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.2923235535504934,
+   "trades_6mo": 1040,
+   "t_6mo": 2.233394131039918,
+   "by_bot": {
+    "vwap": {
+     "trades": 846,
+     "avgR": 0.4238,
+     "win": 85.2
+    },
+    "ema50": {
+     "trades": 559,
+     "avgR": 0.1334,
+     "win": 82.6
+    },
+    "range": {
+     "trades": 650,
+     "avgR": 0.0791,
+     "win": 86.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 685,
+     "avgR": 0.4311,
+     "afterTkr": 0.3521,
+     "t_afterTkr": 1.795
+    },
+    "QQQ": {
+     "trades": 688,
+     "avgR": 0.2617,
+     "afterTkr": 0.1677,
+     "t_afterTkr": 0.905
+    },
+    "IWM": {
+     "trades": 682,
+     "avgR": 0.0133,
+     "afterTkr": -0.2997,
+     "t_afterTkr": -1.749
+    }
+   },
+   "ex_IWM": {
+    "trades": 1373,
+    "afterTkr": 0.2597,
+    "t_afterTkr": 1.925
+   },
+   "qqq_only": {
+    "trades": 688,
+    "avgR": 0.2617,
+    "afterTkr": 0.1677,
+    "t_afterTkr": 0.905,
+    "months_pos": "6/13"
+   }
+  },
+  {
+   "trades": 1899,
+   "win": 74.77619799894681,
+   "avgR": 0.08886538707815422,
+   "totR": 168.75537006141474,
+   "t": 0.8832544723970258,
+   "after": -0.11113461292184579,
+   "afterTkr": -0.071866050520582,
+   "totR_afterTkr": -136.47362993858533,
+   "t_afterTkr": -0.7138852916239934,
+   "win_afterTkr": 74.565560821485,
+   "avgwin": 2.346671707820811,
+   "avgloss": -6.604422661887551,
+   "maxwin": 16.74145255351538,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 43,
+   "meanheld": 105.80832016850974,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.25",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.2913221898815978,
+   "trades_6mo": 967,
+   "t_6mo": 2.13893145820382,
+   "by_bot": {
+    "vwap": {
+     "trades": 772,
+     "avgR": 0.1304,
+     "win": 75.3
+    },
+    "ema50": {
+     "trades": 528,
+     "avgR": -0.0126,
+     "win": 73.3
+    },
+    "range": {
+     "trades": 599,
+     "avgR": 0.1248,
+     "win": 75.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 633,
+     "avgR": 0.1477,
+     "afterTkr": 0.0687,
+     "t_afterTkr": 0.38
+    },
+    "QQQ": {
+     "trades": 644,
+     "avgR": 0.0989,
+     "afterTkr": 0.0049,
+     "t_afterTkr": 0.03
+    },
+    "IWM": {
+     "trades": 622,
+     "avgR": 0.0186,
+     "afterTkr": -0.2944,
+     "t_afterTkr": -1.671
+    }
+   },
+   "ex_IWM": {
+    "trades": 1277,
+    "afterTkr": 0.0365,
+    "t_afterTkr": 0.298
+   },
+   "qqq_only": {
+    "trades": 644,
+    "avgR": 0.0989,
+    "afterTkr": 0.0049,
+    "t_afterTkr": 0.03,
+    "months_pos": "9/13"
+   }
+  },
+  {
+   "trades": 1885,
+   "win": 74.6949602122016,
+   "avgR": 0.07390412691877556,
+   "totR": 139.30927924189197,
+   "t": 0.6729023485763428,
+   "after": -0.12609587308122444,
+   "afterTkr": -0.08713831339952686,
+   "totR_afterTkr": -164.2557207581083,
+   "t_afterTkr": -0.7932716380854434,
+   "win_afterTkr": 74.48275862068965,
+   "avgwin": 2.331553788555418,
+   "avgloss": -6.590185440344102,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 64,
+   "meanheld": 126.79893899204244,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.5",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.23309423199048962,
+   "trades_6mo": 959,
+   "t_6mo": 1.6213500872771331,
+   "by_bot": {
+    "vwap": {
+     "trades": 762,
+     "avgR": 0.1307,
+     "win": 75.2
+    },
+    "ema50": {
+     "trades": 524,
+     "avgR": -0.0161,
+     "win": 73.1
+    },
+    "range": {
+     "trades": 599,
+     "avgR": 0.0804,
+     "win": 75.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 627,
+     "avgR": 0.1244,
+     "afterTkr": 0.0454,
+     "t_afterTkr": 0.236
+    },
+    "QQQ": {
+     "trades": 638,
+     "avgR": -0.0059,
+     "afterTkr": -0.0999,
+     "t_afterTkr": -0.571
+    },
+    "IWM": {
+     "trades": 620,
+     "avgR": 0.1049,
+     "afterTkr": -0.2081,
+     "t_afterTkr": -1.025
+    }
+   },
+   "ex_IWM": {
+    "trades": 1265,
+    "afterTkr": -0.0279,
+    "t_afterTkr": -0.214
+   },
+   "qqq_only": {
+    "trades": 638,
+    "avgR": -0.0059,
+    "afterTkr": -0.0999,
+    "t_afterTkr": -0.571,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 1847,
+   "win": 74.49918787222524,
+   "avgR": 0.18377956342718768,
+   "totR": 339.44085365001615,
+   "t": 1.394930070629904,
+   "after": -0.01622043657281233,
+   "afterTkr": 0.023276044206830295,
+   "totR_afterTkr": 42.99085365001563,
+   "t_afterTkr": 0.17658429371527778,
+   "win_afterTkr": 74.28262046561993,
+   "avgwin": 2.4949053435174045,
+   "avgloss": -6.568044371613445,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000218,
+   "blocks": 7,
+   "medheld": 112,
+   "meanheld": 166.09691391445588,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.75",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.36719887073735447,
+   "trades_6mo": 938,
+   "t_6mo": 2.1059452486744634,
+   "by_bot": {
+    "vwap": {
+     "trades": 735,
+     "avgR": 0.2435,
+     "win": 74.8
+    },
+    "ema50": {
+     "trades": 513,
+     "avgR": 0.1788,
+     "win": 72.9
+    },
+    "range": {
+     "trades": 599,
+     "avgR": 0.1148,
+     "win": 75.5
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 615,
+     "avgR": 0.3652,
+     "afterTkr": 0.2862,
+     "t_afterTkr": 1.164
+    },
+    "QQQ": {
+     "trades": 629,
+     "avgR": 0.1286,
+     "afterTkr": 0.0346,
+     "t_afterTkr": 0.161
+    },
+    "IWM": {
+     "trades": 603,
+     "avgR": 0.0563,
+     "afterTkr": -0.2567,
+     "t_afterTkr": -1.152
+    }
+   },
+   "ex_IWM": {
+    "trades": 1244,
+    "afterTkr": 0.159,
+    "t_afterTkr": 0.975
+   },
+   "qqq_only": {
+    "trades": 629,
+    "avgR": 0.1286,
+    "afterTkr": 0.0346,
+    "t_afterTkr": 0.161,
+    "months_pos": "8/13"
+   }
+  },
+  {
+   "trades": 1755,
+   "win": 61.65242165242165,
+   "avgR": 0.19172836840214025,
+   "totR": 336.48328654575647,
+   "t": 1.4180405354810655,
+   "after": -0.008271631597859763,
+   "afterTkr": 0.031350590624362414,
+   "totR_afterTkr": 55.020286545756264,
+   "t_afterTkr": 0.2317538419582625,
+   "win_afterTkr": 61.25356125356125,
+   "avgwin": 4.063253982063515,
+   "avgloss": -6.032626332907826,
+   "maxwin": 31.769414879363985,
+   "maxloss": -10.000000000000218,
+   "blocks": 8,
+   "medheld": 145,
+   "meanheld": 182.97549857549856,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.25",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.3098863872709289,
+   "trades_6mo": 883,
+   "t_6mo": 1.699386640754576,
+   "by_bot": {
+    "vwap": {
+     "trades": 684,
+     "avgR": 0.2008,
+     "win": 62.7
+    },
+    "ema50": {
+     "trades": 493,
+     "avgR": 0.2609,
+     "win": 60.0
+    },
+    "range": {
+     "trades": 578,
+     "avgR": 0.1219,
+     "win": 61.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 585,
+     "avgR": 0.4261,
+     "afterTkr": 0.3471,
+     "t_afterTkr": 1.447
+    },
+    "QQQ": {
+     "trades": 598,
+     "avgR": 0.0898,
+     "afterTkr": -0.0042,
+     "t_afterTkr": -0.018
+    },
+    "IWM": {
+     "trades": 572,
+     "avgR": 0.0585,
+     "afterTkr": -0.2545,
+     "t_afterTkr": -1.077
+    }
+   },
+   "ex_IWM": {
+    "trades": 1183,
+    "afterTkr": 0.1695,
+    "t_afterTkr": 1.028
+   },
+   "qqq_only": {
+    "trades": 598,
+    "avgR": 0.0898,
+    "afterTkr": -0.0042,
+    "t_afterTkr": -0.018,
+    "months_pos": "7/13"
+   }
+  },
+  {
+   "trades": 1742,
+   "win": 61.595866819747414,
+   "avgR": 0.1942272651719432,
+   "totR": 338.3438959295253,
+   "t": 1.3161098355352023,
+   "after": -0.005772734828056819,
+   "afterTkr": 0.03357112280684554,
+   "totR_afterTkr": 58.48089592952463,
+   "t_afterTkr": 0.22740633544100827,
+   "win_afterTkr": 61.19402985074627,
+   "avgwin": 4.068293966405081,
+   "avgloss": -6.019335620363418,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000218,
+   "blocks": 9,
+   "medheld": 231.5,
+   "meanheld": 215.6882893226177,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.5",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.3930036209338095,
+   "trades_6mo": 875,
+   "t_6mo": 1.9561482392192033,
+   "by_bot": {
+    "vwap": {
+     "trades": 675,
+     "avgR": 0.1101,
+     "win": 62.7
+    },
+    "ema50": {
+     "trades": 489,
+     "avgR": 0.2543,
+     "win": 59.9
+    },
+    "range": {
+     "trades": 578,
+     "avgR": 0.2416,
+     "win": 61.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 581,
+     "avgR": 0.4463,
+     "afterTkr": 0.3673,
+     "t_afterTkr": 1.388
+    },
+    "QQQ": {
+     "trades": 591,
+     "avgR": 0.0239,
+     "afterTkr": -0.0701,
+     "t_afterTkr": -0.284
+    },
+    "IWM": {
+     "trades": 570,
+     "avgR": 0.1138,
+     "afterTkr": -0.1992,
+     "t_afterTkr": -0.779
+    }
+   },
+   "ex_IWM": {
+    "trades": 1172,
+    "afterTkr": 0.1468,
+    "t_afterTkr": 0.812
+   },
+   "qqq_only": {
+    "trades": 591,
+    "avgR": 0.0239,
+    "afterTkr": -0.0701,
+    "t_afterTkr": -0.284,
+    "months_pos": "5/13"
+   }
+  },
+  {
+   "trades": 1716,
+   "win": 61.3053613053613,
+   "avgR": 0.18671811595677096,
+   "totR": 320.4082869818191,
+   "t": 1.1733990629608488,
+   "after": -0.013281884043229053,
+   "afterTkr": 0.026223360712015656,
+   "totR_afterTkr": 44.99928698181858,
+   "t_afterTkr": 0.16471907409016004,
+   "win_afterTkr": 60.8974358974359,
+   "avgwin": 4.103432754885937,
+   "avgloss": -6.018679173431004,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000218,
+   "blocks": 9,
+   "medheld": 311.0,
+   "meanheld": 252.7558275058275,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.75",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.35476197722782155,
+   "trades_6mo": 861,
+   "t_6mo": 1.6212562432408886,
+   "by_bot": {
+    "vwap": {
+     "trades": 657,
+     "avgR": 0.1477,
+     "win": 62.1
+    },
+    "ema50": {
+     "trades": 481,
+     "avgR": 0.2651,
+     "win": 59.7
+    },
+    "range": {
+     "trades": 578,
+     "avgR": 0.1658,
+     "win": 61.8
+    }
+   },
+   "by_ticker": {
+    "SPY": {
+     "trades": 569,
+     "avgR": 0.5519,
+     "afterTkr": 0.4729,
+     "t_afterTkr": 1.596
+    },
+    "QQQ": {
+     "trades": 587,
+     "avgR": 0.0051,
+     "afterTkr": -0.0889,
+     "t_afterTkr": -0.339
+    },
+    "IWM": {
+     "trades": 560,
+     "avgR": 0.006,
+     "afterTkr": -0.307,
+     "t_afterTkr": -1.147
+    }
+   },
+   "ex_IWM": {
+    "trades": 1156,
+    "afterTkr": 0.1876,
+    "t_afterTkr": 0.95
+   },
+   "qqq_only": {
+    "trades": 587,
+    "avgR": 0.0051,
+    "afterTkr": -0.0889,
+    "t_afterTkr": -0.339,
+    "months_pos": "5/13"
+   }
+  }
+ ]
+}

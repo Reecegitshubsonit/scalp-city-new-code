@@ -1,0 +1,3209 @@
+{
+ "generated": "2026-11-17T15:57:32",
+ "days": [
+  "2025-11-17",
+  "2026-11-13"
+ ],
+ "n_days": 250,
+ "n_months": 13,
+ "six_month_cut": "2026-05-18",
+ "last_entry": "15:30:00",
+ "tickers": [
+  "SPY",
+  "QQQ",
+  "IWM"
+ ],
+ "cost_R": 0.2,
+ "rows": [
+  {
+   "trades": 17724,
+   "win": 32.972241029113064,
+   "avgR": -0.010918568579911758,
+   "totR": -193.52070951035648,
+   "t": -1.030753810431403,
+   "after": -0.21091856857991176,
+   "avgwin": 1.9996046912224366,
+   "avgloss": -0.9999335458766224,
+   "maxwin": 2.0,
+   "maxloss": -1.0000000000010112,
+   "blocks": 5,
+   "medheld": 4.0,
+   "meanheld": 6.109851049424509,
+   "entries": "baseline entries",
+   "exit": "stop_target 1.0/2.0 (V1)",
+   "stop": 1.0,
+   "tgt": 2.0,
+   "kind": "stop_target",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.03221401072066091,
+   "trades_6mo": 8843,
+   "t_6mo": -2.160206377473695,
+   "by_bot": {
+    "vwap": {
+     "trades": 4241,
+     "avgR": 0.0043,
+     "win": 33.5
+    },
+    "ema50": {
+     "trades": 9445,
+     "avgR": -0.0256,
+     "win": 32.5
+    },
+    "range": {
+     "trades": 4038,
+     "avgR": 0.0074,
+     "win": 33.6
+    }
+   }
+  },
+  {
+   "trades": 18635,
+   "win": 31.66621947947411,
+   "avgR": 0.006555319155853657,
+   "totR": 122.15837246933243,
+   "t": 0.5347338961264414,
+   "after": -0.19344468084414634,
+   "avgwin": 1.843710042918787,
+   "avgloss": -0.8447914709277861,
+   "maxwin": 22.39701283211462,
+   "maxloss": -1.0000000000007163,
+   "blocks": 7,
+   "medheld": 5,
+   "meanheld": 7.333297558357929,
+   "entries": "baseline entries",
+   "exit": "live_v2 stop1.0 arm0.5 trail1.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "trail_atr": 1.5,
+   "kind": "live_v2",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.010989344809431128,
+   "trades_6mo": 9351,
+   "t_6mo": -0.6465657959768994,
+   "by_bot": {
+    "vwap": {
+     "trades": 4403,
+     "avgR": 0.0404,
+     "win": 32.0
+    },
+    "ema50": {
+     "trades": 9992,
+     "avgR": -0.01,
+     "win": 31.1
+    },
+    "range": {
+     "trades": 4240,
+     "avgR": 0.0104,
+     "win": 32.7
+    }
+   }
+  },
+  {
+   "trades": 20535,
+   "win": 52.70026783540297,
+   "avgR": 0.009493444292936177,
+   "totR": 194.9478785554427,
+   "t": 1.2007423068988474,
+   "after": -0.19050655570706385,
+   "avgwin": 0.915537597353118,
+   "avgloss": -0.9999999999999999,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000007163,
+   "blocks": 7,
+   "medheld": 3,
+   "meanheld": 3.633990747504261,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.25",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.003925814755158113,
+   "trades_6mo": 10300,
+   "t_6mo": 0.3606353747785744,
+   "by_bot": {
+    "vwap": {
+     "trades": 4812,
+     "avgR": 0.0299,
+     "win": 52.8
+    },
+    "ema50": {
+     "trades": 11321,
+     "avgR": -0.0059,
+     "win": 52.1
+    },
+    "range": {
+     "trades": 4402,
+     "avgR": 0.0268,
+     "win": 54.2
+    }
+   }
+  },
+  {
+   "trades": 19846,
+   "win": 52.87211528771541,
+   "avgR": 0.0070137514873390506,
+   "totR": 139.1949120177313,
+   "t": 0.6584570653563283,
+   "after": -0.19298624851266097,
+   "avgwin": 0.904621644145404,
+   "avgloss": -0.9999999999999993,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000007163,
+   "blocks": 9,
+   "medheld": 3.0,
+   "meanheld": 6.231129698679835,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.015912391799519327,
+   "trades_6mo": 9952,
+   "t_6mo": 1.022706131363921,
+   "by_bot": {
+    "vwap": {
+     "trades": 4739,
+     "avgR": 0.0403,
+     "win": 52.8
+    },
+    "ema50": {
+     "trades": 10714,
+     "avgR": -0.0089,
+     "win": 52.4
+    },
+    "range": {
+     "trades": 4393,
+     "avgR": 0.0099,
+     "win": 54.2
+    }
+   }
+  },
+  {
+   "trades": 17610,
+   "win": 52.805224304372516,
+   "avgR": 0.015549095040116518,
+   "totR": 273.8195636564511,
+   "t": 0.9587975457224258,
+   "after": -0.1844509049598835,
+   "avgwin": 0.9231981464304163,
+   "avgloss": -0.9999999999999987,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000007163,
+   "blocks": 7,
+   "medheld": 4.0,
+   "meanheld": 13.601590005678592,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm0.5 give0.75",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.006737874629898404,
+   "trades_6mo": 8800,
+   "t_6mo": -0.32173653314366374,
+   "by_bot": {
+    "vwap": {
+     "trades": 4394,
+     "avgR": 0.0734,
+     "win": 53.0
+    },
+    "ema50": {
+     "trades": 8845,
+     "avgR": -0.0174,
+     "win": 52.0
+    },
+    "range": {
+     "trades": 4371,
+     "avgR": 0.024,
+     "win": 54.2
+    }
+   }
+  },
+  {
+   "trades": 19098,
+   "win": 42.030579118232275,
+   "avgR": 0.004361035724911075,
+   "totR": 83.28706027435176,
+   "t": 0.4475181863908534,
+   "after": -0.19563896427508892,
+   "avgwin": 1.3895959960476336,
+   "avgloss": -1.0000000000000002,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000007163,
+   "blocks": 6,
+   "medheld": 4.0,
+   "meanheld": 5.017593465284323,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.25",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.006524689280037285,
+   "trades_6mo": 9543,
+   "t_6mo": -0.4832856721735507,
+   "by_bot": {
+    "vwap": {
+     "trades": 4493,
+     "avgR": 0.0343,
+     "win": 42.7
+    },
+    "ema50": {
+     "trades": 10384,
+     "avgR": -0.0095,
+     "win": 41.4
+    },
+    "range": {
+     "trades": 4221,
+     "avgR": 0.0067,
+     "win": 42.9
+    }
+   }
+  },
+  {
+   "trades": 18304,
+   "win": 42.06730769230769,
+   "avgR": 0.0027363293102435865,
+   "totR": 50.085771694699005,
+   "t": 0.21064881117606937,
+   "after": -0.19726367068975642,
+   "avgwin": 1.383647502817493,
+   "avgloss": -0.9999999999999998,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000006775,
+   "blocks": 8,
+   "medheld": 4.0,
+   "meanheld": 8.737598339160838,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.5",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.012560808175494511,
+   "trades_6mo": 9132,
+   "t_6mo": 0.6694628492312878,
+   "by_bot": {
+    "vwap": {
+     "trades": 4428,
+     "avgR": 0.0427,
+     "win": 42.4
+    },
+    "ema50": {
+     "trades": 9661,
+     "avgR": -0.0098,
+     "win": 41.5
+    },
+    "range": {
+     "trades": 4215,
+     "avgR": -0.0106,
+     "win": 42.9
+    }
+   }
+  },
+  {
+   "trades": 16064,
+   "win": 41.84511952191235,
+   "avgR": 0.0021192991741291363,
+   "totR": 34.04442193321011,
+   "t": 0.11217578874405457,
+   "after": -0.19788070082587086,
+   "avgwin": 1.3948295777942883,
+   "avgloss": -0.9999999999999996,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000005698,
+   "blocks": 7,
+   "medheld": 5.0,
+   "meanheld": 17.603212151394423,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm1 give0.75",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.036215940654889395,
+   "trades_6mo": 7939,
+   "t_6mo": -1.5059948880950906,
+   "by_bot": {
+    "vwap": {
+     "trades": 4079,
+     "avgR": 0.0625,
+     "win": 42.5
+    },
+    "ema50": {
+     "trades": 7790,
+     "avgR": -0.0293,
+     "win": 40.9
+    },
+    "range": {
+     "trades": 4195,
+     "avgR": 0.0016,
+     "win": 43.0
+    }
+   }
+  },
+  {
+   "trades": 17089,
+   "win": 29.434138919772952,
+   "avgR": 0.0003784955785081961,
+   "totR": 6.468110941126535,
+   "t": 0.028886781302700608,
+   "after": -0.19962150442149182,
+   "avgwin": 2.398544460428507,
+   "avgloss": -0.9999345323007102,
+   "maxwin": 24.93062971037186,
+   "maxloss": -1.0000000000007163,
+   "blocks": 6,
+   "medheld": 5,
+   "meanheld": 8.244133653227221,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.25",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.022332288809895188,
+   "trades_6mo": 8538,
+   "t_6mo": -1.2392072522990467,
+   "by_bot": {
+    "vwap": {
+     "trades": 4104,
+     "avgR": 0.0109,
+     "win": 29.7
+    },
+    "ema50": {
+     "trades": 9007,
+     "avgR": -0.0032,
+     "win": 29.0
+    },
+    "range": {
+     "trades": 3978,
+     "avgR": -0.0023,
+     "win": 30.1
+    }
+   }
+  },
+  {
+   "trades": 16214,
+   "win": 29.258665350931295,
+   "avgR": -0.013772788339814575,
+   "totR": -223.311990141754,
+   "t": -0.8159699963791245,
+   "after": -0.21377278833981458,
+   "avgwin": 2.37055196772186,
+   "avgloss": -0.9999311704458811,
+   "maxwin": 43.31488913962677,
+   "maxloss": -1.0000000000006775,
+   "blocks": 6,
+   "medheld": 5.5,
+   "meanheld": 13.721475268286666,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.5",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.012260347853794224,
+   "trades_6mo": 8068,
+   "t_6mo": -0.5160960486139893,
+   "by_bot": {
+    "vwap": {
+     "trades": 4054,
+     "avgR": 0.0132,
+     "win": 29.6
+    },
+    "ema50": {
+     "trades": 8184,
+     "avgR": -0.0355,
+     "win": 28.7
+    },
+    "range": {
+     "trades": 3976,
+     "avgR": 0.0035,
+     "win": 30.1
+    }
+   }
+  },
+  {
+   "trades": 14158,
+   "win": 29.347365447097047,
+   "avgR": 0.011305151393210543,
+   "totR": 160.0583334250731,
+   "t": 0.4823115972071229,
+   "after": -0.18869484860678948,
+   "avgwin": 2.445792745713439,
+   "avgloss": -0.9999210761785728,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000005698,
+   "blocks": 7,
+   "medheld": 6.0,
+   "meanheld": 24.424706879502754,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm2 give0.75",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.039368152614892446,
+   "trades_6mo": 7003,
+   "t_6mo": -1.3132025033530852,
+   "by_bot": {
+    "vwap": {
+     "trades": 3744,
+     "avgR": 0.0699,
+     "win": 29.7
+    },
+    "ema50": {
+     "trades": 6447,
+     "avgR": -0.0249,
+     "win": 28.7
+    },
+    "range": {
+     "trades": 3967,
+     "avgR": 0.0149,
+     "win": 30.1
+    }
+   }
+  },
+  {
+   "trades": 14713,
+   "win": 18.038469380819684,
+   "avgR": -0.020028300201186466,
+   "totR": -294.67638086005655,
+   "t": -1.0419645831977769,
+   "after": -0.22002830020118647,
+   "avgwin": 4.4320829381885005,
+   "avgloss": -0.9998693505939412,
+   "maxwin": 40.47825973500737,
+   "maxloss": -1.0000000000007163,
+   "blocks": 6,
+   "medheld": 6,
+   "meanheld": 15.96207435601169,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.25",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.04193547624850418,
+   "trades_6mo": 7362,
+   "t_6mo": -1.5736371787876768,
+   "by_bot": {
+    "vwap": {
+     "trades": 3673,
+     "avgR": 0.0292,
+     "win": 18.9
+    },
+    "ema50": {
+     "trades": 7293,
+     "avgR": -0.0368,
+     "win": 17.6
+    },
+    "range": {
+     "trades": 3747,
+     "avgR": -0.0357,
+     "win": 18.0
+    }
+   }
+  },
+  {
+   "trades": 13717,
+   "win": 18.269300867536632,
+   "avgR": 0.008638465446469089,
+   "totR": 118.49383052921509,
+   "t": 0.35267987141021684,
+   "after": -0.19136153455353092,
+   "avgwin": 4.52053435099997,
+   "avgloss": -0.9999077025311488,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000006775,
+   "blocks": 7,
+   "medheld": 6,
+   "meanheld": 24.103594080338265,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.5",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.004891161971502077,
+   "trades_6mo": 6846,
+   "t_6mo": -0.1496764329687116,
+   "by_bot": {
+    "vwap": {
+     "trades": 3630,
+     "avgR": 0.054,
+     "win": 18.8
+    },
+    "ema50": {
+     "trades": 6340,
+     "avgR": -0.0079,
+     "win": 18.1
+    },
+    "range": {
+     "trades": 3747,
+     "avgR": -0.0073,
+     "win": 18.0
+    }
+   }
+  },
+  {
+   "trades": 12397,
+   "win": 18.189884649511978,
+   "avgR": -0.0025052017297809326,
+   "totR": -31.056985844093674,
+   "t": -0.08887518139911245,
+   "after": -0.20250520172978095,
+   "avgwin": 4.483679708300824,
+   "avgloss": -0.9999758162159782,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000005722,
+   "blocks": 7,
+   "medheld": 6,
+   "meanheld": 33.47358231830282,
+   "entries": "baseline entries",
+   "exit": "giveback stop1 arm4 give0.75",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.027330219494605682,
+   "trades_6mo": 6178,
+   "t_6mo": -0.727942367954342,
+   "by_bot": {
+    "vwap": {
+     "trades": 3340,
+     "avgR": 0.095,
+     "win": 19.1
+    },
+    "ema50": {
+     "trades": 5312,
+     "avgR": -0.0518,
+     "win": 17.8
+    },
+    "range": {
+     "trades": 3745,
+     "avgR": -0.0196,
+     "win": 18.0
+    }
+   }
+  },
+  {
+   "trades": 17011,
+   "win": 68.36164834518841,
+   "avgR": -0.0026885365329252847,
+   "totR": -45.73469496159174,
+   "t": -0.22816426423074693,
+   "after": -0.2026885365329253,
+   "avgwin": 0.9215485581979475,
+   "avgloss": -1.9997069636279308,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000001108,
+   "blocks": 5,
+   "medheld": 5,
+   "meanheld": 6.267473987419905,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.25",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.016370958618515098,
+   "trades_6mo": 8554,
+   "t_6mo": -0.9982823767339412,
+   "by_bot": {
+    "vwap": {
+     "trades": 4071,
+     "avgR": 0.0194,
+     "win": 68.5
+    },
+    "ema50": {
+     "trades": 9227,
+     "avgR": -0.0235,
+     "win": 67.7
+    },
+    "range": {
+     "trades": 3713,
+     "avgR": 0.0248,
+     "win": 69.9
+    }
+   }
+  },
+  {
+   "trades": 16422,
+   "win": 68.57873584216296,
+   "avgR": 0.0004317724040829759,
+   "totR": 7.090566419851678,
+   "t": 0.028508337029657476,
+   "after": -0.19956822759591702,
+   "avgwin": 0.9168454488248425,
+   "avgloss": -1.999694356249133,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000001108,
+   "blocks": 9,
+   "medheld": 5.0,
+   "meanheld": 9.613688953842406,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.5",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": -0.0029852614224171944,
+   "trades_6mo": 8254,
+   "t_6mo": -0.13939181419667712,
+   "by_bot": {
+    "vwap": {
+     "trades": 4009,
+     "avgR": 0.0315,
+     "win": 68.4
+    },
+    "ema50": {
+     "trades": 8709,
+     "avgR": -0.0207,
+     "win": 68.1
+    },
+    "range": {
+     "trades": 3704,
+     "avgR": 0.0164,
+     "win": 70.0
+    }
+   }
+  },
+  {
+   "trades": 14549,
+   "win": 68.61639975256031,
+   "avgR": -0.0008226567298108445,
+   "totR": -11.968832762017925,
+   "t": -0.0385409727588955,
+   "after": -0.20082265672981087,
+   "avgwin": 0.9133981814568276,
+   "avgloss": -1.9996545944471151,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000001108,
+   "blocks": 6,
+   "medheld": 6,
+   "meanheld": 18.783696473984467,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm0.5 give0.75",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.04320232997147214,
+   "trades_6mo": 7327,
+   "t_6mo": -1.5684822562528768,
+   "by_bot": {
+    "vwap": {
+     "trades": 3698,
+     "avgR": 0.0608,
+     "win": 68.5
+    },
+    "ema50": {
+     "trades": 7166,
+     "avgR": -0.0433,
+     "win": 67.9
+    },
+    "range": {
+     "trades": 3685,
+     "avgR": 0.0199,
+     "win": 70.1
+    }
+   }
+  },
+  {
+   "trades": 14891,
+   "win": 58.048485662480694,
+   "avgR": -0.019677426338575582,
+   "totR": -293.01655560772895,
+   "t": -1.2901299867450373,
+   "after": -0.2196774263385756,
+   "avgwin": 1.4108364351340126,
+   "avgloss": -1.9990854331528949,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000001108,
+   "blocks": 3,
+   "medheld": 7,
+   "meanheld": 9.214693438989993,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.25",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "3/13",
+   "avgR_6mo": -0.04377952936201402,
+   "trades_6mo": 7444,
+   "t_6mo": -2.0596400504494685,
+   "by_bot": {
+    "vwap": {
+     "trades": 3644,
+     "avgR": 0.0055,
+     "win": 58.4
+    },
+    "ema50": {
+     "trades": 7905,
+     "avgR": -0.0303,
+     "win": 57.5
+    },
+    "range": {
+     "trades": 3342,
+     "avgR": -0.0221,
+     "win": 58.9
+    }
+   }
+  },
+  {
+   "trades": 14222,
+   "win": 58.0016875263676,
+   "avgR": -0.01480680166360283,
+   "totR": -210.58233325975843,
+   "t": -0.754719613343762,
+   "after": -0.21480680166360283,
+   "avgwin": 1.42218762612489,
+   "avgloss": -1.9993651533842252,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.000000000001108,
+   "blocks": 9,
+   "medheld": 8.0,
+   "meanheld": 14.56489945155393,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.5",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": -0.021346552234286553,
+   "trades_6mo": 7099,
+   "t_6mo": -0.7699003132349163,
+   "by_bot": {
+    "vwap": {
+     "trades": 3585,
+     "avgR": 0.0299,
+     "win": 58.1
+    },
+    "ema50": {
+     "trades": 7299,
+     "avgR": -0.0324,
+     "win": 57.5
+    },
+    "range": {
+     "trades": 3338,
+     "avgR": -0.0242,
+     "win": 59.0
+    }
+   }
+  },
+  {
+   "trades": 12436,
+   "win": 57.83210035381151,
+   "avgR": -0.022463720000911926,
+   "totR": -279.35882193134074,
+   "t": -0.8332067708739562,
+   "after": -0.22246372000091194,
+   "avgwin": 1.4190866209860957,
+   "avgloss": -1.9995098779678375,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000001108,
+   "blocks": 4,
+   "medheld": 10.0,
+   "meanheld": 26.67280476037311,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm1 give0.75",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "4/13",
+   "avgR_6mo": -0.08654816202636845,
+   "trades_6mo": 6194,
+   "t_6mo": -2.508170923029758,
+   "by_bot": {
+    "vwap": {
+     "trades": 3292,
+     "avgR": 0.0602,
+     "win": 58.6
+    },
+    "ema50": {
+     "trades": 5823,
+     "avgR": -0.0751,
+     "win": 56.7
+    },
+    "range": {
+     "trades": 3321,
+     "avgR": -0.0121,
+     "win": 59.1
+    }
+   }
+  },
+  {
+   "trades": 12233,
+   "win": 44.86225782718875,
+   "avgR": -0.023330108167367417,
+   "totR": -285.39721321140513,
+   "t": -1.090861760344278,
+   "after": -0.22333010816736742,
+   "avgwin": 2.402523762158988,
+   "avgloss": -1.9971012038458016,
+   "maxwin": 24.93062971037186,
+   "maxloss": -2.000000000000585,
+   "blocks": 6,
+   "medheld": 11,
+   "meanheld": 16.051500040873048,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.25",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.06581914862925699,
+   "trades_6mo": 6116,
+   "t_6mo": -2.225710077190309,
+   "by_bot": {
+    "vwap": {
+     "trades": 3072,
+     "avgR": 0.001,
+     "win": 45.4
+    },
+    "ema50": {
+     "trades": 6277,
+     "avgR": -0.0182,
+     "win": 44.8
+    },
+    "range": {
+     "trades": 2884,
+     "avgR": -0.0603,
+     "win": 44.5
+    }
+   }
+  },
+  {
+   "trades": 11559,
+   "win": 44.69244744355048,
+   "avgR": -0.025274553223466393,
+   "totR": -292.14856071004647,
+   "t": -0.9309396957158262,
+   "after": -0.2252745532234664,
+   "avgwin": 2.4150639604118713,
+   "avgloss": -1.9972421367429651,
+   "maxwin": 43.31488913962677,
+   "maxloss": -2.000000000000585,
+   "blocks": 6,
+   "medheld": 13,
+   "meanheld": 24.652132537416733,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.5",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.056747453760950264,
+   "trades_6mo": 5747,
+   "t_6mo": -1.5231407659534106,
+   "by_bot": {
+    "vwap": {
+     "trades": 3027,
+     "avgR": 0.0054,
+     "win": 45.2
+    },
+    "ema50": {
+     "trades": 5651,
+     "avgR": -0.0333,
+     "win": 44.5
+    },
+    "range": {
+     "trades": 2881,
+     "avgR": -0.0418,
+     "win": 44.5
+    }
+   }
+  },
+  {
+   "trades": 10018,
+   "win": 44.31024156518267,
+   "avgR": -0.010325390447804577,
+   "totR": -103.43976150610584,
+   "t": -0.2853007536786981,
+   "after": -0.2103253904478046,
+   "avgwin": 2.486453665433586,
+   "avgloss": -1.996918369307366,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000001108,
+   "blocks": 6,
+   "medheld": 15.0,
+   "meanheld": 40.65931323617489,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm2 give0.75",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.12763508393314235,
+   "trades_6mo": 4991,
+   "t_6mo": -2.759644459328616,
+   "by_bot": {
+    "vwap": {
+     "trades": 2761,
+     "avgR": 0.0591,
+     "win": 45.2
+    },
+    "ema50": {
+     "trades": 4382,
+     "avgR": -0.0493,
+     "win": 43.6
+    },
+    "range": {
+     "trades": 2875,
+     "avgR": -0.0176,
+     "win": 44.6
+    }
+   }
+  },
+  {
+   "trades": 9649,
+   "win": 30.72857290910975,
+   "avgR": -0.0453002994666808,
+   "totR": -437.1025895540021,
+   "t": -1.3897947148725427,
+   "after": -0.2453002994666808,
+   "avgwin": 4.344035245000582,
+   "avgloss": -1.9923948370707254,
+   "maxwin": 40.47825973500737,
+   "maxloss": -2.000000000001108,
+   "blocks": 6,
+   "medheld": 18,
+   "meanheld": 32.38750129547103,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.25",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.10024902543840745,
+   "trades_6mo": 4857,
+   "t_6mo": -2.227705359222795,
+   "by_bot": {
+    "vwap": {
+     "trades": 2551,
+     "avgR": -0.0305,
+     "win": 31.0
+    },
+    "ema50": {
+     "trades": 4613,
+     "avgR": -0.0286,
+     "win": 30.8
+    },
+    "range": {
+     "trades": 2485,
+     "avgR": -0.0916,
+     "win": 30.4
+    }
+   }
+  },
+  {
+   "trades": 8988,
+   "win": 31.01913662661326,
+   "avgR": 0.005016361894424098,
+   "totR": 45.08706070708236,
+   "t": 0.12371156544874078,
+   "after": -0.19498363810557592,
+   "avgwin": 4.447445110614073,
+   "avgloss": -1.9926435334975727,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.000000000001108,
+   "blocks": 8,
+   "medheld": 20.0,
+   "meanheld": 45.657765910102356,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.5",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": -0.07112855868879472,
+   "trades_6mo": 4544,
+   "t_6mo": -1.3487129465514338,
+   "by_bot": {
+    "vwap": {
+     "trades": 2521,
+     "avgR": -0.0223,
+     "win": 31.0
+    },
+    "ema50": {
+     "trades": 3982,
+     "avgR": 0.035,
+     "win": 31.4
+    },
+    "range": {
+     "trades": 2485,
+     "avgR": -0.0153,
+     "win": 30.4
+    }
+   }
+  },
+  {
+   "trades": 8173,
+   "win": 30.356050409886212,
+   "avgR": -0.03265969524430068,
+   "totR": -266.92768923166875,
+   "t": -0.7028010002770458,
+   "after": -0.2326596952443007,
+   "avgwin": 4.462009619739802,
+   "avgloss": -1.99177328808962,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000005893,
+   "blocks": 7,
+   "medheld": 21,
+   "meanheld": 59.90896855499817,
+   "entries": "baseline entries",
+   "exit": "giveback stop2 arm4 give0.75",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.12849979057930982,
+   "trades_6mo": 4133,
+   "t_6mo": -2.107616400965213,
+   "by_bot": {
+    "vwap": {
+     "trades": 2299,
+     "avgR": 0.0197,
+     "win": 31.1
+    },
+    "ema50": {
+     "trades": 3392,
+     "avgR": -0.0802,
+     "win": 29.8
+    },
+    "range": {
+     "trades": 2482,
+     "avgR": -0.0163,
+     "win": 30.5
+    }
+   }
+  },
+  {
+   "trades": 10046,
+   "win": 88.99064304200677,
+   "avgR": 0.0025184294603517194,
+   "totR": 25.300142358693137,
+   "t": 0.08671702792847065,
+   "after": -0.1974815705396483,
+   "avgwin": 0.9123637135947847,
+   "avgloss": -7.3519271764725875,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000533,
+   "blocks": 6,
+   "medheld": 6.0,
+   "meanheld": 32.70107505474816,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.25",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.03148618091094333,
+   "trades_6mo": 4978,
+   "t_6mo": -0.7580346380009119,
+   "by_bot": {
+    "vwap": {
+     "trades": 2848,
+     "avgR": 0.0393,
+     "win": 89.3
+    },
+    "ema50": {
+     "trades": 4797,
+     "avgR": -0.0549,
+     "win": 88.2
+    },
+    "range": {
+     "trades": 2401,
+     "avgR": 0.0736,
+     "win": 90.2
+    }
+   }
+  },
+  {
+   "trades": 9844,
+   "win": 89.0491670052824,
+   "avgR": 0.01124223883467578,
+   "totR": 110.66859908854887,
+   "t": 0.3474590129524395,
+   "after": -0.18875776116532422,
+   "avgwin": 0.9146407434823145,
+   "avgloss": -7.334946343485548,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000533,
+   "blocks": 7,
+   "medheld": 9.0,
+   "meanheld": 37.18427468508736,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.5",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.003999559760299039,
+   "trades_6mo": 4865,
+   "t_6mo": -0.08582962805923859,
+   "by_bot": {
+    "vwap": {
+     "trades": 2815,
+     "avgR": 0.0597,
+     "win": 89.2
+    },
+    "ema50": {
+     "trades": 4631,
+     "avgR": -0.0472,
+     "win": 88.3
+    },
+    "range": {
+     "trades": 2398,
+     "avgR": 0.0672,
+     "win": 90.2
+    }
+   }
+  },
+  {
+   "trades": 8925,
+   "win": 89.09803921568627,
+   "avgR": 0.04056004744155381,
+   "totR": 361.9984234158692,
+   "t": 1.0094530378329452,
+   "after": -0.1594399525584462,
+   "avgwin": 0.9383990128386419,
+   "avgloss": -7.297174230911627,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000522,
+   "blocks": 7,
+   "medheld": 13,
+   "meanheld": 50.64268907563025,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm0.5 give0.75",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.02286578905463082,
+   "trades_6mo": 4390,
+   "t_6mo": -0.4130456471406144,
+   "by_bot": {
+    "vwap": {
+     "trades": 2569,
+     "avgR": 0.136,
+     "win": 89.1
+    },
+    "ema50": {
+     "trades": 3958,
+     "avgR": -0.0395,
+     "win": 88.4
+    },
+    "range": {
+     "trades": 2398,
+     "avgR": 0.0704,
+     "win": 90.3
+    }
+   }
+  },
+  {
+   "trades": 7676,
+   "win": 83.20739968733716,
+   "avgR": -0.018832377532054242,
+   "totR": -144.55732993604875,
+   "t": -0.4643431759552323,
+   "after": -0.21883237753205426,
+   "avgwin": 1.3970514833279732,
+   "avgloss": -7.034542400272936,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000522,
+   "blocks": 4,
+   "medheld": 14.0,
+   "meanheld": 50.79207920792079,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.25",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "4/13",
+   "avgR_6mo": -0.08033848712894351,
+   "trades_6mo": 3820,
+   "t_6mo": -1.3833213335253307,
+   "by_bot": {
+    "vwap": {
+     "trades": 2252,
+     "avgR": 0.0479,
+     "win": 83.7
+    },
+    "ema50": {
+     "trades": 3589,
+     "avgR": -0.0706,
+     "win": 82.3
+    },
+    "range": {
+     "trades": 1835,
+     "avgR": 0.0005,
+     "win": 84.4
+    }
+   }
+  },
+  {
+   "trades": 7474,
+   "win": 83.14155739898314,
+   "avgR": -0.0325302795166556,
+   "totR": -243.13130910748347,
+   "t": -0.7200023598529456,
+   "after": -0.2325302795166556,
+   "avgwin": 1.386449671613163,
+   "avgloss": -7.0305790226283165,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000522,
+   "blocks": 6,
+   "medheld": 20.0,
+   "meanheld": 58.67527428418518,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.5",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.0693754200864173,
+   "trades_6mo": 3728,
+   "t_6mo": -1.0750314326610053,
+   "by_bot": {
+    "vwap": {
+     "trades": 2217,
+     "avgR": 0.0599,
+     "win": 83.6
+    },
+    "ema50": {
+     "trades": 3422,
+     "avgR": -0.0997,
+     "win": 82.2
+    },
+    "range": {
+     "trades": 1835,
+     "avgR": -0.0189,
+     "win": 84.4
+    }
+   }
+  },
+  {
+   "trades": 6643,
+   "win": 83.20036128255306,
+   "avgR": -0.01619529665955214,
+   "totR": -107.58535570940417,
+   "t": -0.2908080553534418,
+   "after": -0.21619529665955214,
+   "avgwin": 1.4050894315238818,
+   "avgloss": -7.055120648514247,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000412,
+   "blocks": 7,
+   "medheld": 29,
+   "meanheld": 79.03191329218727,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm1 give0.75",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.1467456473782319,
+   "trades_6mo": 3292,
+   "t_6mo": -1.9358904539478718,
+   "by_bot": {
+    "vwap": {
+     "trades": 2012,
+     "avgR": 0.0942,
+     "win": 83.5
+    },
+    "ema50": {
+     "trades": 2795,
+     "avgR": -0.081,
+     "win": 82.2
+    },
+    "range": {
+     "trades": 1836,
+     "avgR": -0.0386,
+     "win": 84.4
+    }
+   }
+  },
+  {
+   "trades": 5462,
+   "win": 73.7275723178323,
+   "avgR": -0.02808696949136404,
+   "totR": -153.41102736183086,
+   "t": -0.4637766099576362,
+   "after": -0.22808696949136406,
+   "avgwin": 2.3393462333765904,
+   "avgloss": -6.671747950640668,
+   "maxwin": 24.93062971037186,
+   "maxloss": -10.000000000000338,
+   "blocks": 4,
+   "medheld": 37.0,
+   "meanheld": 85.21127792017576,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.25",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "4/13",
+   "avgR_6mo": -0.08097146061998392,
+   "trades_6mo": 2735,
+   "t_6mo": -0.9532951165624445,
+   "by_bot": {
+    "vwap": {
+     "trades": 1640,
+     "avgR": -0.0026,
+     "win": 74.1
+    },
+    "ema50": {
+     "trades": 2537,
+     "avgR": -0.0838,
+     "win": 72.8
+    },
+    "range": {
+     "trades": 1285,
+     "avgR": 0.0494,
+     "win": 75.1
+    }
+   }
+  },
+  {
+   "trades": 5226,
+   "win": 73.5361653272101,
+   "avgR": -0.07772224063034991,
+   "totR": -406.17642953420955,
+   "t": -1.1596730604849663,
+   "after": -0.2777222406303499,
+   "avgwin": 2.285988997777165,
+   "avgloss": -6.645865616769236,
+   "maxwin": 41.05958549073778,
+   "maxloss": -10.000000000000338,
+   "blocks": 7,
+   "medheld": 52.0,
+   "meanheld": 101.1563337160352,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.5",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.12596039913366683,
+   "trades_6mo": 2618,
+   "t_6mo": -1.3317195171957648,
+   "by_bot": {
+    "vwap": {
+     "trades": 1604,
+     "avgR": 0.0048,
+     "win": 74.3
+    },
+    "ema50": {
+     "trades": 2337,
+     "avgR": -0.2038,
+     "win": 72.1
+    },
+    "range": {
+     "trades": 1285,
+     "avgR": 0.0486,
+     "win": 75.1
+    }
+   }
+  },
+  {
+   "trades": 4593,
+   "win": 73.00239494883519,
+   "avgR": -0.1040180040150597,
+   "totR": -477.75469244116914,
+   "t": -1.2821310768579606,
+   "after": -0.30401800401505974,
+   "avgwin": 2.3192604571439475,
+   "avgloss": -6.656641133261956,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000338,
+   "blocks": 6,
+   "medheld": 77,
+   "meanheld": 132.93598954931417,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm2 give0.75",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.29990366266138524,
+   "trades_6mo": 2282,
+   "t_6mo": -2.69959307755845,
+   "by_bot": {
+    "vwap": {
+     "trades": 1453,
+     "avgR": -0.074,
+     "win": 73.0
+    },
+    "ema50": {
+     "trades": 1856,
+     "avgR": -0.2221,
+     "win": 71.5
+    },
+    "range": {
+     "trades": 1284,
+     "avgR": 0.0327,
+     "win": 75.2
+    }
+   }
+  },
+  {
+   "trades": 3697,
+   "win": 59.967541249661885,
+   "avgR": -0.017550115639250238,
+   "totR": -64.88277751830788,
+   "t": -0.18463182141961446,
+   "after": -0.21755011563925025,
+   "avgwin": 4.0425729886961514,
+   "avgloss": -6.099504792876808,
+   "maxwin": 40.47825973500737,
+   "maxloss": -10.000000000000293,
+   "blocks": 7,
+   "medheld": 106,
+   "meanheld": 156.18366242899648,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.25",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.042757704599301866,
+   "trades_6mo": 1862,
+   "t_6mo": 0.32658976835784165,
+   "by_bot": {
+    "vwap": {
+     "trades": 1177,
+     "avgR": -0.0519,
+     "win": 60.2
+    },
+    "ema50": {
+     "trades": 1595,
+     "avgR": -0.0794,
+     "win": 58.8
+    },
+    "range": {
+     "trades": 925,
+     "avgR": 0.1328,
+     "win": 61.6
+    }
+   }
+  },
+  {
+   "trades": 3507,
+   "win": 60.47904191616767,
+   "avgR": 0.03265927739492378,
+   "totR": 114.53608582399742,
+   "t": 0.30909138928903807,
+   "after": -0.16734072260507624,
+   "avgwin": 4.05365507632965,
+   "avgloss": -6.120682778550642,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000309,
+   "blocks": 7,
+   "medheld": 149,
+   "meanheld": 183.9255774165954,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.5",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.10696829256449317,
+   "trades_6mo": 1766,
+   "t_6mo": 0.745224364427528,
+   "by_bot": {
+    "vwap": {
+     "trades": 1158,
+     "avgR": -0.0745,
+     "win": 60.5
+    },
+    "ema50": {
+     "trades": 1424,
+     "avgR": 0.0186,
+     "win": 59.7
+    },
+    "range": {
+     "trades": 925,
+     "avgR": 0.1884,
+     "win": 61.6
+    }
+   }
+  },
+  {
+   "trades": 3206,
+   "win": 60.16843418590143,
+   "avgR": -0.05997357601097094,
+   "totR": -192.27528469117257,
+   "t": -0.5138795701355139,
+   "after": -0.25997357601097093,
+   "avgwin": 3.9701623872662504,
+   "avgloss": -6.147782717093007,
+   "maxwin": 49.00535213656884,
+   "maxloss": -10.000000000000293,
+   "blocks": 6,
+   "medheld": 221.0,
+   "meanheld": 215.09170305676855,
+   "entries": "baseline entries",
+   "exit": "giveback stop10 arm4 give0.75",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.057399915800331186,
+   "trades_6mo": 1617,
+   "t_6mo": -0.3609302604999605,
+   "by_bot": {
+    "vwap": {
+     "trades": 1045,
+     "avgR": 0.0666,
+     "win": 61.5
+    },
+    "ema50": {
+     "trades": 1236,
+     "avgR": -0.2997,
+     "win": 57.9
+    },
+    "range": {
+     "trades": 925,
+     "avgR": 0.1173,
+     "win": 61.6
+    }
+   }
+  },
+  {
+   "trades": 7714,
+   "win": 33.17345086855069,
+   "avgR": -0.004980372244824396,
+   "totR": -38.41859149657535,
+   "t": -0.3097291815228446,
+   "after": -0.2049803722448244,
+   "avgwin": 1.9990972315372875,
+   "avgloss": -0.9998270430650813,
+   "maxwin": 2.0,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 4.0,
+   "meanheld": 5.988981073373088,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "stop_target 1.0/2.0 (V1)",
+   "stop": 1.0,
+   "tgt": 2.0,
+   "kind": "stop_target",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.020279913286660838,
+   "trades_6mo": 3907,
+   "t_6mo": 0.8920385645510123,
+   "by_bot": {
+    "vwap": {
+     "trades": 2616,
+     "avgR": 0.0032,
+     "win": 33.4
+    },
+    "ema50": {
+     "trades": 3241,
+     "avgR": 0.0069,
+     "win": 33.6
+    },
+    "range": {
+     "trades": 1857,
+     "avgR": -0.0372,
+     "win": 32.1
+    }
+   }
+  },
+  {
+   "trades": 7907,
+   "win": 31.857847476919186,
+   "avgR": 0.034749108062199385,
+   "totR": 274.7611974478117,
+   "t": 1.769940236359253,
+   "after": -0.16525089193780063,
+   "avgwin": 1.9270235099504072,
+   "avgloss": -0.8499278070002348,
+   "maxwin": 22.320144232541747,
+   "maxloss": -1.0000000000013898,
+   "blocks": 10,
+   "medheld": 5,
+   "meanheld": 7.262552168964209,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "live_v2 stop1.0 arm0.5 trail1.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "trail_atr": 1.5,
+   "kind": "live_v2",
+   "months_pos": "10/13",
+   "avgR_6mo": 0.03190683509929017,
+   "trades_6mo": 4021,
+   "t_6mo": 1.1923360458662298,
+   "by_bot": {
+    "vwap": {
+     "trades": 2688,
+     "avgR": 0.0655,
+     "win": 32.1
+    },
+    "ema50": {
+     "trades": 3325,
+     "avgR": 0.0325,
+     "win": 31.8
+    },
+    "range": {
+     "trades": 1894,
+     "avgR": -0.0048,
+     "win": 31.6
+    }
+   }
+  },
+  {
+   "trades": 8063,
+   "win": 51.829343916656335,
+   "avgR": 0.018521138419786073,
+   "totR": 149.3359390787348,
+   "t": 1.3795452225313043,
+   "after": -0.18147886158021392,
+   "avgwin": 0.9651437997316912,
+   "avgloss": -1.0000000000000007,
+   "maxwin": 20.601385990562118,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 3,
+   "meanheld": 3.700607714250279,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.25",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.02594485610786357,
+   "trades_6mo": 4103,
+   "t_6mo": 1.4137438398639859,
+   "by_bot": {
+    "vwap": {
+     "trades": 2736,
+     "avgR": 0.0299,
+     "win": 51.4
+    },
+    "ema50": {
+     "trades": 3403,
+     "avgR": 0.0162,
+     "win": 52.2
+    },
+    "range": {
+     "trades": 1924,
+     "avgR": 0.0064,
+     "win": 51.9
+    }
+   }
+  },
+  {
+   "trades": 8005,
+   "win": 51.79262960649594,
+   "avgR": 0.0064615963456979494,
+   "totR": 51.72507874731239,
+   "t": 0.38733566959962845,
+   "after": -0.19353840365430205,
+   "avgwin": 0.9432525515550685,
+   "avgloss": -1.0000000000000004,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000013898,
+   "blocks": 5,
+   "medheld": 3,
+   "meanheld": 6.182760774515928,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.5",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.020919753119444835,
+   "trades_6mo": 4078,
+   "t_6mo": 0.9110542162826802,
+   "by_bot": {
+    "vwap": {
+     "trades": 2722,
+     "avgR": 0.0322,
+     "win": 51.4
+    },
+    "ema50": {
+     "trades": 3361,
+     "avgR": 0.001,
+     "win": 52.1
+    },
+    "range": {
+     "trades": 1922,
+     "avgR": -0.0205,
+     "win": 51.9
+    }
+   }
+  },
+  {
+   "trades": 7751,
+   "win": 51.761063088633726,
+   "avgR": 0.03132555847635881,
+   "totR": 242.80440375025594,
+   "t": 1.170892550580635,
+   "after": -0.1686744415236412,
+   "avgwin": 0.9924736798978712,
+   "avgloss": -1.0000000000000004,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000013898,
+   "blocks": 6,
+   "medheld": 4,
+   "meanheld": 13.361888788543414,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm0.5 give0.75",
+   "stop": 1.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.005505154375094051,
+   "trades_6mo": 3958,
+   "t_6mo": 0.1731955565356591,
+   "by_bot": {
+    "vwap": {
+     "trades": 2647,
+     "avgR": 0.0723,
+     "win": 51.5
+    },
+    "ema50": {
+     "trades": 3185,
+     "avgR": 0.0013,
+     "win": 51.9
+    },
+    "range": {
+     "trades": 1919,
+     "avgR": 0.0246,
+     "win": 51.8
+    }
+   }
+  },
+  {
+   "trades": 7882,
+   "win": 41.727987820350165,
+   "avgR": 0.01879212966423806,
+   "totR": 148.11956601352415,
+   "t": 1.1887690773990731,
+   "after": -0.18120787033576194,
+   "avgwin": 1.4415079252093432,
+   "avgloss": -1.000000000000001,
+   "maxwin": 20.601385990562118,
+   "maxloss": -1.0000000000013898,
+   "blocks": 9,
+   "medheld": 4.0,
+   "meanheld": 5.064196904339,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.25",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.043943059339000085,
+   "trades_6mo": 4001,
+   "t_6mo": 1.974937688094417,
+   "by_bot": {
+    "vwap": {
+     "trades": 2680,
+     "avgR": 0.046,
+     "win": 42.1
+    },
+    "ema50": {
+     "trades": 3315,
+     "avgR": 0.0272,
+     "win": 42.3
+    },
+    "range": {
+     "trades": 1887,
+     "avgR": -0.0346,
+     "win": 40.2
+    }
+   }
+  },
+  {
+   "trades": 7805,
+   "win": 41.70403587443946,
+   "avgR": 0.016243410892802054,
+   "totR": 126.77982201832,
+   "t": 0.8088351075580327,
+   "after": -0.18375658910719794,
+   "avgwin": 1.4367987164418812,
+   "avgloss": -1.0000000000000007,
+   "maxwin": 41.84119729410238,
+   "maxloss": -1.0000000000013898,
+   "blocks": 9,
+   "medheld": 4,
+   "meanheld": 8.64791800128123,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.5",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.04431106964697948,
+   "trades_6mo": 3969,
+   "t_6mo": 1.6015615869566602,
+   "by_bot": {
+    "vwap": {
+     "trades": 2662,
+     "avgR": 0.0603,
+     "win": 42.1
+    },
+    "ema50": {
+     "trades": 3256,
+     "avgR": 0.0185,
+     "win": 42.3
+    },
+    "range": {
+     "trades": 1887,
+     "avgR": -0.0499,
+     "win": 40.2
+    }
+   }
+  },
+  {
+   "trades": 7490,
+   "win": 41.57543391188251,
+   "avgR": 0.04093276779123022,
+   "totR": 306.5864307563123,
+   "t": 1.358030946464325,
+   "after": -0.15906723220876978,
+   "avgwin": 1.5037207548992673,
+   "avgloss": -1.0000000000000009,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000013898,
+   "blocks": 9,
+   "medheld": 5.0,
+   "meanheld": 17.833644859813084,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm1 give0.75",
+   "stop": 1.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.025684107153882647,
+   "trades_6mo": 3821,
+   "t_6mo": 0.6970242005879943,
+   "by_bot": {
+    "vwap": {
+     "trades": 2571,
+     "avgR": 0.1095,
+     "win": 42.0
+    },
+    "ema50": {
+     "trades": 3036,
+     "avgR": 0.0108,
+     "win": 42.0
+    },
+    "range": {
+     "trades": 1883,
+     "avgR": -0.0042,
+     "win": 40.2
+    }
+   }
+  },
+  {
+   "trades": 7633,
+   "win": 29.555875802436788,
+   "avgR": 0.018763209882648967,
+   "totR": 143.21958103425806,
+   "t": 0.9419570683865331,
+   "after": -0.18123679011735105,
+   "avgwin": 2.4465106329941295,
+   "avgloss": -0.9998341839316527,
+   "maxwin": 20.601385990562118,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 5,
+   "meanheld": 8.17175422507533,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.25",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.048671898866679615,
+   "trades_6mo": 3863,
+   "t_6mo": 1.717098066227704,
+   "by_bot": {
+    "vwap": {
+     "trades": 2589,
+     "avgR": 0.0438,
+     "win": 30.1
+    },
+    "ema50": {
+     "trades": 3195,
+     "avgR": 0.0205,
+     "win": 29.5
+    },
+    "range": {
+     "trades": 1849,
+     "avgR": -0.0192,
+     "win": 28.8
+    }
+   }
+  },
+  {
+   "trades": 7512,
+   "win": 29.552715654952078,
+   "avgR": 0.015958206343840875,
+   "totR": 119.87804605493248,
+   "t": 0.6238108804181065,
+   "after": -0.18404179365615914,
+   "avgwin": 2.4373812851601016,
+   "avgloss": -0.9998315205972209,
+   "maxwin": 43.31488913962677,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 5.0,
+   "meanheld": 13.614483493077742,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.5",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.03295139380724243,
+   "trades_6mo": 3809,
+   "t_6mo": 0.9798624659404971,
+   "by_bot": {
+    "vwap": {
+     "trades": 2571,
+     "avgR": 0.0266,
+     "win": 30.1
+    },
+    "ema50": {
+     "trades": 3092,
+     "avgR": 0.0112,
+     "win": 29.6
+    },
+    "range": {
+     "trades": 1849,
+     "avgR": 0.009,
+     "win": 28.8
+    }
+   }
+  },
+  {
+   "trades": 7169,
+   "win": 29.348584181894267,
+   "avgR": 0.04034193348054521,
+   "totR": 289.2113211220267,
+   "t": 1.1511778154514047,
+   "after": -0.1596580665194548,
+   "avgwin": 2.544353482947967,
+   "avgloss": -0.9998239697927925,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 6,
+   "meanheld": 24.036825219695913,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm2 give0.75",
+   "stop": 1.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.02930003539540919,
+   "trades_6mo": 3652,
+   "t_6mo": 0.6690356237824611,
+   "by_bot": {
+    "vwap": {
+     "trades": 2474,
+     "avgR": 0.0842,
+     "win": 29.9
+    },
+    "ema50": {
+     "trades": 2846,
+     "avgR": -0.001,
+     "win": 29.2
+    },
+    "range": {
+     "trades": 1849,
+     "avgR": 0.0454,
+     "win": 28.8
+    }
+   }
+  },
+  {
+   "trades": 7294,
+   "win": 18.851110501782287,
+   "avgR": 0.0247166419583218,
+   "totR": 180.28318644399747,
+   "t": 0.8978499869426239,
+   "after": -0.17528335804167822,
+   "avgwin": 4.433796225242434,
+   "avgloss": -0.9995246871539698,
+   "maxwin": 31.769414879363985,
+   "maxloss": -1.0000000000013898,
+   "blocks": 8,
+   "medheld": 6.0,
+   "meanheld": 15.58911434055388,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.25",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.03542805136049736,
+   "trades_6mo": 3675,
+   "t_6mo": 0.9463056803943111,
+   "by_bot": {
+    "vwap": {
+     "trades": 2429,
+     "avgR": 0.0223,
+     "win": 18.8
+    },
+    "ema50": {
+     "trades": 3022,
+     "avgR": 0.0478,
+     "win": 19.1
+    },
+    "range": {
+     "trades": 1843,
+     "avgR": -0.01,
+     "win": 18.6
+    }
+   }
+  },
+  {
+   "trades": 7072,
+   "win": 18.877262443438916,
+   "avgR": 0.039387602220116835,
+   "totR": 278.5491229006652,
+   "t": 1.1357655753000901,
+   "after": -0.16061239777988318,
+   "avgwin": 4.504430889246674,
+   "avgloss": -0.9996280484998508,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000010725,
+   "blocks": 8,
+   "medheld": 6.0,
+   "meanheld": 23.502686651583712,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.5",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.05254558674455954,
+   "trades_6mo": 3565,
+   "t_6mo": 1.1743062324074036,
+   "by_bot": {
+    "vwap": {
+     "trades": 2408,
+     "avgR": 0.0264,
+     "win": 18.7
+    },
+    "ema50": {
+     "trades": 2821,
+     "avgR": 0.0589,
+     "win": 19.2
+    },
+    "range": {
+     "trades": 1843,
+     "avgR": 0.0265,
+     "win": 18.6
+    }
+   }
+  },
+  {
+   "trades": 6777,
+   "win": 18.725099601593627,
+   "avgR": 0.024894443758344154,
+   "totR": 168.70964535029742,
+   "t": 0.6349927900152139,
+   "after": -0.17510555624165586,
+   "avgwin": 4.4716909059053895,
+   "avgloss": -0.999612584285338,
+   "maxwin": 49.016673316916076,
+   "maxloss": -1.0000000000006237,
+   "blocks": 9,
+   "medheld": 6,
+   "meanheld": 32.62874428213074,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop1 arm4 give0.75",
+   "stop": 1.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.039048781767318505,
+   "trades_6mo": 3425,
+   "t_6mo": 0.7540167778518502,
+   "by_bot": {
+    "vwap": {
+     "trades": 2310,
+     "avgR": 0.0409,
+     "win": 18.6
+    },
+    "ema50": {
+     "trades": 2624,
+     "avgR": 0.0187,
+     "win": 18.9
+    },
+    "range": {
+     "trades": 1843,
+     "avgR": 0.0137,
+     "win": 18.6
+    }
+   }
+  },
+  {
+   "trades": 7271,
+   "win": 68.73882547104938,
+   "avgR": 0.03491152554371039,
+   "totR": 253.84170222831696,
+   "t": 1.872887667314141,
+   "after": -0.16508847445628963,
+   "avgwin": 0.9600369308671175,
+   "avgloss": -1.9993061496900726,
+   "maxwin": 20.601385990562118,
+   "maxloss": -2.0000000000006697,
+   "blocks": 8,
+   "medheld": 5,
+   "meanheld": 6.446843625361023,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.25",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.03501559031084193,
+   "trades_6mo": 3692,
+   "t_6mo": 1.3760887453123867,
+   "by_bot": {
+    "vwap": {
+     "trades": 2433,
+     "avgR": 0.0554,
+     "win": 68.8
+    },
+    "ema50": {
+     "trades": 3135,
+     "avgR": 0.04,
+     "win": 69.1
+    },
+    "range": {
+     "trades": 1703,
+     "avgR": -0.0037,
+     "win": 68.0
+    }
+   }
+  },
+  {
+   "trades": 7198,
+   "win": 68.69963878855238,
+   "avgR": 0.02060030304240898,
+   "totR": 148.28098129926016,
+   "t": 0.8999477486680275,
+   "after": -0.17939969695759103,
+   "avgwin": 0.9408905681587048,
+   "avgloss": -1.9992999903442235,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.0000000000006697,
+   "blocks": 8,
+   "medheld": 5.0,
+   "meanheld": 9.60252848013337,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.5",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.018740174670514136,
+   "trades_6mo": 3657,
+   "t_6mo": 0.6229917563060505,
+   "by_bot": {
+    "vwap": {
+     "trades": 2418,
+     "avgR": 0.0579,
+     "win": 68.7
+    },
+    "ema50": {
+     "trades": 3079,
+     "avgR": 0.0097,
+     "win": 69.0
+    },
+    "range": {
+     "trades": 1701,
+     "avgR": -0.0127,
+     "win": 68.0
+    }
+   }
+  },
+  {
+   "trades": 6948,
+   "win": 68.7104202648244,
+   "avgR": 0.05842272905692872,
+   "totR": 405.92112148754063,
+   "t": 1.7277348836250763,
+   "after": -0.1415772709430713,
+   "avgwin": 0.9954637619884952,
+   "avgloss": -1.9992745530108256,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000006697,
+   "blocks": 8,
+   "medheld": 7.0,
+   "meanheld": 19.126655152561888,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm0.5 give0.75",
+   "stop": 2.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.010643717512092404,
+   "trades_6mo": 3540,
+   "t_6mo": 0.2635662502545444,
+   "by_bot": {
+    "vwap": {
+     "trades": 2346,
+     "avgR": 0.1318,
+     "win": 68.9
+    },
+    "ema50": {
+     "trades": 2904,
+     "avgR": 0.0129,
+     "win": 68.9
+    },
+    "range": {
+     "trades": 1698,
+     "avgR": 0.0348,
+     "win": 68.0
+    }
+   }
+  },
+  {
+   "trades": 6896,
+   "win": 58.83120649651972,
+   "avgR": 0.016900995327423986,
+   "totR": 116.54926377791561,
+   "t": 0.7446216470795295,
+   "after": -0.18309900467257603,
+   "avgwin": 1.4275943808538554,
+   "avgloss": -1.9990141385509599,
+   "maxwin": 20.601385990562118,
+   "maxloss": -2.0000000000006697,
+   "blocks": 8,
+   "medheld": 7.0,
+   "meanheld": 9.439385150812065,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.25",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.03897437774629466,
+   "trades_6mo": 3488,
+   "t_6mo": 1.2295096294425198,
+   "by_bot": {
+    "vwap": {
+     "trades": 2311,
+     "avgR": 0.0513,
+     "win": 59.5
+    },
+    "ema50": {
+     "trades": 2969,
+     "avgR": 0.053,
+     "win": 59.9
+    },
+    "range": {
+     "trades": 1616,
+     "avgR": -0.0986,
+     "win": 55.9
+    }
+   }
+  },
+  {
+   "trades": 6816,
+   "win": 58.75880281690141,
+   "avgR": 0.012708318919491817,
+   "totR": 86.61990175525646,
+   "t": 0.4501522776796404,
+   "after": -0.1872916810805082,
+   "avgwin": 1.4246744172537904,
+   "avgloss": -1.9990043185151811,
+   "maxwin": 41.84119729410238,
+   "maxloss": -2.0000000000006697,
+   "blocks": 6,
+   "medheld": 8.0,
+   "meanheld": 14.348884976525822,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.5",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.020998639979563298,
+   "trades_6mo": 3454,
+   "t_6mo": 0.5622834535801049,
+   "by_bot": {
+    "vwap": {
+     "trades": 2295,
+     "avgR": 0.0729,
+     "win": 59.4
+    },
+    "ema50": {
+     "trades": 2906,
+     "avgR": 0.0325,
+     "win": 59.8
+    },
+    "range": {
+     "trades": 1615,
+     "avgR": -0.1085,
+     "win": 55.9
+    }
+   }
+  },
+  {
+   "trades": 6487,
+   "win": 58.60952674579929,
+   "avgR": 0.044975508802631514,
+   "totR": 291.756125602669,
+   "t": 1.1337162421714182,
+   "after": -0.1550244911973685,
+   "avgwin": 1.4884159034584026,
+   "avgloss": -1.9989575937974584,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000006697,
+   "blocks": 7,
+   "medheld": 10,
+   "meanheld": 27.233081547710807,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm1 give0.75",
+   "stop": 2.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.003452254001241252,
+   "trades_6mo": 3294,
+   "t_6mo": 0.07133498035332819,
+   "by_bot": {
+    "vwap": {
+     "trades": 2209,
+     "avgR": 0.1622,
+     "win": 59.4
+    },
+    "ema50": {
+     "trades": 2667,
+     "avgR": 0.0057,
+     "win": 59.5
+    },
+    "range": {
+     "trades": 1611,
+     "avgR": -0.0507,
+     "win": 56.0
+    }
+   }
+  },
+  {
+   "trades": 6448,
+   "win": 45.05272952853598,
+   "avgR": -0.0020450252791975477,
+   "totR": -13.186323000265974,
+   "t": -0.06898051639586757,
+   "after": -0.20204502527919757,
+   "avgwin": 2.4314425612837014,
+   "avgloss": -1.9973262668725424,
+   "maxwin": 20.601385990562118,
+   "maxloss": -2.0000000000006697,
+   "blocks": 8,
+   "medheld": 11.0,
+   "meanheld": 16.117866004962778,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.25",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.012943518067121258,
+   "trades_6mo": 3245,
+   "t_6mo": 0.3109616531302864,
+   "by_bot": {
+    "vwap": {
+     "trades": 2130,
+     "avgR": 0.0301,
+     "win": 46.0
+    },
+    "ema50": {
+     "trades": 2767,
+     "avgR": 0.0334,
+     "win": 45.6
+    },
+    "range": {
+     "trades": 1551,
+     "avgR": -0.1095,
+     "win": 42.8
+    }
+   }
+  },
+  {
+   "trades": 6317,
+   "win": 45.06886180148805,
+   "avgR": -0.01806487265431562,
+   "totR": -114.1158005573113,
+   "t": -0.4995239741530545,
+   "after": -0.21806487265431562,
+   "avgwin": 2.394243471363578,
+   "avgloss": -1.9972700183081895,
+   "maxwin": 43.31488913962677,
+   "maxloss": -2.0000000000006697,
+   "blocks": 6,
+   "medheld": 13,
+   "meanheld": 24.39164160202628,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.5",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.022920166229677488,
+   "trades_6mo": 3186,
+   "t_6mo": -0.48192596749188293,
+   "by_bot": {
+    "vwap": {
+     "trades": 2113,
+     "avgR": 0.0067,
+     "win": 46.0
+    },
+    "ema50": {
+     "trades": 2653,
+     "avgR": -0.0003,
+     "win": 45.7
+    },
+    "range": {
+     "trades": 1551,
+     "avgR": -0.0823,
+     "win": 42.8
+    }
+   }
+  },
+  {
+   "trades": 5937,
+   "win": 44.71955533097524,
+   "avgR": 0.007502717087272233,
+   "totR": 44.543631347135694,
+   "t": 0.15947915087763284,
+   "after": -0.19249728291272777,
+   "avgwin": 2.485525647787779,
+   "avgloss": -1.9971136391009805,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000006684,
+   "blocks": 7,
+   "medheld": 16,
+   "meanheld": 40.546909213407446,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm2 give0.75",
+   "stop": 2.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.018740296988435753,
+   "trades_6mo": 3015,
+   "t_6mo": -0.3077729267296888,
+   "by_bot": {
+    "vwap": {
+     "trades": 1999,
+     "avgR": 0.056,
+     "win": 45.6
+    },
+    "ema50": {
+     "trades": 2387,
+     "avgR": -0.0194,
+     "win": 45.2
+    },
+    "range": {
+     "trades": 1551,
+     "avgR": -0.0135,
+     "win": 42.8
+    }
+   }
+  },
+  {
+   "trades": 5857,
+   "win": 30.68123612771043,
+   "avgR": -0.05977314203166666,
+   "totR": -350.0912928794719,
+   "t": -1.4624790428096943,
+   "after": -0.2597731420316667,
+   "avgwin": 4.302112931785699,
+   "avgloss": -1.9903911899749687,
+   "maxwin": 31.769414879363985,
+   "maxloss": -2.0000000000006697,
+   "blocks": 5,
+   "medheld": 17,
+   "meanheld": 32.61635649649991,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.25",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.06129142188486769,
+   "trades_6mo": 2949,
+   "t_6mo": -1.084646462951166,
+   "by_bot": {
+    "vwap": {
+     "trades": 1866,
+     "avgR": -0.0531,
+     "win": 31.1
+    },
+    "ema50": {
+     "trades": 2458,
+     "avgR": -0.0062,
+     "win": 31.2
+    },
+    "range": {
+     "trades": 1533,
+     "avgR": -0.1538,
+     "win": 29.4
+    }
+   }
+  },
+  {
+   "trades": 5633,
+   "win": 30.676371382922067,
+   "avgR": -0.04734097484668135,
+   "totR": -266.6717113113564,
+   "t": -0.9630971403381374,
+   "after": -0.24734097484668136,
+   "avgwin": 4.345694901149521,
+   "avgloss": -1.9913015366191367,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000006697,
+   "blocks": 5,
+   "medheld": 20,
+   "meanheld": 45.355760695899164,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.5",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.04258441895635738,
+   "trades_6mo": 2838,
+   "t_6mo": -0.6446740664604149,
+   "by_bot": {
+    "vwap": {
+     "trades": 1847,
+     "avgR": -0.0712,
+     "win": 31.1
+    },
+    "ema50": {
+     "trades": 2253,
+     "avgR": -0.0071,
+     "win": 31.2
+    },
+    "range": {
+     "trades": 1533,
+     "avgR": -0.0777,
+     "win": 29.4
+    }
+   }
+  },
+  {
+   "trades": 5307,
+   "win": 30.35613340870548,
+   "avgR": -0.05305366210543777,
+   "totR": -281.5557847935589,
+   "t": -0.9486595936182419,
+   "after": -0.2530536621054378,
+   "avgwin": 4.3969986524205735,
+   "avgloss": -1.9927274388103633,
+   "maxwin": 49.016673316916076,
+   "maxloss": -2.0000000000006684,
+   "blocks": 4,
+   "medheld": 21,
+   "meanheld": 60.72432636140946,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop2 arm4 give0.75",
+   "stop": 2.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "4/13",
+   "avgR_6mo": -0.06210477679417716,
+   "trades_6mo": 2681,
+   "t_6mo": -0.8237573915322456,
+   "by_bot": {
+    "vwap": {
+     "trades": 1730,
+     "avgR": -0.0299,
+     "win": 30.8
+    },
+    "ema50": {
+     "trades": 2044,
+     "avgR": -0.058,
+     "win": 30.7
+    },
+    "range": {
+     "trades": 1533,
+     "avgR": -0.0727,
+     "win": 29.4
+    }
+   }
+  },
+  {
+   "trades": 5569,
+   "win": 88.66942000359131,
+   "avgR": 0.006396640071697837,
+   "totR": 35.622888559285485,
+   "t": 0.1583259142104871,
+   "after": -0.1936033599283022,
+   "avgwin": 0.9560011565518922,
+   "avgloss": -7.424898292383452,
+   "maxwin": 20.601385990562118,
+   "maxloss": -10.000000000000504,
+   "blocks": 5,
+   "medheld": 7,
+   "meanheld": 32.97396300951697,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.25",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": -0.025680624342290025,
+   "trades_6mo": 2834,
+   "t_6mo": -0.4541308979951999,
+   "by_bot": {
+    "vwap": {
+     "trades": 1866,
+     "avgR": 0.1036,
+     "win": 89.4
+    },
+    "ema50": {
+     "trades": 2447,
+     "avgR": -0.0732,
+     "win": 87.7
+    },
+    "range": {
+     "trades": 1256,
+     "avgR": 0.017,
+     "win": 89.5
+    }
+   }
+  },
+  {
+   "trades": 5511,
+   "win": 88.71348212665578,
+   "avgR": 0.009400304431135001,
+   "totR": 51.805077719984894,
+   "t": 0.21240045131121157,
+   "after": -0.19059969556886502,
+   "avgwin": 0.9539033150848837,
+   "avgloss": -7.41451483879423,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000504,
+   "blocks": 6,
+   "medheld": 9,
+   "meanheld": 37.4817637452368,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.5",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": -0.02112744990579654,
+   "trades_6mo": 2812,
+   "t_6mo": -0.3504969418816412,
+   "by_bot": {
+    "vwap": {
+     "trades": 1853,
+     "avgR": 0.1142,
+     "win": 89.3
+    },
+    "ema50": {
+     "trades": 2402,
+     "avgR": -0.0693,
+     "win": 87.8
+    },
+    "range": {
+     "trades": 1256,
+     "avgR": 0.0054,
+     "win": 89.5
+    }
+   }
+  },
+  {
+   "trades": 5299,
+   "win": 88.71485185884129,
+   "avgR": 0.08234217689815036,
+   "totR": 436.3311953833011,
+   "t": 1.4834752040691743,
+   "after": -0.11765782310184965,
+   "avgwin": 1.0310517554921277,
+   "avgloss": -7.375657369874905,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000504,
+   "blocks": 7,
+   "medheld": 13,
+   "meanheld": 50.687488205321756,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm0.5 give0.75",
+   "stop": 10.0,
+   "arm": 0.5,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.018311641828900164,
+   "trades_6mo": 2705,
+   "t_6mo": -0.26017466000311995,
+   "by_bot": {
+    "vwap": {
+     "trades": 1792,
+     "avgR": 0.275,
+     "win": 89.6
+    },
+    "ema50": {
+     "trades": 2254,
+     "avgR": -0.0678,
+     "win": 87.6
+    },
+    "range": {
+     "trades": 1253,
+     "avgR": 0.0769,
+     "win": 89.5
+    }
+   }
+  },
+  {
+   "trades": 4843,
+   "win": 83.91492876316333,
+   "avgR": 0.059744956647648784,
+   "totR": 289.3448250445633,
+   "t": 1.1827939292839864,
+   "after": -0.14025504335235123,
+   "avgwin": 1.4182262774948906,
+   "avgloss": -7.027377107438603,
+   "maxwin": 20.522888123242716,
+   "maxloss": -10.000000000000504,
+   "blocks": 10,
+   "medheld": 14,
+   "meanheld": 48.384885401610575,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.25",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "10/13",
+   "avgR_6mo": 0.02515410498361643,
+   "trades_6mo": 2496,
+   "t_6mo": 0.35789031953094136,
+   "by_bot": {
+    "vwap": {
+     "trades": 1649,
+     "avgR": 0.2164,
+     "win": 85.4
+    },
+    "ema50": {
+     "trades": 2135,
+     "avgR": -0.0349,
+     "win": 82.6
+    },
+    "range": {
+     "trades": 1059,
+     "avgR": 0.0065,
+     "win": 84.1
+    }
+   }
+  },
+  {
+   "trades": 4768,
+   "win": 83.93456375838926,
+   "avgR": 0.06669867783249056,
+   "totR": 318.01929590531387,
+   "t": 1.1943217994810968,
+   "after": -0.13330132216750945,
+   "avgwin": 1.422518819520333,
+   "avgloss": -7.0168420624217465,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000504,
+   "blocks": 9,
+   "medheld": 20.0,
+   "meanheld": 56.37919463087248,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.5",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "9/13",
+   "avgR_6mo": 0.03348462881271388,
+   "trades_6mo": 2463,
+   "t_6mo": 0.44333655838502306,
+   "by_bot": {
+    "vwap": {
+     "trades": 1636,
+     "avgR": 0.2392,
+     "win": 85.4
+    },
+    "ema50": {
+     "trades": 2074,
+     "avgR": -0.0253,
+     "win": 82.7
+    },
+    "range": {
+     "trades": 1058,
+     "avgR": -0.0197,
+     "win": 84.1
+    }
+   }
+  },
+  {
+   "trades": 4507,
+   "win": 83.8695362769026,
+   "avgR": 0.11810494826418967,
+   "totR": 532.2990018267046,
+   "t": 1.7272310195561236,
+   "after": -0.08189505173581034,
+   "avgwin": 1.47224417960931,
+   "avgloss": -6.922673998757206,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000504,
+   "blocks": 7,
+   "medheld": 31,
+   "meanheld": 75.59307743510095,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm1 give0.75",
+   "stop": 10.0,
+   "arm": 1.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": 0.0259975698110345,
+   "trades_6mo": 2332,
+   "t_6mo": 0.29855413633387623,
+   "by_bot": {
+    "vwap": {
+     "trades": 1567,
+     "avgR": 0.4201,
+     "win": 85.8
+    },
+    "ema50": {
+     "trades": 1884,
+     "avgR": -0.0649,
+     "win": 82.1
+    },
+    "range": {
+     "trades": 1056,
+     "avgR": -0.0035,
+     "win": 84.2
+    }
+   }
+  },
+  {
+   "trades": 3911,
+   "win": 73.1782152902071,
+   "avgR": -0.014500533969500438,
+   "totR": -56.711588354716525,
+   "t": -0.20298838825554422,
+   "after": -0.21450053396950045,
+   "avgwin": 2.373095855139218,
+   "avgloss": -6.528610034092619,
+   "maxwin": 20.522888123242716,
+   "maxloss": -10.000000000000504,
+   "blocks": 7,
+   "medheld": 38,
+   "meanheld": 84.06187675786244,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.25",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.005740241959282419,
+   "trades_6mo": 2016,
+   "t_6mo": -0.058016339690813656,
+   "by_bot": {
+    "vwap": {
+     "trades": 1327,
+     "avgR": 0.086,
+     "win": 74.7
+    },
+    "ema50": {
+     "trades": 1716,
+     "avgR": -0.1082,
+     "win": 71.6
+    },
+    "range": {
+     "trades": 868,
+     "avgR": 0.0172,
+     "win": 74.0
+    }
+   }
+  },
+  {
+   "trades": 3818,
+   "win": 73.36301728653746,
+   "avgR": -0.03694895411412412,
+   "totR": -141.07110680772595,
+   "t": -0.4789985728006586,
+   "after": -0.23694895411412414,
+   "avgwin": 2.3143211358596085,
+   "avgloss": -6.512767559833323,
+   "maxwin": 41.84119729410238,
+   "maxloss": -10.000000000000504,
+   "blocks": 7,
+   "medheld": 53.0,
+   "meanheld": 99.29753797799896,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.5",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "7/13",
+   "avgR_6mo": -0.02717129104863794,
+   "trades_6mo": 1977,
+   "t_6mo": -0.25840620838198985,
+   "by_bot": {
+    "vwap": {
+     "trades": 1314,
+     "avgR": 0.0797,
+     "win": 74.7
+    },
+    "ema50": {
+     "trades": 1636,
+     "avgR": -0.1091,
+     "win": 72.0
+    },
+    "range": {
+     "trades": 868,
+     "avgR": -0.0776,
+     "win": 74.0
+    }
+   }
+  },
+  {
+   "trades": 3546,
+   "win": 73.01184433164129,
+   "avgR": 0.01685908522601926,
+   "totR": 59.782316211464284,
+   "t": 0.18266529518100214,
+   "after": -0.18314091477398076,
+   "avgwin": 2.408923765959275,
+   "avgloss": -6.454463232870531,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000398,
+   "blocks": 6,
+   "medheld": 77.0,
+   "meanheld": 128.38719684151155,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm2 give0.75",
+   "stop": 10.0,
+   "arm": 2.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "6/13",
+   "avgR_6mo": 0.02635883870674841,
+   "trades_6mo": 1840,
+   "t_6mo": 0.215396950219151,
+   "by_bot": {
+    "vwap": {
+     "trades": 1236,
+     "avgR": 0.2164,
+     "win": 74.4
+    },
+    "ema50": {
+     "trades": 1442,
+     "avgR": -0.1273,
+     "win": 71.3
+    },
+    "range": {
+     "trades": 868,
+     "avgR": -0.0279,
+     "win": 74.0
+    }
+   }
+  },
+  {
+   "trades": 3060,
+   "win": 60.032679738562095,
+   "avgR": 0.03144455736260544,
+   "totR": 96.22034552957268,
+   "t": 0.3074136525465961,
+   "after": -0.16855544263739458,
+   "avgwin": 4.033537354655602,
+   "avgloss": -5.9798755314577,
+   "maxwin": 31.769414879363985,
+   "maxloss": -10.000000000000504,
+   "blocks": 8,
+   "medheld": 102.0,
+   "meanheld": 148.80196078431374,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.25",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.25,
+   "kind": "giveback",
+   "months_pos": "8/13",
+   "avgR_6mo": 0.0818335385502953,
+   "trades_6mo": 1563,
+   "t_6mo": 0.5863624914237082,
+   "by_bot": {
+    "vwap": {
+     "trades": 1020,
+     "avgR": 0.1237,
+     "win": 61.6
+    },
+    "ema50": {
+     "trades": 1305,
+     "avgR": -0.0163,
+     "win": 58.2
+    },
+    "range": {
+     "trades": 735,
+     "avgR": -0.0119,
+     "win": 61.1
+    }
+   }
+  },
+  {
+   "trades": 2930,
+   "win": 60.477815699658706,
+   "avgR": 0.036216026302831654,
+   "totR": 106.11295706729702,
+   "t": 0.3224936627358072,
+   "after": -0.16378397369716835,
+   "avgwin": 3.983856285011483,
+   "avgloss": -6.004559913620943,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000504,
+   "blocks": 5,
+   "medheld": 139.0,
+   "meanheld": 175.14232081911263,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.5",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.5,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.1356403626571399,
+   "trades_6mo": 1493,
+   "t_6mo": 0.8825819041503145,
+   "by_bot": {
+    "vwap": {
+     "trades": 1009,
+     "avgR": 0.0805,
+     "win": 61.7
+    },
+    "ema50": {
+     "trades": 1186,
+     "avgR": -0.0036,
+     "win": 59.0
+    },
+    "range": {
+     "trades": 735,
+     "avgR": 0.0397,
+     "win": 61.1
+    }
+   }
+  },
+  {
+   "trades": 2724,
+   "win": 59.98531571218796,
+   "avgR": 0.02479488653893292,
+   "totR": 67.5412709320532,
+   "t": 0.19921059095235688,
+   "after": -0.1752051134610671,
+   "avgwin": 4.029168964911812,
+   "avgloss": -5.978092493333805,
+   "maxwin": 49.016673316916076,
+   "maxloss": -10.000000000000398,
+   "blocks": 5,
+   "medheld": 205.0,
+   "meanheld": 207.98237885462555,
+   "entries": "filtered entries (buffer 0.2 + trend + chop all)",
+   "exit": "giveback stop10 arm4 give0.75",
+   "stop": 10.0,
+   "arm": 4.0,
+   "give": 0.75,
+   "kind": "giveback",
+   "months_pos": "5/13",
+   "avgR_6mo": 0.1273169940966824,
+   "trades_6mo": 1395,
+   "t_6mo": 0.7559148570491004,
+   "by_bot": {
+    "vwap": {
+     "trades": 935,
+     "avgR": 0.1576,
+     "win": 61.1
+    },
+    "ema50": {
+     "trades": 1054,
+     "avgR": -0.0668,
+     "win": 58.3
+    },
+    "range": {
+     "trades": 735,
+     "avgR": -0.0128,
+     "win": 61.1
+    }
+   }
+  }
+ ]
+}

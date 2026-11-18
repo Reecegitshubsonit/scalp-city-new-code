@@ -1,0 +1,42 @@
+{
+  "inputs": {
+    "logs/2026-10-09-live.jsonl": "27c71cfbc75d2d20a40b05d153a7390d16421c99984bebf05fdc67b551623e21",
+    "research/scalp_city/data/expanded/trades_expanded.csv": "2f4f1422d682052afbc5a3a875caf8e5169642220e8ea473f916f572ecdddb9b",
+    "reports/dissect-2026-10-09/signal_table.md": "261b6a7874d0a7dfee19855a9679c418f4cd36e88f95117cc139a377d99630ce",
+    "research/scalp_city/replay/plan.json": "ccb74dfaaef28b6f018685cd45398f1803d7ddf019ad75538ea3d421b5fe81f0",
+    "research/scalp_city/replay/stress_followup.json": "f6891da45a6640b3ecbefc627eed07c68cf22939b71ce67a17febd396a334b28",
+    "research/scalp_city/replay/run.py": "018794eb9274a99f3413421704f6388e655f2be7b6eb45bbbb27900f5f2bf989",
+    "research/scalp_city/replay/coordination.py": "7ece9a93c95e0ffb299d1abeb551dfa5325dc7c29cfdc4c70e370ff5d809fb94",
+    "research/scalp_city/replay/report.py": "6d9aeeed31bb383375460a6a73f4d43b623495047175c637308ee5ab9722f37e",
+    "research/scalp_city/replay/test_replay.py": "61a1fc65fed5362f5be2f27833b5680c6eefb117e32cea519f9a5f1716d2cf81"
+  },
+  "production_unchanged": true,
+  "production_hashes": {
+    "scalpcity/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scalpcity/alpaca_history.py": "9eae689c45301036b17accbb18060e9fc9a7f4ac6b4d3cd890a439dae56a6ef2",
+    "scalpcity/bot.py": "8a5a3efa5afa8567914144ad6583248dffb846218d0d117f368c16fe3441cb4e",
+    "scalpcity/broker.py": "8e02a87391eb761b339747b68cfa679ad3e52e3f9c8f9868ad2fb93e6dbcd5a5",
+    "scalpcity/config.py": "5ea09850a1f4d0168d7f786e1ab475fe60444cb6417ce6bbd897b2aa95cd0beb",
+    "scalpcity/contracts.py": "f4dd71876af6f8c31ac1fdda7972ea7b1a616eda8bfb6450a910977d8eb261e3",
+    "scalpcity/engine.py": "12419f163dac04ff79d262578011da002b56400d175a52f4c3396e5c62613697",
+    "scalpcity/events.py": "5125230bb6edf754d692a1065e68ad7b2af7a500e2d0d6026c60d7da96d2678f",
+    "scalpcity/guard.py": "d800839e5241185bab65b1c86cde868778eea5f85a7f1008e2ca26b2bf913b14",
+    "scalpcity/history.py": "f09b192615679130cb617bf59d34898f52b2ec4cb3e5287a655ee99af299149a",
+    "scalpcity/indicators.py": "3c1e6bd7379badde583bdcfbe2d90156f0d0d78c061b0100f30d1662a60a1ce2",
+    "scalpcity/live.py": "f905646a0ac0c825a89152cb5b03259629c7e901748882aaa0fb55eb0be9d816",
+    "scalpcity/order_records.py": "d84e924e8e5ca1b09f9a6b90c372504e089778135c38827c650eccffdec646d6",
+    "scalpcity/paper_adapter.py": "cf7066361656cff5bcb6c2c63f4009c12a9b23b36853db40e600f4b411edf05f",
+    "scalpcity/quotes.py": "525249fe367bf6ce31a9a9caad0a2a81b8a9f87d58fd55230eeb7a915c780c54",
+    "scalpcity/replay.py": "c1043fac58a97273c1b353206ee77d55e596a881c7c01d45db426d828fb78acf",
+    "scalpcity/risk.py": "02245195194ba98dc2d6e2e3db66ccc3d006a8b79edd7652c134cf1b198b7dd6",
+    "scalpcity/safe_engine.py": "fa3729994be1f0e50478e9af8c8efbe5e024f1e3e15c94ae29c3459420001bd9",
+    "scalpcity/server.py": "ff456f2bcbe570fe019401d642a7855c79c03e5dfdad8a7b19aa12b6f35bbde5",
+    "scalpcity/shadow_adapter.py": "40a3560da6896280d3e160090a38fb542848bace5f6bd7d120fe43e67399e597",
+    "scalpcity/stale.py": "f9b0b614f03385436cdedd96502f9f27ae259b887f8a6dc0beccc66fc72e8eda",
+    "scalpcity/triggers.py": "63c4a3830de46bfba93eeef16133ba3aa3468701c05a60a2a56223854ce1b50e",
+    "scalpcity/types.py": "27520e325b0f74602b0573cc8b7b1eff00b1b696a8e8aa810553f783160eae45",
+    "scalpcity/webull_broker.py": "aa3d00a930d1fbf3b05882caa5e99c300013891c1100bc78a95d8b8aeebf585c",
+    "scalpcity/webull_client.py": "bc41c57f03e89762a925c6e3dfcce4d4d0479648a93320d3890d5516902b2d68",
+    "scalpcity/webull_parse.py": "63b886c8395ba837999792e7679f3e2c71691cb3e03702d38c387bf318ee6391"
+  }
+}

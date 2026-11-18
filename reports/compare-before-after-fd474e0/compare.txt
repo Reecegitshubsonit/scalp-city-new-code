@@ -1,0 +1,34 @@
+days 2026-06-01..2026-10-07 (90); first 70 = 2026-06-01..2026-09-09, last 20 = 2026-09-10..2026-10-07
+
+ALL 90 DAYS
+  before (cross side)    n=1308 win=37.3% net=$  -33750 per trade $ -25.8 per day $  -375 (95% CI per day -861 to +156)
+  after (EMA9/21 side)   n=1321 win=37.8% net=$  -45430 per trade $ -34.4 per day $  -505 (95% CI per day -947 to -22)
+
+FIRST 70 DAYS
+  before (cross side)    n= 981 win=38.5% net=$  -17530 per trade $ -17.9 per day $  -250 (95% CI per day -882 to +370)
+  after (EMA9/21 side)   n=1008 win=38.7% net=$  -35140 per trade $ -34.9 per day $  -502 (95% CI per day -1110 to +117)
+
+LAST 20 DAYS
+  before (cross side)    n= 327 win=33.6% net=$  -16220 per trade $ -49.6 per day $  -811 (95% CI per day -1408 to -222)
+  after (EMA9/21 side)   n= 313 win=34.8% net=$  -10290 per trade $ -32.9 per day $  -514 (95% CI per day -1076 to +51)
+
+BY TRIGGER, all 90 days
+  VWAP  before n= 395 win=38.0% net=$  -11020 per trade $ -27.9 per day $  -122 (95% CI per day -375 to +148)
+  VWAP  after  n= 418 win=41.4% net=$   -3560 per trade $  -8.5 per day $   -40 (95% CI per day -312 to +243)
+  EMA50 before n= 569 win=37.8% net=$  -11950 per trade $ -21.0 per day $  -133 (95% CI per day -363 to +104)
+  EMA50 after  n= 545 win=37.8% net=$  -17220 per trade $ -31.6 per day $  -191 (95% CI per day -386 to +34)
+  RANGE before n= 344 win=35.8% net=$  -10780 per trade $ -31.3 per day $  -120 (95% CI per day -384 to +160)
+  RANGE after  n= 358 win=33.5% net=$  -24650 per trade $ -68.9 per day $  -274 (95% CI per day -489 to -60)
+
+BY TICKER, all 90 days
+  SPY before n= 413 win=38.3% net=$   -7700 per trade $ -18.6 per day $   -86 (95% CI per day -286 to +117)
+  SPY after  n= 442 win=40.3% net=$   -3850 per trade $  -8.7 per day $   -43 (95% CI per day -228 to +165)
+  QQQ before n= 303 win=36.3% net=$   -5300 per trade $ -17.5 per day $   -59 (95% CI per day -386 to +291)
+  QQQ after  n= 311 win=37.0% net=$  -11740 per trade $ -37.7 per day $  -130 (95% CI per day -451 to +199)
+  IWM before n= 592 win=37.2% net=$  -20750 per trade $ -35.1 per day $  -231 (95% CI per day -356 to -99)
+  IWM after  n= 568 win=36.3% net=$  -29840 per trade $ -52.5 per day $  -332 (95% CI per day -433 to -216)
+
+DAY BY DAY: after beat before on 46 days, lost on 43, tied 1
+SAME ENTRY (bot + minute) in both runs: 1055; side flipped by trend_side on 396 (38%)
+  on flipped entries: before $-18960, after $-18420
+  on unflipped entries: before $-5890, after $-5890
