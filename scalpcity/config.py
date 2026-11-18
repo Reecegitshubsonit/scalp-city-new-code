@@ -50,7 +50,12 @@ class Settings:
     risk_per_und_dollar: float = 0.75
     # 5-minute EMA50 contracts when the 1-minute ATR is unavailable (normally sized 10 * atr_1m / atr_5m)
     ema50_fallback_contracts: int = 4
-    half_spread: dict = field(default_factory=lambda: {"SPY": 0.01, "QQQ": 0.015, "IWM": 0.02})
+    # Half the quoted spread, used to model fills. Corrected 2026-11-17 from measurement:
+    # 98k+ quotes per ticker from data/webull/*/snapshots.jsonl over 28 paper days, restricted to the
+    # $0.50-$20 premium band the bots actually trade, give MEDIAN FULL spreads of SPY 0.010, QQQ 0.020,
+    # IWM 0.020 -> half-spreads 0.005 / 0.010 / 0.010. The previous QQQ 0.015 and IWM 0.02 overstated
+    # the half-spread by 50% and 100%. See reports/premium-fit-2026-11-17/report.md.
+    half_spread: dict = field(default_factory=lambda: {"SPY": 0.005, "QQQ": 0.010, "IWM": 0.010})
 
 
 @dataclass(frozen=True)
